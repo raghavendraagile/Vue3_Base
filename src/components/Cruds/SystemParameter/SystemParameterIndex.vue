@@ -52,28 +52,28 @@
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
-          <td>{{ props.item.parameter_name }}</td>
+          <td>{{ props.item.selectable.parameter_name }}</td>
           <td class="param-value">
-            {{ props.item.parameter_value }}
+            {{ props.item.selectable.parameter_value }}
           </td>
-          <td class="desc_div_overflow">{{ props.item.description }}</td>
+          <td class="desc_div_overflow">{{ props.item.selectable.description }}</td>
           <td class="text-center">
             <v-btn
               class="hover_shine btn mr-2"
               :disabled="isDisabled"
-              @click="updateSystemParameteStatus(props.item.id)"
+              @click="updateSystemParameteStatus(props.item.selectable.id)"
               size="small"
               v-bind:color="[
-                props.item.status == 1 ? 'success' : 'warning',
+                props.item.selectable.status == 1 ? 'success' : 'warning',
               ]"
             >
               <span
-                v-if="props.item.status == 1"
+                v-if="props.item.selectable.status == 1"
                 class="spanactivesize"
                 >{{ $t("active") }}</span
               >
               <span
-                v-if="props.item.status == 0"
+                v-if="props.item.selectable.status == 0"
                 class="spanactivesize"
                 >{{ $t("inactive") }}</span
               >
@@ -84,7 +84,7 @@
             <router-link
               :to="{
                 name: 'system_parameter_amend',
-                query: { slug: props.item.slug },
+                query: { slug: props.item.selectable.slug },
               }"
             >
               <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -99,7 +99,7 @@
                 </template>
               </v-tooltip>
             </router-link>
-            <span @click="deleteItem(props.item.id)">
+            <span @click="deleteItem(props.item.selectable.id)">
               <v-tooltip :text="this.$t('delete')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-icon

@@ -52,31 +52,31 @@
         <tr class="vdatatable_tbody">
           <td>
             <div class="text-truncate" style="max-width: 160px">
-              {{ props.item.shortname }}
+              {{ props.item.selectable.shortname }}
             </div>
           </td>
           <td>
             <div class="text-truncate" style="max-width: 160px">
-              {{ props.item.longname }}
+              {{ props.item.selectable.longname }}
             </div>
           </td>
           <td>
             <v-btn
               class="hover_shine btn mr-2"
               :disabled="isDisabled"
-              @click="updateLookupsStatus(props.item.id)"
+              @click="updateLookupsStatus(props.item.selectable.id)"
               size="small"
               v-bind:color="[
-                props.item.status == 1 ? 'success' : 'warning',
+                props.item.selectable.status == 1 ? 'success' : 'warning',
               ]"
             >
               <span
-                v-if="props.item.status == 1"
+                v-if="props.item.selectable.status == 1"
                 class="spanactivesize"
                 >{{ $t("active") }}</span
               >
               <span
-                v-if="props.item.status == 0"
+                v-if="props.item.selectable.status == 0"
                 class="spanactivesize"
                 >{{ $t("inactive") }}</span
               >
@@ -87,7 +87,7 @@
               small
               :to="{
                 name: 'lookups_amend',
-                query: { slug: props.item.slug },
+                query: { slug: props.item.selectable.slug },
               }"
             >
               <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -108,8 +108,8 @@
               :to="{
                 name: 'child_lookup',
                 query: {
-                  slug: props.item.slug,
-                  parentname: props.item.shortname,
+                  slug: props.item.selectable.slug,
+                  parentname: props.item.selectable.shortname,
                 },
               }"
             >
@@ -125,7 +125,7 @@
                 <span>{{ $t("child_look_ups") }}</span>
               </v-tooltip>
             </router-link>
-            <span @click="deleteItem(props.item.id)">
+            <span @click="deleteItem(props.item.selectable.id)">
               <v-tooltip :text="this.$t('delete')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-icon

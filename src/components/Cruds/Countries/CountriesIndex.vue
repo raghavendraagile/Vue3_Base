@@ -49,12 +49,12 @@
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
-          <td>{{ props.item.name }}</td>
+          <td>{{ props.item.selectable.name }}</td>
           <td class="text-center px-0">
             <router-link
               :to="{
                 name: 'countries_amend',
-                query: { slug: props.item.slug },
+                query: { slug: props.item.selectable.slug },
               }"
             >
               <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -75,7 +75,7 @@
               :to="{
                 name: 'states',
                 query: {
-                  countryslug: props.item.slug,
+                  countryslug: props.item.selectable.slug,
                 },
               }"
             >
@@ -91,7 +91,7 @@
                 <span>{{ $t("states") }}</span>
               </v-tooltip>
             </router-link>
-            <span @click="deleteItem(props.item.id)">
+            <span @click="deleteItem(props.item.selectable.id)">
               <v-tooltip :text="this.$t('delete')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-icon
