@@ -79,31 +79,31 @@
         <tr class="vdatatable_tbody">
           <td>
             <div class="text-truncate" style="max-width: 160px">
-              {{ props.item.selectable.shortname }}
+              {{ props.item.shortname }}
             </div>
           </td>
           <td>
             <div class="text-truncate" style="max-width: 160px">
-              {{ props.item.selectable.longname }}
+              {{ props.item.longname }}
             </div>
           </td>
           <td>
             <v-btn
               class="hover_shine btn mr-2"
               :disabled="isDisabled"
-              @click="updateLookupsStatus(props.item.selectable.id)"
+              @click="updateLookupsStatus(props.item.id)"
               size="small"
               v-bind:color="[
-                props.item.selectable.status == 1 ? 'success' : 'warning',
+                props.item.status == 1 ? 'success' : 'warning',
               ]"
             >
               <span
-                v-if="props.item.selectable.status == 1"
+                v-if="props.item.status == 1"
                 class="spanactivesize"
                 >{{ $t("active") }}</span
               >
               <span
-                v-if="props.item.selectable.status == 0"
+                v-if="props.item.status == 0"
                 class="spanactivesize"
                 >{{ $t("inactive") }}</span
               >
@@ -114,7 +114,7 @@
               small
               :to="{
                 name: 'child_lookups_amend',
-                query: { slug: props.item.selectable.slug },
+                query: { slug: props.item.slug },
               }"
             >
               <v-tooltip :text="this.$t('add_new')" location="bottom">
@@ -130,7 +130,7 @@
                 <span>{{ $t("edit") }}</span>
               </v-tooltip>
             </router-link>
-            <span @click="deleteItem(props.item.selectable.id)">
+            <span @click="deleteItem(props.item.id)">
               <v-tooltip :text="this.$t('delete')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-icon

@@ -79,13 +79,13 @@
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
-          <td>{{ props.item.selectable.name }}</td>
+          <td>{{ props.item.name }}</td>
           <td class="text-center px-0">
             <router-link
               :to="{
                 name: 'cities_amend',
                 query: {
-                  slug: props.item.selectable.slug,
+                  slug: props.item.slug,
                 },
               }"
             >
@@ -101,7 +101,7 @@
                 </template>
               </v-tooltip>
             </router-link>
-            <span @click="deleteItem(props.item.selectable.id)">
+            <span @click="deleteItem(props.item.id)">
               <v-tooltip :text="this.$t('delete')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-icon

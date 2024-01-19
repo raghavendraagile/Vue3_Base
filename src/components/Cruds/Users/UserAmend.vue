@@ -100,25 +100,7 @@
                     v-model="profile_details.dob"
                   />
                 </v-col>
-                <v-col cols="12" md="3" lg="3" sm="3">
-                  <v-tooltip :text="$t('marital_status')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-autocomplete
-                        v-bind:label="$t('marital_status')"
-                        index="id"
-                        item-key="id"
-                        v-bind="props"
-                        variant="outlined"
-                        density="compact"
-                        item-title="longname"
-                        item-value="id"
-                        v-model="profile_details.maritalstatus_id"
-                        :items="marital_status_array"
-                      ></v-autocomplete>
-                    </template>
-                    <span>{{ $t("marital_status") }}</span>
-                  </v-tooltip>
-                </v-col>
+                
                 <v-col
                   cols="12"
                   md="4"
@@ -126,24 +108,6 @@
                   sm="4"
                   v-if="from_page == 'view_profile'"
                 >
-                  <v-tooltip :text="$t('role')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-autocomplete
-                        v-bind:label="$t('role')"
-                        v-bind="props"
-                        variant="outlined"
-                        density="compact"
-                        item-title="role_display_name"
-                        item-value="id"
-                        v-model="profile_details.role_id"
-                        :rules="fieldRules"
-                        disabled
-                        :items="role_array_view_profile"
-                        class="required_field mt_30"
-                      ></v-autocomplete>
-                    </template>
-                    <span>{{ $t("role") }}</span>
-                  </v-tooltip>
                 </v-col>
                 <v-col cols="12" md="4" lg="4" sm="4" v-else>
                   <v-tooltip :text="$t('role')" location="bottom">
@@ -159,7 +123,6 @@
                         item-value="id"
                         v-model="profile_details.role_id"
                         :rules="fieldRules"
-                        disabled
                         :items="role_array_view_profile"
                         class="required_field mt_30"
                       ></v-autocomplete>
@@ -200,20 +163,6 @@
                         v-model="profile_details.phone"
                         @keypress="isNumber($event)"
                         required
-                      ></v-text-field>
-                    </template>
-                  </v-tooltip>
-                </v-col>
-                <v-col cols="12" md="4" lg="4" sm="4" px-2>
-                  <v-tooltip :text="$t('profession')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-text-field
-                        v-bind:label="$t('profession')"
-                        v-bind="props"
-                        variant="outlined"
-                        density="compact"
-                        maxlength="255"
-                        v-model="profile_details.profession"
                       ></v-text-field>
                     </template>
                   </v-tooltip>
@@ -491,8 +440,6 @@ export default {
     role_array_view_profile: [],
     uploadfile: false,
     user: "",
-
-    marital_status_array: [],
     role_array: [],
     salutation_array: [],
     gender_array: [],
@@ -646,18 +593,7 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-      this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetchlookup", {
-          params: {
-            lookup_type: "MARITAL_STATUS",
-          },
-        })
-        .then((response) => {
-          this.marital_status_array = response.data.lookup_details;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      
       this.$axios
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetchlookup", {
           params: {

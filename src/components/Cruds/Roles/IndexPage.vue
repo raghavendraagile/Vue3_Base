@@ -50,15 +50,15 @@
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
-          <td>{{ props.item.selectable.rolename }}</td>
-          <td>{{ props.item.selectable.roledescription }}</td>
+          <td>{{ props.item.rolename }}</td>
+          <td>{{ props.item.roledescription }}</td>
           <td class="text-center px-0">
             <router-link
               small
               class="mr-2"
               :to="{
                 name: 'roles_amend',
-                query: { slug: props.item.selectable.slug },
+                query: { slug: props.item.slug },
               }"
             >
               <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -75,9 +75,9 @@
               :to="{
                 name: 'roles_menu',
                 query: {
-                  slug: props.item.selectable.slug,
-                  id: props.item.selectable.id,
-                  name: props.item.selectable.rolename,
+                  slug: props.item.slug,
+                  id: props.item.id,
+                  name: props.item.rolename,
                 },
               }"
             >
@@ -144,9 +144,11 @@ export default {
   },
 
   created() {
+    
+  },
+  mounted() {
     this.initialize();
   },
-  mounted() {},
 
   methods: {
     deleteRole(role) {

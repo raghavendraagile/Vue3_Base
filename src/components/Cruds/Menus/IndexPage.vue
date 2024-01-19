@@ -53,26 +53,26 @@
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
           <td>
-            <span v-if="props.item.selectable.title">{{
-              props.item.selectable.title
+            <span v-if="props.item.title">{{
+              props.item.title
             }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span v-if="props.item.selectable.href">{{
-              props.item.selectable.href
+            <span v-if="props.item.href">{{
+              props.item.href
             }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span v-if="props.item.selectable.parent_name">{{
-              props.item.selectable.parent_name
+            <span v-if="props.item.parent_name">{{
+              props.item.parent_name
             }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span v-if="props.item.selectable.seq">{{
-              props.item.selectable.seq
+            <span v-if="props.item.seq">{{
+              props.item.seq
             }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
@@ -81,7 +81,7 @@
             <router-link
               :to="{
                 name: 'menu_amend',
-                query: { slug: props.item.selectable.slug },
+                query: { slug: props.item.slug },
               }"
             >
               <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -97,7 +97,7 @@
               </v-tooltip>
             </router-link>
 
-            <span @click="deleteItem(props.item.selectable.id)">
+            <span @click="deleteItem(props.item.id)">
               <v-tooltip :text="this.$t('delete')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-icon

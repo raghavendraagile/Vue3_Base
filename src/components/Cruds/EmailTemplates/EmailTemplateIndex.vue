@@ -54,15 +54,15 @@
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
-          <td>{{ props.item.selectable.templatetypename }}</td>
-          <td>{{ props.item.selectable.template_name }}</td>
-          <td>{{ props.item.selectable.template_subject }}</td>
+          <td>{{ props.item.templatetypename }}</td>
+          <td>{{ props.item.template_name }}</td>
+          <td>{{ props.item.template_subject }}</td>
           <td class="text-center">
             <router-link
               small
               :to="{
                 name: 'email_template_amend',
-                query: { slug: props.item.selectable.slug },
+                query: { slug: props.item.slug },
               }"
             >
               <v-tooltip :text="this.$t('edit')" location="top">
@@ -74,7 +74,7 @@
                 <span>{{ $t("edit") }}</span>
               </v-tooltip>
             </router-link>
-            <span @click="deleteItem(props.item.selectable.id)">
+            <span @click="deleteItem(props.item.id)">
               <v-tooltip :text="this.$t('delete')" location="top">
                 <template v-slot:activator="{ props }">
                   <v-icon color="error" type="button" v-bind="props" small
