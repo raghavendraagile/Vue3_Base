@@ -144,9 +144,11 @@ export default {
   },
 
   created() {
+    
+  },
+  mounted() {
     this.initialize();
   },
-  mounted() {},
 
   methods: {
     deleteRole(role) {

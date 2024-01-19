@@ -17,12 +17,9 @@
               <div class="w-100 d-flex" style="flex-direction: column">
                 <h4 class="mb-0"></h4>
                 <div class="font-login">
-                <div v-if="app_image_url">
+                  <div v-if="app_image_url">
                     <span>
-                      <img
-                        v-bind:src="app_image_url"
-                        style="width: 130px"
-                      />
+                      <img v-bind:src="app_image_url" style="width: 130px" />
                     </span>
                   </div>
                   <div v-else-if="app_image_url == ''">
@@ -124,7 +121,7 @@ export default {
     userprofile: "",
     loader: false,
     app_image_url: "",
-    application_name: "Tradie Safe",
+    application_name: "Gulf Mall",
     app_name: "",
   }),
   computed: {
