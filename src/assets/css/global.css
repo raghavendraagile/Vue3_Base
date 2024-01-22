@@ -29,16 +29,13 @@
   background-color: #fff !important;
   color: #222 !important;
 }
-
 #app.theme-light .app-name {
   text-shadow: 1px 1px 1px #222;
 }
-
 #app.theme-light .mdi-checkbox-blank-outline,
 #app.theme-light .mdi-checkbox-marked {
   color: rgb(1, 96, 1) !important;
 }
-
 #app.theme-light .role_list_item:hover {
   background: #f0f0f0;
   border-radius: 5px;
@@ -48,12 +45,10 @@
 #app.theme-dark .mdi-checkbox-marked {
   color: rgb(2, 173, 2) !important;
 }
-
 #app.theme-dark .mdi-chevron-up,
 #app.theme-dark .mdi-chevron-down {
   color: grey !important;
 }
-
 #app.theme-dark .v-navigation-drawer,
 #app.theme-dark .v-toolbar__content,
 #app.theme-dark main,
@@ -64,27 +59,22 @@
   background-color: #222 !important;
   color: #fff !important;
 }
-
 #app.theme-dark .v-navigation-drawer {
   border-radius: 0px 10px 10px 0px;
   border-top: 1px solid #414141;
   border-right: 1px solid #414141;
 }
-
 #app.theme-dark .app-name {
   text-shadow: 0px 0px 1px #fff;
 }
-
 #app.theme-dark .profile-view-card {
   background-color: grey !important;
 }
-
 #app.theme-dark .confirm-dialog-box,
 #app.theme-dark .navigation-title {
   background-color: #222 !important;
   color: #fff !important;
 }
-
 #app.theme-dark .confirm-dialog-box,
 #app.theme-dark .v-data-table__td,
 #app.theme-dark .v-data-table-footer,
@@ -94,21 +84,17 @@
   background-color: #222 !important;
   color: #fff !important;
 }
-
 #app.theme-dark .v-label {
   color: #fff !important;
 }
-
 #app.theme-dark .role_list_item:hover {
   background: #2b2b2b;
   border-radius: 5px;
 }
-
 #app.theme-dark .mdi-camera {
   color: black !important;
 }
-
-#app.theme-dark .v-table>.v-list-item {
+#app.theme-dark .v-table > .v-list-item {
   background: #222 !important;
   color: white;
 }
@@ -200,11 +186,11 @@
   animation-timing-function: ease-in-out !important;
 }
 
-.v-input--error:not(.v-input--disabled) .v-input__details>.v-icon,
+.v-input--error:not(.v-input--disabled) .v-input__details > .v-icon,
 .v-input--error:not(.v-input--disabled) .v-input__details .v-messages,
-.v-input--error:not(.v-input--disabled) .v-input__prepend>.v-icon,
+.v-input--error:not(.v-input--disabled) .v-input__prepend > .v-icon,
 .v-input--error:not(.v-input--disabled) .v-input__prepend .v-messages,
-.v-input--error:not(.v-input--disabled) .v-input__append>.v-icon,
+.v-input--error:not(.v-input--disabled) .v-input__append > .v-icon,
 .v-input--error:not(.v-input--disabled) .v-input__append .v-messages {
   animation-name: shakeError !important;
   animation-fill-mode: forwards !important;
@@ -217,7 +203,7 @@
 }
 
 /* Custom Css */
-.v-main>div {
+.v-main > div {
   margin: 9px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
@@ -240,7 +226,7 @@
   border-radius: 10px;
 }
 
-.login-box-custom>div {
+.login-box-custom > div {
   display: flex;
   display: flex;
   justify-content: space-between;
@@ -383,7 +369,6 @@ input::placeholder {
 
 .green_btn_color {
   background-color: #0d969e !important;
-  color: white !important;
 }
 
 /* Apply the bounce animation on hover */
@@ -401,71 +386,53 @@ input::placeholder {
 
 /* Define the bounce animation keyframes */
 @keyframes bounceAnimation {
-
-  0%,
-  100% {
+  0%, 100% {
     transform: translateY(0);
   }
-
   50% {
     transform: translateY(-3px);
   }
 }
-
 @keyframes shakeError {
   0% {
     transform: translateX(0);
   }
-
   15% {
     transform: translateX(0.175rem);
   }
-
   30% {
     transform: translateX(-0.175rem);
   }
-
   45% {
     transform: translateX(0.175rem);
   }
-
   60% {
     transform: translateX(-0.175rem);
   }
-
   75% {
     transform: translateX(0.175rem);
   }
-
   90% {
     transform: translateX(-0.175rem);
   }
-
   100% {
     transform: translateX(0);
   }
 }
-
 @keyframes shake {
   0% {
     transform: translateX(-2px);
   }
-
   25% {
     transform: translateX(2px);
   }
-
   50% {
     transform: translateX(-2px);
   }
-
   75% {
     transform: translateX(2px);
   }
-
   100% {
     transform: translateX(-2px);
   }
-}
-
-/*# sourceMappingURL=global.css.map */
+}/*# sourceMappingURL=global.css.map */

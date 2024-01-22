@@ -9,70 +9,152 @@
     </div>
     <div class="card-body">
       <content-loader v-if="loader"></content-loader>
-      <v-form ref="form" v-model="valid">
-        <v-row class="mx-auto mt-2" max-width="344">
-          <v-col cols="12" sm="12" md="6">
-            <v-tooltip :text="this.$t('shortname')" location="bottom">
-              <template v-slot:activator="{ props }">
-                <v-text-field
-                  v-on="on"
-                  v-model="lookup.shortname"
-                  :rules="fieldRules"
-                  v-bind:label="$t('shortname')"
-                  v-bind="props"
-                  required
-                  class="required_field"
-                  variant="outlined"
-                  density="compact"
-                  maxlength="100"
-                ></v-text-field>
-              </template>
-            </v-tooltip>
-          </v-col>
-          <v-col md="6">
-            <v-tooltip :text="this.$t('longname')" location="bottom">
-              <template v-slot:activator="{ props }">
-                <v-text-field
-                  v-on="on"
-                  v-model="lookup.longname"
-                  :rules="fieldRules"
-                  v-bind:label="$t('longname')"
-                  v-bind="props"
-                  required
-                  class="required_field"
-                  variant="outlined"
-                  density="compact"
-                  maxlength="500"
-                ></v-text-field>
-              </template>
-            </v-tooltip>
-          </v-col>
-        </v-row>
-        <v-layout>
-          <v-row class="mx-auto mt-2" max-width="344">
-            <v-col md="12">
-              <v-tooltip :text="this.$t('longname')" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-textarea
-                    v-on="on"
-                    rows="2"
-                    v-model="lookup.description"
-                    :rules="fieldRules"
-                    maxlength="100"
-                    v-bind="props"
-                    v-bind:label="$t('description')"
-                    required
-                    class="required_field"
-                    variant="outlined"
-                    counter="true"
-                  ></v-textarea>
-                </template>
-                <span>{{ $t("description") }}</span>
-              </v-tooltip>
-            </v-col>
-          </v-row>
-        </v-layout>
-      </v-form>
+      <v-tabs v-model="tabs" color="blue">
+        <v-tab :value="1">
+          <span>English</span>
+        </v-tab>
+
+        <v-tab :value="2">
+          <span>Arabic</span>
+        </v-tab>
+      </v-tabs>
+      <v-window v-model="tabs">
+        <!-- ENGLISH TAB STARTS -->
+        <v-window-item :value="1">
+          <v-form ref="form" v-model="valid">
+            <v-row class="mx-auto mt-2" max-width="344">
+              <v-col cols="12" sm="12" md="6">
+                <v-tooltip :text="this.$t('shortname')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-on="on"
+                      v-model="lookup.shortname"
+                      :rules="fieldRules"
+                      v-bind:label="$t('shortname')"
+                      v-bind="props"
+                      required
+                      class="required_field"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="100"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col md="6">
+                <v-tooltip :text="this.$t('longname')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-on="on"
+                      v-model="lookup.longname"
+                      :rules="fieldRules"
+                      v-bind:label="$t('longname')"
+                      v-bind="props"
+                      required
+                      class="required_field"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="500"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+            </v-row>
+            <v-layout>
+              <v-row class="mx-auto mt-2" max-width="344">
+                <v-col md="12">
+                  <v-tooltip :text="this.$t('longname')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-textarea
+                        v-on="on"
+                        rows="2"
+                        v-model="lookup.description"
+                        :rules="fieldRules"
+                        maxlength="100"
+                        v-bind="props"
+                        v-bind:label="$t('description')"
+                        required
+                        class="required_field"
+                        variant="outlined"
+                        counter="true"
+                      ></v-textarea>
+                    </template>
+                    <span>{{ $t("description") }}</span>
+                  </v-tooltip>
+                </v-col>
+              </v-row>
+            </v-layout>
+          </v-form>
+        </v-window-item>
+        <!-- ENGLISH TAB STOPS -->
+        <!-- ARABIC TAB STARTS -->
+        <v-window-item :value="2">
+          <v-form ref="form" v-model="valid">
+            <v-row class="mx-auto mt-2" max-width="344">
+              <v-col cols="12" sm="12" md="6">
+                <v-tooltip :text="this.$t('shortname')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-on="on"
+                      v-model="lookup.shortname_ar"
+                      :rules="fieldRules"
+                      v-bind:label="$t('shortname')"
+                      v-bind="props"
+                      required
+                      class="required_field rtl"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="100"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col md="6">
+                <v-tooltip :text="this.$t('longname')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-on="on"
+                      v-model="lookup.longname_ar"
+                      :rules="fieldRules"
+                      v-bind:label="$t('longname')"
+                      v-bind="props"
+                      required
+                      class="required_field"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="500"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+            </v-row>
+            <v-layout>
+              <v-row class="mx-auto mt-2" max-width="344">
+                <v-col md="12">
+                  <v-tooltip :text="this.$t('longname')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-textarea
+                        v-on="on"
+                        rows="2"
+                        v-model="lookup.description_ar"
+                        :rules="fieldRules"
+                        maxlength="100"
+                        v-bind="props"
+                        v-bind:label="$t('description')"
+                        required
+                        class="required_field"
+                        variant="outlined"
+                        counter="true"
+                      ></v-textarea>
+                    </template>
+                    <span>{{ $t("description") }}</span>
+                  </v-tooltip>
+                </v-col>
+              </v-row>
+            </v-layout>
+          </v-form>
+        </v-window-item>
+      </v-window>
     </div>
     <div class="d-block mr-4 mt-3 pb-3 text-right">
       <v-tooltip :text="this.$t('cancel')" location="bottom">
@@ -125,6 +207,7 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
+    tabs: 1,
     envPath: process.env.VUE_APP_IMAGE_DOWNLOAD_URL,
     valid: true,
     loader: false,
@@ -138,6 +221,9 @@ export default {
       shortname: "",
       longname: "",
       description: "",
+      shortname_ar: "",
+      longname_ar: "",
+      description_ar: "",
     },
     noimagepreview: "",
     items: [],
@@ -244,5 +330,9 @@ input.larger {
 .image-width {
   border: 2px solid black;
   padding: 1px;
+}
+.rtl :deep() input {
+  text-align: right;
+  direction: rtl;
 }
 </style>
