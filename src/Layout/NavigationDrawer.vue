@@ -3,11 +3,12 @@ import { navigation } from "../store/navigation.js";
 </script>
 <template>
   <content-loader v-if="loader"></content-loader>
-  <v-navigation-drawer v-model="navigation.drawer" class="pa-0">
+  <v-navigation-drawer v-model="navigation.drawer" class="pa-0" :location="sel_lang=='ar'?'right':'left'">
     <div
       class="d-flex align-items-center justify-space-between pa-5 navigation-title"
       elevation="3"
-      style="height: 64px; border-radius: 0px"
+      style="height: 64px; border-radius: 0px;"
+      
     >
       <div class="app-header__logo">
         <div v-if="app_image_url">
@@ -67,6 +68,7 @@ import { navigation } from "../store/navigation.js";
 import localStorageWrapper from "../localStorageWrapper.js";
 
 export default {
+  props:['sel_lang'],
   data() {
     return {
       drawer: true,
@@ -81,6 +83,7 @@ export default {
         ["Management", "mdi-account-multiple-outline"],
         ["Settings", "mdi-cog-outline"],
       ],
+      lang:""
     };
   },
   created() {
@@ -145,6 +148,7 @@ export default {
       this.$axios
         .post(process.env.VUE_APP_API_URL_ADMIN + "menutree", {
           role: this.role_id,
+          lang: this.$route.params.lang
         })
         .then((response) => {
           this.loader = false;

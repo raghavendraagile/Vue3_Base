@@ -418,14 +418,18 @@ input::placeholder {
 
 .switch-lang {
   display: inline-block; 
-  transition: all 0.2s ease;
+  transition: all 0.5s ease;
 }
 
-.switch-lang:hover {
-  animation: bounceAnimation 0.2s;
+.bounce-all:hover {
+  animation: bounceAnimation 0.5s;
   cursor: pointer;
 }
 
+.rtl-direction{
+  text-align: right;
+  direction: rtl;
+}
 
 //animations end
 
@@ -439,7 +443,7 @@ input::placeholder {
   }
 
   50% {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
   }
 }
 

@@ -11,13 +11,14 @@ import { apptheme } from "./store/apptheme.js";
         style="position: fixed; z-index: 15000"
       ></FlashMessage>
       <v-layout>
-        <NavigationDrawer v-if="layout === 'default-layout'"></NavigationDrawer>
+        <NavigationDrawer v-if="layout === 'default-layout'" :sel_lang="sel_lang"></NavigationDrawer>
 
         <v-app-bar
           color="white"
           elevation="3"
-          style="border-radius: 0px"
+          style="border-radius: 0px;"
           v-if="layout === 'default-layout'"
+          v-bind:style="sel_lang=='ar'?'direction:rtl':''"
         >
           <template v-slot:prepend>
             <v-app-bar-nav-icon
@@ -195,7 +196,7 @@ import { apptheme } from "./store/apptheme.js";
               </v-card>
             </v-menu>
           </div>
-          <div class="d-flex switch-lang">
+          <div class="d-flex switch-lang bounce-all">
             <v-icon style="font-size: 20px; margin-top: 2px"
               >mdi mdi-translate</v-icon
             >
@@ -333,11 +334,14 @@ export default {
         this.$i18n.locale = newLang;
         if (newLang) {
           localStorage.setItem("pref_lang", newLang);
+          this.sel_lang = newLang;
         } else {
           localStorage.setItem("pref_lang", "en");
+          this.sel_lang = 'en';
         }
       } else {
         localStorage.setItem("pref_lang", "en");
+        this.sel_lang = 'en';
       }
     },
   },
