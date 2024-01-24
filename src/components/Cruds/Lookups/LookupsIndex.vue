@@ -65,7 +65,7 @@
                   {{
                     props.item.selectable.shortname
                       ? props.item.selectable.shortname
-                      : "N/A"
+                      : $t("not_appllicable")
                   }}
                 </div>
               </td>
@@ -74,7 +74,7 @@
                   {{
                     props.item.selectable.longname
                       ? props.item.selectable.longname
-                      : "N/A"
+                      : $t("not_appllicable")
                   }}
                 </div>
               </td>
@@ -182,7 +182,7 @@
                   {{
                     props.item.selectable.shortname_ar
                       ? props.item.selectable.shortname_ar
-                      : "N/A"
+                      : $t("not_appllicable")
                   }}
                 </div>
               </td>
@@ -191,7 +191,7 @@
                   {{
                     props.item.selectable.longname_ar
                       ? props.item.selectable.longname_ar
-                      : "N/A"
+                      : $t("not_appllicable")
                   }}
                 </div>
               </td>

@@ -136,7 +136,7 @@
                 {{
                   props.item.selectable.name_ar
                     ? props.item.selectable.name_ar
-                    : "N/A"
+                    : $t("not_appllicable")
                 }}
               </td>
               <td class="text-center px-0">

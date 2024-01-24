@@ -173,12 +173,20 @@
             <tr class="vdatatable_tbody">
               <td>
                 <div class="text-truncate" style="max-width: 160px">
-                  {{ props.item.selectable.shortname_ar }}
+                  {{
+                    props.item.selectable.shortname_ar
+                      ? props.item.selectable.shortname_ar
+                      : $t("not_appllicable")
+                  }}
                 </div>
               </td>
               <td>
                 <div class="text-truncate" style="max-width: 160px">
-                  {{ props.item.selectable.longname_ar }}
+                  {{
+                    props.item.selectable.longname_ar
+                      ? props.item.selectable.longname_ar
+                      : $t("not_appllicable")
+                  }}
                 </div>
               </td>
               <td>
