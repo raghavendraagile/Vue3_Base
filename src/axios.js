@@ -9,20 +9,25 @@ instance.interceptors.request.use((config) => {
   if (token) {
     config.headers["Authorization"] = `Bearer ${token}`;
   }
+
+  const language = localStorage.getItem("pref_lang") || "en";
+
+  config.params = { ...config.params, lang: language };
   return config;
+  
 });
 
 instance.interceptors.response.use(
-    response => {
-      return response;
-    },
-    error => {
-      return Promise.reject(error);
-    }
-  );
+  (response) => {
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
-  export default {
-    install(app) {
-      app.config.globalProperties.$axios = instance;
-    }
-  };
+export default {
+  install(app) {
+    app.config.globalProperties.$axios = instance;
+  },
+};

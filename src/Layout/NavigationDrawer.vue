@@ -152,8 +152,7 @@ export default {
       this.loader = true;
       this.$axios
         .post(process.env.VUE_APP_API_URL_ADMIN + "menutree", {
-          role: this.role_id,
-          lang: this.$route.params.lang
+          role: this.role_id
         })
         .then((response) => {
           this.loader = false;

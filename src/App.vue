@@ -11,14 +11,17 @@ import { apptheme } from "./store/apptheme.js";
         style="position: fixed; z-index: 15000"
       ></FlashMessage>
       <v-layout>
-        <NavigationDrawer v-if="layout === 'default-layout'" :sel_lang="sel_lang"></NavigationDrawer>
+        <NavigationDrawer
+          v-if="layout === 'default-layout'"
+          :sel_lang="sel_lang"
+        ></NavigationDrawer>
 
         <v-app-bar
           color="white"
           elevation="3"
-          style="border-radius: 0px;"
+          style="border-radius: 0px"
           v-if="layout === 'default-layout'"
-          v-bind:style="sel_lang=='ar'?'direction:rtl':''"
+          v-bind:style="sel_lang == 'ar' ? 'direction:rtl' : ''"
         >
           <template v-slot:prepend>
             <v-app-bar-nav-icon
@@ -308,6 +311,7 @@ export default {
 
   mounted() {
     this.selectedLang();
+    
   },
   created() {
     this.emitter.on("app_image_update", () => {
@@ -337,16 +341,17 @@ export default {
           this.sel_lang = newLang;
         } else {
           localStorage.setItem("pref_lang", "en");
-          this.sel_lang = 'en';
+          this.sel_lang = "en";
         }
       } else {
         localStorage.setItem("pref_lang", "en");
-        this.sel_lang = 'en';
+        this.sel_lang = "en";
       }
     },
   },
 
   methods: {
+    
     setUserLang(lang) {
       localStorage.setItem("pref_lang", lang);
       this.$i18n.locale = lang;
@@ -537,5 +542,4 @@ nav a.router-link-exact-active {
 .notifcationmaincardscroll::-webkit-scrollbar {
   display: none; /* for Chrome, Safari, and Opera */
 }
-
 </style>
