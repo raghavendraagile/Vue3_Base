@@ -29,6 +29,7 @@
                     <v-text-field
                       v-on="on"
                       v-model="lookup.shortname"
+                      :disabled="lookup.id == 0 ? disabled : ''"
                       v-bind="props"
                       :rules="fieldRules"
                       v-bind:label="$t('shortname')"
@@ -146,6 +147,7 @@
                     <v-text-field
                       v-on="on"
                       v-model="lookup.shortname_ar"
+                      :disabled="lookup.shortname_ar != '' ? disabled : ''"
                       v-bind="props"
                       :rules="fieldRules"
                       v-bind:label="$t('shortname')"
