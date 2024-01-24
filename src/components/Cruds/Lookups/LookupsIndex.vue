@@ -4,7 +4,7 @@
     <div
       flat
       color="white"
-      class="row py-5 pl-5 align-items-center component_app_bar"
+      class="row py-5 pl-5 align-items-center component_app_bar position-relative"
     >
       <page-title
         class="col-md-3"
