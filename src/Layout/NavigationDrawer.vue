@@ -110,6 +110,11 @@ export default {
         }
       },
     },
+    "$route.params.lang"() {
+      if (this.role_id > 0) { 
+      this.fetchMenuTree();
+      }
+    },
   },
   methods: {
     appImageUpdate() {
@@ -155,6 +160,11 @@ export default {
           if (response.data.status == "S") {
             this.menuitems = response.data.menu;
           }
+        })
+        .catch((err) => {
+          this.loader = false;
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log("this error" + err);
         });
     },
   },
