@@ -271,7 +271,6 @@
   "awaiting": "Awaiting",
   "status": "Status",
   "english":"English",
-  "arabic":"عربي",
   "coming_soon":"Coming Soon",
   "create_career": "Create/Amend Career",
   "vacancy": "Vacancy",
@@ -284,6 +283,12 @@
   "to_day": "To Day",
   "from_time": "From Timing",
   "to_time": "To Timing",
+  "create_ammend_mall_timing": "Create/Amend Mall Timing",
+  "create_ammend_e_magazine": "Create/Amend E Magazine",
+  "e_magazine": "E-Magazine",
+
+  "start_arabic_translation": "---------------Arabic translation start---------------------------",
+  "arabic":"عربي",
   "from_day_ar": "من اليوم",
   "to_day_ar": "اليوم",
   "from_time_ar": "من التوقيت",
@@ -293,12 +298,7 @@
   "active_ar": "نشيط",
   "inactive_ar": "غير نشط",
   "description_ar": "وصف",
-  "create_ammend_mall_timing": "Create/Ammend Mall Timing",
-  "create_ammend_e_magazine": "Create/Ammend E Magazine",
-  "e_magazine": "E-Magazine",
   "title_ar": "عنوان",
-  "meta_description": "Meta Description",
   "meta_description_ar": "ميتا الوصف",
-  "meta_title": "Meta Title",
   "meta_title_ar": "عنوان الفوقية"
 }
