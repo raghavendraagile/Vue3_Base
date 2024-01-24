@@ -526,7 +526,7 @@ nav a.router-link-exact-active {
 }
 
 .v-toolbar__content {
-  height: 80px !important;
+  height: 57px !important;
 }
 
 .v-toolbar-title__placeholder {

@@ -42,52 +42,123 @@
         </v-tooltip>
       </div>
     </div>
-    <v-data-table
-      :headers="headers"
-      :items="email_templates"
-      :search="search"
-      :loading="initval"
-      v-bind:no-data-text="$t('no_data_available')"
-      :footer-props="{
-        'items-per-page-text': $t('rows_per_page'),
-      }"
-    >
-      <template v-slot:item="props">
-        <tr class="vdatatable_tbody">
-          <td>{{ props.item.selectable.templatetypename }}</td>
-          <td>{{ props.item.selectable.template_name }}</td>
-          <td>{{ props.item.selectable.template_subject }}</td>
-          <td class="text-center">
-            <router-link
-              small
-              :to="{
-                name: 'email_template_amend',
-                query: { slug: props.item.selectable.slug },
-              }"
-            >
-              <v-tooltip :text="this.$t('edit')" location="top">
-                <template v-slot:activator="{ props }">
-                  <v-icon v-bind="props" small class="mr-2 edit_btn icon_size"
-                    >mdi-pencil-outline</v-icon
-                  >
-                </template>
-                <span>{{ $t("edit") }}</span>
-              </v-tooltip>
-            </router-link>
-            <span @click="deleteItem(props.item.selectable.id)">
-              <v-tooltip :text="this.$t('delete')" location="top">
-                <template v-slot:activator="{ props }">
-                  <v-icon color="error" type="button" v-bind="props" small
-                    >mdi-trash-can-outline</v-icon
-                  >
-                </template>
-                <span>{{ $t("delete") }}</span>
-              </v-tooltip>
-            </span>
-          </td>
-        </tr>
-      </template>
-    </v-data-table>
+    <v-tabs v-model="tabs" color="blue">
+      <v-tab :value="1" @click="checkUploadImage">
+        <span>{{ $t("english") }}</span>
+      </v-tab>
+      <v-tab :value="2" @click="checkUploadImage">
+        <span>{{ $t("arabic") }}</span>
+      </v-tab>
+    </v-tabs>
+    <v-window v-model="tabs">
+      <!-- ENGLISH TAB STARTS -->
+      <v-window-item :value="1">
+        <v-data-table
+          :headers="headers"
+          :items="email_templates"
+          :search="search"
+          :loading="initval"
+          v-bind:no-data-text="$t('no_data_available')"
+          :footer-props="{
+            'items-per-page-text': $t('rows_per_page'),
+          }"
+        >
+          <template v-slot:item="props">
+            <tr class="vdatatable_tbody">
+              <td>{{ props.item.selectable.templatetypename }}</td>
+              <td>{{ props.item.selectable.template_name }}</td>
+              <td>{{ props.item.selectable.template_subject }}</td>
+              <td class="text-center">
+                <router-link
+                  small
+                  :to="{
+                    name: 'email_template_amend',
+                    query: { slug: props.item.selectable.slug },
+                  }"
+                >
+                  <v-tooltip :text="this.$t('edit')" location="top">
+                    <template v-slot:activator="{ props }">
+                      <v-icon
+                        v-bind="props"
+                        small
+                        class="mr-2 edit_btn icon_size"
+                        >mdi-pencil-outline</v-icon
+                      >
+                    </template>
+                    <span>{{ $t("edit") }}</span>
+                  </v-tooltip>
+                </router-link>
+                <span @click="deleteItem(props.item.selectable.id)">
+                  <v-tooltip :text="this.$t('delete')" location="top">
+                    <template v-slot:activator="{ props }">
+                      <v-icon color="error" type="button" v-bind="props" small
+                        >mdi-trash-can-outline</v-icon
+                      >
+                    </template>
+                    <span>{{ $t("delete") }}</span>
+                  </v-tooltip>
+                </span>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-window-item>
+      <!-- ENGLISH TAB STOPS -->
+      <!-- ARABIC TAB STARTS -->
+      <v-window-item :value="2">
+        <v-data-table
+          :headers="headers"
+          :items="email_templates"
+          :search="search"
+          :loading="initval"
+          v-bind:no-data-text="$t('no_data_available')"
+          :footer-props="{
+            'items-per-page-text': $t('rows_per_page'),
+          }"
+        >
+          <template v-slot:item="props">
+            <tr class="vdatatable_tbody">
+              <td>{{ props.item.selectable.templatetypename }}</td>
+              <td>{{ props.item.selectable.template_name }}</td>
+              <td>{{ props.item.selectable.template_subject_ar }}</td>
+              <td class="text-center">
+                <router-link
+                  small
+                  :to="{
+                    name: 'email_template_amend',
+                    query: { slug: props.item.selectable.slug },
+                  }"
+                >
+                  <v-tooltip :text="this.$t('edit')" location="top">
+                    <template v-slot:activator="{ props }">
+                      <v-icon
+                        v-bind="props"
+                        small
+                        class="mr-2 edit_btn icon_size"
+                        >mdi-pencil-outline</v-icon
+                      >
+                    </template>
+                    <span>{{ $t("edit") }}</span>
+                  </v-tooltip>
+                </router-link>
+                <span @click="deleteItem(props.item.selectable.id)">
+                  <v-tooltip :text="this.$t('delete')" location="top">
+                    <template v-slot:activator="{ props }">
+                      <v-icon color="error" type="button" v-bind="props" small
+                        >mdi-trash-can-outline</v-icon
+                      >
+                    </template>
+                    <span>{{ $t("delete") }}</span>
+                  </v-tooltip>
+                </span>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-window-item>
+    </v-window>
+    <!--  ARABIC TAB ENDS-->
+
     <ConfirmDialog
       :show="showConfirmDialog"
       :cancel="cancel"
@@ -108,6 +179,7 @@ export default {
     search: "",
     showConfirmDialog: false,
     delete_id: null,
+    tabs: 1,
     dialog: false,
     email_templates: [],
     initval: true,

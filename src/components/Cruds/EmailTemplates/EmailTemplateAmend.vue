@@ -51,87 +51,190 @@
               </v-tooltip>
             </v-col>
           </v-row>
-          <v-row class="px-6">
-            <v-col cols="12" sm="12" md="12">
-              <v-tooltip :text="$t('subject')" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-text-field
-                    v-bind="props"
-                    v-model="fieldItem.template_subject"
-                    :rules="fieldRules"
-                    maxlength="100"
-                    v-bind:label="$t('subject')"
-                    required
-                    variant="outlined"
-                    density="compact"
-                  ></v-text-field>
-                </template>
-              </v-tooltip>
-            </v-col>
-          </v-row>
-          <v-row class="px-6 pt-0">
-            <v-col cols="12" md="12" lg="12" sm="12" class="pt-0">
-              <v-card-title class="text-left" style="font-size: 17px">{{
-                $t("body")
-              }}</v-card-title>
-              <v-tooltip :text="$t('body')" location="top">
-                <template v-slot:activator="{ props }">
-                  <div v-bind="props">
-                    <quill-editor
-                      class="hide_quill_input"
-                      v-bind:id="
-                        quill_item == true ? 'quill_item' : 'quill_item_border'
-                      "
-                      v-model:value="fieldItem.template_body"
-                      @blur="onEditorBlur($event)"
-                      @focus="onEditorFocus($event)"
-                      @ready="onEditorReady($event)"
-                      @change="onEditorChange($event)"
-                    />
-                    <small
-                      v-if="quill_item"
-                      class="text-danger ml-5 required_item shake"
-                      >Field Required</small
-                    >
-                    <!-- <QuillEditor theme="snow" v-model:content="fieldItem.template_body"
+          <v-tabs v-model="tabs" color="blue">
+            <v-tab :value="1" @click="checkUploadImage">
+              <span>{{ $t("english") }}</span>
+            </v-tab>
+            <v-tab :value="2" @click="checkUploadImage">
+              <span>{{ $t("arabic") }}</span>
+            </v-tab>
+          </v-tabs>
+          <v-window v-model="tabs">
+            <!-- ENGLISH TAB STARTS -->
+            <v-window-item :value="1">
+              <v-row class="px-6 mt-4">
+                <v-col cols="12" sm="12" md="12">
+                  <v-tooltip :text="$t('subject')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-text-field
+                        v-bind="props"
+                        v-model="fieldItem.template_subject"
+                        :rules="fieldRules"
+                        maxlength="100"
+                        v-bind:label="$t('subject')"
+                        required
+                        variant="outlined"
+                        density="compact"
+                      ></v-text-field>
+                    </template>
+                  </v-tooltip>
+                </v-col>
+              </v-row>
+              <v-row class="px-6 pt-0">
+                <v-col cols="12" md="12" lg="12" sm="12" class="pt-0">
+                  <v-card-title class="text-left" style="font-size: 17px">{{
+                    $t("body")
+                  }}</v-card-title>
+                  <v-tooltip :text="$t('body')" location="top">
+                    <template v-slot:activator="{ props }">
+                      <div v-bind="props">
+                        <quill-editor
+                          class="hide_quill_input"
+                          v-bind:id="
+                            quill_item == true
+                              ? 'quill_item'
+                              : 'quill_item_border'
+                          "
+                          v-model:value="fieldItem.template_body"
+                          @blur="onEditorBlur($event)"
+                          @focus="onEditorFocus($event)"
+                          @ready="onEditorReady($event)"
+                          @change="onEditorChange($event)"
+                        />
+                        <small
+                          v-if="quill_item"
+                          class="text-danger ml-5 required_item shake"
+                          >Field Required</small
+                        >
+                        <!-- <QuillEditor theme="snow" v-model:content="fieldItem.template_body"
                     contentType="html" name="template_body" v-bind:label="$t('body')" />-->
-                  </div>
-                </template>
-              </v-tooltip>
-            </v-col>
-          </v-row>
-          <v-row class="px-6 mb-2">
-            <v-col cols="12" md="12" lg="12" sm="12">
-              <v-card-title class="text-left" style="font-size: 17px">{{
-                $t("signature")
-              }}</v-card-title>
-              <v-tooltip :text="$t('signature')" location="top">
-                <template v-slot:activator="{ props }">
-                  <div v-bind="props">
-                    <quill-editor
-                      class="hide_quill_input"
-                      v-bind:id="
-                        quill_sign == true
-                          ? 'quill_item1'
-                          : 'quill_item_border1'
-                      "
-                      v-model:value="fieldItem.template_signature"
-                      v-bind:label="$t('body')"
-                      @change="onEditorChangeSignature($event)"
-                      @blur="onEditorBlurSign($event)"
-                    />
-                    <small
-                      v-if="quill_sign"
-                      class="text-danger ml-5 required_item shake"
-                      >Field Required</small
-                    >
-                    <!-- <QuillEditor theme="snow" v-model:content="fieldItem.template_signature"
+                      </div>
+                    </template>
+                  </v-tooltip>
+                </v-col>
+              </v-row>
+              <v-row class="px-6 mb-2">
+                <v-col cols="12" md="12" lg="12" sm="12">
+                  <v-card-title class="text-left" style="font-size: 17px">{{
+                    $t("signature")
+                  }}</v-card-title>
+                  <v-tooltip :text="$t('signature')" location="top">
+                    <template v-slot:activator="{ props }">
+                      <div v-bind="props">
+                        <quill-editor
+                          class="hide_quill_input"
+                          v-bind:id="
+                            quill_sign == true
+                              ? 'quill_item1'
+                              : 'quill_item_border1'
+                          "
+                          v-model:value="fieldItem.template_signature"
+                          v-bind:label="$t('body')"
+                          @change="onEditorChangeSignature($event)"
+                          @blur="onEditorBlurSign($event)"
+                        />
+                        <small
+                          v-if="quill_sign"
+                          class="text-danger ml-5 required_item shake"
+                          >Field Required</small
+                        >
+                        <!-- <QuillEditor theme="snow" v-model:content="fieldItem.template_signature"
                     contentType="html" name="template_body" v-bind:label="$t('body')" />-->
-                  </div>
-                </template>
-              </v-tooltip>
-            </v-col>
-          </v-row>
+                      </div>
+                    </template>
+                  </v-tooltip>
+                </v-col>
+              </v-row>
+            </v-window-item>
+            <!-- ENGLISH TAB STOPS -->
+            <!-- ARABIC TAB STARTS -->
+            <v-window-item :value="2">
+              <v-row class="px-6 mt-4">
+                <v-col cols="12" sm="12" md="12">
+                  <v-tooltip :text="$t('subject')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-text-field
+                        v-bind="props"
+                        v-model="fieldItem.template_subject_ar"
+                        :rules="fieldRules"
+                        maxlength="100"
+                        v-bind:label="$t('subject')"
+                        required
+                        variant="outlined"
+                        density="compact"
+                      ></v-text-field>
+                    </template>
+                  </v-tooltip>
+                </v-col>
+              </v-row>
+              <v-row class="px-6 pt-0">
+                <v-col cols="12" md="12" lg="12" sm="12" class="pt-0">
+                  <v-card-title class="text-left" style="font-size: 17px">{{
+                    $t("body")
+                  }}</v-card-title>
+                  <v-tooltip :text="$t('body')" location="top">
+                    <template v-slot:activator="{ props }">
+                      <div v-bind="props">
+                        <quill-editor
+                          class="hide_quill_input"
+                          v-bind:id="
+                            quill_item == true
+                              ? 'quill_item'
+                              : 'quill_item_border'
+                          "
+                          v-model:value="fieldItem.template_body_ar"
+                          @blur="onEditorBlurAR($event)"
+                          @focus="onEditorFocusAR($event)"
+                          @ready="onEditorReadyAR($event)"
+                          @change="onEditorChangeAR($event)"
+                        />
+                        <small
+                          v-if="quill_item"
+                          class="text-danger ml-5 required_item shake"
+                          >Field Required</small
+                        >
+                        <!-- <QuillEditor theme="snow" v-model:content="fieldItem.template_body"
+                    contentType="html" name="template_body" v-bind:label="$t('body')" />-->
+                      </div>
+                    </template>
+                  </v-tooltip>
+                </v-col>
+              </v-row>
+              <v-row class="px-6 mb-2">
+                <v-col cols="12" md="12" lg="12" sm="12">
+                  <v-card-title class="text-left" style="font-size: 17px">{{
+                    $t("signature")
+                  }}</v-card-title>
+                  <v-tooltip :text="$t('signature')" location="top">
+                    <template v-slot:activator="{ props }">
+                      <div v-bind="props">
+                        <quill-editor
+                          class="hide_quill_input"
+                          v-bind:id="
+                            quill_sign == true
+                              ? 'quill_item1'
+                              : 'quill_item_border1'
+                          "
+                          v-model:value="fieldItem.template_signature_ar"
+                          v-bind:label="$t('body')"
+                          @change="onEditorChangeSignatureAR($event)"
+                          @blur="onEditorBlurSignAR($event)"
+                        />
+                        <small
+                          v-if="quill_sign"
+                          class="text-danger ml-5 required_item shake"
+                          >Field Required</small
+                        >
+                        <!-- <QuillEditor theme="snow" v-model:content="fieldItem.template_signature"
+                    contentType="html" name="template_body" v-bind:label="$t('body')" />-->
+                      </div>
+                    </template>
+                  </v-tooltip>
+                </v-col>
+              </v-row>
+            </v-window-item>
+          </v-window>
+          <!--  ARABIC TAB ENDS-->
         </v-form>
       </div>
       <div class="d-block mr-4 mt-3 text-right">
@@ -195,7 +298,13 @@ export default {
     const onEditorFocus = (quill) => {
       console.log("editor focus!", quill);
     };
+    const onEditorFocusAR = (quill) => {
+      console.log("editor focus!", quill);
+    };
     const onEditorReady = (quill) => {
+      console.log("editor ready!", quill);
+    };
+    const onEditorReadyAR = (quill) => {
       console.log("editor ready!", quill);
     };
     // const onEditorChange = ({ quill, html, text }) => {
@@ -214,11 +323,12 @@ export default {
     //   state.disabled = true
     // }, 2000)
 
-    return { onEditorReady, onEditorFocus };
+    return { onEditorReady, onEditorFocus, onEditorFocusAR, onEditorReadyAR };
   },
   data: () => ({
     quill_item: false,
     quill_sign: false,
+    tabs: 1,
     google_icon: {
       icon_name: "edit_note",
       color: "google_icon_gradient",
@@ -252,8 +362,11 @@ export default {
       id: 0,
       template_name: "",
       template_subject: "",
+      template_subject_ar: "",
       template_body: "",
+      template_body_ar: "",
       template_signature: "",
+      template_signature_ar: "",
       can_override: "N",
       template_type_id: "",
     },
@@ -316,7 +429,21 @@ export default {
         this.quill_item = false;
       }
     },
+    onEditorChangeAR(event) {
+      if (event.text.length == 1) {
+        this.quill_item = true;
+      } else {
+        this.quill_item = false;
+      }
+    },
     onEditorChangeSignature(event) {
+      if (event.text.length == 1) {
+        this.quill_sign = true;
+      } else {
+        this.quill_sign = false;
+      }
+    },
+    onEditorChangeSignatureAR(event) {
       if (event.text.length == 1) {
         this.quill_sign = true;
       } else {
@@ -330,9 +457,21 @@ export default {
         this.quill_item = true;
       }
     },
+    onEditorBlurAR(event) {
+      console.log(event.options);
+      if (this.fieldItem.template_body_ar == "") {
+        this.quill_item = true;
+      }
+    },
     onEditorBlurSign(event) {
       console.log(event);
       if (this.fieldItem.template_signature == "") {
+        this.quill_sign = true;
+      }
+    },
+    onEditorBlurSignAR(event) {
+      console.log(event);
+      if (this.fieldItem.template_signature_ar == "") {
         this.quill_sign = true;
       }
     },
@@ -361,11 +500,19 @@ export default {
       if (this.fieldItem.template_body == "") {
         this.quill_item = true;
       }
+      if (this.fieldItem.template_signature_ar == "") {
+        this.quill_sign = true;
+      }
+      if (this.fieldItem.template_body_ar == "") {
+        this.quill_item = true;
+      }
 
       if (this.$refs.form.validate() && this.valid == true) {
         if (
           this.fieldItem.template_body == "" ||
-          this.fieldItem.template_signature == ""
+          this.fieldItem.template_signature == "" ||
+          this.fieldItem.template_body_ar == "" ||
+          this.fieldItem.template_signature_ar == ""
         ) {
           return;
         }

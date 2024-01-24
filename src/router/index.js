@@ -237,6 +237,20 @@ const routes = [
     component: () =>
       import("../components/Cruds/Notification/NotificationAmend.vue"),
   },
+  {
+    name: "career_amend",
+    path: "/:lang?/career_amend",
+    beforeEnter: guardMyroute,
+    component: () =>
+      import("../components/Cruds/Careers/CareerAmend.vue"),
+  },
+  {
+    name: "careers",
+    path: "/:lang?/careers",
+    beforeEnter: guardMyroute,
+    component: () =>
+      import("../components/Cruds/Careers/IndexPage.vue"),
+    },
   //Mall Timings
   {
     path: "/:lang?/mall-timings",
