@@ -285,6 +285,8 @@
   "create_ammend_mall_timing": "Create/Amend Mall Timing",
   "create_ammend_e_magazine": "Create/Amend E Magazine",
   "e_magazine": "E-Magazine",
+  "change_language": "Change Language",
+  "switch_mode":"Switch Mode",
 
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic":"عربي",

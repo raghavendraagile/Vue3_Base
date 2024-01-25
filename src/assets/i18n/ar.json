@@ -282,5 +282,7 @@
   "to_day": "اليوم",
   "from_time": "من التوقيت",
   "to_time": "إلى التوقيت",
-  "create_ammend_mall_timing": "إنشاء/تعديل توقيت المول"
+  "create_ammend_mall_timing": "إنشاء/تعديل توقيت المول",
+  "change_language":"تغيير اللغة",
+  "switch_mode":"تغيير النظام"
 }

@@ -12,6 +12,7 @@ import { apptheme } from "./store/apptheme.js";
       ></FlashMessage>
       <v-layout>
         <NavigationDrawer
+          :key="componentKey"
           v-if="layout === 'default-layout'"
           :sel_lang="sel_lang"
         ></NavigationDrawer>
@@ -199,25 +200,31 @@ import { apptheme } from "./store/apptheme.js";
               </v-card>
             </v-menu>
           </div>
+          <!-- <v-tooltip :text="$t('change_language')" location="bottom">
+            <template v-slot:activator="{ props }"> -->
           <div class="d-flex switch-lang bounce-all">
-            <v-icon style="font-size: 20px; margin-top: 2px"
-              >mdi mdi-translate</v-icon
-            >
             <div
               v-if="sel_lang == 'en'"
               class="mx-2"
               @click="setUserLang('ar')"
             >
+              <v-icon style="font-size: 20px; margin-top: 2px"
+                >mdi mdi-translate</v-icon
+              >
               {{ $t("arabic") }}
             </div>
             <div v-else class="mx-2" @click="setUserLang('en')">
+              <v-icon style="font-size: 20px; margin-top: 2px"
+                >mdi mdi-translate</v-icon
+              >
               {{ $t("english") }}
             </div>
           </div>
-          <!-- </v-tooltip> -->
-          <!-- <v-btn icon>
-            <v-icon>mdi-magnify</v-icon>
-          </v-btn> -->
+          <!-- </template>
+          </v-tooltip> -->
+
+          <!-- <v-tooltip :text="$t('switch_mode')" location="bottom">
+            <template v-slot:activator="{ props }"> -->
           <v-btn
             icon
             @click="
@@ -234,6 +241,8 @@ import { apptheme } from "./store/apptheme.js";
               "
             ></v-icon>
           </v-btn>
+          <!-- </template>
+          </v-tooltip> -->
           <ProfileView @getuserdetails="fetchUserdetails"></ProfileView>
         </v-app-bar>
 
@@ -277,6 +286,7 @@ export default {
   data() {
     return {
       notificationmenu: false,
+      componentKey: 0,
       app_image_url: "",
       application_name: "",
       app_name: "",
@@ -311,7 +321,6 @@ export default {
 
   mounted() {
     this.selectedLang();
-    
   },
   created() {
     this.emitter.on("app_image_update", () => {
@@ -351,23 +360,29 @@ export default {
   },
 
   methods: {
-    
     setUserLang(lang) {
       localStorage.setItem("pref_lang", lang);
       this.$i18n.locale = lang;
+
       let newRoute = {
-        name: this.$route.name,
-        params: { ...this.$route.params, lang: lang },
+        ...this.$route,
+        params: {
+          ...this.$route.params,
+          lang: lang,
+        },
       };
-      this.$router.push(newRoute);
+
+      this.$router.push(newRoute).catch((err) => {
+        if (err.name !== "NavigationDuplicated") {
+          throw err;
+        }
+      });
+
       this.selectedLang();
+      this.componentKey += 1; // Assuming componentKey is defined in your data
     },
     selectedLang() {
-      if (localStorage.getItem("pref_lang")) {
-        this.sel_lang = localStorage.getItem("pref_lang");
-      } else {
-        this.sel_lang = "en";
-      }
+      this.sel_lang = localStorage.getItem("pref_lang") || "en";
     },
     fetchUserdetails(getuserdetails) {
       this.user = getuserdetails;
@@ -543,3 +558,4 @@ nav a.router-link-exact-active {
   display: none; /* for Chrome, Safari, and Opera */
 }
 </style>
+
