@@ -7,10 +7,6 @@ import { apptheme } from "./store/apptheme.js";
   <content-loader v-if="c_loader"></content-loader>
   <div id="app" v-bind:class="apptheme.theme_type">
     <v-card>
-      <FlashMessage
-        :position="'right bottom'"
-        style="position: fixed; z-index: 15000"
-      ></FlashMessage>
       <v-layout>
         <NavigationDrawer
           :key="componentKey"
@@ -60,7 +56,7 @@ import { apptheme } from "./store/apptheme.js";
           <!-- <template v-slot:activator="{ props }">
             
             </template> -->
-          <div class="text-center">
+          <!-- <div class="text-center">
             <v-menu
               v-model="notificationmenu"
               :close-on-content-click="false"
@@ -107,7 +103,6 @@ import { apptheme } from "./store/apptheme.js";
                       <v-icon
                         @click="notificationmenu = false"
                         v-bind="props"
-                        v-on="on"
                         class="mr-4"
                         >mdi-close</v-icon
                       >
@@ -200,7 +195,7 @@ import { apptheme } from "./store/apptheme.js";
                 </div>
               </v-card>
             </v-menu>
-          </div>
+          </div> -->
           <!-- <v-tooltip :text="$t('change_language')" location="bottom">
             <template v-slot:activator="{ props }"> -->
           <div class="d-flex switch-lang bounce-all">
@@ -247,10 +242,8 @@ import { apptheme } from "./store/apptheme.js";
           <ProfileView @getuserdetails="fetchUserdetails"></ProfileView>
         </v-app-bar>
 
-        <v-main style="min-height: 100vh; background-color: #fffffffc">
-          <!-- <transition name="scale" mode="out-in"> -->
+        <v-main style="min-height: 100vh;">
           <router-view></router-view>
-          <!-- </transition> -->
         </v-main>
       </v-layout>
     </v-card>

@@ -88,9 +88,9 @@
                       >{{ error_message }}</v-col
                     >
                     <v-col cols="12" md="12" class="pt-0">
-                      <v-tooltip bottom>
-                        <template v-slot:activator="{ on }">
-                          <div v-on="on" class="d-inline-block w-100">
+                      <v-tooltip :text="this.$t('sign_in')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <div v-bind="props" class="d-inline-block w-100">
                             <v-btn
                               variant="flat"
                               color="#fff;"
@@ -100,15 +100,9 @@
                               @keyup.enter="login"
                               :disabled="!valid || btnloading"
                               >{{ $t("sign_in") }}
-                              <b-spinner
-                                :disabled="btnloading"
-                                small
-                                v-if="btnloading"
-                              ></b-spinner>
                             </v-btn>
                           </div>
                         </template>
-                        <span>{{ $t("sign_in") }}</span>
                       </v-tooltip>
                     </v-col>
                     <a class="a-underline">
@@ -275,11 +269,7 @@ export default {
           }
         })
         .catch((err) => {
-          this.flashMessage.error({
-            message: this.$t("something_went_wrong"),
-            time: 4000,
-            blockClass: "custom-block-class",
-          });
+          
           console.log("this error" + err);
         });
     },
@@ -292,8 +282,8 @@ export default {
           const lang = localStorage.getItem("pref_lang");
           this.$i18n.locale = lang;
           let newRoute = {
-            name: 'dashboard',
-            params: { ...this.$route.params, lang: lang },
+            name: "dashboard",
+            params: { lang: lang },
           };
           this.$router.push(newRoute);
           this.loader = false;
@@ -303,6 +293,9 @@ export default {
           this.loader = false;
           this.show_error = true;
           console.log(err.response.data.message);
+        })
+        .finally(() => {
+          this.btnloading = false;
         });
     },
   },
