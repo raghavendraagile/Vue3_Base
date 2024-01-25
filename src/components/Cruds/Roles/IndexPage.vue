@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div flat color="white" class="row py-5 pl-5 align-items-center position-relative">
+    <div
+      flat
+      color="white"
+      class="row py-5 pl-5 align-items-center position-relative"
+    >
       <page-title
         class="col-md-3"
         :heading="$t('role')"
@@ -47,6 +51,7 @@
       :footer-props="{
         'items-per-page-text': $t('rows_per_page'),
       }"
+      v-bind:style="$route.params.lang == 'ar' ? 'direction:rtl' : ''"
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
@@ -143,9 +148,7 @@ export default {
     },
   },
 
-  created() {
-    
-  },
+  created() {},
   mounted() {
     this.initialize();
   },

@@ -49,6 +49,7 @@
       :items="systemparameter"
       :search="search"
       :loading="initval"
+      v-bind:style="$route.params.lang == 'ar' ? 'direction:rtl' : ''"
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">

@@ -49,6 +49,7 @@
       :footer-props="{
         'items-per-page-text': $t('rows_per_page'),
       }"
+      v-bind:style="$route.params.lang == 'ar' ? 'direction:rtl' : ''"
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
