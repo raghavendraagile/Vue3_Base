@@ -7,6 +7,7 @@
         :heading="$t('careers')"
         :google_icon="google_icon"
       ></page-title>
+      
       <div class="col-md-4">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
@@ -37,8 +38,20 @@
           </template>
         </v-tooltip>
       </div>
+      
     </div>
-    <v-data-table
+  <v-tabs v-model="tabs" color="blue">
+        <v-tab :value="1">
+          <span>{{$t('english')}}</span>
+        </v-tab>
+        <v-tab :value="2">
+          <span>{{$t('arabic')}}</span>
+        </v-tab>
+      </v-tabs>
+      <v-window v-model="tabs">
+        <!-- ENGLISH TAB STARTS -->
+        <v-window-item :value="1">
+            <v-data-table
       :headers="headers"
       :items="careers_data"
       :search="search"
@@ -140,6 +153,114 @@
         </tr>
       </template>
     </v-data-table>
+        </v-window-item>
+        <!-- ENGLISH TAB STOPS -->
+        <!-- ARABIC TAB STARTS -->
+        <v-window-item :value="2">
+            <v-data-table
+      :headers="headers"
+      :items="careers_data"
+      :search="search"
+      :loading="initval"
+      v-bind:no-data-text="$t('no_data_available')"
+      :footer-props="{
+        'items-per-page-text': $t('rows_per_page'),
+      }"
+    >
+      <template v-slot:item="props">
+        <tr class="vdatatable_tbody">
+          <td>
+            <span v-if="props.item.selectable.title_ar">
+              {{ props.item.selectable.title_ar }}</span
+            >
+            <span v-else>{{ $t("not_appllicable") }}</span>
+          </td>
+          <td>
+            <span v-if="props.item.selectable.description_ar">
+              {{ props.item.selectable.description_ar }}</span
+            >
+            <span v-else>{{ $t("not_appllicable") }}</span>
+          </td>
+          <td>
+            <span v-if="props.item.selectable.vacancy">
+              {{ props.item.selectable.vacancy }}</span
+            >
+            <span v-else>{{ $t("not_appllicable") }}</span>
+          </td>
+          <td>
+            <span v-if="props.item.selectable.meta_title_ar">
+              {{ props.item.selectable.meta_title_ar }}</span
+            >
+            <span v-else>{{ $t("not_appllicable") }}</span>
+          </td>
+          <td>
+            <span v-if="props.item.selectable.meta_description_ar">
+              {{ props.item.selectable.meta_description_ar }}</span
+            >
+            <span v-else>{{ $t("not_appllicable") }}</span>
+          </td>
+          <td>
+            <v-btn
+              class="hover_shine btn mr-2"
+              :disabled="isDisabled"
+              size="small"
+              @click="changeStatus(props.item.selectable.id)"
+              v-bind:color="[
+                props.item.selectable.status == 1 ? 'success' : 'warning',
+              ]"
+            >
+              <span
+                v-if="props.item.selectable.status == 1"
+                class="spanactivesize"
+                >{{ $t("active") }}</span
+              >
+              <span
+                v-if="props.item.selectable.status == 0"
+                class="spanactivesize"
+                >{{ $t("inactive") }}</span
+              >
+            </v-btn>
+          </td>
+          <td>
+            <router-link
+              :to="{
+                name: 'career_amend',
+                query: { slug: props.item.selectable.slug },
+              }"
+            >
+              <v-tooltip :text="this.$t('edit')" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                    plain
+                    v-bind="props"
+                    dense
+                    class="mr-2 edit_btn icon_size"
+                    >mdi-pencil-outline</v-icon
+                  >
+                </template>
+              </v-tooltip>
+            </router-link>
+            <span @click="deleteItem(props.item.selectable.id)">
+                  <v-tooltip :text="this.$t('delete')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-icon
+                        v-bind="props"
+                        class="delete_btn icon_size"
+                        v-on="on"
+                        small
+                        type="button"
+                        >mdi-trash-can-outline</v-icon
+                      >
+                    </template>
+                    <span>{{ $t("delete") }}</span>
+                  </v-tooltip>
+                </span>
+          </td>
+        </tr>
+      </template>
+    </v-data-table>
+        </v-window-item>
+      </v-window>
     <ConfirmDialog
       :show="showStatusDialog"
       :cancel="cancelStatus"
@@ -173,6 +294,7 @@ export default {
     isDisabled: false,
     showConfirmDialog: false,
     delete_id: "",
+    tabs: 1,
     headers: [
       {
         title: "Title",
