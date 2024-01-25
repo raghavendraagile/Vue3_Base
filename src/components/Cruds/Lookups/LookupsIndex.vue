@@ -57,6 +57,8 @@
           :items="lookup"
           :search="search"
           :loading="initval"
+          :no-data-text="$t('no_data_available')"
+          :items-per-page-text="$t('rows_per_page')"
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
@@ -174,6 +176,9 @@
           :items="lookup"
           :search="search"
           :loading="initval"
+          class="rtl-direction"
+          :no-data-text="$t('no_data_available')"
+          :items-per-page-text="$t('rows_per_page')"
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
@@ -362,7 +367,7 @@ export default {
           title: this.$t("longname"),
           align: "left",
           sortable: false,
-          key: "longname",
+          key: this.tabs == 1 ? "longname" : "longname_ar",
         },
         {
           title: this.$t("status"),
