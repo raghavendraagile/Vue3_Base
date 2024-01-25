@@ -30,7 +30,7 @@ import { apptheme } from "./store/apptheme.js";
               <div class="font-login text-center">
                 <div v-if="app_image_url">
                   <span>
-                    <img v-bind:src="app_image_url" style="width: 20vh" />
+                    <img v-bind:src="app_image_url" style="width: 25%;" />
                   </span>
                 </div>
                 <div v-else-if="app_image_url == ''">
