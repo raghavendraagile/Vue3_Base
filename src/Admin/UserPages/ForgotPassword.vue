@@ -60,6 +60,15 @@
                         </template>
                       </v-tooltip>
                     </v-col>
+                    <v-col
+                      cols="12"
+                      md="12"
+                      class="error_message pt-0"
+                      v-if="error_message && show_error"
+                      ><v-icon style="font-size: 18px" class="mr-1"
+                        >mdi mdi-close-circle-outline</v-icon
+                      >{{ error_message }}</v-col
+                    >
                   </v-row>
                   <div class="divider" />
                   <div class="d-flex align-items-center mt-2">
@@ -123,6 +132,8 @@ export default {
     app_image_url: "",
     application_name: "Gulf Mall",
     app_name: "",
+    error_message: "",
+    show_error: false,
   }),
   computed: {
     fieldRules() {
@@ -198,6 +209,8 @@ export default {
           .catch((err) => {
             this.btnloading = false;
             this.loader = false;
+            this.error_message = err.response.data.message;
+            this.show_error = true;
             console.log(err);
           });
       }
@@ -229,5 +242,9 @@ export default {
 .font-sign-in-msg {
   font-size: 1.175rem;
   font-weight: normal;
+}
+.error_message {
+  color: red;
+  font-style: italic;
 }
 </style>
