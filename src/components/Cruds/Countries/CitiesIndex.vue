@@ -28,6 +28,7 @@
           </template>
         </v-tooltip>
       </div>
+
       <div class="add_new_button">
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
@@ -83,7 +84,7 @@
       <v-window-item :value="1">
         <v-data-table
           :headers="headers"
-          :items="cities"
+          :items="cities_en"
           :search="search"
           :loading="initval"
         >
@@ -111,7 +112,7 @@
                     </template>
                   </v-tooltip>
                 </router-link>
-                <span @click="deleteItem(props.item.selectable.id)">
+                <span @click="deleteItem(props.item.selectable.header_id)">
                   <v-tooltip :text="this.$t('delete')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-icon
@@ -135,7 +136,7 @@
       <v-window-item :value="2">
         <v-data-table
           :headers="headers"
-          :items="cities"
+          :items="cities_ar"
           :search="search"
           :loading="initval"
         >
@@ -143,8 +144,8 @@
             <tr class="vdatatable_tbody">
               <td>
                 {{
-                  props.item.selectable.name_ar
-                    ? props.item.selectable.name_ar
+                  props.item.selectable.name
+                    ? props.item.selectable.name
                     : $t("not_appllicable")
                 }}
               </td>
@@ -169,7 +170,7 @@
                     </template>
                   </v-tooltip>
                 </router-link>
-                <span @click="deleteItem(props.item.selectable.id)">
+                <span @click="deleteItem(props.item.selectable.header_id)">
                   <v-tooltip :text="this.$t('delete')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-icon
@@ -211,7 +212,8 @@ export default {
   },
   data: () => ({
     cities: [],
-    selected_country_details: [],
+    s_country:"",
+    s_state:"",
     showdeleteDialog: false,
     delete_id: null,
     status_id: null,
@@ -230,6 +232,8 @@ export default {
     message: "",
     countryname: "",
     statename: "",
+    cities_en:[],
+    cities_ar:[],
     json_fields: [
       {
         label: "Name",
@@ -297,9 +301,8 @@ export default {
         .then((res) => {
           this.initval = false;
           // this.$toast.success(this.array_data);
-          this.cities = res.data.cities;
-          this.selected_country_details = res.data.countries;
-          this.selected_state_details = res.data.states;
+          this.cities_en = res.data.cities_en;
+          this.cities_ar = res.data.cities_ar;
         })
         .catch((err) => {
           this.$toast.error(this.array_data);
@@ -325,7 +328,6 @@ export default {
           if (res.data.status == "S") {
             this.$toast.success(this.array_data);
             this.fetchcities();
-            localStorage.removeItem("appimage");
           } else if (res.data.status == "E") {
             this.$toast.error(this.array_data);
           } else {

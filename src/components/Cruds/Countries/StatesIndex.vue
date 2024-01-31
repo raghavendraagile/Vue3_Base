@@ -130,7 +130,7 @@
                     <span>{{ $t("city") }}</span>
                   </v-tooltip>
                 </router-link>
-                <span @click="deleteItem(props.item.selectable.id)">
+                <span @click="deleteItem(props.item.selectable.header_id)">
                   <v-tooltip :text="this.$t('delete')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-icon

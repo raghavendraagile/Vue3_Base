@@ -29,7 +29,7 @@
                       <v-text-field
                         v-on="on"
                         readonly="isReadOnly"
-                        v-model="country.name"
+                        v-model="country[0].name"
                         v-bind:label="$t('country')"
                         v-bind="props"
                         variant="outlined"
@@ -43,7 +43,7 @@
                     <template v-slot:activator="{ props }">
                       <v-text-field
                         v-on="on"
-                        v-model="state.name"
+                        v-model="state[0].name"
                         readonly="isReadOnly"
                         v-bind:label="$t('state')"
                         v-bind="props"
@@ -60,7 +60,7 @@
                     <template v-slot:activator="{ props }">
                       <v-text-field
                         v-on="on"
-                        v-model="city.name"
+                        v-model="city[0].name"
                         :rules="fieldRules"
                         v-bind:label="$t('city')"
                         required
@@ -86,7 +86,7 @@
                       <v-text-field
                         v-on="on"
                         readonly="isReadOnly"
-                        v-model="country.name_ar"
+                        v-model="country[1].name"
                         v-bind:label="$t('country')"
                         v-bind="props"
                         variant="outlined"
@@ -100,7 +100,7 @@
                     <template v-slot:activator="{ props }">
                       <v-text-field
                         v-on="on"
-                        v-model="state.name_ar"
+                        v-model="state[1].name"
                         readonly="isReadOnly"
                         v-bind:label="$t('state')"
                         v-bind="props"
@@ -117,7 +117,7 @@
                     <template v-slot:activator="{ props }">
                       <v-text-field
                         v-on="on"
-                        v-model="city.name_ar"
+                        v-model="city[1].name"
                         :rules="fieldRules"
                         v-bind:label="$t('city')"
                         required
@@ -142,7 +142,7 @@
               <v-btn
                 v-bind="props"
                 size="small"
-                @click="$router.go(-1)"
+                @click="cancel()"
                 :disabled="isBtnLoading"
                 class="ma-1"
                 color="cancel"
@@ -196,15 +196,45 @@ export default {
     isDisabled: false,
     checkbox_value: false,
     tabs: 1,
-    city: {
-      id: 0,
-      name: "",
-      name_ar: "",
-      country_id: 0,
-      state_id: 0,
-    },
-    country: "",
-    state: "",
+    country_slug: "",
+    state_slug: "",
+    city: [
+      {
+        id: 0,
+        name: "",
+        country_id: null,
+        state_id: null,
+        lang: "en",
+      },
+      {
+        id: 0,
+        name: "",
+        country_id: null,
+        state_id: null,
+        lang: "ar",
+      },
+    ],
+
+    country: [
+      {
+        id: 0,
+        name: "",
+      },
+      {
+        id: 0,
+        name: "",
+      },
+    ],
+    state: [
+      {
+        id: 0,
+        name: "",
+      },
+      {
+        id: 0,
+        name: "",
+      },
+    ],
     noimagepreview: "",
     items: [],
   }),
@@ -225,6 +255,7 @@ export default {
       immediate: true,
       handler() {
         if (this.$route.query.countryslug) {
+          this.country_slug = this.$route.query.countryslug;
           this.loader = true;
           this.$axios
             .get(
@@ -234,7 +265,9 @@ export default {
             )
             .then((res) => {
               this.country = res.data.countries;
-              this.city.country_id = res.data.countries.id;
+              for (let i = 0; i < 2; i++) {
+                this.city[i].country_id = this.country[0].id;
+              }
               this.loader = false;
             });
         }
@@ -244,6 +277,7 @@ export default {
       immediate: true,
       handler() {
         if (this.$route.query.statesslug) {
+          this.state_slug = this.$route.query.statesslug;
           this.loader = true;
           this.$axios
             .get(
@@ -252,8 +286,10 @@ export default {
                 this.$route.query.statesslug
             )
             .then((res) => {
-              this.state = res.data.states;
-              this.city.state_id = res.data.states.id;
+              this.state = res.data.state;
+              for (let i = 0; i < 2; i++) {
+                this.city[i].state_id = this.state[0].id;
+              }
               this.loader = false;
             });
         }
@@ -271,12 +307,11 @@ export default {
                 this.$route.query.slug
             )
             .then((res) => {
-              this.city = res.data.cities;
-
-              this.city.country_id = res.data.cities.country.id;
-              this.city.state_id = res.data.cities.state.id;
-              this.country = res.data.cities.country;
-              this.state = res.data.cities.state;
+              this.city = res.data.city;
+              this.state = res.data.state;
+              this.country = res.data.country;
+              this.country_slug = this.country[0].slug;
+              this.state_slug = this.state[0].slug;
               this.loader = false;
             });
         }
@@ -309,8 +344,8 @@ export default {
               this.$router.push({
                 name: "cities",
                 query: {
-                  countryslug: this.country.slug,
-                  stateslug: this.state.slug,
+                  countryslug: this.country_slug,
+                  stateslug: this.state_slug,
                 },
               });
             } else if (res.data.status == "E") {
@@ -329,6 +364,15 @@ export default {
     },
     clear() {
       this.$refs.form.reset();
+    },
+    cancel() {
+      this.$router.push({
+        name: "cities",
+        query: {
+          countryslug: this.country_slug,
+          stateslug: this.state_slug,
+        },
+      });
     },
   },
 };

@@ -219,7 +219,7 @@ export default {
             .then((res) => {
               this.country = res.data.countries;
               for (let i = 0; i < 2; i++) {
-                this.state[i].country_id = res.data.countries[i].header_id;
+                this.state[i].country_id = res.data.countries[0].header_id;
               }
               this.country_slug = this.$route.query.countryslug;
 
