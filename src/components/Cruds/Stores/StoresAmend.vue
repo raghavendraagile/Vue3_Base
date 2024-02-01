@@ -408,13 +408,13 @@
               <v-layout v-if="stores[1].stor_type == 'stor_admin'">
                 <v-row class="px-6 mt-2">
                   <v-col xs="4" md="4" lg="4">
-                    <v-tooltip :text="this.$t('category')" location="bottom">
+                    <v-tooltip :text="this.$t('category_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-select
                           v-bind="props"
                           v-model="stores[1].categories"
                           :rules="fieldRules"
-                          v-bind:label="$t('category')"
+                          v-bind:label="$t('category_ar')"
                           variant="outlined"
                           density="compact"
                           class="required_field"
@@ -433,14 +433,14 @@
               <v-layout>
                 <v-row class="px-6 mt-2">
                   <v-col cols="4" sm="4" md="4">
-                    <v-tooltip :text="$t('name')" location="bottom">
+                    <v-tooltip :text="$t('name_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
                           v-model="stores[1].name"
                           :rules="fieldRules"
                           maxlength="100"
-                          v-bind:label="$t('name')"
+                          v-bind:label="$t('name_ar')"
                           required
                           variant="outlined"
                           density="compact"
@@ -449,14 +449,14 @@
                     </v-tooltip>
                   </v-col>
                   <v-col cols="4" sm="4" md="4">
-                    <v-tooltip :text="$t('email')" location="bottom">
+                    <v-tooltip :text="$t('email_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
                           v-model="stores[1].email"
                           :rules="[...fieldRules, ...emailRules]"
                           maxlength="100"
-                          v-bind:label="$t('email')"
+                          v-bind:label="$t('email_ar')"
                           required
                           variant="outlined"
                           density="compact"
@@ -465,14 +465,14 @@
                     </v-tooltip>
                   </v-col>
                   <v-col cols="4" sm="4" md="4">
-                    <v-tooltip :text="$t('phone')" location="bottom">
+                    <v-tooltip :text="$t('phone_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
                           v-model="stores[1].phone"
                           :rules="phoneRules"
                           maxlength="100"
-                          v-bind:label="$t('phone')"
+                          v-bind:label="$t('phone_ar')"
                           required
                           variant="outlined"
                           density="compact"
@@ -485,10 +485,10 @@
               <v-layout>
                 <v-row class="px-6 mt-2">
                   <v-col cols="12" md="3" sm="3" lg="3">
-                    <v-tooltip :text="$t('country')" location="bottom">
+                    <v-tooltip :text="$t('country_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
-                          v-bind:label="$t('country')"
+                          v-bind:label="$t('country_ar')"
                           v-bind="props"
                           variant="outlined"
                           density="compact"
@@ -503,10 +503,10 @@
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" md="3" sm="3" lg="3">
-                    <v-tooltip :text="$t('state')" location="bottom">
+                    <v-tooltip :text="$t('state_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
-                          v-bind:label="$t('state')"
+                          v-bind:label="$t('state_ar')"
                           v-bind="props"
                           variant="outlined"
                           density="compact"
@@ -521,10 +521,10 @@
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" md="3" sm="3" lg="3">
-                    <v-tooltip :text="$t('city')" location="bottom">
+                    <v-tooltip :text="$t('city_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
-                          v-bind:label="$t('city')"
+                          v-bind:label="$t('city_ar')"
                           v-bind="props"
                           variant="outlined"
                           density="compact"
@@ -539,10 +539,10 @@
                   </v-col>
 
                   <v-col cols="12" md="3" lg="3" sm="3" px-2>
-                    <v-tooltip :text="$t('postcode')" location="bottom">
+                    <v-tooltip :text="$t('postcode_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
-                          v-bind:label="$t('postcode')"
+                          v-bind:label="$t('postcode_ar')"
                           :rules="postcodeRules"
                           v-bind="props"
                           variant="outlined"
@@ -560,7 +560,7 @@
               <v-layout>
                 <v-row class="px-6 mt-2">
                   <v-col cols="12" md="4" sm="4" lg="4">
-                    <v-tooltip :text="$t('address')" location="bottom">
+                    <v-tooltip :text="$t('address_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-textarea
                           rows="3"
@@ -570,14 +570,14 @@
                           maxlength="250"
                           counter="true"
                           v-model="stores[1].address"
-                          v-bind:label="$t('address')"
+                          v-bind:label="$t('address_ar')"
                           required
                         ></v-textarea>
                       </template>
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" md="8" sm="8" lg="8">
-                    <v-tooltip :text="$t('description')" location="bottom">
+                    <v-tooltip :text="$t('description_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-textarea
                           rows="3"
@@ -588,7 +588,7 @@
                           :rules="descriptionRules"
                           counter="true"
                           v-model="stores[1].description"
-                          v-bind:label="$t('description')"
+                          v-bind:label="$t('description_ar')"
                           required
                         ></v-textarea>
                       </template>
@@ -599,14 +599,14 @@
               <v-layout>
                 <v-row class="px-6 mt-2">
                   <v-col cols="4" sm="4" md="4">
-                    <v-tooltip :text="$t('meta_title')" location="bottom">
+                    <v-tooltip :text="$t('meta_title_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
                           v-model="stores[1].meta_title"
                           :rules="fieldRules"
                           maxlength="100"
-                          v-bind:label="$t('meta_title')"
+                          v-bind:label="$t('meta_title_ar')"
                           required
                           variant="outlined"
                           density="compact"
@@ -615,7 +615,7 @@
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" md="8" sm="8" lg="8">
-                    <v-tooltip :text="$t('meta_description')" location="bottom">
+                    <v-tooltip :text="$t('meta_description_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-textarea
                           rows="3"
@@ -626,7 +626,7 @@
                           maxlength="250"
                           counter="true"
                           v-model="stores[1].meta_description"
-                          v-bind:label="$t('meta_description')"
+                          v-bind:label="$t('meta_description_ar')"
                           required
                         ></v-textarea>
                       </template>
@@ -638,7 +638,7 @@
                 <v-row class="px-6 mt-2">
                   <v-col cols="3" sm="3" md="3">
                     <div>
-                      <span class="mb-5">{{ $t("logo") }}</span>
+                      <span class="mb-5">{{ $t("logo_ar") }}</span>
                       <div class="image-container">
                         <v-hover v-slot="{ isHovering, props }">
                           <div style="position: relative" v-bind="props">
@@ -674,7 +674,7 @@
                         <span
                           v-if="stores[1].logo"
                           class="download_btn_color"
-                          >{{ $t("download") }}</span
+                          >{{ $t("download_ar") }}</span
                         >
                       </a>
                     </div>
@@ -689,7 +689,7 @@
                   </v-col>
                   <v-col cols="3" sm="3" md="3">
                     <div>
-                      <span class="mb-5">{{ $t("background_image") }}</span>
+                      <span class="mb-5">{{ $t("background_image_ar") }}</span>
                       <div class="image-container">
                         <v-hover v-slot="{ isHovering, props }">
                           <div style="position: relative" v-bind="props">
@@ -725,7 +725,7 @@
                         <span
                           v-if="stores[1].background_image"
                           class="download_btn_color"
-                          >{{ $t("download") }}</span
+                          >{{ $t("download_ar") }}</span
                         >
                       </a>
                     </div>

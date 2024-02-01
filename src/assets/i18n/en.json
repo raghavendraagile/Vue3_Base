@@ -323,5 +323,17 @@
   "meta_title_ar": "عنوان الفوقية",
   "Careers": "وظائف",
   "mall_admin_ar": "مشرف مول",
-  "stor_admin_ar": "المشرف العظيم"
+  "stor_admin_ar": "المشرف العظيم",
+  "name_ar": "اسم",
+  "email_ar": "بريد إلكتروني",
+  "phone_ar": "هاتف",
+  "country_ar": "دولة",
+  "state_ar": "ولاية",
+  "city_ar": "مدينة",
+  "postcode_ar": "شفرة البريد",
+  "address_ar": "عنوان",
+  "category_ar": "فئة",
+  "download_ar": "تحميل",
+  "logo_ar": "شعار",
+  "background_image_ar": "الصورة الخلفية"
 }
