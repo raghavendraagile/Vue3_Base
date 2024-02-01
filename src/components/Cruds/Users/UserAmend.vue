@@ -180,6 +180,7 @@
                         density="compact"
                         index="id"
                         item-key="name"
+                        item-value="id"
                         item-title="name"
                         v-model="profile_details.country"
                         @update:model-value="
@@ -201,6 +202,7 @@
                         density="compact"
                         index="id"
                         item-key="name"
+                        item-value="id"
                         item-title="name"
                         v-model="profile_details.state"
                         @update:model-value="
@@ -221,6 +223,7 @@
                         density="compact"
                         index="id"
                         item-key="name"
+                        item-value="id"
                         item-title="name"
                         v-model="profile_details.city"
                         :items="city_array"
@@ -541,17 +544,18 @@ export default {
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_countries")
         .then((response) => {
           console.log(response);
-          this.country_array = response.data.countries_ar;
+          this.country_array = response.data.countries_en;
           this.initval = false;
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    fetchStates(name) {
+    fetchStates(country_id) {
+      alert(country_id);
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_states_name/" + name)
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_states_name/" + country_id)
         .then((response) => {
           this.state_array = response.data.states_en;
           this.initval = false;
@@ -561,10 +565,10 @@ export default {
           console.log(err);
         });
     },
-    fetch_cities(name) {
+    fetch_cities(city_id) {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_cities_name/" + name)
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_cities_name/" + city_id)
         .then((response) => {
           console.log(response);
           this.city_array = response.data.cities_en;

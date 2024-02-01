@@ -133,6 +133,7 @@
                           density="compact"
                           index="id"
                           item-key="name"
+                          item-value="id"
                           item-title="name"
                           v-model="stores[0].country"
                           @update:model-value="fetchStates(stores[0].country)"
@@ -152,6 +153,7 @@
                           index="id"
                           item-key="name"
                           item-title="name"
+                          item-value="id"
                           v-model="stores[0].state"
                           @update:model-value="fetch_cities(stores[0].state)"
                           :items="state_array"
@@ -169,6 +171,7 @@
                           density="compact"
                           index="id"
                           item-key="name"
+                          item-value="id"
                           item-title="name"
                           v-model="stores[0].city"
                           :items="city_array"
@@ -188,7 +191,7 @@
                           density="compact"
                           maxlength="12"
                           @keypress="isNumber($event)"
-                          v-model="stores[0].postcode"
+                          v-model="stores[0].post_code"
                           required
                         ></v-text-field>
                       </template>
@@ -207,6 +210,7 @@
                           variant="outlined"
                           density="compact"
                           maxlength="250"
+                          :rules="fieldRules"
                           counter="true"
                           v-model="stores[0].address"
                           v-bind:label="$t('address')"
@@ -275,6 +279,22 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
+                  <v-col cols="6" sm="6" md="4">
+                    <v-tooltip :text="$t('website')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          v-model="stores[0].website"
+                          :rules="fieldRules"
+                          maxlength="100"
+                          v-bind:label="$t('website')"
+                          required
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
                   <v-col cols="3" sm="3" md="3">
                     <div>
                       <span class="mb-5">{{ $t("logo") }}</span>
@@ -285,8 +305,8 @@
                               v-bind:style="
                                 isHovering == true ? 'filter: blur(1px);' : ''
                               "
-                              v-if="stores[0].logo != null"
-                              :src="envImagePath + stores[0].logo"
+                              v-if="stores[0].icon != null"
+                              :src="envImagePath + stores[0].icon"
                               width="100"
                               height="65
                           "
@@ -308,10 +328,10 @@
                       </div>
                       <a
                         class="text-center pointer"
-                        @click="downloadImage(stores[0].logo)"
+                        @click="downloadImage(stores[0].icon)"
                       >
                         <span
-                          v-if="stores[0].logo"
+                          v-if="stores[0].icon"
                           class="download_btn_color"
                           >{{ $t("download") }}</span
                         >
@@ -326,7 +346,7 @@
                       :upload_profile="uploadfile"
                     />
                   </v-col>
-                  <v-col cols="3" sm="3" md="3">
+                  <!-- <v-col cols="3" sm="3" md="3">
                     <div>
                       <span class="mb-5">{{ $t("background_image") }}</span>
                       <div class="image-container">
@@ -352,7 +372,7 @@
                               width="100"
                             />
                             <div v-show="isHovering" class="camera-icon">
-                              <v-icon @click="uploadFile">mdi-camera</v-icon>
+                              <v-icon @click="uploadBIFile">mdi-camera</v-icon>
                             </div>
                           </div>
                         </v-hover>
@@ -374,9 +394,9 @@
                       :resizewidth="0.4"
                       :resizeheight="0.1"
                       @uploaded_image="uploaded_image"
-                      :upload_profile="uploadfile"
+                      :upload_profile="uploadbifile"
                     />
-                  </v-col>
+                  </v-col> -->
                 </v-row>
               </v-layout>
             </v-form>
@@ -494,6 +514,7 @@
                           density="compact"
                           index="id"
                           item-key="name"
+                          item-value="id"
                           item-title="name"
                           v-model="stores[1].country"
                           @update:model-value="fetchStates(stores[1].country)"
@@ -512,6 +533,7 @@
                           density="compact"
                           index="id"
                           item-key="name"
+                          item-value="id"
                           item-title="name"
                           v-model="stores[1].state"
                           @update:model-value="fetch_cities(stores[1].state)"
@@ -531,6 +553,7 @@
                           index="id"
                           item-key="name"
                           item-title="name"
+                          item-value="id"
                           v-model="stores[1].city"
                           :items="city_array"
                         ></v-autocomplete>
@@ -549,7 +572,7 @@
                           density="compact"
                           maxlength="12"
                           @keypress="isNumber($event)"
-                          v-model="stores[1].postcode"
+                          v-model="stores[1].post_code"
                           required
                         ></v-text-field>
                       </template>
@@ -569,6 +592,7 @@
                           density="compact"
                           maxlength="250"
                           counter="true"
+                          :rules="fieldRules"
                           v-model="stores[1].address"
                           v-bind:label="$t('address_ar')"
                           required
@@ -615,7 +639,10 @@
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" md="8" sm="8" lg="8">
-                    <v-tooltip :text="$t('meta_description_ar')" location="bottom">
+                    <v-tooltip
+                      :text="$t('meta_description_ar')"
+                      location="bottom"
+                    >
                       <template v-slot:activator="{ props }">
                         <v-textarea
                           rows="3"
@@ -636,6 +663,22 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
+                  <v-col cols="6" sm="6" md="4">
+                    <v-tooltip :text="$t('website_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          v-model="stores[1].website"
+                          :rules="fieldRules"
+                          maxlength="100"
+                          v-bind:label="$t('website_ar')"
+                          required
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
                   <v-col cols="3" sm="3" md="3">
                     <div>
                       <span class="mb-5">{{ $t("logo_ar") }}</span>
@@ -646,8 +689,8 @@
                               v-bind:style="
                                 isHovering == true ? 'filter: blur(1px);' : ''
                               "
-                              v-if="stores[1].logo != null"
-                              :src="envImagePath + stores[1].logo"
+                              v-if="stores[1].icon != null"
+                              :src="envImagePath + stores[1].icon"
                               width="100"
                               height="65
                           "
@@ -669,10 +712,10 @@
                       </div>
                       <a
                         class="text-center pointer"
-                        @click="downloadImage(stores[1].logo)"
+                        @click="downloadImage(stores[1].icon)"
                       >
                         <span
-                          v-if="stores[1].logo"
+                          v-if="stores[1].icon"
                           class="download_btn_color"
                           >{{ $t("download_ar") }}</span
                         >
@@ -687,7 +730,7 @@
                       :upload_profile="uploadfile"
                     />
                   </v-col>
-                  <v-col cols="3" sm="3" md="3">
+                  <!-- <v-col cols="3" sm="3" md="3">
                     <div>
                       <span class="mb-5">{{ $t("background_image_ar") }}</span>
                       <div class="image-container">
@@ -713,7 +756,7 @@
                               width="100"
                             />
                             <div v-show="isHovering" class="camera-icon">
-                              <v-icon @click="uploadFile">mdi-camera</v-icon>
+                              <v-icon @click="uploadBIFile">mdi-camera</v-icon>
                             </div>
                           </div>
                         </v-hover>
@@ -735,9 +778,9 @@
                       :resizewidth="0.4"
                       :resizeheight="0.1"
                       @uploaded_image="uploaded_image"
-                      :upload_profile="uploadfile"
+                      :upload_profile="uploadbifile"
                     />
-                  </v-col>
+                  </v-col> -->
                 </v-row>
               </v-layout>
             </v-form>
@@ -815,11 +858,19 @@ export default {
         id: 0,
         lang: "en",
         stor_type: "mall_admin",
+        categories: [],
+        icon: "",
+        background_image: "",
+        website: "",
       },
       {
         id: 0,
         lang: "ar",
         stor_type: "mall_admin",
+        categories: [],
+        icon: "",
+        background_image: "",
+        website: "",
       },
     ],
     categories: [
@@ -841,6 +892,7 @@ export default {
     ],
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
     uploadfile: false,
+    uploadbifile: false,
     country_array: [],
     country_array_ar: [],
     state_array: [],
@@ -864,7 +916,14 @@ export default {
         (v) => /.+@.+/.test(v) || this.$t("email_valid"),
       ];
     },
-
+    isNumber(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        evt.preventDefault();
+      }
+      return true;
+    },
     phoneRules() {
       return [
         (v) => (v >= 0 && v <= 999999999999) || this.$t("number_required"),
@@ -885,7 +944,7 @@ export default {
           this.$axios
             .get(
               process.env.VUE_APP_API_URL_ADMIN +
-                "edit-e-magazine/" +
+                "edit-stores/" +
                 this.$route.query.slug
             )
             .then((res) => {
@@ -895,7 +954,9 @@ export default {
                 this.array_data = res.data.message;
               }
               if (res.data.status == "S") {
-                this.stores = res.data.e_magazine;
+                this.stores = res.data.stores;
+                this.fetchStates(this.stores[0].country);
+                this.fetch_cities(this.stores[0].state);
                 this.loader = false;
               } else {
                 this.$toast.error(this.$t("something_went_wrong"));
@@ -927,10 +988,10 @@ export default {
           console.log(err);
         });
     },
-    fetchStates(country) {
+    fetchStates(country_id) {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_states_name/" + country)
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_states_name/" + country_id)
         .then((response) => {
           this.state_array = response.data.states_en;
           this.state_array_ar = response.data.states_ar;
@@ -942,10 +1003,10 @@ export default {
           console.log(err);
         });
     },
-    fetch_cities(state) {
+    fetch_cities(state_id) {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_cities_name/" + state)
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_cities_name/" + state_id)
         .then((response) => {
           console.log(response);
           this.city_array = response.data.cities_en;
@@ -958,7 +1019,11 @@ export default {
     },
     // Uploading a image
     uploaded_image(img_src) {
-      this.stores[0].logo = img_src;
+      if (this.tabs == 1) {
+        this.stores[0].icon = img_src;
+      } else {
+        this.stores[1].icon = img_src;
+      }
     },
     uploadFile() {
       if (this.uploadfile == false) {
@@ -967,19 +1032,26 @@ export default {
         this.uploadfile = false;
       }
     },
+    uploadBIFile() {
+      if (this.uploadbifile == false) {
+        this.uploadbifile = true;
+      } else {
+        this.uploadbifile = false;
+      }
+    },
     downloadImage(image_url) {
       window.open(this.envImagePath + image_url, "_blank");
     },
 
     //---submit---
     submit() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.form.validate() && this.valid == true) {
         this.isDisabled = true;
         this.isBtnLoading = true;
         // Form is valid, process
         this.$axios
           .post(
-            process.env.VUE_APP_API_URL_ADMIN + "save-e-magazine",
+            process.env.VUE_APP_API_URL_ADMIN + "save-stores",
             this.stores
           )
           .then((res) => {
@@ -993,7 +1065,7 @@ export default {
               this.$toast.success(this.array_data);
               this.message = res.data.message;
               this.$router.push({
-                name: "e-magazine",
+                name: "stores",
               });
             } else {
               this.$toast.error(this.array_data);

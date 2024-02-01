@@ -30,10 +30,7 @@
       <div class="add_new_button">
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
-            <router-link
-              :to="{ name: 'stores-amend' }"
-              style="color: white"
-            >
+            <router-link :to="{ name: 'stores-amend' }" style="color: white">
               <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
                 $t("add_new")
               }}</v-btn>
@@ -58,7 +55,7 @@
       <v-window-item :value="1">
         <v-data-table
           :headers="headers"
-          :items="stores"
+          :items="stores_en"
           :search="search"
           :loading="initval"
           v-bind:no-data-text="$t('no_data_available')"
@@ -136,7 +133,7 @@
       <v-window-item :value="2">
         <v-data-table
           :headers="headers"
-          :items="stores"
+          :items="stores_ar"
           :search="search"
           :loading="initval"
           class="rtl-direction"
@@ -238,7 +235,8 @@ export default {
     showConfirmDialog: false,
     delete_id: null,
     dialog: false,
-    stores: [],
+    stores_en: [],
+    stores_ar: [],
     initval: true,
     google_icon: {
       icon_name: "storefront",
@@ -287,7 +285,7 @@ export default {
         {
           title: this.$t("action"),
           align: "center",
-          key: "email",
+          key: "action",
         },
       ];
     },
@@ -301,7 +299,7 @@ export default {
 
   created() {},
   mounted() {
-    this.fetchEMagazine();
+    this.fetchStores();
   },
 
   methods: {
@@ -313,12 +311,13 @@ export default {
       this.showConfirmDialog = false;
     },
 
-    fetchEMagazine() {
+    fetchStores() {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-e-magazine")
+        .get(process.env.VUE_APP_API_URL_ADMIN + "stores")
         .then((res) => {
-          this.stores = res.data.stores;
+          this.stores_en = res.data.stores_en;
+          this.stores_ar = res.data.stores_ar;
           this.initval = false;
         })
         .catch((err) => {
@@ -328,16 +327,14 @@ export default {
         });
     },
 
-    deleteItem(time_id) {
-      this.delete_id = time_id;
+    deleteItem(store_id) {
+      this.delete_id = store_id;
       this.showConfirmDialog = true;
     },
 
-    deleteConfirm(time_id) {
+    deleteConfirm(store_id) {
       this.$axios
-        .post(
-          process.env.VUE_APP_API_URL_ADMIN + "delete-e-magazine/" + time_id
-        )
+        .delete(process.env.VUE_APP_API_URL_ADMIN + "stores/" + store_id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -348,7 +345,7 @@ export default {
             this.$toast.error(this.array_data);
           } else {
             this.$toast.success(this.array_data);
-            this.fetchEMagazine();
+            this.fetchStores();
           }
         })
         .catch((err) => {
@@ -390,12 +387,12 @@ export default {
           }
           if (res.data.status == "S") {
             this.$toast.success(this.array_data);
-            this.fetchEMagazine();
+            this.fetchStores();
           } else if (res.data.status == "E") {
             this.$toast.error(this.array_data);
           } else {
             this.$toast.error(this.array_data);
-            this.fetchEMagazine();
+            this.fetchStores();
           }
         })
         .catch((err) => {
