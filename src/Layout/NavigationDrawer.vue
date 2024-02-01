@@ -150,9 +150,11 @@ export default {
 
     fetchMenuTree() {
       this.loader = true;
+      const lang = localStorage.getItem("pref_lang") || "en";
       this.$axios
         .post(process.env.VUE_APP_API_URL_ADMIN + "menutree", {
-          role: this.role_id
+          role: this.role_id,
+          lang: lang
         })
         .then((response) => {
           this.loader = false;
