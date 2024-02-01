@@ -30,8 +30,9 @@ const routes = [
   {
     path: "/:lang?/dashboard",
     name: "dashboard",
-    component: () => import("../components/Cruds/Dashboard/MainDashboard.vue"),
     beforeEnter: guardMyroute,
+    component: () => import("../components/Cruds/Dashboard/MainDashboard.vue"),
+    
   },
   {
     path: "/:lang?/users",
@@ -250,6 +251,20 @@ const routes = [
     beforeEnter: guardMyroute,
     component: () =>
       import("../components/Cruds/Careers/IndexPage.vue"),
+  },
+  {
+    name: "promotions_amend",
+    path: "/:lang?/promotions_amend",
+    beforeEnter: guardMyroute,
+    component: () =>
+      import("../components/Cruds/Promotions_Offers/PromotionsAmend.vue"),
+  },
+  {
+    name: "promotions_offers",
+    path: "/:lang?/promotions_offers",
+    beforeEnter: guardMyroute,
+    component: () =>
+      import("../components/Cruds/Promotions_Offers/IndexPage.vue"),
   },
   //Mall Timings
   {

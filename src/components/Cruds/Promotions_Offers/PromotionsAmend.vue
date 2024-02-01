@@ -289,11 +289,10 @@ export default {
     showupload: "",
     isDisabled: false,
     checkbox_value: false,
-    careers: {
+    promotions: {
       id: 0,
       title: "",
       title_ar: "",
-      vacancy:"",
       description: "",
       description_ar: "",
       meta_title: "",

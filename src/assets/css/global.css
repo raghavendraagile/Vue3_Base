@@ -257,11 +257,11 @@ label {
 }
 
 .btn-theme-blue {
-  background-color: #4886ff !important;
+  background-color: #735535 !important;
   color: #fff !important;
   width: 100% !important;
 }
-
+.green_btn_color{ background-color: #735535 !important;color:#fff !important}
 a {
   text-decoration: none;
 }

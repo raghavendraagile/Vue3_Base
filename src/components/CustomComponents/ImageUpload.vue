@@ -14,7 +14,7 @@
               :dragMode="'none'"
               :src="selectedFile"
               :view-mode="1"
-              cropBoxResizable="true"
+              cropBoxResizable="false"
               cropBoxMovable="true"
               :minCropBoxWidth="200"
               :minCropBoxHeight="150"

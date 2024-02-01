@@ -285,6 +285,8 @@ export default {
             name: "dashboard",
             params: { lang: lang },
           };
+          // alert('pushing to dashboard');
+          console.log(newRoute);
           this.$router.push(newRoute);
           this.loader = false;
         })
