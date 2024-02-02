@@ -6,7 +6,7 @@
         :heading="$t('create_promotion')"
         :google_icon="google_icon"
       ></page-title>
-      
+  
     </div>
     <div class="card-body">
       <content-loader v-if="loader"></content-loader>
@@ -47,14 +47,14 @@
                     <v-text-field
                       v-on="on"
                       v-model="promotions[0].phone"
-                      v-bind:label="$t('phone')"                    
+                      v-bind:label="$t('phone')"
                       :rules="phoneRules"
-                        v-bind="props"
-                        class="required_field"
-                        variant="outlined"
-                        density="compact"
-                        maxlength="12"                    
-                        required
+                      v-bind="props"
+                      class="required_field"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="12"
+                      required
                     ></v-text-field>
                   </template>
                   <span>{{ $t("phone") }}</span>
@@ -82,20 +82,20 @@
               <v-col md="4">
                 <v-tooltip :text="this.$t('type')" location="bottom">
                   <template v-slot:activator="{ props }">
-                      <v-select
-                          v-bind="props"
-                          v-model="promotions[0].type"
-                          :rules="fieldRules"
-                          v-bind:label="$t('type')"
-                          variant="outlined"
-                          density="compact"
-                          class="required_field"
-                          required
-                          index="id"
-                          :items="promotions_type"
-                          item-value="name"
-                          item-title="name"
-                        ></v-select>
+                    <v-select
+                      v-bind="props"
+                      v-model="promotions[0].type"
+                      :rules="fieldRules"
+                      v-bind:label="$t('type')"
+                      variant="outlined"
+                      density="compact"
+                      class="required_field"
+                      required
+                      index="id"
+                      :items="promotions_type"
+                      item-value="name"
+                      item-title="name"
+                    ></v-select>
                   </template>
                   <span>{{ $t("type") }}</span>
                 </v-tooltip>
@@ -103,17 +103,16 @@
               <v-col md="4">
                 <v-tooltip :text="this.$t('start_date')" location="bottom">
                   <template v-slot:activator="{ props }">
-                   <DatePicker
-                     v-bind="props"
-                    :label="$t('start_date')"
-                    :min="new Date().toISOString().substr(0, 10)"
-                    :stored_date="promotions[0].start_date"
-                    @formatted_date="formatted_start_date"
-                    dense
-                    :class_required="'RequiredField'"
-                    
-                    v-on="on"
-                  />
+                    <DatePicker
+                      v-bind="props"
+                      :label="$t('start_date')"
+                      :min="new Date().toISOString().substr(0, 10)"
+                      :stored_date="promotions[0].start_date"
+                      @formatted_date="formatted_start_date"
+                      dense
+                      :class_required="'RequiredField'"
+                      v-on="on"
+                    />
                   </template>
                   <span>{{ $t("start_date") }}</span>
                 </v-tooltip>
@@ -122,16 +121,15 @@
                 <v-tooltip :text="this.$t('end_date')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker
-                     v-bind="props"
-                    :label="$t('end_date')"
-                    :min="new Date().toISOString().substr(0, 10)"
-                    :stored_date="promotions[0].end_date"
-                    @formatted_date="formatted_end_date"
-                    dense
-                    :class_required="'RequiredField'"
-                    
-                    v-on="on"
-                  />
+                      v-bind="props"
+                      :label="$t('end_date')"
+                      :min="new Date().toISOString().substr(0, 10)"
+                      :stored_date="promotions[0].end_date"
+                      @formatted_date="formatted_end_date"
+                      dense
+                      :class_required="'RequiredField'"
+                      v-on="on"
+                    />
                   </template>
                   <span>{{ $t("end_date") }}</span>
                 </v-tooltip>
@@ -187,8 +185,58 @@
                       counter="true"
                     ></v-textarea>
                   </template>
-                  <span>{{ $t("vacancy") }}</span>
+                  <span>{{ $t("meta_description") }}</span>
                 </v-tooltip>
+              </v-col>
+              <v-col md="6">
+                <div>
+                  <div class="image-container">
+                    <v-hover v-slot="{ isHovering, props }">
+                      <div style="position: relative" v-bind="props">
+                        <img
+                          v-bind:style="
+                            isHovering == true ? 'filter: blur(1px);' : ''
+                          "
+                          v-if="promotions[0].image_path != null"
+                          :src="envImagePath + promotions[0].image_path"
+                          width="100"
+                          height="65
+                          "
+                          alt
+                        />
+                        <img
+                          v-bind:style="
+                            isHovering == true ? 'filter: blur(1px);' : ''
+                          "
+                          v-else
+                          src="@/assets/images/upload_image_default.png"
+                          width="100"
+                        />
+                        <div v-show="isHovering" class="camera-icon">
+                          <v-icon @click="uploadFile">mdi-camera</v-icon>
+                        </div>
+                      </div>
+                    </v-hover>
+                  </div>
+                  <a
+                    class="text-center pointer"
+                    @click="downloadImage(promotions[0].image_path)"
+                  >
+                    <span
+                      v-if="promotions[0].image_path"
+                      class="download_btn_color"
+                      >{{ $t("download") }}</span
+                    >
+                  </a>
+                </div>
+                <br />
+                <Imageupload
+                  :folder="'promotions_offers'"
+                  :resizewidth="0.4"
+                  :resizeheight="0.1"
+                  @uploaded_image="uploaded_image"
+                  :upload_profile="uploadfile"
+                />
               </v-col>
             </v-row>
           </v-form>
@@ -196,7 +244,7 @@
         <!-- ENGLISH TAB STOPS -->
         <!-- ARABIC TAB STARTS -->
         <v-window-item :value="2">
-           <v-form ref="form" v-model="valid">
+          <v-form ref="form" v-model="valid">
             <v-row class="mx-auto mt-2" max-width="344">
               <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('title')" location="bottom">
@@ -222,14 +270,14 @@
                     <v-text-field
                       v-on="on"
                       v-model="promotions[1].phone"
-                      v-bind:label="$t('phone')"                    
+                      v-bind:label="$t('phone')"
                       :rules="phoneRules"
-                        v-bind="props"
+                      v-bind="props"
                       class="required_field"
-                        variant="outlined"
-                        density="compact"
-                        maxlength="12"                    
-                        required
+                      variant="outlined"
+                      density="compact"
+                      maxlength="12"
+                      required
                     ></v-text-field>
                   </template>
                   <span>{{ $t("phone") }}</span>
@@ -258,19 +306,19 @@
                 <v-tooltip :text="this.$t('type')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-select
-                          v-bind="props"
-                          v-model="promotions[1].type"
-                          :rules="fieldRules"
-                          v-bind:label="$t('type')"
-                          variant="outlined"
-                          density="compact"
-                          class="required_field"
-                          required
-                          index="id"
-                          :items="promotions_type"
-                          item-value="name"
-                          item-title="name"
-                        ></v-select>
+                      v-bind="props"
+                      v-model="promotions[1].type"
+                      :rules="fieldRules"
+                      v-bind:label="$t('type')"
+                      variant="outlined"
+                      density="compact"
+                      class="required_field"
+                      required
+                      index="id"
+                      :items="promotions_type"
+                      item-value="name"
+                      item-title="name"
+                    ></v-select>
                   </template>
                   <span>{{ $t("type") }}</span>
                 </v-tooltip>
@@ -279,16 +327,15 @@
                 <v-tooltip :text="this.$t('start_date')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker
-                     v-bind="props"
-                    :label="$t('start_date')"
-                    :min="new Date().toISOString().substr(0, 10)"
-                    :stored_date="promotions[1].start_date"
-                    @formatted_date="formatted_start_date_ar"
-                    dense
-                    :class_required="'RequiredField'"
-                    
-                    v-on="on"
-                  />
+                      v-bind="props"
+                      :label="$t('start_date')"
+                      :min="new Date().toISOString().substr(0, 10)"
+                      :stored_date="promotions[1].start_date"
+                      @formatted_date="formatted_start_date_ar"
+                      dense
+                      :class_required="'RequiredField'"
+                      v-on="on"
+                    />
                   </template>
                   <span>{{ $t("start_date") }}</span>
                 </v-tooltip>
@@ -297,16 +344,15 @@
                 <v-tooltip :text="this.$t('end_date')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker
-                     v-bind="props"
-                    :label="$t('end_date')"
-                    :min="new Date().toISOString().substr(0, 10)"
-                    :stored_date="promotions[1].end_date"
-                    @formatted_date="formatted_end_date_ar"
-                    dense
-                    :class_required="'RequiredField'"
-                    
-                    v-on="on"
-                  />
+                      v-bind="props"
+                      :label="$t('end_date')"
+                      :min="new Date().toISOString().substr(0, 10)"
+                      :stored_date="promotions[1].end_date"
+                      @formatted_date="formatted_end_date_ar"
+                      dense
+                      :class_required="'RequiredField'"
+                      v-on="on"
+                    />
                   </template>
                   <span>{{ $t("end_date") }}</span>
                 </v-tooltip>
@@ -371,6 +417,56 @@
                   <span>{{ $t("vacancy") }}</span>
                 </v-tooltip>
               </v-col>
+               <v-col md="6">
+                <div>
+                  <div class="image-container">
+                    <v-hover v-slot="{ isHovering, props }">
+                      <div style="position: relative" v-bind="props">
+                        <img
+                          v-bind:style="
+                            isHovering == true ? 'filter: blur(1px);' : ''
+                          "
+                          v-if="promotions[1].image_path != null"
+                          :src="envImagePath + promotions[1].image_path"
+                          width="100"
+                          height="65
+                          "
+                          alt
+                        />
+                        <img
+                          v-bind:style="
+                            isHovering == true ? 'filter: blur(1px);' : ''
+                          "
+                          v-else
+                          src="@/assets/images/upload_image_default.png"
+                          width="100"
+                        />
+                        <div v-show="isHovering" class="camera-icon">
+                          <v-icon @click="uploadFile">mdi-camera</v-icon>
+                        </div>
+                      </div>
+                    </v-hover>
+                  </div>
+                  <a
+                    class="text-center pointer"
+                    @click="downloadImage(promotions[1].image_path)"
+                  >
+                    <span
+                      v-if="promotions[1].image_path"
+                      class="download_btn_color"
+                      >{{ $t("download") }}</span
+                    >
+                  </a>
+                </div>
+                <br />
+                <Imageupload
+                  :folder="'promotions_offers'"
+                  :resizewidth="0.4"
+                  :resizeheight="0.1"
+                  @uploaded_image="uploaded_image"
+                  :upload_profile="uploadfile"
+                />
+              </v-col>
             </v-row>
           </v-form>
         </v-window-item>
@@ -421,8 +517,9 @@
 
 <script>
 import DatePicker from "../../CustomComponents/DatePicker.vue";
+import Imageupload from "../../CustomComponents/ImageUpload.vue";
 export default {
-  components: {DatePicker },
+  components: { DatePicker, Imageupload },
   data: () => ({
     google_icon: {
       icon_name: "edit_note",
@@ -430,7 +527,7 @@ export default {
       icon: "material-symbols-outlined",
     },
     tabs: 1,
-    envPath: process.env.VUE_APP_IMAGE_DOWNLOAD_URL,
+    envImagePath: process.env.VUE_APP_IMAGE_PATH,
     valid: true,
     loader: false,
     file: "",
@@ -438,22 +535,23 @@ export default {
     showupload: "",
     isDisabled: false,
     checkbox_value: false,
-    promotions_type:[
+    uploadfile: false,
+    promotions_type: [
       {
-        id:1,
-        name:"promotions"
+        id: 1,
+        name: "promotions",
       },
       {
-        id:2,
-        name:"offers"
-        }
-      ],
+        id: 2,
+        name: "offers",
+      },
+    ],
     promotions: [
       {
         id: 0,
         title: "",
         description: "",
-        phone:"",
+        phone: "",
         email: "",
         type: "",
         start_date: "",
@@ -467,7 +565,7 @@ export default {
         id: 0,
         title: "",
         description: "",
-        phone:"",
+        phone: "",
         email: "",
         type: "",
         start_date: "",
@@ -478,14 +576,13 @@ export default {
         lang: "ar",
       },
     ],
-      
- 
+
     noimagepreview: "",
     items: [],
   }),
 
   computed: {
-   emailRules() {
+    emailRules() {
       return [
         (v) => !!v || this.$t("email_required"),
         (v) =>
@@ -511,10 +608,10 @@ export default {
       return [(v) => !!v || this.$t("field_required")];
     },
   },
-mounted(){
-  this.promotions[0].type="promotions";
-  this.promotions[1].type="promotions";
-},
+  mounted() {
+    this.promotions[0].type = "promotions";
+    this.promotions[1].type = "promotions";
+  },
   created() {},
   watch: {
     "$route.query.slug": {
@@ -523,7 +620,6 @@ mounted(){
         // alert('Inside watch');
         // alert(this.$route.query.slug);
         if (this.$route.query.slug) {
-          
           this.loader = true;
           this.$axios
             .get(
@@ -542,16 +638,33 @@ mounted(){
     },
   },
   methods: {
-     formatted_start_date(formatted_date) {
+    uploaded_image(img_src) {
+      //alert('uploaded image');
+      //alert(img_src);
+      if (this.tabs == 1) {
+        this.promotions[0].image_path = img_src;
+      } else {
+        this.promotions[1].image_path = img_src;
+      }
+    },
+    uploadFile() {
+      //alert('hai');
+      if (this.uploadfile == false) {
+        this.uploadfile = true;
+      } else {
+        this.uploadfile = false;
+      }
+    },
+    formatted_start_date(formatted_date) {
       this.promotions[0].start_date = formatted_date;
     },
-     formatted_start_date_ar(formatted_date) {
+    formatted_start_date_ar(formatted_date) {
       this.promotions[1].start_date = formatted_date;
     },
-     formatted_end_date(formatted_date) {
+    formatted_end_date(formatted_date) {
       this.promotions[0].end_date = formatted_date;
     },
-     formatted_end_date_ar(formatted_date) {
+    formatted_end_date_ar(formatted_date) {
       this.promotions[1].end_date = formatted_date;
     },
     onFileChanged(e) {
@@ -566,7 +679,10 @@ mounted(){
         this.loader = true;
         // Form is valid, process
         this.$axios
-          .post(process.env.VUE_APP_API_URL_ADMIN + "save_promotions", this.promotions)
+          .post(
+            process.env.VUE_APP_API_URL_ADMIN + "save_promotions",
+            this.promotions
+          )
           .then((res) => {
             this.btnloading = false;
             if (Array.isArray(res.data.message)) {
