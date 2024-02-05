@@ -4,10 +4,10 @@
     <div flat color="white" class="row py-5 pl-5 align-items-center">
       <page-title
         class="col-md-3"
-        :heading="$t('promotions')"
+        :heading="$t('events')"
         :google_icon="google_icon"
       ></page-title>
-      
+
       <div class="col-md-4">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
@@ -30,7 +30,7 @@
       <div class="add_new_button">
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
-            <router-link :to="{ name: 'promotions_amend' }" style="color: white">
+            <router-link :to="{ name: 'events_amend' }" style="color: white">
               <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
                 $t("add_new")
               }}</v-btn>
@@ -53,7 +53,7 @@
         <v-window-item :value="1">
             <v-data-table
       :headers="headers"
-      :items="promotions_en"
+      :items="events_en"
       :search="search"
       :loading="initval"
       v-bind:no-data-text="$t('no_data_available')"
@@ -72,18 +72,6 @@
           <td>
             <span v-if="props.item.selectable.description">
               {{ props.item.selectable.description }}</span
-            >
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
-          <td>
-            <span v-if="props.item.selectable.phone">
-              {{ props.item.selectable.phone }}</span
-            >
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
-          <td>
-            <span v-if="props.item.selectable.email">
-              {{ props.item.selectable.email }}</span
             >
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
@@ -136,7 +124,7 @@
           <td>
             <router-link
               :to="{
-                name: 'promotions_amend',
+                name: 'events_amend',
                 query: { slug: props.item.selectable.slug },
               }"
             >
@@ -177,7 +165,7 @@
         <v-window-item :value="2">
             <v-data-table
       :headers="headers"
-      :items="promotions_ar"
+      :items="events_ar"
       :search="search"
       :loading="initval"
       v-bind:no-data-text="$t('no_data_available')"
@@ -199,18 +187,7 @@
             >
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
-          <td>
-            <span v-if="props.item.selectable.phone">
-              {{ props.item.selectable.phone }}</span
-            >
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
-          <td>
-            <span v-if="props.item.selectable.email">
-              {{ props.item.selectable.email }}</span
-            >
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
+        
            <td>
             <span v-if="props.item.selectable.start_date">
               {{ formatDate(props.item.selectable.start_date)}}</span
@@ -260,7 +237,7 @@
           <td>
             <router-link
               :to="{
-                name: 'promotions_amend',
+                name: 'events_amend',
                 query: { slug: props.item.selectable.slug },
               }"
             >
@@ -324,8 +301,8 @@ export default {
     ConfirmDialog,
   },
   data: () => ({
-    promotions_en: [],
-    promotions_ar: [],
+    events_en: [],
+    events_ar: [],
     initval: false,
     status_id: null,
     isDisabled: false,
@@ -341,14 +318,6 @@ export default {
       {
         title: "Description",
         key: "description",
-      },
-      {
-        title: "Phone",
-        key: "phone",
-      },
-      {
-        title: "Email",
-        key: "email",
       },
       {
         title: "Start Date",
@@ -395,7 +364,7 @@ export default {
   }),
   mounted() {
     this.user = JSON.parse(localStorage.getItem("user"));
-    this.fetchPromotions();
+    this.fetchEvents();
   },
   methods: {
     cancel() {
@@ -411,7 +380,7 @@ export default {
     },
     deleteConfirm(id) {
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "delete_promotions/" + id)
+        .post(process.env.VUE_APP_API_URL_ADMIN + "delete_events/" + id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -420,12 +389,12 @@ export default {
           }
           if (res.data.status == "S") {
             this.$toast.success(this.array_data);
-            this.fetchPromotions();
+            this.fetchEvents();
           } else if (res.data.status == "E") {
             this.$toast.error(this.array_data);
           } else {
             this.$toast.error(this.array_data);
-            this.fetchPromotions();
+            this.fetchEvents();
           }
         })
         .catch((err) => {
@@ -441,13 +410,13 @@ export default {
       this.showStatusDialog = false;
       this.statusUpdate();
     },
-    fetchPromotions() {
+    fetchEvents() {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_promotions")
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_events")
         .then((res) => {
-          this.promotions_en = res.data.promotions_offers_data_en;
-          this.promotions_ar = res.data.promotions_offers_data_ar;
+          this.events_en = res.data.events_en;
+          this.events_ar = res.data.events_ar;
           this.initval = false;
         })
         .catch((err) => {
@@ -484,7 +453,7 @@ export default {
 
     statusUpdate() {
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "update_promotions_status", {
+        .post(process.env.VUE_APP_API_URL_ADMIN + "update_events_status", {
           id: this.status_id,
         })
         .then((res) => {
@@ -496,13 +465,13 @@ export default {
           if (res.data.status == "S") {
             this.$toast.success(this.array_data);
             this.initval = true;
-            this.fetchPromotions();
+            this.fetchEvents();
           } else if (res.data.status == "E") {
             this.$toast.success(this.$t("something_went_wrong"));
           } else {
             this.$toast.error(this.array_data);
             this.initval = true;
-            this.fetchPromotions();
+            this.fetchEvents();
           }
         })
         .catch((err) => {

@@ -257,6 +257,20 @@ const routes = [
       import("../components/Cruds/Promotions_Offers/PromotionsAmend.vue"),
   },
   {
+    name: "events",
+    path: "/:lang?/events",
+    beforeEnter: guardMyroute,
+    component: () =>
+      import("../components/Cruds/Events/IndexPage.vue"),
+  },
+  {
+    name: "events_amend",
+    path: "/:lang?/events_amend",
+    beforeEnter: guardMyroute,
+    component: () =>
+      import("../components/Cruds/Events/EventsAmend.vue"),
+  },
+  {
     name: "promotions_offers",
     path: "/:lang?/promotions_offers",
     beforeEnter: guardMyroute,

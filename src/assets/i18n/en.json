@@ -310,6 +310,8 @@
   "promotions":"Promotions",
   "parent_category": "Parent Category",
   "select_en": "--SELECT--",
+  "events": "Events",
+  "create_events": "Create/Amend Events",
   
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
