@@ -59,9 +59,9 @@
                           required
                           index="id"
                           multiple
-                          :items="categories"
+                          :items="categories_en"
                           item-value="id"
-                          item-title="shortname"
+                          item-title="name"
                         ></v-select>
                       </template>
                     </v-tooltip>
@@ -439,9 +439,9 @@
                           required
                           index="id"
                           multiple
-                          :items="categories"
+                          :items="categories_ar"
                           item-value="id"
-                          item-title="shortname"
+                          item-title="name"
                         ></v-select>
                       </template>
                     </v-tooltip>
@@ -870,23 +870,8 @@ export default {
         website: "",
       },
     ],
-    categories: [
-      {
-        id: 1,
-        shortname: "Shoping",
-        longname: "Shoping",
-      },
-      {
-        id: 2,
-        shortname: "Dining",
-        longname: "Dining",
-      },
-      {
-        id: 3,
-        shortname: "Entertainmentng",
-        longname: "Entertainmentng",
-      },
-    ],
+    categories_en: [],
+    categories_ar: [],
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
     uploadfile: false,
     uploadbifile: false,
@@ -924,6 +909,7 @@ export default {
   },
 
   created() {
+    this.get_categories();
     this.get_countries();
   },
 
@@ -949,6 +935,7 @@ export default {
                 this.stores = res.data.stores;
                 this.fetchStates(this.stores[0].country);
                 this.fetch_cities(this.stores[0].state);
+                this.get_categories(this.stores[0].categories);
                 this.loader = false;
               } else {
                 this.$toast.error(this.$t("something_went_wrong"));
@@ -966,6 +953,20 @@ export default {
   },
 
   methods: {
+    get_categories() {
+      this.initval = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-parent-categories")
+        .then((response) => {
+          console.log(response);
+          this.categories_en = response.data.category_en;
+          this.categories_ar = response.data.category_ar;
+          this.initval = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     get_countries() {
       this.initval = true;
       this.$axios
@@ -983,7 +984,9 @@ export default {
     fetchStates(country_id) {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_states_name/" + country_id)
+        .get(
+          process.env.VUE_APP_API_URL_ADMIN + "fetch_states_name/" + country_id
+        )
         .then((response) => {
           this.state_array = response.data.states_en;
           this.state_array_ar = response.data.states_ar;
@@ -998,7 +1001,9 @@ export default {
     fetch_cities(state_id) {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_cities_name/" + state_id)
+        .get(
+          process.env.VUE_APP_API_URL_ADMIN + "fetch_cities_name/" + state_id
+        )
         .then((response) => {
           console.log(response);
           this.city_array = response.data.cities_en;
@@ -1042,10 +1047,7 @@ export default {
         this.isBtnLoading = true;
         // Form is valid, process
         this.$axios
-          .post(
-            process.env.VUE_APP_API_URL_ADMIN + "save-stores",
-            this.stores
-          )
+          .post(process.env.VUE_APP_API_URL_ADMIN + "save-stores", this.stores)
           .then((res) => {
             this.btnloading = false;
             if (Array.isArray(res.data.message)) {
