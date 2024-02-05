@@ -2,7 +2,6 @@
   <content-loader v-if="loader"></content-loader>
   <v-app>
     <div>
-      //Categories and sub categories
       <transition name="fade" mode="out-in" appear>
         <div class="background">
           <div class="login-box-custom">
