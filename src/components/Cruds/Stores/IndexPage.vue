@@ -70,7 +70,6 @@
               <td>{{ props.item.selectable.email }}</td>
               <td>{{ props.item.selectable.phone }}</td>
               <td>{{ props.item.selectable.address }}</td>
-              <td>{{ props.item.selectable.logo }}</td>
               <td>
                 <v-btn
                   class="hover_shine btn mr-2"
@@ -147,7 +146,6 @@
               <td>{{ props.item.selectable.email }}</td>
               <td>{{ props.item.selectable.phone }}</td>
               <td>{{ props.item.selectable.address }}</td>
-              <td>{{ props.item.selectable.logo }}</td>
               <td>
                 <v-btn
                   class="hover_shine btn mr-2"
@@ -255,7 +253,7 @@ export default {
     headers() {
       return [
         {
-          title: this.$t("stor_type"),
+          title: this.$t("store_type"),
           key: "stor_type",
         },
         {
@@ -273,10 +271,6 @@ export default {
         {
           title: this.$t("address"),
           key: "address",
-        },
-        {
-          title: this.$t("logo"),
-          key: "logo",
         },
         {
           title: this.$t("status"),
@@ -376,7 +370,7 @@ export default {
     statusUpdate() {
       this.loader = true;
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "update-e-magazine-status", {
+        .post(process.env.VUE_APP_API_URL_ADMIN + "update-stores-status", {
           id: this.status_id,
         })
         .then((res) => {

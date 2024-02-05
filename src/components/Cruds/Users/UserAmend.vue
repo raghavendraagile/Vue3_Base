@@ -552,7 +552,6 @@ export default {
         });
     },
     fetchStates(country_id) {
-      alert(country_id);
       this.initval = true;
       this.$axios
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_states_name/" + country_id)

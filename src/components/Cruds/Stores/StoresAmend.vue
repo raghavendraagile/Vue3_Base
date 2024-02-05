@@ -19,7 +19,6 @@
             <span>{{ $t("arabic") }}</span>
           </v-tab>
         </v-tabs>
-
         <v-window v-model="tabs">
           <!-- ENGLISH TAB STARTS -->
           <v-window-item :value="1">
@@ -34,17 +33,17 @@
                     >
                       <v-radio
                         :label="$t('mall_admin')"
-                        value="mall_admin"
+                        value="Mall Admin"
                       ></v-radio>
                       <v-radio
-                        value="stor_admin"
-                        :label="$t('stor_admin')"
+                        value="Store Admin"
+                        :label="$t('store_admin')"
                       ></v-radio>
                     </v-radio-group>
                   </v-col>
                 </v-row>
               </v-layout>
-              <v-layout v-if="stores[0].stor_type == 'stor_admin'">
+              <v-layout v-if="stores[0].stor_type == 'Store Admin'">
                 <v-row class="px-6 mt-2">
                   <v-col xs="4" md="4" lg="4">
                     <v-tooltip :text="this.$t('category')" location="bottom">
@@ -190,7 +189,6 @@
                           variant="outlined"
                           density="compact"
                           maxlength="12"
-                          @keypress="isNumber($event)"
                           v-model="stores[0].post_code"
                           required
                         ></v-text-field>
@@ -415,17 +413,17 @@
                     >
                       <v-radio
                         :label="$t('mall_admin_ar')"
-                        value="mall_admin"
+                        value="Mall Admin"
                       ></v-radio>
                       <v-radio
-                        :label="$t('stor_admin_ar')"
-                        value="stor_admin"
+                        :label="$t('store_admin_ar')"
+                        value="Store Admin"
                       ></v-radio>
                     </v-radio-group>
                   </v-col>
                 </v-row>
               </v-layout>
-              <v-layout v-if="stores[1].stor_type == 'stor_admin'">
+              <v-layout v-if="stores[1].stor_type == 'Store Admin'">
                 <v-row class="px-6 mt-2">
                   <v-col xs="4" md="4" lg="4">
                     <v-tooltip :text="this.$t('category_ar')" location="bottom">
@@ -571,7 +569,6 @@
                           variant="outlined"
                           density="compact"
                           maxlength="12"
-                          @keypress="isNumber($event)"
                           v-model="stores[1].post_code"
                           required
                         ></v-text-field>
@@ -857,7 +854,7 @@ export default {
       {
         id: 0,
         lang: "en",
-        stor_type: "mall_admin",
+        stor_type: "Mall Admin",
         categories: [],
         icon: "",
         background_image: "",
@@ -866,7 +863,7 @@ export default {
       {
         id: 0,
         lang: "ar",
-        stor_type: "mall_admin",
+        stor_type: "Mall Admin",
         categories: [],
         icon: "",
         background_image: "",
@@ -916,18 +913,13 @@ export default {
         (v) => /.+@.+/.test(v) || this.$t("email_valid"),
       ];
     },
-    isNumber(evt) {
-      evt = evt ? evt : window.event;
-      var charCode = evt.which ? evt.which : evt.keyCode;
-      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-        evt.preventDefault();
-      }
-      return true;
-    },
     phoneRules() {
       return [
         (v) => (v >= 0 && v <= 999999999999) || this.$t("number_required"),
       ];
+    },
+    postcodeRules() {
+      return [(v) => (v >= 0 && v <= 9999) || this.$t("postcode_valid")];
     },
   },
 
