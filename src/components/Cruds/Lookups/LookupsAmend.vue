@@ -462,8 +462,8 @@ input.larger {
   width: 20px;
   height: 20px;
 }
-.rtl :deep() input {
+/* .rtl :deep() input {
   text-align: right;
   direction: rtl;
-}
+} */
 </style>
