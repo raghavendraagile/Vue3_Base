@@ -353,8 +353,8 @@ const routes = [
     component: () => import("../components/Cruds/Category/CategoryAmend.vue"),
   },
   {
-    path: "/:lang?/home-slider",
-    name: "home-slider",
+    path: "/:lang?/home-sliders",
+    name: "home-sliders",
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/HomeSlider/IndexPage.vue"),
   },

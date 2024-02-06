@@ -58,7 +58,7 @@
       <v-window-item :value="1">
         <v-data-table
           :headers="headers"
-          :items="stores_en"
+          :items="home_sliders_en"
           :search="search"
           :loading="initval"
           v-bind:no-data-text="$t('no_data_available')"
@@ -68,11 +68,9 @@
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
-              <td>{{ props.item.selectable.stor_type }}</td>
-              <td>{{ props.item.selectable.name }}</td>
-              <td>{{ props.item.selectable.email }}</td>
-              <td>{{ props.item.selectable.phone }}</td>
-              <td>{{ props.item.selectable.address }}</td>
+              <td>{{ props.item.selectable.title }}</td>
+              <td>{{ props.item.selectable.action }}</td>
+              <td>{{ props.item.selectable.target }}</td>
               <td>{{ props.item.selectable.seq }}</td>
               <td>
                 <v-btn
@@ -136,7 +134,7 @@
       <v-window-item :value="2">
         <v-data-table
           :headers="headers"
-          :items="stores_ar"
+          :items="home_sliders_ar"
           :search="search"
           :loading="initval"
           class="rtl-direction"
@@ -145,11 +143,9 @@
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
-              <td>{{ props.item.selectable.stor_type }}</td>
-              <td>{{ props.item.selectable.name }}</td>
-              <td>{{ props.item.selectable.email }}</td>
-              <td>{{ props.item.selectable.phone }}</td>
-              <td>{{ props.item.selectable.address }}</td>
+              <td>{{ props.item.selectable.title }}</td>
+              <td>{{ props.item.selectable.action }}</td>
+              <td>{{ props.item.selectable.target }}</td>
               <td>{{ props.item.selectable.seq }}</td>
               <td>
                 <v-btn
@@ -238,11 +234,11 @@ export default {
     showConfirmDialog: false,
     delete_id: null,
     dialog: false,
-    stores_en: [],
-    stores_ar: [],
+    home_sliders_en: [],
+    home_sliders_ar: [],
     initval: true,
     google_icon: {
-      icon_name: "storefront",
+      icon_name: "transition_push",
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
@@ -258,24 +254,16 @@ export default {
     headers() {
       return [
         {
-          title: this.$t("store_type"),
-          key: "stor_type",
+          title: this.$t("title"),
+          key: "title",
         },
         {
-          title: this.$t("name"),
-          key: "name",
+          title: this.$t("action"),
+          key: "action",
         },
         {
-          title: this.$t("email"),
-          key: "email",
-        },
-        {
-          title: this.$t("phone"),
-          key: "phone",
-        },
-        {
-          title: this.$t("address"),
-          key: "address",
+          title: this.$t("target"),
+          key: "target",
         },
         {
           title: this.$t("sequence"),
@@ -286,9 +274,9 @@ export default {
           key: "status",
         },
         {
-          title: this.$t("action"),
+          title: this.$t("actions"),
           align: "center",
-          key: "action",
+          key: "actions",
         },
       ];
     },
@@ -302,7 +290,7 @@ export default {
 
   created() {},
   mounted() {
-    this.fetchStores();
+    this.fetchHome_sliders();
   },
 
   methods: {
@@ -314,13 +302,13 @@ export default {
       this.showConfirmDialog = false;
     },
 
-    fetchStores() {
+    fetchHome_sliders() {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "stores")
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-home-slider")
         .then((res) => {
-          this.stores_en = res.data.stores_en;
-          this.stores_ar = res.data.stores_ar;
+          this.home_sliders_en = res.data.home_sliders_en;
+          this.home_sliders_ar = res.data.home_sliders_ar;
           this.initval = false;
         })
         .catch((err) => {
@@ -337,7 +325,7 @@ export default {
 
     deleteConfirm(store_id) {
       this.$axios
-        .delete(process.env.VUE_APP_API_URL_ADMIN + "stores/" + store_id)
+        .post(process.env.VUE_APP_API_URL_ADMIN + "delete-slider/" + store_id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -348,7 +336,7 @@ export default {
             this.$toast.error(this.array_data);
           } else {
             this.$toast.success(this.array_data);
-            this.fetchStores();
+            this.fetchHome_sliders();
           }
         })
         .catch((err) => {
@@ -379,7 +367,7 @@ export default {
     statusUpdate() {
       this.loader = true;
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "update-stores-status", {
+        .post(process.env.VUE_APP_API_URL_ADMIN + "update-sliders-status", {
           id: this.status_id,
         })
         .then((res) => {
@@ -390,12 +378,12 @@ export default {
           }
           if (res.data.status == "S") {
             this.$toast.success(this.array_data);
-            this.fetchStores();
+            this.fetchHome_sliders();
           } else if (res.data.status == "E") {
             this.$toast.error(this.array_data);
           } else {
             this.$toast.error(this.array_data);
-            this.fetchStores();
+            this.fetchHome_sliders();
           }
         })
         .catch((err) => {

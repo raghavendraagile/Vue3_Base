@@ -425,7 +425,7 @@ export default {
   },
   data: () => ({
     google_icon: {
-      icon_name: "edit_note",
+      icon_name: "transition_push",
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
@@ -514,7 +514,7 @@ export default {
           this.$axios
             .get(
               process.env.VUE_APP_API_URL_ADMIN +
-                "edit-home_slider/" +
+                "edit-home-sliders/" +
                 this.$route.query.slug
             )
             .then((res) => {
@@ -597,7 +597,7 @@ export default {
               this.$toast.success(this.array_data);
               this.message = res.data.message;
               this.$router.push({
-                name: "home-slider",
+                name: "home-sliders",
               });
             } else {
               this.$toast.error(this.array_data);
