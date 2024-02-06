@@ -70,11 +70,12 @@
               <td>{{ props.item.selectable.email }}</td>
               <td>{{ props.item.selectable.phone }}</td>
               <td>{{ props.item.selectable.address }}</td>
+              <td>{{ props.item.selectable.seq }}</td>
               <td>
                 <v-btn
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
-                  @click="updateStatus(props.item.selectable.id)"
+                  @click="updateStatus(props.item.selectable.header_id)"
                   size="small"
                   v-bind:color="[
                     props.item.selectable.status == 1 ? 'success' : 'warning',
@@ -146,11 +147,12 @@
               <td>{{ props.item.selectable.email }}</td>
               <td>{{ props.item.selectable.phone }}</td>
               <td>{{ props.item.selectable.address }}</td>
+              <td>{{ props.item.selectable.seq }}</td>
               <td>
                 <v-btn
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
-                  @click="updateStatus(props.item.selectable.id)"
+                  @click="updateStatus(props.item.selectable.header_id)"
                   size="small"
                   v-bind:color="[
                     props.item.selectable.status == 1 ? 'success' : 'warning',
@@ -271,6 +273,10 @@ export default {
         {
           title: this.$t("address"),
           key: "address",
+        },
+        {
+          title: this.$t("sequence"),
+          key: "seq",
         },
         {
           title: this.$t("status"),

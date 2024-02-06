@@ -296,7 +296,7 @@
   "create_amend_category": "Create/Amend Category",
   "category": "Category",
   "display_in_header_menu": "Display In Header Menu",
-  "stores": "stores",
+  "stores": "Stores",
   "create_amend_stores": "Create/Amend Stores",
   "store_type": "Stores Type",
   "post_code": "Post Code",
@@ -305,13 +305,14 @@
   "background_image": "Background Image",
   "approve_status": "Approve Status",
   "mall_admin": "Mall Admin",
-  "store_admin": "Stor Admin",
+  "store_admin": "Store Admin",
   "create_promotion" :"Create / Amend Promotions",
   "promotions":"Promotions",
   "parent_category": "Parent Category",
   "select_en": "--SELECT--",
   "events": "Events",
   "create_events": "Create/Amend Events",
+  "social_media": "Social Media's",
   
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
@@ -344,5 +345,6 @@
   "logo_ar": "شعار",
   "background_image_ar": "الصورة الخلفية",
   "website_ar": "موقع إلكتروني",
-  "select_ar": "--يختار--"
+  "select_ar": "--يختار--",
+  "sequence_ar": "تسلسل"
 }

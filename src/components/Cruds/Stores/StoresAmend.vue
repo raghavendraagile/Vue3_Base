@@ -59,9 +59,9 @@
                           required
                           index="id"
                           multiple
-                          :items="categories"
+                          :items="categories_en"
                           item-value="id"
-                          item-title="shortname"
+                          item-title="name"
                         ></v-select>
                       </template>
                     </v-tooltip>
@@ -277,15 +277,30 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="6" sm="6" md="4">
+                  <v-col cols="4" sm="4" md="4">
                     <v-tooltip :text="$t('website')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
                           v-model="stores[0].website"
-                          :rules="fieldRules"
                           maxlength="100"
                           v-bind:label="$t('website')"
+                          required
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="2" sm="2" md="2">
+                    <v-tooltip :text="$t('sequence')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          v-model="stores[0].seq"
+                          maxlength="100"
+                          :rules="phoneRules"
+                          v-bind:label="$t('sequence')"
                           required
                           variant="outlined"
                           density="compact"
@@ -303,7 +318,7 @@
                               v-bind:style="
                                 isHovering == true ? 'filter: blur(1px);' : ''
                               "
-                              v-if="stores[0].icon != null"
+                              v-if="stores[0].icon != ''"
                               :src="envImagePath + stores[0].icon"
                               width="100"
                               height="65
@@ -354,7 +369,7 @@
                               v-bind:style="
                                 isHovering == true ? 'filter: blur(1px);' : ''
                               "
-                              v-if="stores[0].background_image != null"
+                              v-if="stores[0].background_image != ''"
                               :src="envImagePath + stores[0].background_image"
                               width="100"
                               height="65
@@ -388,7 +403,7 @@
                     </div>
                     <br />
                     <Imageupload
-                      :folder="'stores'"
+                      :folder="'backgroundimg'"
                       :resizewidth="0.4"
                       :resizeheight="0.1"
                       @uploaded_image="uploaded_image"
@@ -439,9 +454,9 @@
                           required
                           index="id"
                           multiple
-                          :items="categories"
+                          :items="categories_ar"
                           item-value="id"
-                          item-title="shortname"
+                          item-title="name"
                         ></v-select>
                       </template>
                     </v-tooltip>
@@ -666,9 +681,24 @@
                         <v-text-field
                           v-bind="props"
                           v-model="stores[1].website"
-                          :rules="fieldRules"
                           maxlength="100"
                           v-bind:label="$t('website_ar')"
+                          required
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="2" sm="2" md="2">
+                    <v-tooltip :text="$t('sequence_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          v-model="stores[1].seq"
+                          maxlength="100"
+                          :rules="phoneRules"
+                          v-bind:label="$t('sequence_ar')"
                           required
                           variant="outlined"
                           density="compact"
@@ -686,7 +716,7 @@
                               v-bind:style="
                                 isHovering == true ? 'filter: blur(1px);' : ''
                               "
-                              v-if="stores[1].icon != null"
+                              v-if="stores[1].icon != ''"
                               :src="envImagePath + stores[1].icon"
                               width="100"
                               height="65
@@ -724,7 +754,7 @@
                       :resizewidth="0.4"
                       :resizeheight="0.1"
                       @uploaded_image="uploaded_image"
-                      :upload_profile="uploadfile"
+                      :upload_profile="uploadfilear"
                     />
                   </v-col>
                   <!-- <v-col cols="3" sm="3" md="3">
@@ -870,25 +900,11 @@ export default {
         website: "",
       },
     ],
-    categories: [
-      {
-        id: 1,
-        shortname: "Shoping",
-        longname: "Shoping",
-      },
-      {
-        id: 2,
-        shortname: "Dining",
-        longname: "Dining",
-      },
-      {
-        id: 3,
-        shortname: "Entertainmentng",
-        longname: "Entertainmentng",
-      },
-    ],
+    categories_en: [],
+    categories_ar: [],
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
     uploadfile: false,
+    uploadfilear: false,
     uploadbifile: false,
     country_array: [],
     country_array_ar: [],
@@ -924,6 +940,7 @@ export default {
   },
 
   created() {
+    this.get_categories();
     this.get_countries();
   },
 
@@ -949,6 +966,7 @@ export default {
                 this.stores = res.data.stores;
                 this.fetchStates(this.stores[0].country);
                 this.fetch_cities(this.stores[0].state);
+                this.get_categories(this.stores[0].categories);
                 this.loader = false;
               } else {
                 this.$toast.error(this.$t("something_went_wrong"));
@@ -966,6 +984,20 @@ export default {
   },
 
   methods: {
+    get_categories() {
+      this.initval = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-parent-categories")
+        .then((response) => {
+          console.log(response);
+          this.categories_en = response.data.category_en;
+          this.categories_ar = response.data.category_ar;
+          this.initval = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     get_countries() {
       this.initval = true;
       this.$axios
@@ -983,7 +1015,9 @@ export default {
     fetchStates(country_id) {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_states_name/" + country_id)
+        .get(
+          process.env.VUE_APP_API_URL_ADMIN + "fetch_states_name/" + country_id
+        )
         .then((response) => {
           this.state_array = response.data.states_en;
           this.state_array_ar = response.data.states_ar;
@@ -998,7 +1032,9 @@ export default {
     fetch_cities(state_id) {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_cities_name/" + state_id)
+        .get(
+          process.env.VUE_APP_API_URL_ADMIN + "fetch_cities_name/" + state_id
+        )
         .then((response) => {
           console.log(response);
           this.city_array = response.data.cities_en;
@@ -1012,16 +1048,25 @@ export default {
     // Uploading a image
     uploaded_image(img_src) {
       if (this.tabs == 1) {
+        console.log('img_src path', img_src);
         this.stores[0].icon = img_src;
       } else {
         this.stores[1].icon = img_src;
       }
     },
     uploadFile() {
-      if (this.uploadfile == false) {
-        this.uploadfile = true;
+      if (this.tabs == 1) {
+        if (this.uploadfile == false) {
+          this.uploadfile = true;
+        } else {
+          this.uploadfile = false;
+        }
       } else {
-        this.uploadfile = false;
+        if (this.uploadfilear == false) {
+          this.uploadfilear = true;
+        } else {
+          this.uploadfilear = false;
+        }
       }
     },
     uploadBIFile() {
@@ -1042,10 +1087,7 @@ export default {
         this.isBtnLoading = true;
         // Form is valid, process
         this.$axios
-          .post(
-            process.env.VUE_APP_API_URL_ADMIN + "save-stores",
-            this.stores
-          )
+          .post(process.env.VUE_APP_API_URL_ADMIN + "save-stores", this.stores)
           .then((res) => {
             this.btnloading = false;
             if (Array.isArray(res.data.message)) {
