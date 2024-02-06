@@ -352,6 +352,18 @@ const routes = [
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/Category/CategoryAmend.vue"),
   },
+  {
+    path: "/:lang?/home-slider",
+    name: "home-slider",
+    // meta: { layout: "userpages" },
+    component: () => import("../components/Cruds/HomeSlider/IndexPage.vue"),
+  },
+  {
+    path: "/:lang?/home-slider-amend",
+    name: "home-slider-amend",
+    // meta: { layout: "userpages" },
+    component: () => import("../components/Cruds/HomeSlider/HomeSliderAmend.vue"),
+  },
 ];
 
 const router = createRouter({

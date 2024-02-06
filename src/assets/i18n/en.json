@@ -312,7 +312,9 @@
   "select_en": "--SELECT--",
   "events": "Events",
   "create_events": "Create/Amend Events",
+  "create_amend_home_slider": "Create/Amend Home Slider",
   "social_media": "Social Media's",
+  "target": "Target",
   
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",

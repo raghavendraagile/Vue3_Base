@@ -3,7 +3,7 @@
     <div flat color="white" class="row py-5 pl-5 align-items-center">
       <page-title
         class="col-md-3"
-        :heading="$t('stores')"
+        :heading="$t('home_sliders')"
         :google_icon="google_icon"
       ></page-title>
 
@@ -30,7 +30,10 @@
       <div class="add_new_button">
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
-            <router-link :to="{ name: 'stores-amend' }" style="color: white">
+            <router-link
+              :to="{ name: 'home-slider-amend' }"
+              style="color: white"
+            >
               <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
                 $t("add_new")
               }}</v-btn>
@@ -97,7 +100,7 @@
                 <router-link
                   small
                   :to="{
-                    name: 'stores-amend',
+                    name: 'home-slider-amend',
                     query: { slug: props.item.selectable.slug },
                   }"
                 >
@@ -174,7 +177,7 @@
                 <router-link
                   small
                   :to="{
-                    name: 'stores-amend',
+                    name: 'home-slider-amend',
                     query: { slug: props.item.selectable.slug },
                   }"
                 >
