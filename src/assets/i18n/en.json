@@ -323,7 +323,7 @@
   "name_en": "Name",
   "title_en": "Title",
   "parent_category_en": "Parent Category",
-  "approved_by_en": "Approved By",
+  "approved_by_en": "Approved by",
   "meta_title_en": "Meta Title",
   "description_en": "Description",
   "meta_description_en": "Meta Description",
@@ -332,6 +332,9 @@
   "action_en": "Action",
   "rows_per_page_en": "Rows per page",
   "view_en": "View",
+  "approve_en": "Approve",
+  "reject_en": "Reject",
+  "rejected_by_en": "Rejected by",
 
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
@@ -371,5 +374,8 @@
   "approval_status_ar": "تمت الموافقة عليه ",
   "rows_per_page_ar": "صفوف لكل صفحة",
   "approval_ar": "موافقة",
-  "view_ar": "تتنافس"
+  "view_ar": "تتنافس",
+  "approve_ar": "يعتمد",
+  "reject_ar": "يرفض",
+  "rejected_by_ar": "مرفوض من طرف"
 }
