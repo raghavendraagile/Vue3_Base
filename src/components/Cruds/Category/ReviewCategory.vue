@@ -65,11 +65,11 @@
                   <v-col cols="12" sm="6" md="4">
                     <div
                       class="d-label"
-                      v-if="category.approval_status != 'Approved'"
+                      v-if="category.approval_status == 'Rejected'"
                     >
-                      {{ $t("approved_by_en") }}
+                      {{ $t("rejected_by_en") }}
                     </div>
-                    <div class="d-label" v-else>{{ $t("rejected_by_en") }}</div>
+                    <div class="d-label" v-else>{{ $t("approved_by_en") }}</div>
                     <div v-if="category.review_by">
                       {{ category.review_by }}
                     </div>
@@ -86,6 +86,20 @@
                   <v-col cols="12" sm="12" md="12">
                     <div class="d-label">{{ $t("meta_description_en") }}</div>
                     <div>{{ category.meta_description }}</div>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="12"
+                    v-if="category.approval_status == 'Rejected'"
+                  >
+                    <div class="d-label">
+                      {{ $t("reason_for_rejection_en") }}
+                    </div>
+                    <div v-if="category.review_comment">
+                      {{ category.review_comment }}
+                    </div>
+                    <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
                 </v-row>
               </v-layout>
@@ -155,7 +169,13 @@
                   </v-col>
 
                   <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("approved_by_ar") }}</div>
+                    <div
+                      class="d-label"
+                      v-if="category.approval_status == 'Rejected'"
+                    >
+                      {{ $t("rejected_by_ar") }}
+                    </div>
+                    <div class="d-label" v-else>{{ $t("approved_by_ar") }}</div>
                     <div v-if="category.review_by">
                       {{ category.review_by }}
                     </div>
@@ -172,6 +192,20 @@
                   <v-col cols="12" sm="12" md="12">
                     <div class="d-label">{{ $t("meta_description_ar") }}</div>
                     <div>{{ category.meta_description }}</div>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="12"
+                    v-if="category.approval_status == 'Rejected'"
+                  >
+                    <div class="d-label">
+                      {{ $t("reason_for_rejection_ar") }}
+                    </div>
+                    <div v-if="category.review_comment">
+                      {{ category.review_comment }}
+                    </div>
+                    <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
                 </v-row>
               </v-layout>
@@ -220,16 +254,24 @@
       v-bind:title="$t('confirm')"
       v-bind:description="approval_msg"
     />
+    <ReviewComments
+      v-if="enable_review_comment"
+      @close-dialog="closeReviewComment()"
+      @submit-data="submitReview"
+    >
+    </ReviewComments>
   </div>
 </template>
     
   <script>
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
+import ReviewComments from "../../CustomComponents/ReviewComments.vue";
 export default {
   components: {
     PageTitle,
     ConfirmDialog,
+    ReviewComments,
   },
   data: () => ({
     google_icon: {
@@ -256,6 +298,7 @@ export default {
       approval_status: "",
     },
     approval_msg: "",
+    enable_review_comment: false,
   }),
 
   watch: {
@@ -304,23 +347,33 @@ export default {
     },
     statusOnChange(value, id) {
       this.selected.approval_status = value;
+      this.selected.header_id = id;
       if (value === "Approved") {
         this.approval_msg = this.$t("approval_confirm");
       } else {
         this.approval_msg = this.$t("rejection_confirm");
       }
-      this.selected.header_id = id;
       this.showApprovalDialog = true;
     },
     cancelApproval() {
       this.showApprovalDialog = false;
     },
     confirmApproval() {
+      if (this.selected.approval_status == "Approved") {
+        this.updateApprovalStatus();
+      } else {
+        this.enable_review_comment = true;
+        this.showApprovalDialog = false;
+      }
+    },
+    updateApprovalStatus(comment_en = "", comment_ar = "") {
       this.loader = true;
       this.$axios
         .post(process.env.VUE_APP_API_URL_ADMIN + "update-category-approval", {
           id: this.selected.header_id,
           status: this.selected.approval_status,
+          comment_en: comment_en,
+          comment_ar: comment_ar,
         })
         .then((res) => {
           if (Array.isArray(res.data.message)) {
@@ -341,6 +394,7 @@ export default {
         })
         .finally(() => {
           this.showApprovalDialog = false;
+          this.closeReviewComment();
           this.loader = false;
         });
     },
@@ -360,6 +414,12 @@ export default {
       this.$router.push({
         name: "categories",
       });
+    },
+    closeReviewComment() {
+      this.enable_review_comment = false;
+    },
+    submitReview(comment_en, comment_ar) {
+      this.updateApprovalStatus(comment_en, comment_ar);
     },
   },
 };
