@@ -6,7 +6,7 @@
         :heading="$t('create_products')"
         :google_icon="google_icon"
       ></page-title>
-  {{products_en}}
+  
     </div>
     <div class="card-body">
       <content-loader v-if="loader"></content-loader>
@@ -105,7 +105,7 @@
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                          v-if="products[0].image_path != null"
+                          v-if="products[0].image_path != ''"
                           :src="envImagePath + products[0].image_path"
                           width="100"
                           height="65
@@ -164,7 +164,7 @@
                       v-bind:label="$t('title')"
                       v-bind="props"
                       required
-                      class="required_field"
+                      class="required_field rtl"
                       variant="outlined"
                       density="compact"
                       maxlength="100"
@@ -184,7 +184,7 @@
                       v-bind="props"
                       v-bind:label="$t('description')"
                       required
-                      class="required_field"
+                      class="required_field rtl"
                       variant="outlined"
                       counter="true"
                     ></v-textarea>
@@ -225,7 +225,7 @@
                       v-bind="props"
                       v-bind:label="$t('meta_description')"
                       required
-                      class="required_field"
+                      class="required_field rtl"
                       variant="outlined"
                       counter="true"
                     ></v-textarea>
@@ -242,7 +242,7 @@
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                          v-if="products[1].image_path != null"
+                          v-if="products[1].image_path != ''"
                           :src="envImagePath + products[1].image_path"
                           width="100"
                           height="65
@@ -536,8 +536,5 @@ input.larger {
   border: 2px solid black;
   padding: 1px;
 }
-.rtl :deep() input {
-  text-align: right;
-  direction: rtl;
-}
+
 </style>

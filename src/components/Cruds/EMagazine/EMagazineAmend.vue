@@ -237,6 +237,7 @@
                           maxlength="100"
                           v-bind:label="$t('title_ar')"
                           required
+                          class="required_field rtl"
                           variant="outlined"
                           density="compact"
                         ></v-text-field>
@@ -253,6 +254,7 @@
                           maxlength="100"
                           v-bind:label="$t('title_ar')"
                           required
+                          class="required_field rtl"
                           variant="outlined"
                           density="compact"
                         ></v-text-field>
@@ -277,7 +279,7 @@
                           :rules="descriptionRules"
                           v-bind:label="$t('description_ar')"
                           required
-                          class="required_field"
+                          class="required_field rtl"
                           variant="outlined"
                           maxlength="100"
                           counter="true"
@@ -299,7 +301,7 @@
                           :rules="descriptionRules"
                           v-bind:label="$t('meta_description_ar')"
                           required
-                          class="required_field"
+                          class="required_field rtl"
                           variant="outlined"
                           maxlength="100"
                           counter="true"

@@ -11,7 +11,7 @@
       <content-loader v-if="loader"></content-loader>
       <v-tabs v-model="tabs" color="blue">
         <v-tab :value="1">
-          <span>English</span>
+          <span class="my-class">English</span>
         </v-tab>
         <v-tab :value="2">
           <span>Arabic</span>
@@ -137,7 +137,7 @@
                       v-bind:label="$t('title')"
                       v-bind="props"
                       required
-                      class="required_field"
+                      class="required_field rtl"
                       variant="outlined"
                       density="compact"
                       maxlength="100"
@@ -155,7 +155,7 @@
                       v-bind:label="$t('vacancy')"
                       v-bind="props"
                       required
-                      class="required_field"
+                      class="required_field rtl"
                       variant="outlined"
                       density="compact"
                       maxlength="500"
@@ -194,7 +194,7 @@
                       v-bind="props"
                       v-bind:label="$t('description')"
                       required
-                      class="required_field"
+                      class="required_field rtl"
                       variant="outlined"
                       counter="true"
                     ></v-textarea>
@@ -216,7 +216,7 @@
                       v-bind="props"
                       v-bind:label="$t('meta_description')"
                       required
-                      class="required_field"
+                      class="required_field rtl"
                       variant="outlined"
                       counter="true"
                     ></v-textarea>
@@ -238,7 +238,7 @@
               size="small"
               @click="$router.go(-1)"
               :disabled="loading"
-              class="ma-1"
+              class="ma-1 rtl"
               color="cancel"
               >{{ $t("cancel") }}</v-btn
             >
@@ -419,7 +419,19 @@ input.larger {
   border: 2px solid black;
   padding: 1px;
 }
-.rtl :deep() input {
+/* .rtl :deep() input{
+  text-align: right;
+  direction: rtl;
+}
+.rtl :deep() textarea{
+  text-align: right;
+  direction: rtl;
+} */
+:global(.rtl input) {
+  text-align: right;
+  direction: rtl;
+}
+:global(.rtl textarea) {
   text-align: right;
   direction: rtl;
 }

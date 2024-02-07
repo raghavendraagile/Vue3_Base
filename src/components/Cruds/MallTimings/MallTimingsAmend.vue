@@ -287,7 +287,7 @@
                           :rules="descriptionRules"
                           v-bind:label="$t('description_ar')"
                           required
-                          class="required_field"
+                         class="required_field rtl"
                           variant="outlined"
                           maxlength="100"
                           counter="true"

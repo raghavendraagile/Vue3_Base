@@ -158,6 +158,7 @@
                         v-model="fieldItem.template_subject_ar"
                         :rules="fieldRules"
                         maxlength="100"
+                        class="required_field rtl"
                         v-bind:label="$t('subject')"
                         required
                         variant="outlined"

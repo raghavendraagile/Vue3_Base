@@ -139,7 +139,7 @@
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                          v-if="events[0].image_path != null"
+                          v-if="events[0].image_path != ''"
                           :src="envImagePath + events[0].image_path"
                           width="100"
                           height="65
@@ -198,7 +198,7 @@
                       v-bind:label="$t('title')"
                       v-bind="props"
                       required
-                      class="required_field"
+                      class="required_field rtl"
                       variant="outlined"
                       density="compact"
                       maxlength="100"
@@ -270,7 +270,7 @@
                       v-bind="props"
                       v-bind:label="$t('description')"
                       required
-                      class="required_field"
+                      class="required_field rtl"
                       variant="outlined"
                       counter="true"
                     ></v-textarea>
@@ -292,7 +292,7 @@
                       v-bind="props"
                       v-bind:label="$t('meta_description')"
                       required
-                      class="required_field"
+                      class="required_field rtl"
                       variant="outlined"
                       counter="true"
                     ></v-textarea>
@@ -309,7 +309,7 @@
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                          v-if="events[1].image_path != null"
+                          v-if="events[1].image_path != ''"
                           :src="envImagePath + events[1].image_path"
                           width="100"
                           height="65
@@ -523,15 +523,19 @@ export default {
     },
     formatted_start_date(formatted_date) {
       this.events[0].start_date = formatted_date;
+      this.events[1].start_date = formatted_date;
     },
     formatted_start_date_ar(formatted_date) {
       this.events[1].start_date = formatted_date;
+      this.events[0].start_date = formatted_date;
     },
     formatted_end_date(formatted_date) {
       this.events[0].end_date = formatted_date;
+      this.events[1].end_date = formatted_date;
     },
     formatted_end_date_ar(formatted_date) {
       this.events[1].end_date = formatted_date;
+      this.events[0].end_date = formatted_date;
     },
     onFileChanged(e) {
       this.selectedFile = e.target.files[0];

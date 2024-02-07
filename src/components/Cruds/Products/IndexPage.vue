@@ -77,18 +77,6 @@
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span v-if="props.item.selectable.start_date">
-              {{ formatDate(props.item.selectable.start_date)}}</span
-            >
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
-          <td>
-            <span v-if="props.item.selectable.end_date">
-              {{ formatDate(props.item.selectable.end_date)}}</span
-            >
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
-          <td>
             <span v-if="props.item.selectable.meta_title">
               {{ props.item.selectable.meta_title }}</span
             >
@@ -185,19 +173,6 @@
           <td>
             <span v-if="props.item.selectable.description">
               {{ props.item.selectable.description }}</span
-            >
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
-        
-           <td>
-            <span v-if="props.item.selectable.start_date">
-              {{ formatDate(props.item.selectable.start_date)}}</span
-            >
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
-          <td>
-            <span v-if="props.item.selectable.end_date">
-              {{ formatDate(props.item.selectable.end_date)}}</span
             >
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
@@ -319,14 +294,6 @@ export default {
       {
         title: "Description",
         key: "description",
-      },
-      {
-        title: "Start Date",
-        key: "start_date",
-      },
-      {
-        title: "End Date",
-        key: "end_date",
       },
       {
         title: "Meta Title",

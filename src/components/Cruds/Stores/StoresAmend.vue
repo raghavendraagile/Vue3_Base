@@ -454,7 +454,7 @@
                     <v-radio-group
                       v-model="stores[1].stor_type"
                       inline
-                      class="radio_item"
+                      class="radio_item rtl"
                     >
                       <v-radio
                         :label="$t('mall_admin_ar')"
@@ -480,7 +480,7 @@
                           v-bind:label="$t('category_ar')"
                           variant="outlined"
                           density="compact"
-                          class="required_field"
+                          class="required_field rtl"
                           required
                           index="id"
                           multiple
@@ -507,6 +507,7 @@
                           required
                           variant="outlined"
                           density="compact"
+                          class="required_field rtl"
                         ></v-text-field>
                       </template>
                     </v-tooltip>
@@ -523,6 +524,7 @@
                           required
                           variant="outlined"
                           density="compact"
+                           class="required_field rtl"
                         ></v-text-field>
                       </template>
                     </v-tooltip>
@@ -539,6 +541,7 @@
                           required
                           variant="outlined"
                           density="compact"
+                           class="required_field rtl"
                         ></v-text-field>
                       </template>
                     </v-tooltip>
@@ -578,6 +581,7 @@
                           item-key="name"
                           item-value="id"
                           item-title="name"
+                          
                           v-model="stores[1].state"
                           @update:model-value="fetch_cities(stores[1].state)"
                           :items="state_array"
@@ -614,6 +618,7 @@
                           variant="outlined"
                           density="compact"
                           maxlength="12"
+                           class="required_field rtl"
                           v-model="stores[1].post_code"
                           required
                         ></v-text-field>
@@ -634,6 +639,7 @@
                           density="compact"
                           maxlength="250"
                           counter="true"
+                           class="required_field rtl"
                           :rules="fieldRules"
                           v-model="stores[1].address"
                           v-bind:label="$t('address_ar')"
@@ -651,6 +657,7 @@
                           variant="outlined"
                           density="compact"
                           maxlength="250"
+                           class="required_field rtl"
                           :rules="descriptionRules"
                           counter="true"
                           v-model="stores[1].description"
@@ -674,6 +681,7 @@
                           maxlength="100"
                           v-bind:label="$t('meta_title_ar')"
                           required
+                           class="required_field rtl"
                           variant="outlined"
                           density="compact"
                         ></v-text-field>
@@ -694,6 +702,7 @@
                           :rules="descriptionRules"
                           maxlength="250"
                           counter="true"
+                           class="required_field rtl"
                           v-model="stores[1].meta_description"
                           v-bind:label="$t('meta_description_ar')"
                           required
@@ -714,6 +723,7 @@
                           maxlength="100"
                           v-bind:label="$t('website_ar')"
                           required
+                           class="required_field rtl"
                           variant="outlined"
                           density="compact"
                         ></v-text-field>
@@ -730,6 +740,7 @@
                           :rules="phoneRules"
                           v-bind:label="$t('sequence_ar')"
                           required
+                           class="required_field rtl"
                           variant="outlined"
                           density="compact"
                         ></v-text-field>

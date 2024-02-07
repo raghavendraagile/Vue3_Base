@@ -242,7 +242,7 @@
                           v-bind="props"
                           v-model="category[1].name"
                           :rules="fieldRules"
-                          class="required_field"
+                          class="required_field rtl"
                           maxlength="100"
                           v-bind:label="$t('name_ar')"
                           required
@@ -259,7 +259,7 @@
                           v-bind="props"
                           v-model="category[1].title"
                           :rules="fieldRules"
-                          class="required_field"
+                          class="required_field rtl"
                           maxlength="100"
                           v-bind:label="$t('title_ar')"
                           required
@@ -281,7 +281,7 @@
                       <template v-slot:activator="{ props }">
                         <div v-bind="props">
                           <quill-editor
-                            class="hide_quill_input"
+                            class="hide_quill_input rtl"
                             v-bind:id="
                               quill_item == true
                                 ? 'quill_item'
@@ -316,7 +316,7 @@
                           v-bind="props"
                           v-model="category[1].meta_title"
                           :rules="fieldRules"
-                          class="required_field"
+                          class="required_field rtl"
                           maxlength="150"
                           v-bind:label="$t('meta_title_ar')"
                           required
@@ -340,7 +340,7 @@
                           :rules="descriptionRules"
                           v-bind:label="$t('meta_description_ar')"
                           required
-                          class="required_field"
+                          class="required_field rtl"
                           variant="outlined"
                           maxlength="250"
                           counter="true"
