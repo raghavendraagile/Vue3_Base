@@ -478,7 +478,15 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
+:global(.rtl input) {
+  text-align: right;
+  direction: rtl;
+}
+:global(.rtl textarea) {
+  text-align: right;
+  direction: rtl;
+}
 nav {
   padding: 30px;
 }

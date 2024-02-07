@@ -419,20 +419,6 @@ input.larger {
   border: 2px solid black;
   padding: 1px;
 }
-/* .rtl :deep() input{
-  text-align: right;
-  direction: rtl;
-}
-.rtl :deep() textarea{
-  text-align: right;
-  direction: rtl;
-} */
-:global(.rtl input) {
-  text-align: right;
-  direction: rtl;
-}
-:global(.rtl textarea) {
-  text-align: right;
-  direction: rtl;
-}
+
+
 </style>
