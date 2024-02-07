@@ -335,6 +335,9 @@
   "approve_en": "Approve",
   "reject_en": "Reject",
   "rejected_by_en": "Rejected by",
+  "rejection_comment": "Reason for Rejection",
+  "comments_en": "Comments",
+  "reason_for_rejection_en": "Reason for Rejection",
 
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
@@ -377,5 +380,7 @@
   "view_ar": "تتنافس",
   "approve_ar": "يعتمد",
   "reject_ar": "يرفض",
-  "rejected_by_ar": "مرفوض من طرف"
+  "rejected_by_ar": "مرفوض من طرف",
+  "comments_ar": "تعليقات",
+  "reason_for_rejection_ar": "سبب الرفض"
 }

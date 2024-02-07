@@ -324,6 +324,9 @@
   "reject_ar": "يرفض",
   "rejected_by_ar": "مرفوض من طرف",
   "approval_status_ar": "تمت الموافقة عليه ",
+  "rejection_comment": "سبب الرفض",
+  "comments_ar": "تعليقات",
+  "reason_for_rejection_ar": "سبب الرفض",
 
   "--------start_english_translation----------": "--------start_english_translation----------",
 
@@ -342,5 +345,7 @@
   "approve_en": "Approve",
   "reject_en": "Reject",
   "rejected_by_en": "Rejected by",
-  "approval_status_en": "Approval Status"
+  "approval_status_en": "Approval Status",
+  "comments_en": "Comments",
+  "reason_for_rejection_en": "Reason for Rejection"
 }

@@ -404,6 +404,11 @@ input::placeholder {
   background: green !important;
 }
 
+.dialog-header {
+  background: #5e5eff;
+  color: white;
+}
+
 @keyframes bounceAnimation {
   0%, 100% {
     transform: translateY(0);

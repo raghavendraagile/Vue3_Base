@@ -229,7 +229,7 @@
                   </v-tooltip>
                 </span>
               </td>
-               <td>
+              <td>
                 <v-btn
                   size="small"
                   @click="viewCategory(props.item.selectable.slug)"
@@ -334,10 +334,10 @@ export default {
         {
           title: this.$t("action_en"),
           align: "center",
-          key: "email",
+          key: "action",
         },
         {
-          title: "",
+          title: " ",
           align: "center",
         },
       ];
@@ -367,8 +367,9 @@ export default {
         {
           title: this.$t("action_ar"),
           align: "center",
+          key: "action",
         },
-        {
+        { 
           title: "",
           align: "center",
         },
