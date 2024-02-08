@@ -31,19 +31,25 @@
                       inline
                       class="radio_item"
                     >
-                      <v-radio
-                        :label="$t('mall_admin')"
-                        value="Mall Admin"
-                      ></v-radio>
-                      <v-radio
-                        value="Store Admin"
-                        :label="$t('store_admin')"
-                      ></v-radio>
+                      <v-radio :label="$t('mall')" value="Mall"></v-radio>
+                      <v-radio value="Store" :label="$t('store')"></v-radio>
                     </v-radio-group>
                   </v-col>
                 </v-row>
               </v-layout>
-              <v-layout v-if="stores[0].stor_type == 'Store Admin'">
+              <v-layout>
+                <v-row class="headings">
+                  <v-col xs="12" md="12" lg="12">
+                    <h6 class="m-4" v-if="stores[0].stor_type == 'Mall'">
+                      <b>{{ $t("mall_details") }}</b>
+                    </h6>
+                    <h6 class="m-4" v-else>
+                      <b>{{ $t("store_details") }}</b>
+                    </h6>
+                  </v-col>
+                </v-row>
+              </v-layout>
+              <v-layout v-if="stores[0].stor_type == 'Store'">
                 <v-row class="px-6 mt-2">
                   <v-col xs="4" md="4" lg="4">
                     <v-tooltip :text="this.$t('category')" location="bottom">
@@ -60,6 +66,26 @@
                           index="id"
                           multiple
                           :items="categories_en"
+                          item-value="id"
+                          item-title="name"
+                        ></v-select>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col xs="4" md="4" lg="4">
+                    <v-tooltip :text="this.$t('mall_name')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-select
+                          v-bind="props"
+                          v-model="stores[0].mall_name"
+                          :rules="fieldRules"
+                          v-bind:label="$t('mall_name')"
+                          variant="outlined"
+                          density="compact"
+                          class="required_field"
+                          required
+                          index="id"
+                          :items="mall_names_en"
                           item-value="id"
                           item-title="name"
                         ></v-select>
@@ -412,7 +438,7 @@
                   </v-col> -->
                 </v-row>
               </v-layout>
-              <div>
+              <div class="headings">
                 <h6 class="m-4">
                   <b>{{ $t("social_media") }}</b>
                 </h6>
@@ -454,21 +480,15 @@
                     <v-radio-group
                       v-model="stores[1].stor_type"
                       inline
-                      class="radio_item rtl"
+                      class="radio_item"
                     >
-                      <v-radio
-                        :label="$t('mall_admin_ar')"
-                        value="Mall Admin"
-                      ></v-radio>
-                      <v-radio
-                        :label="$t('store_admin_ar')"
-                        value="Store Admin"
-                      ></v-radio>
+                      <v-radio :label="$t('mall_ar')" value="Mall"></v-radio>
+                      <v-radio :label="$t('store_ar')" value="Store"></v-radio>
                     </v-radio-group>
                   </v-col>
                 </v-row>
               </v-layout>
-              <v-layout v-if="stores[1].stor_type == 'Store Admin'">
+              <v-layout v-if="stores[1].stor_type == 'Store'">
                 <v-row class="px-6 mt-2">
                   <v-col xs="4" md="4" lg="4">
                     <v-tooltip :text="this.$t('category_ar')" location="bottom">
@@ -480,11 +500,31 @@
                           v-bind:label="$t('category_ar')"
                           variant="outlined"
                           density="compact"
-                          class="required_field rtl"
+                          class="required_field"
                           required
                           index="id"
                           multiple
                           :items="categories_ar"
+                          item-value="id"
+                          item-title="name"
+                        ></v-select>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col xs="4" md="4" lg="4">
+                    <v-tooltip :text="this.$t('mall_name')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-select
+                          v-bind="props"
+                          v-model="stores[1].mall_name"
+                          :rules="fieldRules"
+                          v-bind:label="$t('mall_name_ar')"
+                          variant="outlined"
+                          density="compact"
+                          class="required_field"
+                          required
+                          index="id"
+                          :items="mall_names_ar"
                           item-value="id"
                           item-title="name"
                         ></v-select>
@@ -524,7 +564,7 @@
                           required
                           variant="outlined"
                           density="compact"
-                           class="required_field rtl"
+                          class="required_field rtl"
                         ></v-text-field>
                       </template>
                     </v-tooltip>
@@ -541,7 +581,7 @@
                           required
                           variant="outlined"
                           density="compact"
-                           class="required_field rtl"
+                          class="required_field rtl"
                         ></v-text-field>
                       </template>
                     </v-tooltip>
@@ -581,7 +621,6 @@
                           item-key="name"
                           item-value="id"
                           item-title="name"
-                          
                           v-model="stores[1].state"
                           @update:model-value="fetch_cities(stores[1].state)"
                           :items="state_array"
@@ -618,7 +657,7 @@
                           variant="outlined"
                           density="compact"
                           maxlength="12"
-                           class="required_field rtl"
+                          class="required_field rtl"
                           v-model="stores[1].post_code"
                           required
                         ></v-text-field>
@@ -639,7 +678,7 @@
                           density="compact"
                           maxlength="250"
                           counter="true"
-                           class="required_field rtl"
+                          class="required_field rtl"
                           :rules="fieldRules"
                           v-model="stores[1].address"
                           v-bind:label="$t('address_ar')"
@@ -657,7 +696,7 @@
                           variant="outlined"
                           density="compact"
                           maxlength="250"
-                           class="required_field rtl"
+                          class="required_field rtl"
                           :rules="descriptionRules"
                           counter="true"
                           v-model="stores[1].description"
@@ -681,7 +720,7 @@
                           maxlength="100"
                           v-bind:label="$t('meta_title_ar')"
                           required
-                           class="required_field rtl"
+                          class="required_field rtl"
                           variant="outlined"
                           density="compact"
                         ></v-text-field>
@@ -702,7 +741,7 @@
                           :rules="descriptionRules"
                           maxlength="250"
                           counter="true"
-                           class="required_field rtl"
+                          class="required_field rtl"
                           v-model="stores[1].meta_description"
                           v-bind:label="$t('meta_description_ar')"
                           required
@@ -723,7 +762,7 @@
                           maxlength="100"
                           v-bind:label="$t('website_ar')"
                           required
-                           class="required_field rtl"
+                          class="required_field rtl"
                           variant="outlined"
                           density="compact"
                         ></v-text-field>
@@ -740,7 +779,7 @@
                           :rules="phoneRules"
                           v-bind:label="$t('sequence_ar')"
                           required
-                           class="required_field rtl"
+                          class="required_field rtl"
                           variant="outlined"
                           density="compact"
                         ></v-text-field>
@@ -925,8 +964,9 @@ export default {
       {
         id: 0,
         lang: "en",
-        stor_type: "Mall Admin",
+        stor_type: "Mall",
         categories: [],
+        mall_name: "",
         icon: "",
         background_image: "",
         website: "",
@@ -934,8 +974,9 @@ export default {
       {
         id: 0,
         lang: "ar",
-        stor_type: "Mall Admin",
+        stor_type: "Mall",
         categories: [],
+        mall_name: "",
         icon: "",
         background_image: "",
         website: "",
@@ -943,6 +984,8 @@ export default {
     ],
     categories_en: [],
     categories_ar: [],
+    mall_names_en: [],
+    mall_names_ar: [],
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
     uploadfile: false,
     uploadfilear: false,
@@ -1010,7 +1053,7 @@ export default {
                 this.stores = res.data.stores;
                 this.fetchStates(this.stores[0].country);
                 this.fetch_cities(this.stores[0].state);
-                this.get_categories(this.stores[0].categories);
+                this.get_categories();
                 this.loader = false;
               } else {
                 this.$toast.error(this.$t("something_went_wrong"));
@@ -1045,11 +1088,13 @@ export default {
     get_categories() {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-parent-categories")
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-malls-categories")
         .then((response) => {
           console.log(response);
           this.categories_en = response.data.category_en;
           this.categories_ar = response.data.category_ar;
+          this.mall_names_en = response.data.mall_names_en;
+          this.mall_names_ar = response.data.mall_names_ar;
           this.initval = false;
         })
         .catch((err) => {
@@ -1207,9 +1252,11 @@ input.larger {
 .download_btn_color {
   color: blue;
 }
+.headings {
+  color: #2196f3;
+}
 .image-width {
   border: 3px solid black;
   padding: 1px;
 }
 </style>
-    

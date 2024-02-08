@@ -304,8 +304,11 @@
   "logo": "Logo",
   "background_image": "Background Image",
   "approve_status": "Approve Status",
-  "mall_admin": "Mall Admin",
-  "store_admin": "Store Admin",
+  "mall": "Mall",
+  "mall_name": "Mall Name",
+  "mall_details": "Mall Details",
+  "store": "Store",
+  "store_details": "Store Details",
   "create_promotion": "Create / Amend Promotions",
   "promotions": "Promotions",
   "parent_category": "Parent Category",
@@ -338,6 +341,9 @@
   "rejection_comment": "Reason for Rejection",
   "comments_en": "Comments",
   "reason_for_rejection_en": "Reason for Rejection",
+  "store_timings": "Store Timings",
+  "store_name": "Store Name",
+  "create_store_timings": "Create/Amend Store Timings",
 
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
@@ -355,8 +361,8 @@
   "mall_timing_categories_ar": "فئات توقيت مول",
   "meta_title_ar": "عنوان الفوقية",
   "Careers": "وظائف",
-  "mall_admin_ar": "مشرف مول",
-  "store_admin_ar": "المشرف العظيم",
+  "mall_ar": "مجمع تجاري",
+  "store_ar": "محل",
   "name_ar": "اسم",
   "email_ar": "بريد إلكتروني",
   "phone_ar": "هاتف",
@@ -382,5 +388,6 @@
   "reject_ar": "يرفض",
   "rejected_by_ar": "مرفوض من طرف",
   "comments_ar": "تعليقات",
-  "reason_for_rejection_ar": "سبب الرفض"
+  "reason_for_rejection_ar": "سبب الرفض",
+  "mall_name_ar": "مول نام"
 }

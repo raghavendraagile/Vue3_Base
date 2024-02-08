@@ -369,6 +369,17 @@ const routes = [
     name: "categories-review",
     component: () => import("../components/Cruds/Category/ReviewCategory.vue"),
   },
+  {
+    path: "/:lang?/store-timings",
+    name: "store-timings",
+    // meta: { layout: "userpages" },
+    component: () => import("../components/Cruds/StoreTimings/IndexPage.vue"),
+  },
+  {
+    path: "/:lang?/store-timing-amend",
+    name: "store-timing-amend",
+    component: () => import("../components/Cruds/StoreTimings/StoreTimingAmend.vue"),
+  },
 
 ];
 
