@@ -66,8 +66,9 @@
         </v-tooltip>
       </div>
     </div>
-    <div class="ml-4">
-      <h4>{{ $t("lookup_name") }} : {{ this.$route.query.parentname }}</h4>
+    <div class="px-4 d-flex justify-content-between" v-if="parent_lookup.length > 0">
+      <div class="parent-name">{{ $t("parent_lookup_en") }} : {{ parent_lookup[0].longname }}</div>
+      <div class="rtl-direction parent-name">{{ $t("parent_lookup_ar") }} : {{ parent_lookup[1].longname }}</div>
     </div>
     <v-tabs v-model="tabs" color="blue">
       <v-tab :value="1" @click="checkUploadImage">
@@ -82,7 +83,7 @@
       <v-window-item :value="1">
         <v-data-table
           :headers="headers"
-          :items="lookup"
+          :items="lookups_en"
           :search="search"
           :loading="initval"
         >
@@ -102,7 +103,7 @@
                 <v-btn
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
-                  @click="updateLookupsStatus(props.item.id)"
+                  @click="updateLookupsStatus(props.item.selectable.header_id)"
                   size="small"
                   v-bind:color="[
                     props.item.selectable.status == 1 ? 'success' : 'warning',
@@ -141,7 +142,7 @@
                     <span>{{ $t("edit") }}</span>
                   </v-tooltip>
                 </router-link>
-                <span @click="deleteItem(props.item.selectable.id)">
+                <span @click="deleteItem(props.item.selectable.header_id)">
                   <v-tooltip :text="this.$t('delete')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-icon
@@ -165,7 +166,7 @@
       <v-window-item :value="2">
         <v-data-table
           :headers="headers"
-          :items="lookup"
+          :items="lookups_ar"
           :search="search"
           :loading="initval"
         >
@@ -174,8 +175,8 @@
               <td>
                 <div class="text-truncate" style="max-width: 160px">
                   {{
-                    props.item.selectable.shortname_ar
-                      ? props.item.selectable.shortname_ar
+                    props.item.selectable.shortname
+                      ? props.item.selectable.shortname
                       : $t("not_appllicable")
                   }}
                 </div>
@@ -183,8 +184,8 @@
               <td>
                 <div class="text-truncate" style="max-width: 160px">
                   {{
-                    props.item.selectable.longname_ar
-                      ? props.item.selectable.longname_ar
+                    props.item.selectable.longname
+                      ? props.item.selectable.longname
                       : $t("not_appllicable")
                   }}
                 </div>
@@ -193,7 +194,7 @@
                 <v-btn
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
-                  @click="updateLookupsStatus(props.item.id)"
+                  @click="updateLookupsStatus(props.item.selectable.header_id)"
                   size="small"
                   v-bind:color="[
                     props.item.selectable.status == 1 ? 'success' : 'warning',
@@ -232,7 +233,7 @@
                     <span>{{ $t("edit") }}</span>
                   </v-tooltip>
                 </router-link>
-                <span @click="deleteItem(props.item.selectable.id)">
+                <span @click="deleteItem(props.item.selectable.header_id)">
                   <v-tooltip :text="this.$t('delete')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-icon
@@ -279,7 +280,8 @@ export default {
     ConfirmDialog,
   },
   data: () => ({
-    lookup: [],
+    lookups_en: [],
+    lookups_ar: [],
     tabs: 1,
     showdeleteDialog: false,
     showStatusDialog: false,
@@ -298,20 +300,8 @@ export default {
     initval: false,
     valid: false,
     message: "",
-    json_fields: [
-      {
-        label: "Shortname",
-        field: "shortname",
-      },
-      {
-        label: "Longname",
-        field: "longname",
-      },
-      {
-        label: "Status",
-        field: "status",
-      },
-    ],
+    parent_lookup:[]
+    
   }),
   computed: {
     headers() {
@@ -320,7 +310,7 @@ export default {
           title: this.$t("shortname"),
           align: "left",
           sortable: true,
-          key: this.tabs == 1 ? "shortname" : "shortname_ar",
+          key:"shortname",
         },
         {
           title: this.$t("longname"),
@@ -382,19 +372,22 @@ export default {
           }
           if (res.data.status == "S") {
             this.$toast.success(this.array_data);
-            this.initialize();
-            this.$eventBus.$emit("app_logo");
+            
           } else if (res.data.status == "E") {
             this.$toast.error(this.array_data);
           } else {
             this.$toast.error(this.array_data);
-            this.initialize();
+            
           }
         })
         .catch((err) => {
           this.$toast.error(this.array_data);
           console.log("this error" + err);
+        })
+        .finally(() => {
+          this.initialize();
         });
+
     },
     deleteLookup(id) {
       this.$axios
@@ -424,11 +417,10 @@ export default {
         .get(
           process.env.VUE_APP_API_URL_ADMIN +
             "lookupdata/" +
-            this.$route.query.parentname
+            this.$route.query.slug
         )
         .then((res) => {
           this.initval = false;
-          this.lookup = res.data.lookups;
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
           } else {
@@ -436,7 +428,9 @@ export default {
           }
           if (res.data.status == "S") {
             this.initval = false;
-            this.lookup = res.data.lookups;
+            this.lookups_en = res.data.lookups_en;
+            this.lookups_ar = res.data.lookups_ar;
+            this.parent_lookup = res.data.parent_lookup;
           } else if (res.data.status == "E") {
             this.initval = false;
           } else {
@@ -526,5 +520,10 @@ export default {
 
 .v-btn:not(.v-btn--round).v-size--small {
   min-width: 90px !important;
+}
+
+.parent-name{
+  font-size: 18px;
+  font-weight: 500;
 }
 </style>

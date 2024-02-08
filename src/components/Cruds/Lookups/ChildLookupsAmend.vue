@@ -7,7 +7,6 @@
         :google_icon="google_icon"
       ></page-title>
     </div>
-
     <div class="card-body">
       <content-loader v-if="loader"></content-loader>
       <v-tabs v-model="tabs" color="blue">
@@ -28,8 +27,7 @@
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-on="on"
-                      v-model="lookup.shortname"
-                      :disabled="lookup.id == 0 ? disabled : ''"
+                      v-model="lookup[0].shortname"
                       v-bind="props"
                       :rules="fieldRules"
                       v-bind:label="$t('shortname')"
@@ -47,7 +45,7 @@
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-on="on"
-                      v-model="lookup.longname"
+                      v-model="lookup[0].longname"
                       v-bind="props"
                       :rules="fieldRules"
                       v-bind:label="$t('longname')"
@@ -69,7 +67,7 @@
                       <v-textarea
                         v-on="on"
                         rows="2"
-                        v-model="lookup.description"
+                        v-model="lookup[0].description"
                         v-bind="props"
                         :rules="fieldRules"
                         v-bind:label="$t('description')"
@@ -94,7 +92,7 @@
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                          v-if="lookup.icon != ''"
+                          v-if="lookup[0].icon != ''"
                           :src="envImagePath + lookup.icon"
                           width="100"
                           height="65
@@ -117,9 +115,9 @@
                   </div>
                   <a
                     class="text-center pointer"
-                    @click="downloadImage(lookup.icon)"
+                    @click="downloadImage(lookup[0].icon)"
                   >
-                    <span v-if="lookup.icon" class="download_btn_color">{{
+                    <span v-if="lookup[0].icon" class="download_btn_color">{{
                       $t("download")
                     }}</span>
                   </a>
@@ -146,8 +144,7 @@
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-on="on"
-                      v-model="lookup.shortname_ar"
-                      :disabled="lookup.shortname_ar != '' ? disabled : ''"
+                      v-model="lookup[1].shortname"
                       v-bind="props"
                       :rules="fieldRules"
                       v-bind:label="$t('shortname')"
@@ -165,7 +162,7 @@
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-on="on"
-                      v-model="lookup.longname_ar"
+                      v-model="lookup[1].longname"
                       v-bind="props"
                       :rules="fieldRules"
                       v-bind:label="$t('longname')"
@@ -187,7 +184,7 @@
                       <v-textarea
                         v-on="on"
                         rows="2"
-                        v-model="lookup.description_ar"
+                        v-model="lookup[1].description"
                         v-bind="props"
                         :rules="fieldRules"
                         v-bind:label="$t('description')"
@@ -212,8 +209,8 @@
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                          v-if="lookup.icon_ar != '' && lookup.icon_ar != null"
-                          :src="envImagePath + lookup.icon_ar"
+                          v-if="lookup[1].icon != '' && lookup[1].icon != null"
+                          :src="envImagePath + lookup[1].icon"
                           width="100"
                           height="65
                           "
@@ -235,9 +232,9 @@
                   </div>
                   <a
                     class="text-center pointer"
-                    @click="downloadImage(lookup.icon_ar)"
+                    @click="downloadImage(lookup[1].icon)"
                   >
-                    <span v-if="lookup.icon_ar" class="download_btn_color">{{
+                    <span v-if="lookup[1].icon" class="download_btn_color">{{
                       $t("download")
                     }}</span>
                   </a>
@@ -318,18 +315,30 @@ export default {
     showupload: "",
     isDisabled: false,
     checkbox_value: false,
-    lookup: {
-      id: 0,
-      shortname: "",
-      longname: "",
-      description: "",
-      parentslug: "",
-      shortname_ar: "",
-      longname_ar: "",
-      description_ar: "",
-      icon: "",
-      icon_ar: "",
-    },
+    lookup: [
+      {
+        id: 0,
+        header_id: 0,
+        lang: "en",
+        shortname: "",
+        longname: "",
+        description: "",
+        parentslug: "",
+        icon: "",
+      },
+      {
+        id: 0,
+        header_id: 0,
+        lang: "ar",
+        shortname: "",
+        longname: "",
+        description: "",
+        parentslug: "",
+        icon: "",
+      },
+    ],
+    parentslug: "",
+    // parentname: "",
     noimagepreview: "",
     items: [],
     parentlookup: [],
@@ -338,6 +347,8 @@ export default {
     enable_upload_image: 1,
     uploadfile: false,
     uploadfile_ar: false,
+    parent_en: "",
+    parent_ar: "",
   }),
 
   computed: {
@@ -358,17 +369,23 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(
-              process.env.VUE_APP_API_URL_ADMIN +
-                "lookups/" +
-                this.$route.query.slug +
-                "/edit"
-            )
+            .get(process.env.VUE_APP_API_URL_ADMIN + "child_lookups_edit", {
+              params: {
+                slug: this.$route.query.slug,
+              },
+            })
             .then((res) => {
-              this.lookup = res.data.lookup;
-              // this.lookup.parentslug = this.lookup.parentlookup.slug;
-              this.parentlookup = this.lookup.parentlookup;
-              this.loader = false;
+              if (res.data.status == "S") {
+                this.lookup = res.data.lookup;
+                this.parentslug = res.data.parent_slug;
+                this.parent_en = res.data.parent_name;
+                this.lookup[0].parentslug = this.parentslug;
+                this.lookup[1].parentslug = this.parentslug;
+                this.loader = false;
+              }
+            })
+            .catch((err) => {
+              console.log(err);
             });
         }
       },
@@ -377,7 +394,9 @@ export default {
       immediate: true,
       handler() {
         if (this.$route.query.parentslug) {
-          this.lookup.parentslug = this.$route.query.parentslug;
+          this.parentslug = this.$route.query.parentslug;
+          this.lookup[0].parentslug = this.parentslug;
+          this.lookup[1].parentslug = this.parentslug;
           this.fetchparentlookup();
         }
       },
@@ -386,13 +405,12 @@ export default {
   methods: {
     checkUploadImage() {
       this.enable_upload_image = this.tabs;
-      // alert(this.enable_upload_image);
     },
     uploaded_image(img_src) {
-      this.lookup.icon = img_src;
+      this.lookup[0].icon = img_src;
     },
     uploaded_image_ar(img_src_ar) {
-      this.lookup.icon_ar = img_src_ar;
+      this.lookup[1].icon = img_src_ar;
     },
     uploadFile() {
       if (this.uploadfile == false) {
@@ -409,10 +427,10 @@ export default {
       }
     },
     updateFile(filepath) {
-      this.lookup.icon = filepath;
+      this.lookup[0].icon = filepath;
     },
     updateFile_ar(filepath_ar) {
-      this.lookup.icon_ar = filepath_ar;
+      this.lookup[1].icon = filepath_ar;
     },
 
     downloadImage(image_url) {
@@ -443,12 +461,11 @@ export default {
             if (res.data.status == "S") {
               this.$toast.success(this.array_data);
               this.message = res.data.message;
-              this.lookup.slug = res.data.lookups.slug;
               this.$router.push({
                 name: "child_lookup",
                 query: {
-                  slug: this.parentlookup.slug,
-                  parentname: this.parentlookup.shortname,
+                  slug: this.parentslug,
+                  // parentname: this.parent_en,
                 },
               });
             } else if (res.data.status == "E") {
@@ -462,6 +479,11 @@ export default {
           })
           .catch((err) => {
             console.log(err);
+          })
+          .finally(() => {
+            this.isDisabled = false;
+            this.isBtnLoading = false;
+            this.btnloading = false;
           });
       } else {
         //alert("Form is Invalid");
@@ -470,10 +492,11 @@ export default {
     fetchparentlookup() {
       this.$axios
         .post(process.env.VUE_APP_API_URL_ADMIN + "fetch_parent_lookup", {
-          slug: this.lookup.parentslug,
+          slug: this.parentslug,
         })
         .then((res) => {
-          this.parentlookup = res.data.lookups;
+          this.parent_en = res.data.parent_en;
+          this.parent_ar = res.data.parent_ar;
           this.loader = false;
         });
     },

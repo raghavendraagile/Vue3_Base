@@ -344,6 +344,8 @@
   "store_timings": "Store Timings",
   "store_name": "Store Name",
   "create_store_timings": "Create/Amend Store Timings",
+  "icon_en": "Icon",
+  "parent_lookup_en":"Parent Lookup",
 
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
@@ -389,5 +391,7 @@
   "rejected_by_ar": "مرفوض من طرف",
   "comments_ar": "تعليقات",
   "reason_for_rejection_ar": "سبب الرفض",
-  "mall_name_ar": "مول نام"
+  "mall_name_ar": "مول نام",
+  "icon_ar": "أيقونة",
+  "parent_lookup_ar":"بحث الوالدين"
 }

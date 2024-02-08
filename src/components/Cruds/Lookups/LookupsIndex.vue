@@ -54,7 +54,7 @@
       <v-window-item :value="1">
         <v-data-table
           :headers="headers"
-          :items="lookup"
+          :items="lookup_en"
           :search="search"
           :loading="initval"
           :no-data-text="$t('no_data_available')"
@@ -84,7 +84,7 @@
                 <v-btn
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
-                  @click="updateLookupsStatus(props.item.selectable.id)"
+                  @click="updateLookupsStatus(props.item.selectable.header_id)"
                   size="small"
                   v-bind:color="[
                     props.item.selectable.status == 1 ? 'success' : 'warning',
@@ -148,7 +148,7 @@
                     <span>{{ $t("child_look_ups") }}</span>
                   </v-tooltip>
                 </router-link>
-                <span @click="deleteItem(props.item.selectable.id)">
+                <span @click="deleteItem(props.item.selectable.header_id)">
                   <v-tooltip :text="this.$t('delete')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-icon
@@ -173,7 +173,7 @@
       <v-window-item :value="2">
         <v-data-table
           :headers="headers"
-          :items="lookup"
+          :items="lookup_ar"
           :search="search"
           :loading="initval"
           class="rtl-direction"
@@ -185,8 +185,8 @@
               <td>
                 <div class="text-truncate" style="max-width: 160px">
                   {{
-                    props.item.selectable.shortname_ar
-                      ? props.item.selectable.shortname_ar
+                    props.item.selectable.shortname
+                      ? props.item.selectable.shortname
                       : $t("not_appllicable")
                   }}
                 </div>
@@ -194,8 +194,8 @@
               <td>
                 <div class="text-truncate" style="max-width: 160px">
                   {{
-                    props.item.selectable.longname_ar
-                      ? props.item.selectable.longname_ar
+                    props.item.selectable.longname
+                      ? props.item.selectable.longname
                       : $t("not_appllicable")
                   }}
                 </div>
@@ -204,7 +204,7 @@
                 <v-btn
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
-                  @click="updateLookupsStatus(props.item.selectable.id)"
+                  @click="updateLookupsStatus(props.item.selectable.header_id)"
                   size="small"
                   v-bind:color="[
                     props.item.selectable.status == 1 ? 'success' : 'warning',
@@ -268,7 +268,7 @@
                     <span>{{ $t("child_look_ups") }}</span>
                   </v-tooltip>
                 </router-link>
-                <span @click="deleteItem(props.item.selectable.id)">
+                <span @click="deleteItem(props.item.selectable.header_id)">
                   <v-tooltip :text="this.$t('delete')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-icon
@@ -322,6 +322,8 @@ export default {
     showStatusDialog: false,
     delete_id: null,
     status_id: null,
+    lookup_en: [],
+    lookup_ar: [],
     isDisabled: false,
     tabs: 1,
     google_icon: {
@@ -361,13 +363,13 @@ export default {
           title: this.$t("shortname"),
           align: "left",
           sortable: true,
-          key: this.tabs == 1 ? "shortname" : "shortname_ar",
+          key:"shortname",
         },
         {
           title: this.$t("longname"),
           align: "left",
           sortable: false,
-          key: this.tabs == 1 ? "longname" : "longname_ar",
+          key:"longname",
         },
         {
           title: this.$t("status"),
@@ -414,7 +416,6 @@ export default {
           if (res.data.status == "S") {
             this.$toast.success(this.array_data);
             this.initialize();
-            this.$eventBus.$emit("app_logo");
           } else if (res.data.status == "E") {
             this.$toast.success(this.array_data);
           } else {
@@ -466,7 +467,8 @@ export default {
           }
           if (res.data.status == "S") {
             this.initval = false;
-            this.lookup = res.data.lookups;
+            this.lookup_en = res.data.lookup_en;
+            this.lookup_ar = res.data.lookup_ar;
           } else if (res.data.status == "E") {
             this.initval = false;
             this.$toast.error(this.array_data);

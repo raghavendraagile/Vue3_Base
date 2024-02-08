@@ -329,6 +329,8 @@
   "reason_for_rejection_ar": "سبب الرفض",
   "store_timings":"مواعيد المتجر",
   "create_store_timings":"إنشاء/تعديل توقيت المتجر",
+  "icon_ar": "أيقونة",
+  "parent_lookup_ar":"بحث الوالدين",
 
   "--------start_english_translation----------": "--------start_english_translation----------",
 
@@ -349,5 +351,7 @@
   "rejected_by_en": "Rejected by",
   "approval_status_en": "Approval Status",
   "comments_en": "Comments",
-  "reason_for_rejection_en": "Reason for Rejection"
+  "reason_for_rejection_en": "Reason for Rejection",
+  "icon_en": "Icon",
+  "parent_lookup_en":"Parent Lookup"
 }

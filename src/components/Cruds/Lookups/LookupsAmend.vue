@@ -8,6 +8,7 @@
       ></page-title>
     </div>
     <div class="card-body">
+      {{ lookup }}
       <content-loader v-if="loader"></content-loader>
       <v-tabs v-model="tabs" color="blue">
         <v-tab :value="1" @click="checkUploadImage">
@@ -27,8 +28,7 @@
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-on="on"
-                      v-model="lookup.shortname"
-                      :disabled="lookup.id == 0 ? disabled : ''"
+                      v-model="lookup[0].shortname"
                       :rules="fieldRules"
                       v-bind:label="$t('shortname')"
                       v-bind="props"
@@ -46,7 +46,7 @@
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-on="on"
-                      v-model="lookup.longname"
+                      v-model="lookup[0].longname"
                       :rules="fieldRules"
                       v-bind:label="$t('longname')"
                       v-bind="props"
@@ -68,7 +68,7 @@
                       <v-textarea
                         v-on="on"
                         rows="2"
-                        v-model="lookup.description"
+                        v-model="lookup[0].description"
                         :rules="fieldRules"
                         maxlength="100"
                         v-bind="props"
@@ -87,6 +87,7 @@
             <v-row class="mx-auto mt-2" max-width="344">
               <v-col md="6" v-if="enable_upload_image == 1">
                 <div>
+                  <span class="mb-5">{{ $t("icon_en") }}</span>
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">
                       <div style="position: relative" v-bind="props">
@@ -94,8 +95,8 @@
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                          v-if="lookup.icon != ''"
-                          :src="envImagePath + lookup.icon"
+                          v-if="lookup[0].icon != ''"
+                          :src="envImagePath + lookup[0].icon"
                           width="100"
                           height="65
                           "
@@ -117,9 +118,9 @@
                   </div>
                   <a
                     class="text-center pointer"
-                    @click="downloadImage(lookup.icon)"
+                    @click="downloadImage(lookup[0].icon)"
                   >
-                    <span v-if="lookup.icon" class="download_btn_color">{{
+                    <span v-if="lookup[0].icon" class="download_btn_color">{{
                       $t("download")
                     }}</span>
                   </a>
@@ -146,8 +147,7 @@
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-on="on"
-                      v-model="lookup.shortname_ar"
-                      :disabled="lookup.shortname_ar != '' ? disabled : ''"
+                      v-model="lookup[1].shortname"
                       :rules="fieldRules"
                       v-bind:label="$t('shortname')"
                       v-bind="props"
@@ -165,7 +165,7 @@
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-on="on"
-                      v-model="lookup.longname_ar"
+                      v-model="lookup[1].longname"
                       :rules="fieldRules"
                       v-bind:label="$t('longname')"
                       v-bind="props"
@@ -187,7 +187,7 @@
                       <v-textarea
                         v-on="on"
                         rows="2"
-                        v-model="lookup.description_ar"
+                        v-model="lookup[1].description"
                         :rules="fieldRules"
                         maxlength="100"
                         v-bind="props"
@@ -206,6 +206,7 @@
             <v-row class="mx-auto mt-2" max-width="344">
               <v-col md="6">
                 <div>
+                  <span class="mb-5">{{ $t("icon_ar") }}</span>
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">
                       <div style="position: relative" v-bind="props">
@@ -213,8 +214,8 @@
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                          v-if="lookup.icon_ar != ''"
-                          :src="envImagePath + lookup.icon_ar"
+                          v-if="lookup[1].icon != ''"
+                          :src="envImagePath + lookup[1].icon"
                           width="100"
                           height="65
                           "
@@ -236,9 +237,9 @@
                   </div>
                   <a
                     class="text-center pointer"
-                    @click="downloadImage(lookup.icon_ar)"
+                    @click="downloadImage(lookup[1].icon)"
                   >
-                    <span v-if="lookup.icon_ar" class="download_btn_color">{{
+                    <span v-if="lookup[1].icon" class="download_btn_color">{{
                       $t("download")
                     }}</span>
                   </a>
@@ -265,7 +266,7 @@
             <v-btn
               v-bind="props"
               size="small"
-              @click="$router.go(-1)"
+              @click="cancel()"
               :disabled="loading"
               class="ma-1"
               color="cancel"
@@ -322,17 +323,27 @@ export default {
     checkbox_value: false,
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
     enable_upload_image: 1,
-    lookup: {
-      id: 0,
-      shortname: "",
-      longname: "",
-      description: "",
-      shortname_ar: "",
-      longname_ar: "",
-      description_ar: "",
-      icon: "",
-      icon_ar: "",
-    },
+
+    lookup: [
+      {
+        id: 0,
+        header_id: 0,
+        lang: "en",
+        shortname: "",
+        longname: "",
+        description: "",
+        icon: "",
+      },
+      {
+        id: 0,
+        header_id: 0,
+        lang: "ar",
+        shortname: "",
+        longname: "",
+        description: "",
+        icon: "",
+      },
+    ],
     noimagepreview: "",
     uploadfile: false,
     uploadfile_ar: false,
@@ -374,15 +385,20 @@ export default {
     },
   },
   methods: {
+    cancel() {
+      this.$router.push({
+        name: "lookups",
+      });
+    },
     checkUploadImage() {
       this.enable_upload_image = this.tabs;
       // alert(this.enable_upload_image);
     },
     uploaded_image(img_src) {
-      this.lookup.icon = img_src;
+      this.lookup[0].icon = img_src;
     },
     uploaded_image_ar(img_src_ar) {
-      this.lookup.icon_ar = img_src_ar;
+      this.lookup[1].icon = img_src_ar;
     },
     uploadFile() {
       if (this.uploadfile == false) {
@@ -399,10 +415,10 @@ export default {
       }
     },
     updateFile(filepath) {
-      this.lookup.icon = filepath;
+      this.lookup[0].icon = filepath;
     },
     updateFile_ar(filepath_ar) {
-      this.lookup.icon_ar = filepath_ar;
+      this.lookup[1].icon_ar = filepath_ar;
     },
 
     downloadImage(image_url) {
@@ -445,8 +461,12 @@ export default {
           })
           .catch((err) => {
             console.log(err);
+          })
+          .finally(() => {
+            this.isDisabled = false;
+            this.isBtnLoading = false;
+            this.loader = false;
           });
-        this.loader = false;
       } else {
         //alert("Form is Invalid");
       }
@@ -462,5 +482,4 @@ input.larger {
   width: 20px;
   height: 20px;
 }
-
 </style>
