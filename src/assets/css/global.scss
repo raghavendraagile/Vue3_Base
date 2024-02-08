@@ -439,7 +439,17 @@ input::placeholder {
   background: #5e5eff;
   color: white;
 }
-
+.image-container {
+  max-width: 110px;
+  border: 5px double black;
+  border-radius: 3px;
+}
+.camera-icon {
+  position: absolute;
+  bottom: 35px;
+  left: 35px;
+  animation: fadeInUp 0.5s forwards;
+}
 
 //animations end
 
