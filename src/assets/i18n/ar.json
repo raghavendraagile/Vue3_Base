@@ -358,5 +358,8 @@
   "icon_en": "Icon",
   "parent_lookup_en":"Parent Lookup",
   "shortname_en":"Shortname",
-  "longname_en":"Longname"
+  "longname_en":"Longname",
+  "inactive_en":"Inactive",
+  "active_en":"Active",
+  "active_ar":"نشيط"
 }
