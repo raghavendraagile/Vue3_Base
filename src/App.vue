@@ -487,6 +487,7 @@ export default {
   text-align: right;
   direction: rtl;
 }
+
 nav {
   padding: 30px;
 }

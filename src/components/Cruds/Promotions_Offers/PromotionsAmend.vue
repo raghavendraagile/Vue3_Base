@@ -460,7 +460,7 @@
                 <br />
                 <Imageupload
                   :folder="'promotions_offers'"
-                  :resizewidth="0.4"
+                 :resizewidth="0.4"
                   :resizeheight="0.1"
                   @uploaded_image="uploaded_image"
                   :upload_profile="uploadfile"

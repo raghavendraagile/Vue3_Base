@@ -173,8 +173,8 @@
                     <br />
                     <Imageupload
                       :folder="'home_slider'"
-                      :resizewidth="0.4"
-                      :resizeheight="0.1"
+                      :resizewidth="1.3"
+                      :resizeheight="1"
                       @uploaded_image="uploaded_image"
                       :upload_profile="uploadfile"
                     />
@@ -337,8 +337,9 @@
                     <br />
                     <Imageupload
                       :folder="'home_slider'"
-                      :resizewidth="0.4"
-                      :resizeheight="0.1"
+                      :resizewidth="1.3"
+                      :resizeheight="1"
+                      :viewmodeslider="3"
                       @uploaded_image="uploaded_image"
                       :upload_profile="uploadfilear"
                     />
@@ -397,7 +398,7 @@
 </template>
     
   <script>
-import Imageupload from "../../CustomComponents/ImageUpload.vue";
+import Imageupload from "../../CustomComponents/ImageUploadSlider.vue";
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 import { quillEditor } from "vue3-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";

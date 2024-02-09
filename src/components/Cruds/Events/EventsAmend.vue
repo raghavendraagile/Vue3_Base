@@ -6,7 +6,7 @@
         :heading="$t('create_events')"
         :google_icon="google_icon"
       ></page-title>
-  {{events_en}}
+ 
     </div>
     <div class="card-body">
       <content-loader v-if="loader"></content-loader>
@@ -344,8 +344,8 @@
                 <br />
                 <Imageupload
                   :folder="'events'"
-                  :resizewidth="0.4"
-                  :resizeheight="0.1"
+                  :resizewidth="1.5"
+                  :resizeheight="2.5"
                   @uploaded_image="uploaded_image"
                   :upload_profile="uploadfile"
                 />

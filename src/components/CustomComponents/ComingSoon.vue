@@ -5,8 +5,8 @@
         <div class="d-flex">
         <div class="card-title">{{data.title}}</div>
         <div class="icon-wrapper rounded-circle">
-          <div class="icon-wrapper-bg bg-primary"></div>
-          <i class="fa fa-user text-primary"></i></div>
+          <div v-bind:class="[data.title == 'Events' ? 'bg-primary' : 'bg-primary']" class="icon-wrapper-bg"></div>
+          <i v-bind:class="[data.title == 'Events' ? 'text-primary' : 'text-primary']" class="fa fa-user"></i></div>
         </div>
         <div>
           <div>Total: {{data.count}}</div>

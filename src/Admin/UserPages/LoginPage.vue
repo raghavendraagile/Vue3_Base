@@ -288,6 +288,7 @@ export default {
           // alert('pushing to dashboard');
           console.log(newRoute);
           this.$router.push(newRoute);
+          //this.$router.push(newRoute);
           this.loader = false;
         })
         .catch((err) => {
