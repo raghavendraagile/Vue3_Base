@@ -333,7 +333,12 @@
   "parent_lookup_ar":"بحث الوالدين",
   "shortname_ar":"اسم قصير",
   "longname_ar":"اسم طويل",
-  
+  "is_holiday": "هل عطلة",
+  "meridiem": "ميريديم",
+  "from_meridiem": "من ميريديم",
+  "from": "من",
+  "to_meridiem": "إلى ميريديم",
+  "to": "ل",
 
   "--------start_english_translation----------": "--------start_english_translation----------",
 

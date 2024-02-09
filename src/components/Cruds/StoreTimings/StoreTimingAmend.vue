@@ -13,89 +13,185 @@
         <v-form ref="form" v-model="valid">
           <v-layot>
             <v-row class="px-6">
-              <v-col xs="4" md="4" lg="4">
+              <v-col xs="12" lg="4" md="4">
                 <v-tooltip :text="this.$t('store_name')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-select
+                    <v-autocomplete
                       v-bind="props"
-                      v-model="store_timings.store_id"
+                      v-model="store_timing_id"
+                      @update:modelValue="(value) => updateStoreId(value)"
                       :rules="fieldRules"
                       v-bind:label="$t('store_name')"
                       variant="outlined"
                       density="compact"
-                      class="required_field"
                       required
                       index="id"
                       :items="stores_en"
                       item-value="id"
                       item-title="name"
-                    ></v-select>
+                    ></v-autocomplete>
                   </template>
                 </v-tooltip>
               </v-col>
             </v-row>
           </v-layot>
-          <v-row class="px-6">
-            <v-col cols="12" md="6">
-              <v-tooltip :text="this.$t('parameter_name')" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-text-field
-                    v-on="on"
-                    v-model="store_timings.parameter_name"
-                    :rules="fieldRules"
-                    v-bind:label="$t('parameter_name')"
-                    required
-                    v-bind="props"
-                    class="required_field"
-                    variant="outlined"
-                    density="compact"
-                  ></v-text-field>
-                </template>
-              </v-tooltip>
-            </v-col>
-            <v-col md="6">
-              <v-tooltip :text="this.$t('parameter_value')" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-text-field
-                    v-on="on"
-                    v-model="store_timings.parameter_value"
-                    :rules="fieldRules"
-                    v-bind="props"
-                    v-bind:label="$t('parameter_value')"
-                    required
-                    class="required_field"
-                    variant="outlined"
-                    density="compact"
-                  ></v-text-field>
-                </template>
-              </v-tooltip>
-            </v-col>
-          </v-row>
-          <v-layout class="pt-3">
-            <v-row class="px-6">
-              <v-col md="12">
-                <v-tooltip :text="this.$t('description')" location="bottom">
+          <v-layot>
+            <v-row
+              class="px-6"
+              v-for="(day, day_index) in weekdays_en"
+              :key="day_index"
+            >
+              <v-col xs="2" lg="2" md="2">
+                <v-checkbox
+                  v-model="store_timings[day_index].is_holiday"
+                  v-bind:label="$t('is_holiday')"
+                  color="green"
+                  :value="1"
+                  hide-details
+                ></v-checkbox>
+              </v-col>
+              <v-col xs="12" lg="2" md="2">
+                <v-tooltip :text="this.$t(day.shortname)" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-textarea
+                    <v-text-field
                       v-on="on"
-                      rows="2"
+                      v-model="store_timings[day_index].week_day"
                       v-bind="props"
-                      v-model="store_timings.description"
-                      :rules="fieldRules"
-                      v-bind:label="$t('description')"
-                      required
-                      counter="250"
-                      counter-value="250"
-                      maxlength="250"
-                      class="required_field"
                       variant="outlined"
-                    ></v-textarea>
+                      disabled
+                      density="compact"
+                    ></v-text-field>
                   </template>
-                  <span>{{ $t("description") }}</span>
+                </v-tooltip>
+              </v-col>
+              <v-col
+                xs="12"
+                lg="2"
+                md="2"
+                v-bind:class="[
+                  store_timings[day_index].is_holiday == 1 ? 'disable' : '',
+                ]"
+              >
+                <v-tooltip :text="this.$t('from_time')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-select
+                      v-bind="props"
+                      v-model="store_timings[day_index].from_time"
+                      v-bind:label="$t('from_time')"
+                      variant="outlined"
+                      density="compact"
+                      index="id"
+                      :items="store_time"
+                      item-value="shortname"
+                      item-title="shortname"
+                      :disabled="store_timings[day_index].is_holiday"
+                    ></v-select>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col
+                xs="12"
+                lg="1"
+                md="1"
+                v-bind:class="[
+                  store_timings[day_index].is_holiday == 1 ? 'disable' : '',
+                ]"
+              >
+                <v-tooltip :text="this.$t('from_meridiem')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-select
+                      v-bind="props"
+                      v-model="store_timings[day_index].from_meridiem"
+                      :rules="fieldRules"
+                      variant="outlined"
+                      density="compact"
+                      required
+                      index="id"
+                      :items="meridiem"
+                      item-value="shortname"
+                      item-title="shortname"
+                      :disabled="store_timings[day_index].is_holiday"
+                    ></v-select>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col
+                xs="12"
+                lg="2"
+                md="2"
+                v-bind:class="[
+                  store_timings[day_index].is_holiday == 1 ? 'disable' : '',
+                ]"
+              >
+                <v-tooltip :text="this.$t('to_time')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-select
+                      v-bind="props"
+                      v-model="store_timings[day_index].to_time"
+                      v-bind:label="$t('to_time')"
+                      variant="outlined"
+                      density="compact"
+                      required
+                      index="id"
+                      :items="store_time"
+                      item-value="shortname"
+                      item-title="shortname"
+                      :disabled="store_timings[day_index].is_holiday"
+                    ></v-select>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col
+                xs="12"
+                lg="1"
+                md="1"
+                v-bind:class="[
+                  store_timings[day_index].is_holiday == 1 ? 'disable' : '',
+                ]"
+              >
+                <v-tooltip :text="this.$t('to_meridiem')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-select
+                      v-bind="props"
+                      v-model="store_timings[day_index].to_meridiem"
+                      :rules="fieldRules"
+                      variant="outlined"
+                      density="compact"
+                      required
+                      index="id"
+                      :items="meridiem"
+                      item-value="shortname"
+                      item-title="shortname"
+                      :disabled="store_timings[day_index].is_holiday"
+                    ></v-select>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col
+                xs="12"
+                lg="2"
+                md="2"
+                v-bind:class="[
+                  store_timings[day_index].is_holiday == 1 ? 'disable' : '',
+                ]"
+              >
+                <v-tooltip :text="this.$t('sequence')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-on="on"
+                      v-model="store_timings[day_index].seq"
+                      :rules="phoneRules"
+                      v-bind="props"
+                      v-bind:label="$t('sequence')"
+                      required
+                      variant="outlined"
+                      density="compact"
+                    ></v-text-field>
+                  </template>
                 </v-tooltip>
               </v-col>
             </v-row>
-          </v-layout>
+          </v-layot>
         </v-form>
       </div>
       <div class="d-block mr-4 mt-3 pb-3 text-right">
@@ -137,7 +233,6 @@
 
 <script>
 import PageTitle from "../../CustomComponents/PageTitle.vue";
-import localStorageWrapper from "../../../localStorageWrapper.js";
 export default {
   components: { PageTitle },
   data: () => ({
@@ -154,13 +249,23 @@ export default {
     showupload: "",
     isDisabled: false,
     checkbox_value: false,
-    store_timings: {
-      id: 0,
-      parameter_name: "",
-      parameter_value: "",
-    },
+    store_timing_id: null,
+    store_timings: [],
     stores_en: [],
     stores_ar: [],
+    weekdays_en: [],
+    weekdays_ar: [],
+    store_time: [],
+    meridiem: [
+      {
+        id: 0,
+        shortname: "AM",
+      },
+      {
+        id: 0,
+        shortname: "PM",
+      },
+    ],
   }),
 
   computed: {
@@ -171,10 +276,17 @@ export default {
     numberRules() {
       return [(v) => !!v || this.$t("number_required")];
     },
+
+    phoneRules() {
+      return [
+        (v) => (v >= 0 && v <= 999999999999) || this.$t("number_required"),
+      ];
+    },
   },
 
   created() {
     this.get_stores();
+    this.get_weekdays();
   },
   watch: {
     "$route.query.slug": {
@@ -185,11 +297,14 @@ export default {
           this.$axios
             .get(
               process.env.VUE_APP_API_URL_ADMIN +
-                "edit_store_timings/" +
+                "edit-store-timings/" +
                 this.$route.query.slug
             )
             .then((res) => {
-              this.store_timings = res.data.systemparameter;
+              this.store_timings = res.data.store_timings;
+              // console.log(res.data.store_timings[0].store_id);
+              this.store_timing_id = res.data.store_timings[0].store_id;
+              this.get_stores();
               this.loader = false;
             });
         }
@@ -197,6 +312,26 @@ export default {
     },
   },
   methods: {
+    initializeTimingArray() {
+      this.weekdays_en.forEach((element) => {
+        this.store_timings.push({
+          id: 0,
+          store_id: null,
+          is_holiday: 0,
+          week_day: element.longname,
+          from_time: null,
+          from_meridiem: "AM",
+          to_time: null,
+          to_meridiem: "AM",
+          seq: null,
+        });
+      });
+    },
+    updateStoreId(strore_id) {
+      this.store_timings.forEach((element) => {
+        element.store_id = strore_id;
+      });
+    },
     get_stores() {
       this.initval = true;
       this.$axios
@@ -212,23 +347,35 @@ export default {
         });
     },
 
+    get_weekdays() {
+      this.initval = true;
+      this.loader = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-weekdays")
+        .then((response) => {
+          this.store_time = response.data.store_time;
+          this.weekdays_en = response.data.weekdays;
+          this.initval = false;
+          this.initializeTimingArray();
+          this.loader = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     submit() {
-      if (this.$refs.form.validate() && this.valid == true) {
+      if (this.valid == true) {
         this.isDisabled = true;
         this.isBtnLoading = true;
         // Form is valid, process
         this.$axios
           .post(
-            process.env.VUE_APP_API_URL_ADMIN + "save_store_timings",
+            process.env.VUE_APP_API_URL_ADMIN + "save-store-timings",
             this.store_timings
           )
           .then((res) => {
             this.btnloading = false;
-            let app_image_url = res.data.systemparameter.image_full_url;
-            if (app_image_url) {
-              localStorageWrapper.setItem("App_Image_Url", app_image_url);
-              this.emitter.emit("app_image_update");
-            }
             if (Array.isArray(res.data.message)) {
               this.array_data = res.data.message.toString();
             } else {
@@ -238,7 +385,7 @@ export default {
               this.$toast.success(this.array_data);
               this.message = res.data.message;
               this.$router.push({
-                name: "system_parameter",
+                name: "store-timings",
               });
             } else if (res.data.status == "E") {
               this.$toast.error(this.array_data);
@@ -250,6 +397,7 @@ export default {
             }
           })
           .catch((err) => {
+            this.btnloading = false;
             console.log(err);
           });
       }
@@ -265,6 +413,9 @@ export default {
 input.larger {
   width: 20px;
   height: 20px;
+}
+.disable {
+  display: none;
 }
 </style>
 

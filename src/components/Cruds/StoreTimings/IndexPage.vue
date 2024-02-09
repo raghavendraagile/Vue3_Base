@@ -43,43 +43,18 @@
         </v-tooltip>
       </div>
     </div>
-
     <v-data-table
       :headers="headers"
-      :items="systemparameter"
+      :items="store_timings"
       :search="search"
       :loading="initval"
       v-bind:style="$route.params.lang == 'ar' ? 'direction:rtl' : ''"
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
-          <td>{{ props.item.selectable.parameter_name }}</td>
-          <td class="param-value">
-            {{ props.item.selectable.parameter_value }}
-          </td>
-          <td class="desc_div_overflow">{{ props.item.selectable.description }}</td>
-          <td class="text-center">
-            <v-btn
-              class="hover_shine btn mr-2"
-              :disabled="isDisabled"
-              @click="updateSystemParameteStatus(props.item.selectable.id)"
-              size="small"
-              v-bind:color="[
-                props.item.selectable.status == 1 ? 'success' : 'warning',
-              ]"
-            >
-              <span
-                v-if="props.item.selectable.status == 1"
-                class="spanactivesize"
-                >{{ $t("active") }}</span
-              >
-              <span
-                v-if="props.item.selectable.status == 0"
-                class="spanactivesize"
-                >{{ $t("inactive") }}</span
-              >
-            </v-btn>
-          </td>
+          <td>{{ props.item.selectable.name }}</td>
+          <td>{{ props.item.selectable.timings.from_time }}</td>
+          <td>{{ props.item.selectable.timings.to_time }}</td>
 
           <td class="text-center px-0">
             <router-link
@@ -144,7 +119,7 @@ export default {
     ConfirmDialog,
   },
   data: () => ({
-    systemparameter: [],
+    store_timings: [],
     showdeleteDialog: false,
     showStatusDialog: false,
     delete_id: null,
@@ -154,33 +129,19 @@ export default {
     headers: [
       {
         title: "Name",
-        align: "left",
-        sortable: true,
-        key: "parameter_name",
+        key: "name",
       },
       {
-        title: "Value",
-        align: "left",
-        sortable: false,
-        key: "parameter_value",
+        title: "From Time",
+        key: "from_time",
       },
       {
-        title: "Description",
-        align: "left",
-        sortable: false,
-        key: "description",
-      },
-      {
-        title: "Status",
-        align: "center",
-        sortable: false,
-        key: "status",
+        title: "To Time",
+        key: "to_time",
       },
       {
         title: "Actions",
-        key: "name",
         align: "center",
-        sortable: false,
       },
     ],
     google_icon: {
@@ -194,23 +155,9 @@ export default {
     successmessage: "",
     valid: false,
     message: "",
-    json_fields: [
-      {
-        label: "Name",
-        field: "parameter_name",
-      },
-      {
-        label: "Value",
-        field: "parameter_value",
-      },
-      {
-        label: "Description",
-        field: "description",
-      },
-    ],
   }),
   mounted() {
-    this.fetchSystemParameters();
+    this.fetchStoreTimings();
   },
   methods: {
     cancel() {
@@ -227,15 +174,20 @@ export default {
       this.statusUpdate();
       this.showStatusDialog = false;
     },
-    fetchSystemParameters() {
+    fetchStoreTimings() {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "getsystem_params")
+        .get(process.env.VUE_APP_API_URL_ADMIN + "get-store-timings")
         .then((res) => {
           this.initval = false;
-
-          // this.$toast.success(this.array_data);
-          this.systemparameter = res.data.systemparameters;
+          let store_timing = [];
+          res.data.store_timings.map((ele) => {
+            if (ele.timings != null) {
+              console.log(ele);
+              store_timing.push(ele);
+            }
+          });
+          this.store_timings = store_timing;
         })
         .catch((err) => {
           this.$toast.error(this.array_data);
@@ -243,15 +195,15 @@ export default {
         });
     },
     deleteConfirm() {
-      this.deletesystemparameter(this.delete_id);
+      this.deletestoretimings(this.delete_id);
     },
     deleteItem($id) {
       this.delete_id = $id;
       this.showdeleteDialog = true;
     },
-    deletesystemparameter(id) {
+    deletestoretimings(id) {
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "delete_system_params/" + id)
+        .post(process.env.VUE_APP_API_URL_ADMIN + "delete-store-timings/" + id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -260,8 +212,7 @@ export default {
           }
           if (res.data.status == "S") {
             this.$toast.success(this.array_data);
-            this.fetchSystemParameters();
-            localStorage.removeItem("appimage");
+            this.fetchStoreTimings();
           } else if (res.data.status == "E") {
             this.$toast.error(this.array_data);
           } else {
@@ -273,7 +224,7 @@ export default {
           console.log("this error" + err);
         });
     },
-    updateSystemParameteStatus(id) {
+    updateStoreTimingStatus(id) {
       this.status_id = id;
       this.showStatusDialog = true;
     },
@@ -293,7 +244,7 @@ export default {
           }
           if (res.data.status == "S") {
             this.$toast.success(this.array_data);
-            this.fetchSystemParameters();
+            this.fetchStoreTimings();
             this.$eventBus.$emit("app_logo");
           } else if (res.data.status == "E") {
             this.$toast.error(this.array_data);
@@ -303,52 +254,6 @@ export default {
           console.log("this error" + err);
         });
     },
-
-    // PDF download
-    pdfgen: function (systemparameter) {
-      var pdfMake = require("pdfmake/build/pdfmake.js");
-      if (pdfMake.vfs == undefined) {
-        var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
-      }
-      var docDefinition = {
-        content: [
-          { text: "System Parameter Report", style: "header" },
-          this._table(systemparameter, [
-            "parameter_name",
-            "parameter_value",
-            "description",
-            "status",
-          ]),
-        ],
-      };
-
-      pdfMake.createPdf(docDefinition).download("System Parameter.pdf");
-    },
-
-    _table(data, cols) {
-      return {
-        table: {
-          headerRows: 1,
-          body: this._buildTableBody(data, cols),
-        },
-      };
-    },
-
-    _buildTableBody(data, cols) {
-      let body = [];
-      body.push(cols);
-      data.forEach(function (row) {
-        // reg obj doesn't have forEach
-        let dataRow = [];
-        cols.forEach(function (column) {
-          dataRow.push(row[column].toString());
-        });
-        body.push(dataRow);
-      });
-
-      return body;
-    },
   },
 };
 </script>
@@ -357,27 +262,8 @@ export default {
   min-height: 38px !important;
   width: 353px;
 }
-.param-value {
-  max-width: 200px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
 
 .v-btn:not(.v-btn--round).v-size--small {
   min-width: 90px !important;
 }
-.desc_div_overflow {
-  white-space: nowrap; 
-  max-width: 300px; 
-  overflow: hidden;
-  text-overflow: ellipsis; 
-}
-
-/* .desc_div_overflow:hover {
-  white-space:break-spaces;
-  max-width: 300px; 
-  overflow-y: scroll;
-  text-overflow: inherit;
-} */
 </style>

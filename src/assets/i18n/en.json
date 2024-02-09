@@ -350,6 +350,12 @@
   "longname_en":"Longname",
   "inactive_en":"Inactive",
   "active_en":"Active",
+  "meridiem": "Meridiem",
+  "from_meridiem": "From Meridiem",
+  "from": "From",
+  "to_meridiem": "To Meridiem",
+  "to": "To",
+  "is_holiday": "Is Holiday",
 
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
@@ -399,5 +405,7 @@
   "icon_ar": "أيقونة",
   "parent_lookup_ar":"بحث الوالدين",
   "shortname_ar":"اسم قصير",
-  "longname_ar":"اسم طويل"
+  "longname_ar":"اسم طويل",
+  "social_media_ar": "وسائل التواصل الاجتماعي"
+
 }
