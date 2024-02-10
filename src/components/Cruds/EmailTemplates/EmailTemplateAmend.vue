@@ -8,33 +8,10 @@
       ></page-title>
     </div>
     <div class="mb-3">
-      <!-- --{{ tabs }} -->
       <content-loader v-if="loader"></content-loader>
       <div class="card-body" style="box-shadow: none !important">
         <v-form ref="form" v-model="valid">
           <v-row class="px-6 mt-4">
-            <v-col cols="12" sm="6" md="6">
-              <v-tooltip :text="$t('select_mode')" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-autocomplete
-                    v-bind:label="$t('select_mode')"
-                    item-value="id"
-                    item-title="shortname"
-                    density="compact"
-                    variant="outlined"
-                    v-bind="props"
-                    index="id"
-                    v-model="fieldItem.template_type_id"
-                    :rules="fieldRules1"
-                    :items=[1,2,3]
-                    outlined
-                    required
-                    dense
-                  ></v-autocomplete>
-                </template>
-                <!-- :items="mode_items" -->
-              </v-tooltip>
-            </v-col>
             <v-col cols="12" sm="6" md="6">
               <v-tooltip :text="$t('name')" location="bottom">
                 <template v-slot:activator="{ props }">
@@ -54,21 +31,42 @@
             </v-col>
           </v-row>
           <v-tabs v-model="tabs" color="blue">
-            <v-tab :value="1" @click="checkUploadImage">
+            <v-tab :value="1" @click="fieldItem.lang = 'en'">
               <span>{{ $t("english") }}</span>
             </v-tab>
-            <v-tab :value="2" @click="checkUploadImage">
+            <v-tab :value="2" @click="fieldItem.lang = 'ar'">
               <span>{{ $t("arabic") }}</span>
             </v-tab>
           </v-tabs>
           <div>
             <div>
               <v-row class="px-6 mt-4">
-                <v-col cols="12" sm="12" md="12">
+                <v-col cols="12" sm="12" md="4">
+                  <v-tooltip :text="$t('select_mode')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-autocomplete
+                        class="rtl-dir"
+                        v-bind:label="$t('select_mode')"
+                        item-value="header_id"
+                        item-title="shortname"
+                        density="compact"
+                        variant="outlined"
+                        v-bind="props"
+                        index="id"
+                        v-model="fieldItem.template_type_id"
+                        :rules="fieldRules1"
+                        :items="tabs == 1 ? temp_type_en : temp_type_ar"
+                        outlined
+                        required
+                        dense
+                      ></v-autocomplete>
+                    </template>
+                  </v-tooltip>
+                </v-col>
+                <v-col cols="12" sm="12" md="8">
                   <v-tooltip :text="$t('subject')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-text-field
-                        v-bind:style="tabs == 2 ? 'rt-input' : ''"
                         v-bind="props"
                         v-model="fieldItem.template_subject"
                         :rules="fieldRules"
@@ -91,6 +89,8 @@
                     <template v-slot:activator="{ props }">
                       <div v-bind="props">
                         <quill-editor
+                        :key="quill_d"
+                          :options="editorOptions"
                           v-bind:style="tabs == 2 ? 'rt-input' : ''"
                           class="hide_quill_input"
                           v-bind:id="
@@ -123,6 +123,7 @@
                     <template v-slot:activator="{ props }">
                       <div v-bind="props">
                         <quill-editor
+                          :options="editorOptions"
                           v-bind:style="tabs == 2 ? 'rt-input' : ''"
                           class="hide_quill_input"
                           v-bind:id="
@@ -158,7 +159,7 @@
               <v-btn
                 v-bind="props"
                 size="small"
-                @click="$router.go(-1)"
+                @click="cancel()"
                 :disabled="loading"
                 class="ma-1"
                 color="cancel"
@@ -221,21 +222,6 @@ export default {
     const onEditorReadyAR = (quill) => {
       console.log("editor ready!", quill);
     };
-    // const onEditorChange = ({ quill, html, text }) => {
-    //   console.log('editor change!', quill, html, text)
-    //   console.log("text is");
-    //   console.log(text.length);
-
-    // // if(text.length==1){
-    // //  quill_item=true;
-    // // }
-
-    //   state._content = html
-    // }
-
-    // setTimeout(() => {
-    //   state.disabled = true
-    // }, 2000)
 
     return { onEditorReady, onEditorFocus, onEditorFocusAR, onEditorReadyAR };
   },
@@ -243,6 +229,7 @@ export default {
     quill_item: false,
     quill_sign: false,
     tabs: 1,
+    quill_d:0,
     google_icon: {
       icon_name: "edit_note",
       color: "google_icon_gradient",
@@ -254,7 +241,6 @@ export default {
     orgcolumns: [],
     customercolumns: [],
     appointmentcolumns: [],
-    // editor2: ClassicEditor,
     selectmode: null,
     loader: false,
     editorConfig: {
@@ -277,6 +263,7 @@ export default {
       template_name: "",
       template_subject: "",
       template_body: "",
+      lang: "en",
       template_signature: "",
       can_override: "N",
       template_type_id: "",
@@ -289,6 +276,12 @@ export default {
     disabled: false,
     showerrmsg: false,
     email: "",
+    editorOptions: {
+      direction: "rtl",
+      theme: "snow",
+    },
+    temp_type_en: [],
+    temp_type_ar: [],
   }),
 
   computed: {
@@ -305,6 +298,13 @@ export default {
   },
   mounted() {},
   watch: {
+    tabs(newVal) {
+      if (newVal === 2) {
+        this.editorOptions.direction = "rtl";
+      } else {
+        this.editorOptions.direction = "ltr";
+      }
+    },
     "$route.query.slug": {
       immediate: true,
       handler() {
@@ -320,6 +320,11 @@ export default {
             .then((res) => {
               this.loader = false;
               this.fieldItem = res.data.email_template;
+              if (this.fieldItem.lang == "en") {
+                this.tabs = 1;
+              } else {
+                this.tabs = 2;
+              }
               this.loading = false;
             })
             .catch((err) => {
@@ -378,14 +383,14 @@ export default {
 
     fetchLookup() {
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetchlookup", {
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_lang_lookup", {
           params: {
             lookup_type: "TEMPLATE_TYPE",
           },
         })
         .then((response) => {
-          console.log(response);
-          this.mode_items = response.data.lookup_details;
+          this.temp_type_en = response.data.lookup_en;
+          this.temp_type_ar = response.data.lookup_ar;
         })
         .catch((err) => {
           this.$toast.error(this.$t("something_went_wrong"));
@@ -424,9 +429,7 @@ export default {
               if (res.data.status == "S") {
                 this.$toast.success(this.array_data);
                 this.message = res.data.message;
-                this.$router.push({
-                  name: "email_template",
-                });
+                this.cancel();
               } else if (res.data.status == "E") {
                 this.isDisabled = false;
                 this.$toast.error(this.array_data);
@@ -456,9 +459,7 @@ export default {
               if (res.data.status == "S") {
                 this.$toast.success(this.array_data);
                 this.message = res.data.message;
-                this.$router.push({
-                  name: "email_template",
-                });
+                this.cancel();
               } else if (res.data.status == "E") {
                 this.isDisabled = false;
                 this.$toast.error(this.array_data);
@@ -488,6 +489,10 @@ export default {
   @import "~quill/dist/quill.snow.css";
   @import "~quill/dist/quill.bubble.css"; */
 
+.rtl-dir :deep(.v-field) {
+  direction: rtl;
+  text-align: right;
+}
 #quill_item {
   border: 1px solid #b00020;
 }

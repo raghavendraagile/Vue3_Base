@@ -128,7 +128,7 @@ import { apptheme } from "../store/apptheme.js";
                               class="w-100 ml-2 list-menus"
                               @click="logoutUser"
                             >
-                              Logout
+                              {{$t('logout')}}
                             </a>
                           </span>
                         </template>
