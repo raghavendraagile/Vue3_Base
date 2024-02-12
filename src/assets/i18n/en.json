@@ -412,7 +412,10 @@
   "social_media_ar": "وسائل التواصل الاجتماعي",
   "vacancy_ar":"شاغر",
   "mall_details_ar": "تفاصيل المول",
-  "store_details_ar": "تفاصيل المتجر"
+  "store_details_ar": "تفاصيل المتجر",
+  "accept_change": "Do you wish to accept this data ?",
+  "reject_change": "Do you wish to reject this data ?",
+  "accept": "Accept"
 }
 
 

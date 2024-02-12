@@ -85,21 +85,26 @@
                 <v-btn
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
-                  @click="updateStatus(props.item.selectable.id)"
+                  @click="
+                    updateStatus(
+                      props.item.selectable.id,
+                      props.item.selectable.status
+                    )
+                  "
                   size="small"
                   v-bind:color="[
-                    props.item.selectable.status == 1 ? 'success' : 'warning',
+                    props.item.selectable.status == 1 ? 'success' : 'error',
                   ]"
                 >
                   <span
                     v-if="props.item.selectable.status == 1"
                     class="spanactivesize"
-                    >{{ $t("active") }}</span
+                    >{{ $t("accept") }}</span
                   >
                   <span
                     v-if="props.item.selectable.status == 0"
                     class="spanactivesize"
-                    >{{ $t("inactive") }}</span
+                    >{{ $t("reject") }}</span
                   >
                 </v-btn>
               </td>
@@ -166,21 +171,26 @@
                 <v-btn
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
-                  @click="updateStatus(props.item.selectable.id)"
+                  @click="
+                    updateStatus(
+                      props.item.selectable.id,
+                      props.item.selectable.status
+                    )
+                  "
                   size="small"
                   v-bind:color="[
-                    props.item.selectable.status == 1 ? 'success' : 'warning',
+                    props.item.selectable.status == 1 ? 'success' : 'error',
                   ]"
                 >
                   <span
                     v-if="props.item.selectable.status == 1"
                     class="spanactivesize"
-                    >{{ $t("active") }}</span
+                    >{{ $t("accept") }}</span
                   >
                   <span
                     v-if="props.item.selectable.status == 0"
                     class="spanactivesize"
-                    >{{ $t("inactive") }}</span
+                    >{{ $t("reject") }}</span
                   >
                 </v-btn>
               </td>
@@ -215,7 +225,7 @@
       :cancel="cancelStatus"
       :confirm="confirmStatus"
       v-bind:title="$t('confirm')"
-      v-bind:description="$t('status_change')"
+      v-bind:description="accept_reject_msg"
     />
     <ConfirmDialog
       :show="showIsPublishStatusDialog"
@@ -234,6 +244,7 @@ export default {
   components: { PageTitle, ConfirmDialog },
   data: () => ({
     search: "",
+    accept_reject_msg: "",
     showConfirmDialog: false,
     delete_id: null,
     dialog: false,
@@ -319,7 +330,7 @@ export default {
     cancel() {
       this.showConfirmDialog = false;
     },
-    
+
     confirm(id) {
       this.deleteConfirm(id);
       this.showConfirmDialog = false;
@@ -328,7 +339,9 @@ export default {
     deleteConfirm(testimonial_id) {
       this.$axios
         .post(
-          process.env.VUE_APP_API_URL_ADMIN + "delete-testimonial-and-reviews/" + testimonial_id
+          process.env.VUE_APP_API_URL_ADMIN +
+            "delete-testimonial-and-reviews/" +
+            testimonial_id
         )
         .then((res) => {
           if (Array.isArray(res.data.message)) {
@@ -357,7 +370,12 @@ export default {
       }, 300);
     },
 
-    updateStatus(id) {
+    updateStatus(id, status) {
+      if (status == 1) {
+        this.accept_reject_msg = this.$t("reject_change");
+      } else {
+        this.accept_reject_msg = this.$t("accept_change");
+      }
       this.status_id = id;
       this.showStatusDialog = true;
     },
