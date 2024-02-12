@@ -93,6 +93,14 @@
                   >
                 </v-btn>
               </td>
+              <td>
+                <v-chip
+                  :color="getStatusColor(props.item.selectable.approval_status)"
+                  variant="outlined"
+                >
+                  {{ props.item.selectable.approval_status }}
+                </v-chip>
+              </td>
               <td class="text-center">
                 <router-link
                   small
@@ -123,6 +131,16 @@
                     <span>{{ $t("delete") }}</span>
                   </v-tooltip>
                 </span>
+              </td>
+              <td>
+                <v-btn
+                  size="small"
+                  @click="viewCategory(props.item.selectable.slug)"
+                  :disabled="loading"
+                  class="ma-1"
+                  color="blue"
+                  >{{ $t("view_en") }}</v-btn
+                >
               </td>
             </tr>
           </template>
@@ -170,6 +188,14 @@
                   >
                 </v-btn>
               </td>
+              <td>
+                <v-chip
+                  :color="getStatusColor(props.item.selectable.approval_status)"
+                  variant="outlined"
+                >
+                  {{ props.item.selectable.approval_status }}
+                </v-chip>
+              </td>
               <td class="text-center">
                 <router-link
                   small
@@ -200,6 +226,16 @@
                     <span>{{ $t("delete") }}</span>
                   </v-tooltip>
                 </span>
+              </td>
+              <td>
+                <v-btn
+                  size="small"
+                  @click="viewCategory(props.item.selectable.slug)"
+                  :disabled="loading"
+                  class="ma-1"
+                  color="blue"
+                  >{{ $t("view_ar") }}</v-btn
+                >
               </td>
             </tr>
           </template>
@@ -246,6 +282,23 @@ export default {
     status_id: null,
     showStatusDialog: false,
     tabs: 1,
+    approval_status_items: [
+      {
+        id: 1,
+        shortname: "In Review",
+        longname: "In Review",
+      },
+      {
+        id: 2,
+        shortname: "Approved",
+        longname: "Approved",
+      },
+      {
+        id: 3,
+        shortname: "Rejected",
+        longname: "Rejected",
+      },
+    ],
   }),
 
   computed: {
@@ -279,6 +332,10 @@ export default {
           key: "seq",
         },
         {
+          title: this.$t("approval_en"),
+          key: "approval_status",
+        },
+        {
           title: this.$t("status"),
           key: "status",
         },
@@ -286,6 +343,10 @@ export default {
           title: this.$t("action"),
           align: "center",
           key: "action",
+        },
+        { 
+          title: "",
+          align: "center",
         },
       ];
     },
@@ -303,6 +364,24 @@ export default {
   },
 
   methods: {
+    getStatusColor(status) {
+      switch (status) {
+        case "Approved":
+          return "green";
+        case "In Review":
+          return "orange";
+        case "Rejected":
+          return "red";
+        default:
+          return "";
+      }
+    },
+    viewCategory(slug) {
+      this.$router.push({
+        name: "stores-review",
+        query: { slug: slug },
+      });
+    },
     cancel() {
       this.showConfirmDialog = false;
     },

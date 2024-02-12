@@ -364,6 +364,13 @@
   "created_at": "Created At",
   "vacancy_en":"Vacancy",
   "careers":"Careers",
+  "accept_change": "Do you wish to accept this data ?",
+  "reject_change": "Do you wish to reject this data ?",
+  "accept": "Accept",
+  "in_review" : "In Review",
+  "register" : "Register",
+  "user1" : "Users",
+  "parent_stores_en": "Parent Stores",
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
   "from_day_ar": "من اليوم",
@@ -418,12 +425,7 @@
   "vacancy_ar":"شاغر",
   "mall_details_ar": "تفاصيل المول",
   "store_details_ar": "تفاصيل المتجر",
-  "accept_change": "Do you wish to accept this data ?",
-  "reject_change": "Do you wish to reject this data ?",
-  "accept": "Accept",
-  "in_review" : "In Review",
-  "register" : "Register",
-  "user1" : "Users"
+  "parent_stores_ar": "متاجر الوالدين"
 }
 
 

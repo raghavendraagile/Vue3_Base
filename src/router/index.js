@@ -353,7 +353,11 @@ const routes = [
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/Stores/StoresAmend.vue"),
   },
-
+  {
+    path: "/:lang?/stores-review",
+    name: "stores-review",
+    component: () => import("../components/Cruds/Stores/ReviewStores.vue"),
+  },
   //categories
   {
     path: "/:lang?/categories",
