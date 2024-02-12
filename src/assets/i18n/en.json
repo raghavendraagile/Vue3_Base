@@ -418,7 +418,10 @@
   "store_details_ar": "تفاصيل المتجر",
   "accept_change": "Do you wish to accept this data ?",
   "reject_change": "Do you wish to reject this data ?",
-  "accept": "Accept"
+  "accept": "Accept",
+  "in_review" : "In Review",
+  "register" : "Register",
+  "user1" : "Users"
 }
 
 

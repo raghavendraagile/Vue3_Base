@@ -17,7 +17,9 @@
   font-family: cursive;
   color: #6a6afc;
 }
-
+#app.theme-dark .dash-parent .card{
+  background: black !important;
+}
 .navigation-title {
   background-color: #fff !important;
   color: #222 !important;

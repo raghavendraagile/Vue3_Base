@@ -368,6 +368,11 @@
   "shortname_en": "Shortname",
   "longname_en": "Longname",
   "inactive_en": "Inactive",
+  "no_data_available_en": "No data available",
   "active_en": "Active",
-  "no_data_available_en": "No data available"
+  "user1" : "المستخدمين",
+  "promotions" : "الترقيات",
+  "events": "الأحداث",
+  "register" : "يسجل",
+  "in_review" : "في مراجعة"
 }
