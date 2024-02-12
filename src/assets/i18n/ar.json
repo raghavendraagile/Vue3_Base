@@ -370,7 +370,13 @@
   "shortname_en": "Shortname",
   "longname_en": "Longname",
   "inactive_en": "Inactive",
-  "active_en": "Active",
   "no_data_available_en": "No data available",
-  "sequence_en":"Sequence"
+  "active_en": "Active",
+  // "no_data_available_en": "No data available",
+  "sequence_en":"Sequence",
+  "user1" : "المستخدمين",
+  "promotions" : "الترقيات",
+  "events": "الأحداث",
+  "register" : "يسجل",
+  "in_review" : "في مراجعة"
 }
