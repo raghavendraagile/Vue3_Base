@@ -34,7 +34,7 @@
       :search="search"
       :loading="initval"
       :no-data-text="$t('no_data_available')"
-      :items-per-page-text="$t('rows_per_page_en')"
+      :items-per-page-text="$t('rows_per_page')"
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
