@@ -108,7 +108,12 @@
                     </v-col>
                     <a class="a-underline">
                       <p>
-                        <router-link to="/forgot_password">
+                        <router-link
+                          :to="{
+                            name: 'forgot_password',
+                          }"
+                        >
+                        <!-- <router-link to="/forgot_password"> -->
                           {{ $t("recoverpassword") }}
                         </router-link>
                       </p>

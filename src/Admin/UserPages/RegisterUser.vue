@@ -38,7 +38,7 @@
                           <v-text-field
                             v-model="users.name"
                             v-bind="props"
-                            :rules="fieldRules"
+                            :rules="fieldRules1"
                             v-bind:label="$t('firstname')"
                             required
                             variant="outlined"
@@ -56,7 +56,7 @@
                           <v-text-field
                             v-bind="props"
                             v-model="users.lastname"
-                            :rules="fieldRules"
+                            :rules="fieldRules1"
                             v-bind:label="$t('lastname')"
                             required
                             variant="outlined"
@@ -77,7 +77,7 @@
                           <v-text-field
                             v-bind="props"
                             v-model="users.email"
-                            :rules="[...fieldRules,...emailRules]"
+                            :rules="[...fieldRules1,...emailRules]"
                             @keyup.enter="login"
                             v-bind:label="$t('email')"
                             variant="outlined"
@@ -103,7 +103,7 @@
                           @click:append-inner="show2 = !show2"
                           v-on="on"
                           v-model="users.password"
-                          :rules="[...passwordRules, ...fieldRules]"
+                          :rules="[...passwordRules, ...fieldRules1]"
                           v-bind:label="$t('password')"
                           required
                           @keyup.enter="saveUser"
@@ -142,7 +142,7 @@
                     </v-tooltip>
                   </div>
                 </div>
-                <div v-if="role_array" class="row">
+                <!-- <div v-if="role_array" class="row">
                   <v-radio-group
                     required
                     :rules="fieldRules1"
@@ -158,11 +158,11 @@
                       :value="role.id"
                     ></v-radio>
                   </v-radio-group>
-                </div>
+                </div> -->
               </v-form>
               <div>
                 <v-btn
-                  :disabled="isDisabled || !valid"
+                  :disabled="isDisabled"
                   v-bind="props"
                   :loading="isDisabled"
                   block
@@ -220,7 +220,7 @@ export default {
     app_image_url: "",
     application_name: "",
     app_name: "",
-    valid: true,
+    valid: false,
     valid_error: false,
     message: "",
     alertmessage: "",
@@ -266,7 +266,7 @@ export default {
       }
     },
     saveUser() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.form.validate() && this.valid) {
         if (this.users.password != this.users.confirm_password) {
           this.valid_error = true;
           this.alertmessage = this.$t("confirm_password_match");
