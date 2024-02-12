@@ -76,7 +76,7 @@
           </td>
           <td>
             <span v-if="props.item.selectable.rolename">
-              {{ props.item.selectable.rolename }}</span
+              {{ props.item.selectable.role.role_display_name }}</span
             >
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
@@ -179,7 +179,7 @@ export default {
 
       {
         title: "Role",
-        key: "rolename",
+        key: "role_display_name",
       },
       {
         title: "Status",

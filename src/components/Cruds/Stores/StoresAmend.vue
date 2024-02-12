@@ -30,6 +30,8 @@
                       v-model="stores[0].stor_type"
                       inline
                       class="radio_item"
+                      :disabled="$route.query.slug"
+                      @change="updateType(stores[0].stor_type)"
                     >
                       <v-radio :label="$t('mall')" value="Mall"></v-radio>
                       <v-radio value="Store" :label="$t('store')"></v-radio>
@@ -57,6 +59,7 @@
                         <v-select
                           v-bind="props"
                           v-model="stores[0].categories"
+                          @update:modelValue="(value) => updateCategories(value)"
                           :rules="fieldRules"
                           v-bind:label="$t('category')"
                           variant="outlined"
@@ -66,7 +69,7 @@
                           index="id"
                           multiple
                           :items="categories_en"
-                          item-value="id"
+                          item-value="header_id"
                           item-title="name"
                         ></v-select>
                       </template>
@@ -78,6 +81,7 @@
                         <v-select
                           v-bind="props"
                           v-model="stores[0].mall_name"
+                          @update:modelValue="(value) => updateMallName(value)"
                           :rules="fieldRules"
                           v-bind:label="$t('mall_name')"
                           variant="outlined"
@@ -86,7 +90,7 @@
                           required
                           index="id"
                           :items="mall_names_en"
-                          item-value="id"
+                          item-value="header_id"
                           item-title="name"
                         ></v-select>
                       </template>
@@ -158,11 +162,11 @@
                           density="compact"
                           index="id"
                           item-key="name"
-                          item-value="id"
+                          item-value="header_id"
                           item-title="name"
                           v-model="stores[0].country"
                           @update:model-value="fetchStates(stores[0].country)"
-                          :items="country_array"
+                          :items="country_array_en"
                         ></v-autocomplete>
                       </template>
                     </v-tooltip>
@@ -178,10 +182,10 @@
                           index="id"
                           item-key="name"
                           item-title="name"
-                          item-value="id"
+                          item-value="header_id"
                           v-model="stores[0].state"
                           @update:model-value="fetch_cities(stores[0].state)"
-                          :items="state_array"
+                          :items="state_array_en"
                         ></v-autocomplete>
                       </template>
                     </v-tooltip>
@@ -196,10 +200,10 @@
                           density="compact"
                           index="id"
                           item-key="name"
-                          item-value="id"
+                          item-value="header_id"
                           item-title="name"
                           v-model="stores[0].city"
-                          :items="city_array"
+                          :items="city_array_en"
                         ></v-autocomplete>
                       </template>
                     </v-tooltip>
@@ -379,8 +383,8 @@
                     <br />
                     <Imageupload
                       :folder="'stores'"
-                        :resizewidth="0.4"
-                  :resizeheight="0.1"
+                      :resizewidth="0.4"
+                      :resizeheight="0.1"
                       @uploaded_image="uploaded_image"
                       :upload_profile="uploadfile"
                     />
@@ -438,36 +442,6 @@
                   </v-col> -->
                 </v-row>
               </v-layout>
-              <div class="headings">
-                <h6 class="m-4">
-                  <b>{{ $t("social_media") }}</b>
-                </h6>
-              </div>
-              <v-layout>
-                <v-row class="px-6 mt-2">
-                  <v-col
-                    v-for="(media_data, media_index) in social_media_en"
-                    :key="media_index"
-                    cols="4"
-                    sm="4"
-                    md="4"
-                  >
-                    <v-tooltip :text="media_data.longname" location="bottom">
-                      <template v-slot:activator="{ props }">
-                        <v-text-field
-                          v-bind="props"
-                          v-model="stores[0].website"
-                          maxlength="100"
-                          v-bind:label="media_data.longname"
-                          required
-                          variant="outlined"
-                          density="compact"
-                        ></v-text-field>
-                      </template>
-                    </v-tooltip>
-                  </v-col>
-                </v-row>
-              </v-layout>
             </v-form>
           </v-window-item>
           <!-- ENGLISH TAB END -->
@@ -481,10 +455,24 @@
                       v-model="stores[1].stor_type"
                       inline
                       class="radio_item"
+                      :disabled="$route.query.slug"
+                      @change="updateType(stores[1].stor_type)"
                     >
                       <v-radio :label="$t('mall_ar')" value="Mall"></v-radio>
                       <v-radio :label="$t('store_ar')" value="Store"></v-radio>
                     </v-radio-group>
+                  </v-col>
+                </v-row>
+              </v-layout>
+              <v-layout>
+                <v-row class="headings">
+                  <v-col xs="12" md="12" lg="12">
+                    <h6 class="m-4" v-if="stores[1].stor_type == 'Mall'">
+                      <b>{{ $t("mall_details_ar") }}</b>
+                    </h6>
+                    <h6 class="m-4" v-else>
+                      <b>{{ $t("store_details_ar") }}</b>
+                    </h6>
                   </v-col>
                 </v-row>
               </v-layout>
@@ -496,6 +484,7 @@
                         <v-select
                           v-bind="props"
                           v-model="stores[1].categories"
+                          @update:modelValue="(value) => updateCategories(value)"
                           :rules="fieldRules"
                           v-bind:label="$t('category_ar')"
                           variant="outlined"
@@ -505,7 +494,7 @@
                           index="id"
                           multiple
                           :items="categories_ar"
-                          item-value="id"
+                          item-value="header_id"
                           item-title="name"
                         ></v-select>
                       </template>
@@ -517,6 +506,7 @@
                         <v-select
                           v-bind="props"
                           v-model="stores[1].mall_name"
+                          @update:modelValue="(value) => updateMallName(value)"
                           :rules="fieldRules"
                           v-bind:label="$t('mall_name_ar')"
                           variant="outlined"
@@ -525,7 +515,7 @@
                           required
                           index="id"
                           :items="mall_names_ar"
-                          item-value="id"
+                          item-value="header_id"
                           item-title="name"
                         ></v-select>
                       </template>
@@ -600,11 +590,11 @@
                           density="compact"
                           index="id"
                           item-key="name"
-                          item-value="id"
+                          item-value="header_id"
                           item-title="name"
                           v-model="stores[1].country"
                           @update:model-value="fetchStates(stores[1].country)"
-                          :items="country_array"
+                          :items="country_array_ar"
                         ></v-autocomplete>
                       </template>
                     </v-tooltip>
@@ -619,11 +609,11 @@
                           density="compact"
                           index="id"
                           item-key="name"
-                          item-value="id"
+                          item-value="header_id"
                           item-title="name"
                           v-model="stores[1].state"
                           @update:model-value="fetch_cities(stores[1].state)"
-                          :items="state_array"
+                          :items="state_array_ar"
                         ></v-autocomplete>
                       </template>
                     </v-tooltip>
@@ -639,14 +629,13 @@
                           index="id"
                           item-key="name"
                           item-title="name"
-                          item-value="id"
+                          item-value="header_id"
                           v-model="stores[1].city"
-                          :items="city_array"
+                          :items="city_array_ar"
                         ></v-autocomplete>
                       </template>
                     </v-tooltip>
                   </v-col>
-
                   <v-col cols="12" md="3" lg="3" sm="3" px-2>
                     <v-tooltip :text="$t('postcode_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
@@ -832,7 +821,7 @@
                     <Imageupload
                       :folder="'stores'"
                       :resizewidth="0.4"
-                  :resizeheight="0.1"
+                      :resizeheight="0.1"
                       @uploaded_image="uploaded_image"
                       :upload_profile="uploadfilear"
                     />
@@ -894,6 +883,41 @@
           </v-window-item>
           <!-- ARABIC TAB END -->
         </v-window>
+      </div>
+      <div class="headings">
+        <h6 class="m-4" v-if="tabs == 1">
+          <b>{{ $t("social_media") }}</b>
+        </h6>
+        <h6 class="m-4" v-else>
+          <b>{{ $t("social_media_ar") }}</b>
+        </h6>
+      </div>
+      <div>
+        <v-layout>
+          <v-row class="px-6 mt-2">
+            <v-col
+              v-for="(media_data, media_index) in social_media_en"
+              :key="media_index"
+              cols="4"
+              sm="4"
+              md="4"
+            >
+              <v-tooltip :text="media_data.longname" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-text-field
+                    v-bind="props"
+                    v-model="social_media[media_index].link"
+                    maxlength="100"
+                    v-bind:label="media_data.longname"
+                    required
+                    variant="outlined"
+                    density="compact"
+                  ></v-text-field>
+                </template>
+              </v-tooltip>
+            </v-col>
+          </v-row>
+        </v-layout>
       </div>
       <div class="d-block mr-4 mt-3 text-right">
         <v-tooltip :text="this.$t('cancel')" location="bottom">
@@ -960,6 +984,7 @@ export default {
     isDisabled: false,
     loader: false,
     tabs: 1,
+    social_media: [],
     stores: [
       {
         id: 0,
@@ -990,11 +1015,11 @@ export default {
     uploadfile: false,
     uploadfilear: false,
     uploadbifile: false,
-    country_array: [],
+    country_array_en: [],
     country_array_ar: [],
-    state_array: [],
+    state_array_en: [],
     state_array_ar: [],
-    city_array: [],
+    city_array_en: [],
     city_array_ar: [],
     social_media_en: [],
     social_media_ar: [],
@@ -1028,9 +1053,13 @@ export default {
   created() {
     this.get_categories();
     this.get_countries();
-    this.fetch_social_media();
   },
 
+  mounted() {
+    if (!this.$route.query.slug) {
+      this.fetch_social_media();
+    }
+  },
   watch: {
     "$route.query.slug": {
       immediate: true,
@@ -1051,6 +1080,7 @@ export default {
               }
               if (res.data.status == "S") {
                 this.stores = res.data.stores;
+                this.social_media = res.data.social_media;
                 this.fetchStates(this.stores[0].country);
                 this.fetch_cities(this.stores[0].state);
                 this.get_categories();
@@ -1065,12 +1095,55 @@ export default {
               this.$toast.error(this.$t("something_went_wrong"));
               console.log(err);
             });
+          this.$axios
+            .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-social-media")
+            .then((response) => {
+              console.log(response);
+              this.social_media_en = response.data.social_media_en;
+              // this.social_media_ar = response.data.social_media_ar;
+              response.data.social_media_en.forEach((element) => {
+                console.log(element.longname);
+                if (this.social_media.store_id > 0) {
+                  this.social_media.longname = element.longname;
+                }
+              });
+              console.log("social_media");
+              console.log(this.social_media);
+              this.initval = false;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
       },
     },
   },
 
   methods: {
+    updateType(stor_type) {
+      if (this.tabs == 1) {
+        this.stores[1].stor_type = stor_type;
+      } else {
+        this.stores[0].stor_type = stor_type;
+      }
+    },
+
+    updateCategories(categories) {
+      if (this.tabs == 1) {
+        this.stores[1].categories = categories;
+      } else {
+        this.stores[0].categories = categories;
+      }
+    },
+
+    updateMallName(mall_name) {
+      if (this.tabs == 1) {
+        this.stores[1].mall_name = mall_name;
+      } else {
+        this.stores[0].mall_name = mall_name;
+      }
+    },
+
     fetch_social_media() {
       this.initval = true;
       this.$axios
@@ -1078,7 +1151,21 @@ export default {
         .then((response) => {
           console.log(response);
           this.social_media_en = response.data.social_media_en;
-          this.social_media_ar = response.data.social_media_ar;
+          // this.social_media_ar = response.data.social_media_ar;
+          response.data.social_media_en.forEach((element) => {
+            console.log(element.longname);
+            this.social_media.push({
+              id: 0,
+              store_id: null,
+              lookup_id: element.header_id,
+              longname: element.longname,
+              link: "",
+              description: "",
+              seq: 1,
+            });
+          });
+          console.log("social_media");
+          console.log(this.social_media);
           this.initval = false;
         })
         .catch((err) => {
@@ -1107,7 +1194,7 @@ export default {
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_countries")
         .then((response) => {
           console.log(response);
-          this.country_array = response.data.countries_en;
+          this.country_array_en = response.data.countries_en;
           this.country_array_ar = response.data.countries_ar;
           this.initval = false;
         })
@@ -1122,10 +1209,10 @@ export default {
           process.env.VUE_APP_API_URL_ADMIN + "fetch_states_name/" + country_id
         )
         .then((response) => {
-          this.state_array = response.data.states_en;
+          this.state_array_en = response.data.states_en;
           this.state_array_ar = response.data.states_ar;
           this.initval = false;
-          this.city_array = [];
+          this.city_array_en = [];
           this.city_array_ar = [];
         })
         .catch((err) => {
@@ -1140,7 +1227,7 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          this.city_array = response.data.cities_en;
+          this.city_array_en = response.data.cities_en;
           this.city_array_ar = response.data.cities_ar;
           this.initval = false;
         })
@@ -1190,7 +1277,10 @@ export default {
         this.isBtnLoading = true;
         // Form is valid, process
         this.$axios
-          .post(process.env.VUE_APP_API_URL_ADMIN + "save-stores", this.stores)
+          .post(process.env.VUE_APP_API_URL_ADMIN + "save-stores", {
+            store: this.stores,
+            social_media: this.social_media,
+          })
           .then((res) => {
             this.btnloading = false;
             if (Array.isArray(res.data.message)) {
