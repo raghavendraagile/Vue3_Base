@@ -6,7 +6,7 @@
       <div class="dash-parent">
         <v-row>
           <v-col md="3">
-            <v-card density="comfortable" elevation="3"  class="usercard">
+            <v-card density="comfortable" elevation="3" class="usercard">
               <v-row>
                 <v-col md="8">
                   <v-card-title>
@@ -16,8 +16,8 @@
                     <div class="text-left row">
                       <v-chip class="mx-3" color="green">
                         <template v-slot:prepend>
-                           <v-avatar class="avatarcount">
-                            {{activeuser}}
+                          <v-avatar class="avatarcount">
+                            {{ activeuser }}
                           </v-avatar>
                         </template>
                         {{ $t('active') }}
@@ -27,7 +27,7 @@
                       <v-chip class="mx-3" color="orange">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
-                            {{inactiveuser}}
+                            {{ inactiveuser }}
                           </v-avatar>
                         </template>
                         {{ $t('inactive') }}
@@ -35,14 +35,14 @@
                     </div>
                     <div class="text-left row mt-2">
                       <v-chip class="mx-3" color="error" style="visibility: hidden;">
-                       
+
                       </v-chip>
                     </div>
                   </div>
                 </v-col>
                 <v-col md="4" class="cardlogo">
                   <div class="icon-wrapper">
-                    <i class="text-success fa fa-user"></i>
+                    <v-btn class="ma-2" color="success" icon="mdi-pencil"></v-btn>
                   </div>
                 </v-col>
               </v-row>
@@ -50,7 +50,7 @@
           </v-col>
 
           <v-col md="3">
-            <v-card density="comfortable" elevation="3"  class="eventcard">
+            <v-card density="comfortable" elevation="3" class="eventcard">
               <v-row>
                 <v-col md="8">
                   <v-card-title>
@@ -60,8 +60,8 @@
                     <div class="text-left row">
                       <v-chip class="mx-3" color="orange">
                         <template v-slot:prepend>
-                           <v-avatar class="avatarcount">
-                            {{irevents}}
+                          <v-avatar class="avatarcount">
+                            {{ irevents }}
                           </v-avatar>
                         </template>
                         {{ $t('in_review') }}
@@ -71,7 +71,7 @@
                       <v-chip class="mx-3" color="green">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
-                            {{apevents}}
+                            {{ apevents }}
                           </v-avatar>
                         </template>
                         {{ $t('approved') }}
@@ -81,7 +81,7 @@
                       <v-chip class="mx-3" color="error">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
-                            {{reevents}}
+                            {{ reevents }}
                           </v-avatar>
                         </template>
                         {{ $t('rejected') }}
@@ -91,7 +91,7 @@
                 </v-col>
                 <v-col md="4" class="cardlogo">
                   <div class="icon-wrapper">
-                    <i class="text-warning fa fa-calendar-o"></i>
+                    <v-btn class="ma-2" color="warning" icon="mdi-calendar-check"></v-btn>
                   </div>
                 </v-col>
               </v-row>
@@ -99,7 +99,7 @@
           </v-col>
 
           <v-col md="3">
-            <v-card density="comfortable" elevation="3"  class="promocard">
+            <v-card density="comfortable" elevation="3" class="promocard">
               <v-row>
                 <v-col md="8">
                   <v-card-title>
@@ -109,8 +109,8 @@
                     <div class="text-left row">
                       <v-chip class="mx-3" color="orange">
                         <template v-slot:prepend>
-                           <v-avatar class="avatarcount">
-                            {{irpromo}}
+                          <v-avatar class="avatarcount">
+                            {{ irpromo }}
                           </v-avatar>
                         </template>
                         {{ $t('in_review') }}
@@ -120,7 +120,7 @@
                       <v-chip class="mx-3" color="green">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
-                            {{appromo}}
+                            {{ appromo }}
                           </v-avatar>
                         </template>
                         {{ $t('approved') }}
@@ -130,7 +130,7 @@
                       <v-chip class="mx-3" color="error">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
-                            {{repromo}}
+                            {{ repromo }}
                           </v-avatar>
                         </template>
                         {{ $t('rejected') }}
@@ -140,7 +140,7 @@
                 </v-col>
                 <v-col md="4" class="cardlogo">
                   <div class="icon-wrapper">
-                    <i class="text-primary fa fa-trophy "></i>
+                    <v-btn class="ma-2" color="primary" icon="mdi-ticket-percent"></v-btn>
                   </div>
                 </v-col>
               </v-row>
@@ -148,7 +148,7 @@
           </v-col>
 
           <v-col md="3">
-            <v-card density="comfortable" elevation="3"  class="productcard">
+            <v-card density="comfortable" elevation="3" class="productcard">
               <v-row>
                 <v-col md="8">
                   <v-card-title>
@@ -158,8 +158,8 @@
                     <div class="text-left row">
                       <v-chip class="mx-3" color="orange">
                         <template v-slot:prepend>
-                           <v-avatar class="avatarcount">
-                            {{irprod}}
+                          <v-avatar class="avatarcount">
+                            {{ irprod }}
                           </v-avatar>
                         </template>
                         {{ $t('in_review') }}
@@ -169,7 +169,7 @@
                       <v-chip class="mx-3" color="green">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
-                            {{approd}}
+                            {{ approd }}
                           </v-avatar>
                         </template>
                         {{ $t('approved') }}
@@ -179,7 +179,7 @@
                       <v-chip class="mx-3" color="error">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
-                            {{reprod}}
+                            {{ reprod }}
                           </v-avatar>
                         </template>
                         {{ $t('rejected') }}
@@ -189,15 +189,15 @@
                 </v-col>
                 <v-col md="4" class="cardlogo">
                   <div class="icon-wrapper">
-                    <i class="text-error fa fa-shopping-cart "></i>
+                    <v-btn class="ma-2" color="error" icon="mdi-view-module"></v-btn>
                   </div>
                 </v-col>
               </v-row>
             </v-card>
           </v-col>
-          
+
           <v-col md="3">
-            <v-card density="comfortable" elevation="3"  class="eventcard">
+            <v-card density="comfortable" elevation="3" class="categorycard">
               <v-row>
                 <v-col md="8">
                   <v-card-title>
@@ -207,8 +207,8 @@
                     <div class="text-left row">
                       <v-chip class="mx-3" color="orange">
                         <template v-slot:prepend>
-                           <v-avatar class="avatarcount">
-                            {{ircat}}
+                          <v-avatar class="avatarcount">
+                            {{ ircat }}
                           </v-avatar>
                         </template>
                         {{ $t('in_review') }}
@@ -218,7 +218,7 @@
                       <v-chip class="mx-3" color="green">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
-                            {{apcat}}
+                            {{ apcat }}
                           </v-avatar>
                         </template>
                         {{ $t('approved') }}
@@ -228,7 +228,7 @@
                       <v-chip class="mx-3" color="error">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
-                            {{recat}}
+                            {{ recat }}
                           </v-avatar>
                         </template>
                         {{ $t('rejected') }}
@@ -238,7 +238,7 @@
                 </v-col>
                 <v-col md="4" class="cardlogo">
                   <div class="icon-wrapper">
-                    <i class="text-warning fa fa-th"></i>
+                    <v-btn class="ma-2" color="error" icon="mdi mdi-apps"></v-btn>
                   </div>
                 </v-col>
               </v-row>
@@ -246,7 +246,7 @@
           </v-col>
 
           <v-col md="3">
-            <v-card density="comfortable" elevation="3"  class="eventcard">
+            <v-card density="comfortable" elevation="3" class="carriercard">
               <v-row>
                 <v-col md="8">
                   <v-card-title>
@@ -256,8 +256,8 @@
                     <div class="text-left row">
                       <v-chip class="mx-3" color="orange">
                         <template v-slot:prepend>
-                           <v-avatar class="avatarcount">
-                            {{ircar}}
+                          <v-avatar class="avatarcount">
+                            {{ ircar }}
                           </v-avatar>
                         </template>
                         {{ $t('in_review') }}
@@ -267,7 +267,7 @@
                       <v-chip class="mx-3" color="green">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
-                            {{apcar}}
+                            {{ apcar }}
                           </v-avatar>
                         </template>
                         {{ $t('approved') }}
@@ -277,7 +277,7 @@
                       <v-chip class="mx-3" color="error">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
-                            {{recar}}
+                            {{ recar }}
                           </v-avatar>
                         </template>
                         {{ $t('rejected') }}
@@ -287,7 +287,7 @@
                 </v-col>
                 <v-col md="4" class="cardlogo">
                   <div class="icon-wrapper">
-                    <i class="text-warning fa fa-calendar-o"></i>
+                    <v-btn class="ma-2" color="primary" icon="mdi mdi-briefcase"></v-btn>
                   </div>
                 </v-col>
               </v-row>
@@ -295,7 +295,7 @@
           </v-col>
 
           <v-col md="3">
-            <v-card density="comfortable" elevation="3"  class="promocard">
+            <v-card density="comfortable" elevation="3" class="storecard">
               <v-row>
                 <v-col md="8">
                   <v-card-title>
@@ -305,8 +305,8 @@
                     <div class="text-left row">
                       <v-chip class="mx-3" color="orange">
                         <template v-slot:prepend>
-                           <v-avatar class="avatarcount">
-                            {{irstore}}
+                          <v-avatar class="avatarcount">
+                            {{ irstore }}
                           </v-avatar>
                         </template>
                         {{ $t('in_review') }}
@@ -316,7 +316,7 @@
                       <v-chip class="mx-3" color="green">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
-                            {{apstore}}
+                            {{ apstore }}
                           </v-avatar>
                         </template>
                         {{ $t('approved') }}
@@ -326,7 +326,7 @@
                       <v-chip class="mx-3" color="error">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
-                            {{re_store}}
+                            {{ re_store }}
                           </v-avatar>
                         </template>
                         {{ $t('rejected') }}
@@ -336,7 +336,7 @@
                 </v-col>
                 <v-col md="4" class="cardlogo">
                   <div class="icon-wrapper">
-                    <i class="text-primary fa fa-trophy "></i>
+                    <v-btn class="ma-2" color="warning" icon="mdi mdi-storefront-outline"></v-btn>
                   </div>
                 </v-col>
               </v-row>
@@ -344,18 +344,18 @@
           </v-col>
 
           <v-col md="3">
-            <v-card density="comfortable" elevation="3"  class="productcard">
+            <v-card density="comfortable" elevation="3" class="testimonialcard">
               <v-row>
                 <v-col md="8">
                   <v-card-title>
-                    {{ $t('reviews_testimonials') }}
+                    {{ $t('testimonials') }}
                   </v-card-title>
                   <div class="pb-5 pt-2 px-3">
                     <div class="text-left row">
                       <v-chip class="mx-3" color="green">
                         <template v-slot:prepend>
-                           <v-avatar class="avatarcount">
-                            {{aptesti}}
+                          <v-avatar class="avatarcount">
+                            {{ aptesti }}
                           </v-avatar>
                         </template>
                         {{ $t('approved') }}
@@ -365,7 +365,7 @@
                       <v-chip class="mx-3" color="error">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
-                            {{retesti}}
+                            {{ retesti }}
                           </v-avatar>
                         </template>
                         {{ $t('rejected') }}
@@ -373,20 +373,20 @@
                     </div>
                     <div class="text-left row mt-2">
                       <v-chip class="mx-3" color="error" style="visibility: hidden;">
-                       
+
                       </v-chip>
                     </div>
                   </div>
                 </v-col>
                 <v-col md="4" class="cardlogo">
                   <div class="icon-wrapper">
-                    <i class="text-error fa fa-shopping-cart "></i>
+                    <v-btn class="ma-2" color="success" icon="mdi mdi-message-text-fast-outline"></v-btn>
                   </div>
                 </v-col>
               </v-row>
             </v-card>
           </v-col>
-     
+
         </v-row>
 
       </div>
@@ -408,26 +408,26 @@ export default {
     search: "",
     activeuser: 0,
     inactiveuser: 0,
-    reevents : 0,
-    apevents : 0,
-    irevents :0 ,
-    repromo : 0,
-    appromo : 0,
-    irpromo :0 ,
-    reprod : 0,
-    approd : 0,
-    irprod :0 ,
-    recat : 0,
-    apcat : 0,
-    ircat :0 ,
-    recar : 0,
-    apcar : 0,
-    ircar :0 ,
-    re_store : 0,
-    apstore : 0,
-    irstore :0 ,
-    aptesti : 0,
-    retesti : 0,
+    reevents: 0,
+    apevents: 0,
+    irevents: 0,
+    repromo: 0,
+    appromo: 0,
+    irpromo: 0,
+    reprod: 0,
+    approd: 0,
+    irprod: 0,
+    recat: 0,
+    apcat: 0,
+    ircat: 0,
+    recar: 0,
+    apcar: 0,
+    ircar: 0,
+    re_store: 0,
+    apstore: 0,
+    irstore: 0,
+    aptesti: 0,
+    retesti: 0,
     loader: false,
     role_id: "",
     menuitems: [],
@@ -462,7 +462,7 @@ export default {
           this.reprod = res.data.reprod;
           this.ircat = res.data.ircat;
           this.apcat = res.data.apcat;
-          this.recat = res.data.recat;    
+          this.recat = res.data.recat;
           this.ircar = res.data.ircar;
           this.apcar = res.data.apcar;
           this.recar = res.data.recar;
@@ -487,16 +487,19 @@ export default {
   padding-right: 0px;
 }
 
-.dash-parent .usercard {
+.dash-parent .usercard , .testimonialcard{
   border-bottom: 4px solid green;
 }
-.dash-parent .eventcard {
+
+.dash-parent .eventcard , .storecard {
   border-bottom: 4px solid orange;
 }
-.dash-parent .promocard {
+
+.dash-parent .promocard, .carriercard {
   border-bottom: 4px solid blue;
 }
-.dash-parent .productcard {
+
+.dash-parent .productcard , .categorycard{
   border-bottom: 4px solid red;
 }
 
@@ -504,19 +507,21 @@ export default {
   align-self: center;
 }
 
-.icon-wrapper i {
+/* .icon-wrapper i {
   font-size: 20px;
   padding: 10px 13px;
   background: #0000ff2b;
   border-radius: 50px;
 
-}
-.avatarcount{
+} */
+
+.avatarcount {
   color: rgba(0, 0, 0, 0.411);
-    font-weight: 700;
-    margin-bottom: 1px;
+  font-weight: 700;
+  margin-bottom: 1px;
 }
-.icon-wrapper{
+
+.icon-wrapper {
   text-align: center;
 }
 </style>
