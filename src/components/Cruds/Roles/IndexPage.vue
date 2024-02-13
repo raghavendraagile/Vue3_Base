@@ -10,23 +10,24 @@
         :heading="$t('role')"
         :google_icon="google_icon"
       ></page-title>
-      <div class="col-md-4">
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+      
+
+       <div class="col-md-4">
+        <v-tooltip :text="this.$t('search')" location="bottom">
+          <template v-slot:activator="{ props }">
             <v-text-field
-              dense
+              rounded
               density="compact"
-              v-on="on"
               variant="outlined"
+              elevation="24"
+              v-bind="props"
               v-model="search"
               append-icon="search"
-              label="Search"
-              class="srch_bar"
-              small
+              v-bind:label="$t('search')"
               hide-details
+              class="srch_bar"
             ></v-text-field>
           </template>
-          <span>{{ $t("search") }}</span>
         </v-tooltip>
       </div>
 

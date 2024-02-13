@@ -125,8 +125,8 @@
                 <br />
                 <Imageupload
                   :folder="'lookups'"
-                  :resizewidth="0.4"
-                  :resizeheight="0.1"
+                  :resizewidth="200"
+                  :resizeheight="200"
                   @uploaded_image="uploaded_image"
                   :upload_profile="uploadfile"
                 />

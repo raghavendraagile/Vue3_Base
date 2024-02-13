@@ -213,7 +213,7 @@
                         >
                       </a>
                     </div>
-                    
+
                     <br />
                     <Imageupload
                       :folder="'category'"
@@ -297,7 +297,10 @@
                     <v-tooltip :text="$t('description_ar')" location="top">
                       <template v-slot:activator="{ props }">
                         <div v-bind="props">
+                              <!-- @ready="setRtlDirection" -->
                           <quill-editor
+                            ref="quill_editor_ref"
+                            :options="editorOptions"
                             class="hide_quill_input rtl"
                             v-bind:id="
                               quill_item == true
@@ -307,7 +310,7 @@
                             v-model:value="category[1].description"
                             @blur="onEditorBlurAR($event)"
                             @focus="onEditorFocusAR($event)"
-                            @ready="onEditorReadyAR($event)"
+                            @ready="setRtlDirection"
                             @change="onEditorChangeAR($event)"
                           />
                           <small
@@ -365,7 +368,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                   <v-col cols="2" sm="2" md="2">
+                  <v-col cols="2" sm="2" md="2">
                     <v-tooltip :text="$t('sequence')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -422,7 +425,7 @@
                         >
                       </a>
                     </div>
-                    
+
                     <br />
                     <Imageupload
                       :folder="'category'"
@@ -508,8 +511,8 @@
     </div>
   </div>
 </template>
-    
-  <script>
+
+<script>
 import Imageupload from "../../CustomComponents/ImageUpload.vue";
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 import { quillEditor } from "vue3-quill";
@@ -542,6 +545,11 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
+    editorOptions: {
+      theme: "snow",
+      direction: 'rtl', 
+        placeholder: "أدخل المحتوى هنا",
+    },
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
     valid: true,
     successmessage: "",
@@ -568,7 +576,7 @@ export default {
         description: "",
         meta_title: "",
         image_path: "",
-        seq:"",
+        seq: "",
         meta_description: "",
         display_header_menu: 0,
         header_id: 0,
@@ -582,7 +590,7 @@ export default {
         description: "",
         meta_title: "",
         image_path: "",
-        seq:"",
+        seq: "",
         meta_description: "",
         display_header_menu: 0,
         header_id: 0,
@@ -602,9 +610,12 @@ export default {
     },
   },
 
-  created() {},
   mounted() {
     this.fetchParentCategories();
+    // setTimeout(()=>{
+
+    //   // this.setRtlDirection();
+    // },5000)
   },
 
   watch: {
@@ -615,7 +626,8 @@ export default {
           this.loader = true;
           this.$axios
             .get(
-              process.env.VUE_APP_API_URL_ADMIN + "edit-category/" +
+              process.env.VUE_APP_API_URL_ADMIN +
+                "edit-category/" +
                 this.$route.query.slug
             )
             .then((res) => {
@@ -643,6 +655,18 @@ export default {
   },
 
   methods: {
+setRtlDirection(quill) {
+    quill.on('text-change', () => {
+      const text = quill.getText();
+      const rtlChar = /[\u0590-\u05FF\u0600-\u06FF]/; 
+      console.log("rtl char ",rtlChar)
+      if (rtlChar.test(text)) {
+        quill.root.setAttribute('dir', 'rtl');
+      } else {
+        quill.root.setAttribute('dir', 'ltr');
+      }
+    });
+  },
     uploaded_image(img_src) {
       //alert('uploaded image');
       //alert(img_src);
@@ -795,12 +819,21 @@ export default {
   },
 };
 </script>
-  <style scoped>
+<style scoped>
 #quill_item {
   border: 1px solid #b00020;
 }
 #quill_item_border {
   border: 1px solid #d1d5db;
 }
+.ql-container.ql-snow {
+  direction: rtl;
+  text-align: right;
+}
+
+.ql-editor {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
 </style>
-    
