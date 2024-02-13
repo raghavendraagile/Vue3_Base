@@ -390,6 +390,10 @@
   "week_day": "Week Day",
   "start_date_en": "Start Date",
   "end_date_en": "End Date",
+  "address_en": "Address",
+  "phone_en": "Phone",
+  "email_en": "E-mail",
+  "target_en": "Target",
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
   "from_day_ar": "من اليوم",
@@ -450,5 +454,7 @@
   "subject_ar": "موضوع",
   "start_date_ar": "بدء العرض",
   "end_date_ar": "انتهاء العرض",
-  "file_input_ar": "إدخال الملف"
+  "file_input_ar": "إدخال الملف",
+  "store_type_ar": "نوع المتاجر",
+  "target_ar": "هدف"
 }
