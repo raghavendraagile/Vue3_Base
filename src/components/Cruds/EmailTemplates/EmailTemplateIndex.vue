@@ -7,21 +7,20 @@
         :google_icon="google_icon"
       ></page-title>
 
-      <div class="col-md-4">
-        <v-tooltip :text="this.$t('search')" location="top">
+       <div class="col-md-4">
+        <v-tooltip :text="this.$t('search')" location="bottom">
           <template v-slot:activator="{ props }">
             <v-text-field
-              dense
+              rounded
               density="compact"
-              v-on="on"
               variant="outlined"
+              elevation="24"
+              v-bind="props"
               v-model="search"
               append-icon="search"
-              label="Search"
-              class="srch_bar"
-              small
+              v-bind:label="$t('search')"
               hide-details
-              v-bind="props"
+              class="srch_bar"
             ></v-text-field>
           </template>
         </v-tooltip>
@@ -107,7 +106,7 @@
       <!-- ARABIC TAB STARTS -->
       <v-window-item :value="2">
         <v-data-table
-          :headers="headers"
+          :headers="headers_ar"
           :items="email_templates"
           :search="search"
           :loading="initval"
@@ -198,19 +197,40 @@ export default {
     headers() {
       return [
         {
-          title: this.$t("type"),
+          title: this.$t("type_en"),
           key: "templatetypename",
         },
         {
-          title: this.$t("name"),
+          title: this.$t("name_en"),
           key: "template_name",
         },
         {
-          title: this.$t("subject"),
+          title: this.$t("subject_en"),
           key: "template_subject",
         },
         {
-          title: this.$t("action"),
+          title: this.$t("action_en"),
+          align: "center",
+          key: "email",
+        },
+      ];
+    },
+    headers_ar() {
+      return [
+        {
+          title: this.$t("type_ar"),
+          key: "templatetypename",
+        },
+        {
+          title: this.$t("name_ar"),
+          key: "template_name",
+        },
+        {
+          title: this.$t("subject_ar"),
+          key: "template_subject",
+        },
+        {
+          title: this.$t("action_ar"),
           align: "center",
           key: "email",
         },

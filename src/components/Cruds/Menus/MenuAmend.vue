@@ -113,7 +113,7 @@
               <v-btn
                 v-bind="props"
                 size="small"
-                @click="$router.go(-1)"
+                @click="cancel()"
                 :disabled="loading"
                 class="ma-1"
                 color="cancel"
@@ -149,7 +149,7 @@
     </div>
   </div>
 </template>
-  
+
 <script>
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 export default {
@@ -237,6 +237,11 @@ export default {
     },
   },
   methods: {
+    cancel() {
+      this.$router.push({
+        name: "menus",
+      });
+    },
     submit() {
       if (this.$refs.form.validate()) {
         if (this.fieldItem.id == 0) {
@@ -306,4 +311,3 @@ export default {
   },
 };
 </script>
-  

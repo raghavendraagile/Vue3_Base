@@ -377,6 +377,10 @@
   "i_am":"I am",
   "mall_admin":"Mall Admin",
   "store_admin":"Store Admin",
+  "value":"Value",
+  "actions_en":"Action",
+  "subject_en":"Subject",
+  "type_en":"Type",
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
   "from_day_ar": "من اليوم",
@@ -431,7 +435,13 @@
   "vacancy_ar":"شاغر",
   "mall_details_ar": "تفاصيل المول",
   "store_details_ar": "تفاصيل المتجر",
-  "parent_stores_ar": "متاجر الوالدين"
+  "parent_stores_ar": "متاجر الوالدين",
+  "actions_ar": "أجراءات",
+  "type_ar": "يكتب",
+  "subject_ar": "موضوع"
+
+
+
 }
 
 

@@ -125,7 +125,7 @@
       <!-- ARABIC TAB STARTS -->
       <v-window-item :value="2">
         <v-data-table
-          :headers="headers"
+          :headers="headers_ar"
           :items="countries_ar"
           :search="search"
           :loading="initval"
@@ -253,13 +253,29 @@ export default {
     headers() {
       return [
         {
-          title: this.$t("name"),
+          title: this.$t("name_en"),
           align: "left",
           sortable: true,
           key: this.tabs == 1 ? "name" : "name",
         },
         {
-          title: this.$t("actions"),
+          title: this.$t("actions_en"),
+          // key: "name",
+          align: "center",
+          sortable: false,
+        },
+      ];
+    },
+    headers_ar() {
+      return [
+        {
+        title: this.$t("name_ar"),
+          align: "left",
+          sortable: true,
+          key: this.tabs == 1 ? "name" : "name",
+        },
+        {
+          title: this.$t("actions_ar"),
           // key: "name",
           align: "center",
           sortable: false,

@@ -57,7 +57,9 @@
           <td class="param-value">
             {{ props.item.selectable.parameter_value }}
           </td>
-          <td class="desc_div_overflow">{{ props.item.selectable.description }}</td>
+          <td class="desc_div_overflow">
+            {{ props.item.selectable.description }}
+          </td>
           <td class="text-center">
             <v-btn
               class="hover_shine btn mr-2"
@@ -151,38 +153,7 @@ export default {
     status_id: null,
     isDisabled: false,
     initval: false,
-    headers: [
-      {
-        title: "Name",
-        align: "left",
-        sortable: true,
-        key: "parameter_name",
-      },
-      {
-        title: "Value",
-        align: "left",
-        sortable: false,
-        key: "parameter_value",
-      },
-      {
-        title: "Description",
-        align: "left",
-        sortable: false,
-        key: "description",
-      },
-      {
-        title: "Status",
-        align: "center",
-        sortable: false,
-        key: "status",
-      },
-      {
-        title: "Actions",
-        key: "name",
-        align: "center",
-        sortable: false,
-      },
-    ],
+
     google_icon: {
       icon_name: "settings_suggest",
       color: "google_icon_gradient",
@@ -209,6 +180,43 @@ export default {
       },
     ],
   }),
+  computed: {
+    headers() {
+      return [
+        {
+          title: this.$t("name"),
+          align: "left",
+          sortable: true,
+          key: "parameter_name",
+        },
+        {
+          title: this.$t("value"),
+          align: "left",
+          sortable: false,
+          key: "parameter_value",
+        },
+        {
+          title: this.$t("description"),
+          align: "left",
+          sortable: false,
+          key: "description",
+        },
+        {
+          title: this.$t("status"),
+          align: "center",
+          sortable: false,
+          key: "status",
+        },
+        {
+          title: this.$t("actions"),
+          key: "actions", // Changed from "name" to "actions" for clarity
+          align: "center",
+          sortable: false,
+        },
+      ];
+    },
+  },
+
   mounted() {
     this.fetchSystemParameters();
   },
@@ -368,10 +376,10 @@ export default {
   min-width: 90px !important;
 }
 .desc_div_overflow {
-  white-space: nowrap; 
-  max-width: 300px; 
+  white-space: nowrap;
+  max-width: 300px;
   overflow: hidden;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
 }
 
 /* .desc_div_overflow:hover {
