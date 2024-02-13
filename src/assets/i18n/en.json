@@ -388,6 +388,8 @@
   "to_time_en": "To Timing",
   "view_extend_timing_details": "View Timing Details",
   "week_day": "Week Day",
+  "start_date_en": "Start Date",
+  "end_date_en": "End Date",
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
   "from_day_ar": "من اليوم",
@@ -445,5 +447,8 @@
   "parent_stores_ar": "متاجر الوالدين",
   "actions_ar": "أجراءات",
   "type_ar": "يكتب",
-  "subject_ar": "موضوع"
+  "subject_ar": "موضوع",
+  "start_date_ar": "بدء العرض",
+  "end_date_ar": "انتهاء العرض",
+  "file_input_ar": "إدخال الملف"
 }

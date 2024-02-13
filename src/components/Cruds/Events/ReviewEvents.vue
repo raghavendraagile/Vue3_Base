@@ -299,7 +299,7 @@ export default {
     fetcheventDetails() {
       this.loader = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-career-details", {
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-events-details", {
           params: {
             slug: this.$route.query.slug,
           },

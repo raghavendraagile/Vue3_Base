@@ -144,12 +144,12 @@
           <v-form ref="form" v-model="valid">
             <v-row class="mx-auto mt-2" max-width="344">
                <v-col cols="4" sm="12" md="4">
-                <v-tooltip :text="this.$t('store')" location="bottom">
+                <v-tooltip :text="this.$t('store_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
                       v-bind="props"
                       v-model="careers[1].store_id"
-                      v-bind:label="$t('store')"
+                       v-bind:label="$t('store_ar')"
                       variant="outlined"
                       density="compact"
                       :items="stores_en"
@@ -160,13 +160,13 @@
                 </v-tooltip>
               </v-col>
               <v-col cols="4" sm="12" md="4">
-                <v-tooltip :text="this.$t('title')" location="bottom">
+                <v-tooltip :text="this.$t('title_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-on="on"
                       v-model="careers[1].title"
                       :rules="fieldRules"
-                      v-bind:label="$t('title')"
+                      v-bind:label="$t('title_ar')"
                       v-bind="props"
                       required
                       class="required_field rtl"
@@ -178,13 +178,13 @@
                 </v-tooltip>
               </v-col>
               <v-col md="4">
-                <v-tooltip :text="this.$t('vacancy')" location="bottom">
+                <v-tooltip :text="this.$t('vacancy_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-on="on"
                       v-model="careers[1].vacancy"
                       :rules="vacancyRules"
-                      v-bind:label="$t('vacancy')"
+                      v-bind:label="$t('vacancy_ar')"
                       v-bind="props"
                       required
                       class="required_field rtl"
@@ -193,17 +193,17 @@
                       maxlength="500"
                     ></v-text-field>
                   </template>
-                  <span>{{ $t("vacancy") }}</span>
+                  <span>{{ $t("vacancy_ar") }}</span>
                 </v-tooltip>
               </v-col>
               <v-col cols="4" sm="12" md="4">
-                <v-tooltip :text="this.$t('meta_title')" location="bottom">
+                <v-tooltip :text="this.$t('meta_title_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-on="on"
                       v-model="careers[1].meta_title"
                       :rules="fieldRules"
-                      v-bind:label="$t('meta_title')"
+                      v-bind:label="$t('meta_title_ar')"
                       v-bind="props"
                       required
                       class="required_field rtl"
@@ -215,7 +215,7 @@
                 </v-tooltip>
               </v-col>
               <v-col md="6">
-                <v-tooltip :text="this.$t('description')" location="bottom">
+                <v-tooltip :text="this.$t('description_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-textarea
                       v-on="on"
@@ -224,7 +224,7 @@
                       :rules="fieldRules"
                       maxlength="2000"
                       v-bind="props"
-                      v-bind:label="$t('description')"
+                      v-bind:label="$t('description_ar')"
                       required
                       class="required_field rtl"
                       variant="outlined"
@@ -235,7 +235,7 @@
               </v-col>
               <v-col md="6">
                 <v-tooltip
-                  :text="this.$t('meta_description')"
+                  :text="this.$t('meta_description_ar')"
                   location="bottom"
                 >
                   <template v-slot:activator="{ props }">
@@ -246,14 +246,14 @@
                       :rules="fieldRules"
                       maxlength="100"
                       v-bind="props"
-                      v-bind:label="$t('meta_description')"
+                      v-bind:label="$t('meta_description_ar')"
                       required
                       class="required_field rtl"
                       variant="outlined"
                       counter="true"
                     ></v-textarea>
                   </template>
-                  <span>{{ $t("vacancy") }}</span>
+                  <span>{{ $t("meta_description_ar") }}</span>
                 </v-tooltip>
               </v-col>
             </v-row>

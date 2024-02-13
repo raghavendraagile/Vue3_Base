@@ -43,11 +43,11 @@
               </v-col>
             
               <v-col md="4">
-                <v-tooltip :text="this.$t('start_date')" location="bottom">
+                <v-tooltip :text="this.$t('start_date_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker
                       v-bind="props"
-                      :label="$t('start_date')"
+                      :label="$t('start_date_en')"
                       :min="new Date().toISOString().substr(0, 10)"
                       :stored_date="events[0].start_date"
                       @formatted_date="formatted_start_date"
@@ -56,15 +56,15 @@
                       v-on="on"
                     />
                   </template>
-                  <span>{{ $t("start_date") }}</span>
+                  <span>{{ $t("start_date_en") }}</span>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
-                <v-tooltip :text="this.$t('end_date')" location="bottom">
+                <v-tooltip :text="this.$t('end_date_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker
                       v-bind="props"
-                      :label="$t('end_date')"
+                      :label="$t('end_date_en')"
                       :min="new Date().toISOString().substr(0, 10)"
                       :stored_date="events[0].end_date"
                       @formatted_date="formatted_end_date"
@@ -73,7 +73,7 @@
                       v-on="on"
                     />
                   </template>
-                  <span>{{ $t("end_date") }}</span>
+                  <span>{{ $t("end_date_en") }}</span>
                 </v-tooltip>
               </v-col>
               <v-col cols="4" sm="12" md="4">
@@ -212,7 +212,7 @@
                       v-on="on"
                       v-model="events[1].title"
                       :rules="fieldRules"
-                      v-bind:label="$t('title')"
+                      v-bind:label="$t('title_ar')"
                       v-bind="props"
                       required
                       class="required_field rtl"
@@ -224,11 +224,11 @@
                 </v-tooltip>
               </v-col>
               <v-col md="4">
-                <v-tooltip :text="this.$t('start_date')" location="bottom">
+                <v-tooltip :text="this.$t('start_date_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker
                       v-bind="props"
-                      :label="$t('start_date')"
+                      :label="$t('start_date_ar')"
                       :min="new Date().toISOString().substr(0, 10)"
                       :stored_date="events[1].start_date"
                       @formatted_date="formatted_start_date_ar"
@@ -237,15 +237,15 @@
                       v-on="on"
                     />
                   </template>
-                  <span>{{ $t("start_date") }}</span>
+                  <span>{{ $t("start_date_ar") }}</span>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
-                <v-tooltip :text="this.$t('end_date')" location="bottom">
+                <v-tooltip :text="this.$t('end_date_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker
                       v-bind="props"
-                      :label="$t('end_date')"
+                      :label="$t('end_date_ar')"
                       :min="new Date().toISOString().substr(0, 10)"
                       :stored_date="events[1].end_date"
                       @formatted_date="formatted_end_date_ar"
@@ -254,17 +254,17 @@
                       v-on="on"
                     />
                   </template>
-                  <span>{{ $t("end_date") }}</span>
+                  <span>{{ $t("end_date_ar") }}</span>
                 </v-tooltip>
               </v-col>
               <v-col cols="4" sm="12" md="4">
-                <v-tooltip :text="this.$t('meta_title')" location="bottom">
+                <v-tooltip :text="this.$t('meta_title_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-on="on"
                       v-model="events[1].meta_title"
                       :rules="fieldRules"
-                      v-bind:label="$t('meta_title')"
+                      v-bind:label="$t('meta_title_ar')"
                       v-bind="props"
                       required
                       class="required_field rtl"
@@ -276,7 +276,7 @@
                 </v-tooltip>
               </v-col>
               <v-col md="4">
-                <v-tooltip :text="this.$t('description')" location="bottom">
+                <v-tooltip :text="this.$t('description_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-textarea
                       v-on="on"
@@ -285,7 +285,7 @@
                       :rules="fieldRules"
                       maxlength="2000"
                       v-bind="props"
-                      v-bind:label="$t('description')"
+                      v-bind:label="$t('description_ar')"
                       required
                       class="required_field rtl"
                       variant="outlined"
@@ -296,7 +296,7 @@
               </v-col>
               <v-col md="4">
                 <v-tooltip
-                  :text="this.$t('meta_description')"
+                  :text="this.$t('meta_description_ar')"
                   location="bottom"
                 >
                   <template v-slot:activator="{ props }">
@@ -307,26 +307,27 @@
                       :rules="fieldRules"
                       maxlength="2000"
                       v-bind="props"
-                      v-bind:label="$t('meta_description')"
+                      v-bind:label="$t('meta_description_ar')"
                       required
                       class="required_field rtl"
                       variant="outlined"
                       counter="true"
                     ></v-textarea>
                   </template>
-                  <span>{{ $t("vacancy") }}</span>
+                  <span>{{ $t("meta_description_ar") }}</span>
                 </v-tooltip>
               </v-col>
               <v-col cols="2" sm="2" md="2">
-                    <v-tooltip :text="$t('sequence')" location="bottom">
+                    <v-tooltip :text="$t('sequence_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
                           v-model="events[1].seq"
                           maxlength="100"
                           :rules="phoneRules"
-                          v-bind:label="$t('sequence')"
+                          v-bind:label="$t('sequence_ar')"
                           required
+                          class="required_field rtl"
                           variant="outlined"
                           density="compact"
                         ></v-text-field>

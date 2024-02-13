@@ -505,7 +505,7 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
-
+.d-flex1{display:flex;justify-content: space-between;width:100%}
 .notificationcreatedbyclass {
   font-size: 12px;
   font-weight: 500;

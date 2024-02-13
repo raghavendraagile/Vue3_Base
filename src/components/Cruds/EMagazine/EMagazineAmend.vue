@@ -41,7 +41,7 @@
                         </template>
                       </v-tooltip>
               </v-col>
-                  <v-col cols="6" sm="6" md="6">
+                  <v-col cols="4" sm="4" md="4">
                     <v-tooltip :text="$t('title')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -57,7 +57,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="6" sm="6" md="6">
+                  <v-col cols="4" sm="4" md="4">
                     <v-tooltip :text="$t('meta_title')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -251,12 +251,12 @@
               <v-layout>
                 <v-row class="px-6 mt-2">
                    <v-col cols="4" sm="12" md="4">
-                <v-tooltip :text="this.$t('store')" location="bottom">
+                <v-tooltip :text="this.$t('store_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
                       v-bind="props"
                       v-model="e_magazine[1].store_id"
-                      v-bind:label="$t('store')"
+                      v-bind:label="$t('store_ar')"
                       variant="outlined"
                       density="compact"
                       :items="stores_ar"
@@ -266,7 +266,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-                  <v-col cols="6" sm="6" md="6">
+                  <v-col cols="4" sm="12" md="4">
                     <v-tooltip :text="$t('title_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -283,7 +283,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="6" sm="6" md="6">
+                  <v-col cols="4" sm="12" md="4">
                     <v-tooltip :text="$t('meta_title_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -383,13 +383,13 @@
                         </div>
                       </template>
                     </v-tooltip>
-                    <v-tooltip :text="this.$t('upload_file')" location="bottom" v-else>
+                    <v-tooltip :text="this.$t('file_input_ar')" location="bottom" v-else>
                       <template v-slot:activator="{ props }">
                         <v-file-input
                           :disabled="is_disabled"
                           v-bind="props"
                           show-size
-                          :label="$t('file_input')"
+                          :label="$t('file_input_ar')"
                           outlined
                           :rules="fileRules"
                           :error="errorUpload"
@@ -486,7 +486,7 @@
                 :disabled="loading"
                 class="ma-1"
                 color="cancel"
-                >{{ $t("cancel") }}</v-btn
+                >{{ $t("cancel_ar") }}</v-btn
               >
             </div>
           </template>
@@ -501,7 +501,7 @@
                 class="mr-2"
                 color="success"
               >
-                {{ $t("submit") }}
+                {{ $t("submit_ar") }}
                 <v-progress-circular
                   v-if="isBtnLoading"
                   indeterminate

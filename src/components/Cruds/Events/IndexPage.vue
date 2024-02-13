@@ -1,6 +1,8 @@
 
   <template>
   <div>
+    {{events_ar}}<br>
+    {{events_en}}
     <div flat color="white" class="row py-5 pl-5 align-items-center">
       <page-title
         class="col-md-3"
@@ -53,7 +55,7 @@
         <v-data-table
           :headers="headers_en"
           :items="events_en"
-          :search="search"
+          v-bind:label="$t('search')"
           :loading="initval"
           v-bind:no-data-text="$t('no_data_available')"
           :footer-props="{
@@ -184,7 +186,7 @@
         <v-data-table
           :headers="headers_ar"
           :items="events_ar"
-          :search="search"
+          v-bind:label="$t('search')"
           :loading="initval"
           v-bind:no-data-text="$t('no_data_available')"
           :footer-props="{

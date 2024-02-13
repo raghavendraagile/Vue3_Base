@@ -9,11 +9,19 @@
           <v-col md="3" class="direction_col">
             <v-card density="comfortable" elevation="6" class="usercard routecard" @click="route_to_page('user')">
               <v-row>
-                <v-col md="8">
-                  <v-card-title>
+                <v-col md="12">
+                  <div class="d-flex1">
+                     <v-card-title>
                     {{ $t('user1') }}
                   </v-card-title>
-                  <div class="pb-5 pt-2 px-3">
+                  <v-col md="4" class="cardlogo">
+                  <div class="icon-wrapper">
+                    <v-btn class="ma-2" color="success" icon="mdi-pencil"></v-btn>
+                  </div>
+                </v-col>
+                  </div>
+                  
+                  <div class="pb-5 pt-2 px-3 d-flex1">
                     <div class="text-left row">
                       <v-chip class="mx-3" color="green" size="small">
                         <template v-slot:prepend>
@@ -41,11 +49,7 @@
                     </div>
                   </div>
                 </v-col>
-                <v-col md="4" class="cardlogo">
-                  <div class="icon-wrapper">
-                    <v-btn class="ma-2" color="success" icon="mdi-pencil"></v-btn>
-                  </div>
-                </v-col>
+                
               </v-row>
             </v-card>
           </v-col>
@@ -54,11 +58,18 @@
           <v-col md="3" class="direction_col">
             <v-card density="comfortable" elevation="6" class="eventcard routecard" @click="route_to_page('event')">
               <v-row>
-                <v-col md="8">
+                <v-col md="12">
+                  <div class="d-flex1">
                   <v-card-title>
                     {{ $t('events') }}
                   </v-card-title>
-                  <div class="pb-5 pt-2 px-3">
+                  <v-col md="4" class="cardlogo">
+                  <div class="icon-wrapper">
+                    <v-btn class="ma-2" color="warning" icon="mdi-calendar-check"></v-btn>
+                  </div>
+                </v-col>
+                  </div>
+                  <div class="pb-5 pt-2 px-3 d-flex1">
                     <div class="text-left row">
                       <v-chip class="mx-3" color="orange" size="small">
                         <template v-slot:prepend>
@@ -91,11 +102,7 @@
                     </div>
                   </div>
                 </v-col>
-                <v-col md="4" class="cardlogo">
-                  <div class="icon-wrapper">
-                    <v-btn class="ma-2" color="warning" icon="mdi-calendar-check"></v-btn>
-                  </div>
-                </v-col>
+                
               </v-row>
             </v-card>
           </v-col>
@@ -104,11 +111,18 @@
           <v-col md="3" class="direction_col">
             <v-card density="comfortable" elevation="6" class="promocard routecard" @click="route_to_page('promotion')">
               <v-row>
-                <v-col md="8">
+                <v-col md="12">
+                   <div class="d-flex1">
                   <v-card-title>
                     {{ $t('promotions') }}
                   </v-card-title>
-                  <div class="pb-5 pt-2 px-3">
+                   <v-col md="4" class="cardlogo">
+                  <div class="icon-wrapper">
+                    <v-btn class="ma-2" color="primary" icon="mdi-ticket-percent"></v-btn>
+                  </div>
+                </v-col>
+                  </div>
+                  <div class="pb-5 pt-2 px-3 d-flex1">
                     <div class="text-left row">
                       <v-chip class="mx-3" color="orange" size="small">
                         <template v-slot:prepend>
@@ -141,11 +155,7 @@
                     </div>
                   </div>
                 </v-col>
-                <v-col md="4" class="cardlogo">
-                  <div class="icon-wrapper">
-                    <v-btn class="ma-2" color="primary" icon="mdi-ticket-percent"></v-btn>
-                  </div>
-                </v-col>
+               
               </v-row>
             </v-card>
           </v-col>
@@ -154,11 +164,18 @@
           <v-col md="3" class="direction_col">
             <v-card density="comfortable" elevation="6" class="productcard routecard" @click="route_to_page('product')">
               <v-row>
-                <v-col md="8">
+                <v-col md="12">
+                  <div class="d-flex1">
                   <v-card-title>
                     {{ $t('products') }}
                   </v-card-title>
-                  <div class="pb-5 pt-2 px-3">
+                   <v-col md="4" class="cardlogo">
+                  <div class="icon-wrapper">
+                    <v-btn class="ma-2" color="error" icon="mdi-view-module"></v-btn>
+                  </div>
+                </v-col>
+                  </div>
+                  <div class="pb-5 pt-2 px-3 d-flex1">
                     <div class="text-left row">
                       <v-chip class="mx-3" color="orange" size="small">
                         <template v-slot:prepend>
@@ -191,11 +208,7 @@
                     </div>
                   </div>
                 </v-col>
-                <v-col md="4" class="cardlogo">
-                  <div class="icon-wrapper">
-                    <v-btn class="ma-2" color="error" icon="mdi-view-module"></v-btn>
-                  </div>
-                </v-col>
+               
               </v-row>
             </v-card>
           </v-col>
@@ -204,11 +217,18 @@
           <v-col md="3" class="direction_col">
             <v-card density="comfortable" elevation="6" class="categorycard routecard" @click="route_to_page('category')">
               <v-row>
-                <v-col md="8">
+                <v-col md="12">
+                    <div class="d-flex1">
                   <v-card-title>
                     {{ $t('categories') }}
                   </v-card-title>
-                  <div class="pb-5 pt-2 px-3">
+                   <v-col md="4" class="cardlogo">
+                  <div class="icon-wrapper">
+                    <v-btn class="ma-2" color="error" icon="mdi mdi-apps"></v-btn>
+                  </div>
+                </v-col>
+                  </div>
+                  <div class="pb-5 pt-2 px-3 d-flex1">
                     <div class="text-left row">
                       <v-chip class="mx-3" color="orange" size="small">
                         <template v-slot:prepend>
@@ -241,11 +261,7 @@
                     </div>
                   </div>
                 </v-col>
-                <v-col md="4" class="cardlogo">
-                  <div class="icon-wrapper">
-                    <v-btn class="ma-2" color="error" icon="mdi mdi-apps"></v-btn>
-                  </div>
-                </v-col>
+               
               </v-row>
             </v-card>
           </v-col>
@@ -254,11 +270,18 @@
           <v-col md="3" class="direction_col">
             <v-card density="comfortable" elevation="6" class="carriercard routecard" @click="route_to_page('career')">
               <v-row>
-                <v-col md="8">
+                <v-col md="12">
+                   <div class="d-flex1">
                   <v-card-title>
                     {{ $t('careers') }}
                   </v-card-title>
-                  <div class="pb-5 pt-2 px-3">
+                    <v-col md="4" class="cardlogo">
+                  <div class="icon-wrapper">
+                    <v-btn class="ma-2" color="primary" icon="mdi mdi-briefcase"></v-btn>
+                  </div>
+                </v-col>
+                  </div>
+                  <div class="pb-5 pt-2 px-3 d-flex1">
                     <div class="text-left row">
                       <v-chip class="mx-3" color="orange" size="small">
                         <template v-slot:prepend>
@@ -291,11 +314,7 @@
                     </div>
                   </div>
                 </v-col>
-                <v-col md="4" class="cardlogo">
-                  <div class="icon-wrapper">
-                    <v-btn class="ma-2" color="primary" icon="mdi mdi-briefcase"></v-btn>
-                  </div>
-                </v-col>
+              
               </v-row>
             </v-card>
           </v-col>
@@ -304,11 +323,18 @@
           <v-col md="3" class="direction_col">
             <v-card density="comfortable" elevation="6" class="storecard routecard" @click="route_to_page('store')">
               <v-row>
-                <v-col md="8">
+                <v-col md="12">
+                   <div class="d-flex1">
                   <v-card-title>
                     {{ $t('stores') }}
                   </v-card-title>
-                  <div class="pb-5 pt-2 px-3">
+                   <v-col md="4" class="cardlogo">
+                  <div class="icon-wrapper">
+                    <v-btn class="ma-2" color="warning" icon="mdi mdi-storefront-outline"></v-btn>
+                  </div>
+                </v-col>
+                  </div>
+                  <div class="pb-5 pt-2 px-3 d-flex1">
                     <div class="text-left row">
                       <v-chip class="mx-3" color="orange" size="small">
                         <template v-slot:prepend>
@@ -341,11 +367,7 @@
                     </div>
                   </div>
                 </v-col>
-                <v-col md="4" class="cardlogo">
-                  <div class="icon-wrapper">
-                    <v-btn class="ma-2" color="warning" icon="mdi mdi-storefront-outline"></v-btn>
-                  </div>
-                </v-col>
+               
               </v-row>
             </v-card>
           </v-col>
@@ -355,11 +377,18 @@
             <v-card density="comfortable" elevation="6" class="testimonialcard routecard"
               @click="route_to_page('testimonial')">
               <v-row>
-                <v-col md="8">
+                <v-col md="12">
+                  <div class="d-flex1">
                   <v-card-title>
                     {{ $t('testimonials') }}
                   </v-card-title>
-                  <div class="pb-5 pt-2 px-3">
+                   <v-col md="4" class="cardlogo">
+                  <div class="icon-wrapper">
+                    <v-btn class="ma-2" color="success" icon="mdi mdi-message-text-fast-outline"></v-btn>
+                  </div>
+                </v-col>
+                  </div>
+                  <div class="pb-5 pt-2 px-3 d-flex1">
                     <div class="text-left row">
                       <v-chip class="mx-3" color="green" size="small">
                         <template v-slot:prepend>
@@ -387,11 +416,7 @@
                     </div>
                   </div>
                 </v-col>
-                <v-col md="4" class="cardlogo">
-                  <div class="icon-wrapper">
-                    <v-btn class="ma-2" color="success" icon="mdi mdi-message-text-fast-outline"></v-btn>
-                  </div>
-                </v-col>
+               
               </v-row>
             </v-card>
           </v-col>
@@ -416,6 +441,7 @@ export default {
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
     search: "",
     is_arabic : false,
+    dasharray:[],
     activeuser: 0,
     inactiveuser: 0,
     reevents: 0,
@@ -468,6 +494,7 @@ export default {
       this.$axios
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetchdashboard")
         .then((res) => {
+          this.dasharray=res.data;
           this.activeuser = res.data.activeuser;
           this.inactiveuser = res.data.inactiveuser;
           this.irevents = res.data.irevents;
@@ -585,9 +612,14 @@ export default {
   direction: rtl;
   text-align: right;
 }
+.d-flex1{display: flex !important;
+  width: 100%;
+  justify-content: space-between;
+  align-items: baseline;}
 .routecard:hover {
-  height: 100.7%;
-  width: 100.7%;
+  height: 100.1%;
+  width: 100.1%;
   box-shadow: 0 18px 26px rgba(21, 1, 1, 0.2);
 }
+.v-chip.v-chip--size-small{width: 86px;}
 </style>
