@@ -57,8 +57,8 @@
       <!-- ENGLISH TAB STARTS -->
       <v-window-item :value="1">
         <v-data-table
-          :headers="headers"
-          :items="e_magazine"
+          :headers="headers_en"
+          :items="e_magazine_en"
           :search="search"
           :loading="initval"
           v-bind:no-data-text="$t('no_data_available')"
@@ -92,6 +92,14 @@
                   >
                 </v-btn>
               </td>
+                <td>
+                <v-chip
+                  :color="getStatusColor(props.item.selectable.approval_status)"
+                  variant="outlined"
+                >
+                  {{ props.item.selectable.approval_status }}
+                </v-chip>
+              </td>
               <td class="text-center">
                 <router-link
                   small
@@ -123,6 +131,16 @@
                   </v-tooltip>
                 </span>
               </td>
+              <td>
+                <v-btn
+                  size="small"
+                  @click="viewEMagzine(props.item.selectable.slug)"
+                  :disabled="loading"
+                  class="ma-1"
+                  color="blue"
+                  >{{ $t("view_en") }}</v-btn
+                >
+              </td>
             </tr>
           </template>
         </v-data-table>
@@ -132,7 +150,7 @@
       <v-window-item :value="2">
         <v-data-table
           :headers="headers_ar"
-          :items="e_magazine"
+          :items="e_magazine_ar"
           :search="search"
           :loading="initval"
           class="rtl-direction"
@@ -141,8 +159,8 @@
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
-              <td>{{ props.item.selectable.title_ar }}</td>
-              <td>{{ props.item.selectable.description_ar }}</td>
+              <td>{{ props.item.selectable.title}}</td>
+              <td>{{ props.item.selectable.description}}</td>
               <td>
                 <v-btn
                   class="hover_shine btn mr-2"
@@ -165,6 +183,14 @@
                   >
                 </v-btn>
               </td>
+                <td>
+                <v-chip
+                  :color="getStatusColor(props.item.selectable.approval_status)"
+                  variant="outlined"
+                >
+                  {{ props.item.selectable.approval_status }}
+                </v-chip>
+              </td>
               <td class="text-center">
                 <router-link
                   small
@@ -195,6 +221,16 @@
                     <span>{{ $t("delete") }}</span>
                   </v-tooltip>
                 </span>
+              </td>
+              <td>
+                <v-btn
+                  size="small"
+                  @click="viewEMagzine(props.item.selectable.slug)"
+                  :disabled="loading"
+                  class="ma-1"
+                  color="blue"
+                  >{{ $t("view_en") }}</v-btn
+                >
               </td>
             </tr>
           </template>
@@ -230,7 +266,8 @@ export default {
     showConfirmDialog: false,
     delete_id: null,
     dialog: false,
-    e_magazine: [],
+    e_magazine_en: [],
+    e_magazine_ar: [],
     initval: true,
     google_icon: {
       icon_name: "auto_stories",
@@ -246,22 +283,26 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
-    headers() {
+    headers_en() {
       return [
         {
-          title: this.$t("title"),
+          title: this.$t("title_en"),
           key: "title",
         },
         {
-          title: this.$t("description"),
+          title: this.$t("description_en"),
           key: "description",
         },
         {
-          title: this.$t("status"),
+          title: this.$t("status_en"),
           key: "status",
         },
         {
-          title: this.$t("action"),
+        title: this.$t("approval_en"),
+        key: "approval_status",
+      },
+        {
+          title: this.$t("action_en"),
           align: "center",
           key: "email",
         },
@@ -281,6 +322,10 @@ export default {
           title: this.$t("status_ar"),
           key: "status",
         },
+        {
+        title: this.$t("approval_ar"),
+        key: "approval_status",
+      },
         {
           title: this.$t("action_ar"),
           align: "center",
@@ -302,6 +347,24 @@ export default {
   },
 
   methods: {
+     viewEMagzine(slug) {
+      this.$router.push({
+        name: "e-magazine-review",
+        query: { slug: slug },
+      });
+    },
+       getStatusColor(status) {
+      switch (status) {
+        case "Approved":
+          return "green";
+        case "In Review":
+          return "orange";
+        case "Rejected":
+          return "red";
+        default:
+          return "";
+      }
+    },
     cancel() {
       this.showConfirmDialog = false;
     },
@@ -315,7 +378,8 @@ export default {
       this.$axios
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-e-magazine")
         .then((res) => {
-          this.e_magazine = res.data.e_magazine;
+          this.e_magazine_en = res.data.e_magazine_en;
+          this.e_magazine_ar = res.data.e_magazine_ar;
           this.initval = false;
         })
         .catch((err) => {

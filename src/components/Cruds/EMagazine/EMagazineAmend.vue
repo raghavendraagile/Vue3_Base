@@ -25,12 +25,28 @@
             <v-form ref="form" v-model="valid">
               <v-layout>
                 <v-row class="px-6 mt-2">
+                  <v-col cols="4" sm="12" md="4">
+                      <v-tooltip :text="this.$t('store')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <v-autocomplete
+                            v-bind="props"
+                            v-model="e_magazine[0].store_id"
+                            v-bind:label="$t('store')"
+                            variant="outlined"
+                            density="compact"
+                            :items="stores_en"
+                            item-title="name"
+                            item-value="id"
+                          ></v-autocomplete>
+                        </template>
+                      </v-tooltip>
+              </v-col>
                   <v-col cols="6" sm="6" md="6">
                     <v-tooltip :text="$t('title')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
-                          v-model="fieldItem.title"
+                          v-model="e_magazine[0].title"
                           :rules="fieldRules"
                           maxlength="100"
                           v-bind:label="$t('title')"
@@ -46,7 +62,7 @@
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
-                          v-model="fieldItem.meta_title"
+                          v-model="e_magazine[0].meta_title"
                           :rules="fieldRules"
                           maxlength="100"
                           v-bind:label="$t('meta_title')"
@@ -67,7 +83,7 @@
                         <v-textarea
                           v-on="on"
                           rows="2"
-                          v-model="fieldItem.description"
+                          v-model="e_magazine[0].description"
                           v-bind="props"
                           :rules="descriptionRules"
                           v-bind:label="$t('description')"
@@ -89,7 +105,7 @@
                         <v-textarea
                           v-on="on"
                           rows="2"
-                          v-model="fieldItem.meta_description"
+                          v-model="e_magazine[0].meta_description"
                           v-bind="props"
                           :rules="descriptionRules"
                           v-bind:label="$t('meta_description')"
@@ -106,33 +122,40 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="6" sm="6" md="6">
+                  <v-col cols="6" sm="6" md="6" class="d-flex">
                     <v-tooltip
                       :text="this.$t('show_file')"
                       location="bottom"
-                      v-if="fieldItem.file_upload"
+                      v-if="e_magazine[0].file_upload"
                     >
                       <template v-slot:activator="{ props }">
+                        
                         <div class="col-md-1">
                           <a
-                            :href="envImagePath + fieldItem.file_upload"
+                            :href="envImagePath + e_magazine[0].file_upload"
                             download
                             ><v-icon v-bind="props">mdi mdi-file</v-icon></a
                           >
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-9" >
                           <a
-                            :href="envImagePath + fieldItem.file_upload"
+                            :href="envImagePath + e_magazine[0].file_upload"
                             download
                           >
                             <v-chip size="small" v-bind="props">{{
-                              fieldItem.file_upload
+                              e_magazine[0].file_upload
                             }}</v-chip>
                           </a>
                         </div>
+                        <div class="col-md-1">
+                          <a @click="e_magazine[0].file_upload=''"
+                            ><v-icon v-bind="props">mdi mdi-delete</v-icon></a
+                          >
+                        </div>
+                        
                       </template>
                     </v-tooltip>
-                    <v-tooltip :text="this.$t('upload_file')" location="bottom">
+                    <v-tooltip :text="this.$t('upload_file')" location="bottom" v-else>
                       <template v-slot:activator="{ props }">
                         <v-file-input
                           :disabled="is_disabled"
@@ -176,8 +199,8 @@
                               v-bind:style="
                                 isHovering == true ? 'filter: blur(1px);' : ''
                               "
-                              v-if="fieldItem.image_path != null"
-                              :src="envImagePath + fieldItem.image_path"
+                              v-if="e_magazine[0].image_path != null"
+                              :src="envImagePath + e_magazine[0].image_path"
                               width="100"
                               height="65
                           "
@@ -199,10 +222,10 @@
                       </div>
                       <a
                         class="text-center pointer"
-                        @click="downloadImage(fieldItem.image_path)"
+                        @click="downloadImage(e_magazine[0].image_path)"
                       >
                         <span
-                          v-if="fieldItem.image_path"
+                          v-if="e_magazine[0].image_path"
                           class="download_btn_color"
                           >{{ $t("download") }}</span
                         >
@@ -227,12 +250,28 @@
             <v-form ref="form" v-model="valid">
               <v-layout>
                 <v-row class="px-6 mt-2">
+                   <v-col cols="4" sm="12" md="4">
+                <v-tooltip :text="this.$t('store')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-autocomplete
+                      v-bind="props"
+                      v-model="e_magazine[1].store_id"
+                      v-bind:label="$t('store')"
+                      variant="outlined"
+                      density="compact"
+                      :items="stores_ar"
+                      item-title="name"
+                      item-value="id"
+                    ></v-autocomplete>
+                  </template>
+                </v-tooltip>
+              </v-col>
                   <v-col cols="6" sm="6" md="6">
                     <v-tooltip :text="$t('title_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
-                          v-model="fieldItem.title_ar"
+                          v-model="e_magazine[1].title"
                           :rules="fieldRules"
                           maxlength="100"
                           v-bind:label="$t('title_ar')"
@@ -249,7 +288,7 @@
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
-                          v-model="fieldItem.meta_title_ar"
+                          v-model="e_magazine[1].meta_title"
                           :rules="fieldRules"
                           maxlength="100"
                           v-bind:label="$t('title_ar')"
@@ -274,7 +313,7 @@
                         <v-textarea
                           v-on="on"
                           rows="2"
-                          v-model="fieldItem.description_ar"
+                          v-model="e_magazine[1].description"
                           v-bind="props"
                           :rules="descriptionRules"
                           v-bind:label="$t('description_ar')"
@@ -296,7 +335,7 @@
                         <v-textarea
                           v-on="on"
                           rows="2"
-                          v-model="fieldItem.meta_description_ar"
+                          v-model="e_magazine[1].meta_description"
                           v-bind="props"
                           :rules="descriptionRules"
                           v-bind:label="$t('meta_description_ar')"
@@ -313,33 +352,38 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="6" sm="6" md="6">
+                  <v-col cols="6" sm="6" md="6" class="d-flex">
                     <v-tooltip
                       :text="this.$t('show_file')"
                       location="bottom"
-                      v-if="fieldItem.file_upload_ar"
+                      v-if="e_magazine[1].file_upload"
                     >
                       <template v-slot:activator="{ props }">
                         <div class="col-md-1">
                           <a
-                            :href="envImagePath + fieldItem.file_upload_ar"
+                            :href="envImagePath + e_magazine[1].file_upload"
                             download
                             ><v-icon v-bind="props">mdi mdi-file</v-icon></a
                           >
                         </div>
                         <div class="col-md-9">
                           <a
-                            :href="envImagePath + fieldItem.file_upload_ar"
+                            :href="envImagePath + e_magazine[1].file_upload"
                             download
                           >
                             <v-chip size="small" v-bind="props">{{
-                              fieldItem.file_upload_ar
+                              e_magazine[1].file_upload
                             }}</v-chip>
                           </a>
                         </div>
+                        <div class="col-md-1">
+                          <a @click="e_magazine[1].file_upload=''"
+                            ><v-icon v-bind="props">mdi mdi-delete</v-icon></a
+                          >
+                        </div>
                       </template>
                     </v-tooltip>
-                    <v-tooltip :text="this.$t('upload_file')" location="bottom">
+                    <v-tooltip :text="this.$t('upload_file')" location="bottom" v-else>
                       <template v-slot:activator="{ props }">
                         <v-file-input
                           :disabled="is_disabled"
@@ -383,8 +427,8 @@
                               v-bind:style="
                                 isHovering == true ? 'filter: blur(1px);' : ''
                               "
-                              v-if="fieldItem.image_path_ar != null"
-                              :src="envImagePath + fieldItem.image_path_ar"
+                              v-if="e_magazine[1].image_path != null"
+                              :src="envImagePath + e_magazine[1].image_path"
                               width="100"
                               height="65
                           "
@@ -406,10 +450,10 @@
                       </div>
                       <a
                         class="text-center pointer"
-                        @click="downloadImage(fieldItem.image_path_ar)"
+                        @click="downloadImage(e_magazine[1].image_path)"
                       >
                         <span
-                          v-if="fieldItem.image_path_ar"
+                          v-if="e_magazine[1].image_path"
                           class="download_btn_color"
                           >{{ $t("download") }}</span
                         >
@@ -420,7 +464,7 @@
                       :folder="'e_magazine'"
                       :resizewidth="0.4"
                       :resizeheight="0.1"
-                      @uploaded_image="uploaded_image_ar"
+                      @uploaded_image="uploaded_image"
                       :upload_profile="uploadfilear"
                     />
                   </v-col>
@@ -499,11 +543,36 @@ export default {
     isDisabled: false,
     loader: false,
     tabs: 1,
-    fieldItem: {
-      id: 0,
-      image_path_ar: "",
-      image_path: "",
-    },
+    e_magazine_en: [],
+    e_magazine_ar: [],
+    e_magazine: [
+      {
+        id: 0,
+        title: "",
+        store_id:"",
+        description: "",
+        image_path: "",
+        file_upload:"",
+        seq:"",
+        meta_title: "",
+        meta_description: "",
+        lang: "en",
+      },
+      {
+        id: 0,
+        title: "",
+        store_id:"",
+        description: "",
+        image_path: "",
+        file_upload:"",
+        seq:"",
+        meta_title: "",
+        meta_description: "",
+        lang: "ar",
+      },
+    ],
+    stores_en: [],
+    stores_ar: [],
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
     uploadfile: false,
     uploadfilear: false,
@@ -531,7 +600,9 @@ export default {
   },
 
   created() {},
-
+ mounted() {
+    this.get_stores();
+  },
   watch: {
     "$route.query.slug": {
       immediate: true,
@@ -546,12 +617,12 @@ export default {
             )
             .then((res) => {
               if (Array.isArray(res.data.message)) {
-                this.array_data = res.data.message.toString();
+                this.e_magazine = res.data.message.toString();
               } else {
-                this.array_data = res.data.message;
+                this.e_magazine = res.data.message;
               }
               if (res.data.status == "S") {
-                this.fieldItem = res.data.e_magazine;
+                this.e_magazine = res.data.e_magazine;
                 this.loader = false;
               } else {
                 this.$toast.error(this.$t("something_went_wrong"));
@@ -569,12 +640,40 @@ export default {
   },
 
   methods: {
+     get_stores() {
+      this.initval = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-stores")
+        .then((response) => {
+          console.log(response);
+          this.stores_en = response.data.stores_en;
+          this.stores_ar = response.data.stores_ar;
+
+          // const default_en = {
+          //   id: 0,
+          //   name: this.$t("select_en"),
+          //   header_id: 0,
+          // };
+          // const default_ar = {
+          //   id: 0,
+          //   name: this.$t("select_ar"),
+          //   header_id: 0,
+          // };
+
+          // this.stores_en = [default_en, ...this.stores_en];
+          // this.stores_ar = [default_ar, ...this.stores_ar];
+          this.initval = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     // Uploading a image
     uploaded_image(img_src) {
       if (this.is_arabic_image) {
-        this.fieldItem.image_path_ar = img_src;
+        this.e_magazine[1].image_path = img_src;
       } else {
-        this.fieldItem.image_path = img_src;
+        this.e_magazine[0].image_path = img_src;
       }
     },
     uploadFile() {
@@ -654,10 +753,11 @@ export default {
             this.message = res.data.message;
             this.fileurl = res.data.filepath;
             this.file_name = this.fileurl.replace(/^.*[/]/, "");
+            alert(this.file_name);
             if(this.tabs == 1){
-              this.fieldItem.file_upload = res.data.filepath;
+              this.e_magazine[0].file_upload = res.data.filepath;
             }else{
-              this.fieldItem.file_upload_ar = res.data.filepath;
+              this.e_magazine[1].file_upload = res.data.filepath;
             }
             for (let index in this.documents) {
               if (this.sel_file_index == index) {
@@ -676,13 +776,16 @@ export default {
     //---submit---
     submit() {
       if (this.$refs.form.validate()) {
+        alert('inside submit');
         this.isDisabled = true;
         this.isBtnLoading = true;
+        console.log('this.e_magazine');
+        console.log(this.e_magazine);
         // Form is valid, process
         this.$axios
           .post(
             process.env.VUE_APP_API_URL_ADMIN + "save-e-magazine",
-            this.fieldItem
+            this.e_magazine
           )
           .then((res) => {
             this.btnloading = false;
@@ -749,5 +852,6 @@ input.larger {
   border: 3px solid black;
   padding: 1px;
 }
+.d-flex{display:flex}
 </style>
     

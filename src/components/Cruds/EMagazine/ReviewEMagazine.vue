@@ -299,7 +299,7 @@ export default {
     fetcheventDetails() {
       this.loader = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-career-details", {
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-emagzine-details", {
           params: {
             slug: this.$route.query.slug,
           },
@@ -352,7 +352,7 @@ export default {
     updateApprovalStatus(comment_en = "", comment_ar = "") {
       this.loader = true;
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "update-events-approval", {
+        .post(process.env.VUE_APP_API_URL_ADMIN + "update-emagzine-approval", {
           id: this.selected.header_id,
           status: this.selected.approval_status,
           comment_en: comment_en,
@@ -395,7 +395,7 @@ export default {
     },
     cancel() {
       this.$router.push({
-        name: "events",
+        name: "e-magazine",
       });
     },
     closeReviewComment() {
