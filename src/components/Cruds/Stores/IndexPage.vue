@@ -15,9 +15,9 @@
               density="compact"
               v-on="on"
               variant="outlined"
+              v-bind:label="$t('search')"
               v-model="search"
               append-icon="search"
-              label="Search"
               class="srch_bar"
               small
               hide-details

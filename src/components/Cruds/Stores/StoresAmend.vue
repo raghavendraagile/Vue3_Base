@@ -56,7 +56,7 @@
                   <v-col xs="4" md="4" lg="4">
                     <v-tooltip :text="this.$t('category')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-select
+                        <v-autocomplete
                           v-bind="props"
                           v-model="stores[0].categories"
                           @update:modelValue="(value) => updateCategories(value)"
@@ -71,14 +71,14 @@
                           :items="categories_en"
                           item-value="header_id"
                           item-title="name"
-                        ></v-select>
+                        ></v-autocomplete>
                       </template>
                     </v-tooltip>
                   </v-col>
                   <v-col xs="4" md="4" lg="4">
                     <v-tooltip :text="this.$t('mall_name')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-select
+                        <v-autocomplete
                           v-bind="props"
                           v-model="stores[0].mall_name"
                           @update:modelValue="(value) => updateMallName(value)"
@@ -92,7 +92,7 @@
                           :items="mall_names_en"
                           item-value="header_id"
                           item-title="name"
-                        ></v-select>
+                        ></v-autocomplete>
                       </template>
                     </v-tooltip>
                   </v-col>
@@ -481,7 +481,7 @@
                   <v-col xs="4" md="4" lg="4">
                     <v-tooltip :text="this.$t('category_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-select
+                        <v-autocomplete
                           v-bind="props"
                           v-model="stores[1].categories"
                           @update:modelValue="(value) => updateCategories(value)"
@@ -496,14 +496,14 @@
                           :items="categories_ar"
                           item-value="header_id"
                           item-title="name"
-                        ></v-select>
+                        ></v-autocomplete>
                       </template>
                     </v-tooltip>
                   </v-col>
                   <v-col xs="4" md="4" lg="4">
                     <v-tooltip :text="this.$t('mall_name')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-select
+                        <v-autocomplete
                           v-bind="props"
                           v-model="stores[1].mall_name"
                           @update:modelValue="(value) => updateMallName(value)"
@@ -517,7 +517,7 @@
                           :items="mall_names_ar"
                           item-value="header_id"
                           item-title="name"
-                        ></v-select>
+                        ></v-autocomplete>
                       </template>
                     </v-tooltip>
                   </v-col>

@@ -27,6 +27,7 @@
                       required
                       index="id"
                       :items="stores_en"
+                      :disabled="$route.query.slug"
                       item-value="id"
                       item-title="name"
                     ></v-autocomplete>
@@ -74,7 +75,7 @@
               >
                 <v-tooltip :text="this.$t('from_time')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-select
+                    <v-autocomplete
                       v-bind="props"
                       v-model="store_timings[day_index].from_time"
                       v-bind:label="$t('from_time')"
@@ -85,7 +86,7 @@
                       item-value="shortname"
                       item-title="shortname"
                       :disabled="store_timings[day_index].is_holiday"
-                    ></v-select>
+                    ></v-autocomplete>
                   </template>
                 </v-tooltip>
               </v-col>
@@ -99,7 +100,7 @@
               >
                 <v-tooltip :text="this.$t('from_meridiem')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-select
+                    <v-autocomplete
                       v-bind="props"
                       v-model="store_timings[day_index].from_meridiem"
                       :rules="fieldRules"
@@ -111,7 +112,7 @@
                       item-value="shortname"
                       item-title="shortname"
                       :disabled="store_timings[day_index].is_holiday"
-                    ></v-select>
+                    ></v-autocomplete>
                   </template>
                 </v-tooltip>
               </v-col>
@@ -125,7 +126,7 @@
               >
                 <v-tooltip :text="this.$t('to_time')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-select
+                    <v-autocomplete
                       v-bind="props"
                       v-model="store_timings[day_index].to_time"
                       v-bind:label="$t('to_time')"
@@ -137,7 +138,7 @@
                       item-value="shortname"
                       item-title="shortname"
                       :disabled="store_timings[day_index].is_holiday"
-                    ></v-select>
+                    ></v-autocomplete>
                   </template>
                 </v-tooltip>
               </v-col>
@@ -151,7 +152,7 @@
               >
                 <v-tooltip :text="this.$t('to_meridiem')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-select
+                    <v-autocomplete
                       v-bind="props"
                       v-model="store_timings[day_index].to_meridiem"
                       :rules="fieldRules"
@@ -163,7 +164,7 @@
                       item-value="shortname"
                       item-title="shortname"
                       :disabled="store_timings[day_index].is_holiday"
-                    ></v-select>
+                    ></v-autocomplete>
                   </template>
                 </v-tooltip>
               </v-col>
@@ -285,8 +286,10 @@ export default {
   },
 
   created() {
-    this.get_stores();
     this.get_weekdays();
+  },
+  mounted() {
+    this.get_stores();
   },
   watch: {
     "$route.query.slug": {
@@ -304,7 +307,7 @@ export default {
               this.store_timings = res.data.store_timings;
               // console.log(res.data.store_timings[0].store_id);
               this.store_timing_id = res.data.store_timings[0].store_id;
-              this.get_stores();
+              this.get_added_stores();
               this.loader = false;
             });
         }
@@ -333,6 +336,21 @@ export default {
       });
     },
     get_stores() {
+      this.initval = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-stores-name")
+        .then((response) => {
+          console.log(response);
+          this.stores_en = response.data.stores_en;
+          this.stores_ar = response.data.stores_ar;
+          this.initval = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    get_added_stores() {
       this.initval = true;
       this.$axios
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-stores")
