@@ -50,6 +50,7 @@
                           <v-text-field
                             v-model="userdata.email"
                             v-bind="props"
+                             v-bind:class="[this.sel_lang == 'ar' ? 'rtl' : '']"
                             :rules="[...fieldRules, ...emailRules]"
                             v-bind:label="$t('email')"
                             @keyup.enter="requestResetPassword"
@@ -103,6 +104,7 @@
                       </router-link>
                     </div>
                   </div>
+                  
                 </div>
               </v-form>
             </div>
@@ -134,6 +136,7 @@ export default {
     app_name: "",
     error_message: "",
     show_error: false,
+    sel_lang: "en",
   }),
   computed: {
     fieldRules() {
@@ -152,6 +155,7 @@ export default {
 
   mounted() {
     this.valid = false;
+    this.selectedLang();
   },
 
   created() {
@@ -159,6 +163,13 @@ export default {
   },
 
   methods: {
+     selectedLang() {
+      if (localStorage.getItem("pref_lang")) {
+        this.sel_lang = localStorage.getItem("pref_lang");
+      } else {
+        this.sel_lang = "en";
+      }
+    },
     getAppImage() {
       if (localStorageWrapper.getItem("App_Image_Url") != null) {
         this.app_image_url = localStorageWrapper.getItem("App_Image_Url");

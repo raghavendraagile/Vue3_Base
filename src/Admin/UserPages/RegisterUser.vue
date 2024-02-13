@@ -50,6 +50,7 @@
                           v-bind:label="$t('mall')"
                           variant="outlined"
                           density="compact"
+                          v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
                           :items="malls_en"
                           item-title="name"
                           item-value="id"
@@ -69,6 +70,7 @@
                           v-bind:label="$t('store')"
                           variant="outlined"
                           density="compact"
+                          v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
                           :items="stores_en"
                           item-title="name"
                           item-value="id"
@@ -88,6 +90,7 @@
                             :rules="fieldRules1"
                             v-bind:label="$t('firstname')"
                             required
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
                             variant="outlined"
                             density="compact"
                             class="required_field"
@@ -106,6 +109,7 @@
                             :rules="fieldRules1"
                             v-bind:label="$t('lastname')"
                             required
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
                             variant="outlined"
                             density="compact"
                             class="required_field"
@@ -129,6 +133,7 @@
                             v-bind:label="$t('email')"
                             variant="outlined"
                             density="compact"
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
                             required
                             class="required_field"
                           ></v-text-field>
@@ -149,6 +154,7 @@
                           :type="show2 ? 'text' : 'password'"
                           @click:append-inner="show2 = !show2"
                           v-on="on"
+                          v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
                           v-model="users.password"
                           :rules="[...passwordRules, ...fieldRules1]"
                           v-bind:label="$t('password')"
@@ -173,6 +179,7 @@
                           :type="show1 ? 'text' : 'password'"
                           @click:append-inner="show1 = !show1"
                           v-on="on"
+                          v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
                           v-model="users.confirm_password"
                           :rules="[
                             !!users.confirm_password || $t('password_confirm'),
@@ -191,8 +198,8 @@
                 </div>
               </v-form>
               <div>
-                <v-btn
-                  :disabled="isDisabled"
+                <v-btn 
+                :disabled="btnloading || valid == false || !users.salutation || !users.name|| !users.lastname|| !users.gender|| !users.email|| !users.password|| !users.store_id|| !users.confirm_password"
                   v-bind="props"
                   :loading="isDisabled"
                   block
@@ -215,6 +222,7 @@
                   </div>
                 </div>
               </div>
+              
             </div>
           </div>
         </div>
@@ -247,6 +255,7 @@ export default {
       userrole: "User",
       confirm_password: "",
     },
+    sel_lang: "en",
     app_image_url: "",
     application_name: "",
     app_name: "",
@@ -258,7 +267,9 @@ export default {
     stores_en: [],
     malls_en: [],
   }),
-
+mounted(){
+   this.selectedLang();
+},
   computed: {
     emailRules() {
       return [
@@ -285,6 +296,13 @@ export default {
     this.get_stores();
   },
   methods: {
+    selectedLang() {
+      if (localStorage.getItem("pref_lang")) {
+        this.sel_lang = localStorage.getItem("pref_lang");
+      } else {
+        this.sel_lang = "en";
+      }
+    },
     get_stores() {
       this.initval = true;
       this.$axios
@@ -411,4 +429,5 @@ export default {
 /* .show_icon i{
 z-index: 1000 !important;
 /* } */
+
 </style>

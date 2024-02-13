@@ -42,13 +42,14 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12" md="12" class="pb-0">
-                      <label>{{ $t("email") }}</label>
+                      <label  v-bind:class="[sel_lang == 'ar' ? 'text-right' : '',]">{{ $t("email") }}</label>
                       <v-tooltip :text="$t('email')" location="bottom">
                         <template v-slot:activator="{ props }">
                           <v-text-field
                             v-bind="props"
                             v-model="userdata.email"
                             :rules="emailRules"
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
                             @keyup.enter="login"
                             required
                             variant="outlined"
@@ -58,7 +59,7 @@
                       </v-tooltip>
                     </v-col>
                     <v-col cols="12" md="12" class="pt-0">
-                      <label>{{ $t("password") }}</label>
+                      <label v-bind:class="[sel_lang == 'ar' ? 'text-right' : '',]">{{ $t("password") }}</label>
                       <v-tooltip :text="$t('password')" location="bottom">
                         <template v-slot:activator="{ props }">
                           <v-text-field
@@ -72,6 +73,7 @@
                             name="input-10-1"
                             @keyup.enter="login"
                             counter
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
                             variant="outlined"
                             density="compact"
                             @click:append-inner="show1 = !show1"

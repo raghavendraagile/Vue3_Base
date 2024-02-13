@@ -221,7 +221,7 @@ import { apptheme } from "./store/apptheme.js";
 
           <!-- <v-tooltip :text="$t('switch_mode')" location="bottom">
             <template v-slot:activator="{ props }"> -->
-          <v-btn
+          <!-- <v-btn
             icon
             @click="
               switchTheme();
@@ -236,7 +236,7 @@ import { apptheme } from "./store/apptheme.js";
                   : 'mdi-white-balance-sunny'
               "
             ></v-icon>
-          </v-btn>
+          </v-btn> -->
           <!-- </template>
           </v-tooltip> -->
           <ProfileView @getuserdetails="fetchUserdetails"></ProfileView>
@@ -282,7 +282,7 @@ export default {
       notificationmenu: false,
       componentKey: 0,
       app_image_url: "",
-      application_name: "",
+      application_name: "Gulf Mall",
       app_name: "",
       showtradienotification: false,
       notification_count: 0,

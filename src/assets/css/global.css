@@ -15,11 +15,9 @@
 
 .app-name {
   font-family: cursive;
-  color: #6a6afc;
+  color: #614f38;
 }
-#app.theme-dark .dash-parent .card{
-  background: black !important;
-}
+
 .navigation-title {
   background-color: #fff !important;
   color: #222 !important;
@@ -60,9 +58,6 @@
 #app.theme-dark .main-card {
   background-color: #222 !important;
   color: #fff !important;
-}
-#app.theme-dark .avatarcount {
-  color: #ffffffa3;
 }
 #app.theme-dark .v-navigation-drawer {
   border-radius: 0px 10px 10px 0px;
@@ -261,7 +256,7 @@ label {
 }
 
 .btn-theme-blue {
-  background-color: #4886ff !important;
+  background-color: #614f38 !important;
   color: #fff !important;
   width: 100% !important;
 }
@@ -363,7 +358,7 @@ input::placeholder {
 .font-base-app {
   font-weight: 600;
   font-family: cursive;
-  color: rgb(120, 120, 255);
+  color: #614f38;
 }
 
 .req_field {
@@ -409,7 +404,7 @@ input::placeholder {
 }
 
 .dialog-header {
-  background: #5e5eff;
+  background: #614f38;
   color: white;
 }
 
@@ -495,4 +490,16 @@ input::placeholder {
 
 .v-list-item__prepend > .v-icon {
   color: #614f38;
+}
+
+@media (orientation: landscape) {
+  .login-box-custom {
+    margin-top: 249px;
+    margin-bottom: 20px;
+  }
+}
+@media only screen and (min-width: 200px) and (max-width: 767px) and (orientation: portrait) {
+  .login-box-custom {
+    margin: 0px 20px;
+  }
 }/*# sourceMappingURL=global.css.map */

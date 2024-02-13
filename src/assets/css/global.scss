@@ -24,7 +24,7 @@ $color-theme-dark: #fff;
 
 .app-name {
   font-family: cursive;
-  color: #6a6afc;
+  color: #614f38;
 }
 .navigation-title {
   background-color: $bg-theme-light !important;
@@ -293,7 +293,7 @@ label {
 }
 
 .btn-theme-blue {
-  background-color: #4886ff !important;
+  background-color: #614f38 !important;
   color: #fff !important;
   width: 100% !important;
 }
@@ -390,7 +390,7 @@ input::placeholder {
 .font-base-app {
   font-weight: 600;
   font-family: cursive;
-  color: rgb(120, 120, 255);
+  color: #614f38;
 }
 
 .req_field {
@@ -436,7 +436,7 @@ input::placeholder {
   background: green !important;
 }
 .dialog-header{
-  background: #5e5eff;
+  background: #614f38;
   color: white;
 }
 .image-container {
@@ -535,4 +535,8 @@ input::placeholder {
 .v-list-item__content{color: #624e37;}
 .v-tab.v-tab{color: #624e37;}
 .v-list-item__prepend > .v-icon{color: #614f38;}
+@media (orientation: landscape) {.login-box-custom{margin-top: 249px;margin-bottom: 20px;}}
+@media only screen and (min-width: 200px) and (max-width: 767px) and (orientation : portrait) {
+  .login-box-custom{margin:0px 20px;}     
+}
 //keyframes end

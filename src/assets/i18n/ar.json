@@ -299,7 +299,7 @@
   "logo": "شعار",
   "stor_type": "نوع كبير ",
   "mall_admin": "مشرف مول",
-  "stor_admin": "المشرف العظيم",
+  "store_admin": "المشرف العظيم",
   "parent_category": "القسم الرئيسي",
   "social_media": "وسائل التواصل الاجتماعي",
   "create_amend_home_slider": "إنشاء/تعديل شريط التمرير الرئيسي",
@@ -365,6 +365,7 @@
   "from_time_en": "From Timing",
   "to_time_en": "To Timing",
   "mall_timing_categories_ar": "فئات توقيت مول",
+  "mall":"مول",
 
 
   "--------start_english_translation----------": "--------start_english_translation----------",
@@ -400,7 +401,7 @@
   "events": "الأحداث",
   "register": "يسجل",
   "in_review": "في مراجعة",
-  "store": "Store",
+  "store": "دكان",
   "i_am": "أنا أكون",
   "type_en":"Type",
   "subject_en":"Subject"

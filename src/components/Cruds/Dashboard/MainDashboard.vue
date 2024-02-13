@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-title :heading="$t('dashboard')" :google_icon="google_icon"></page-title>
+    <page-title   :heading="$t('dashboard')" :google_icon="google_icon"></page-title>
     <content-loader v-if="loader"></content-loader>
     <div class="container-fluid">
       <div class="dash-parent" v-bind:class="[is_arabic ? 'arabic_row' : '']">
