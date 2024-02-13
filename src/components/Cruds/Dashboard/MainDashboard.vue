@@ -6,7 +6,7 @@
       <div class="dash-parent">
         <v-row>
           <v-col md="3">
-            <v-card density="comfortable" elevation="3" class="usercard">
+            <v-card density="comfortable" elevation="6" class="usercard routecard" @click="route_to_page('user')">
               <v-row>
                 <v-col md="8">
                   <v-card-title>
@@ -14,7 +14,7 @@
                   </v-card-title>
                   <div class="pb-5 pt-2 px-3">
                     <div class="text-left row">
-                      <v-chip class="mx-3" color="green">
+                      <v-chip class="mx-3" color="green" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ activeuser }}
@@ -24,7 +24,7 @@
                       </v-chip>
                     </div>
                     <div class="text-left row mt-2">
-                      <v-chip class="mx-3" color="orange">
+                      <v-chip class="mx-3" color="orange" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ inactiveuser }}
@@ -34,7 +34,7 @@
                       </v-chip>
                     </div>
                     <div class="text-left row mt-2">
-                      <v-chip class="mx-3" color="error" style="visibility: hidden;">
+                      <v-chip class="mx-3" color="error" style="visibility: hidden;" size="small">
 
                       </v-chip>
                     </div>
@@ -50,7 +50,7 @@
           </v-col>
 
           <v-col md="3">
-            <v-card density="comfortable" elevation="3" class="eventcard">
+            <v-card density="comfortable" elevation="6" class="eventcard routecard" @click="route_to_page('event')">
               <v-row>
                 <v-col md="8">
                   <v-card-title>
@@ -58,7 +58,7 @@
                   </v-card-title>
                   <div class="pb-5 pt-2 px-3">
                     <div class="text-left row">
-                      <v-chip class="mx-3" color="orange">
+                      <v-chip class="mx-3" color="orange" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ irevents }}
@@ -68,7 +68,7 @@
                       </v-chip>
                     </div>
                     <div class="text-left row mt-2">
-                      <v-chip class="mx-3" color="green">
+                      <v-chip class="mx-3" color="green" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ apevents }}
@@ -78,7 +78,7 @@
                       </v-chip>
                     </div>
                     <div class="text-left row mt-2">
-                      <v-chip class="mx-3" color="error">
+                      <v-chip class="mx-3" color="error" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ reevents }}
@@ -99,7 +99,7 @@
           </v-col>
 
           <v-col md="3">
-            <v-card density="comfortable" elevation="3" class="promocard">
+            <v-card density="comfortable" elevation="6" class="promocard routecard" @click="route_to_page('promotion')">
               <v-row>
                 <v-col md="8">
                   <v-card-title>
@@ -107,7 +107,7 @@
                   </v-card-title>
                   <div class="pb-5 pt-2 px-3">
                     <div class="text-left row">
-                      <v-chip class="mx-3" color="orange">
+                      <v-chip class="mx-3" color="orange" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ irpromo }}
@@ -117,7 +117,7 @@
                       </v-chip>
                     </div>
                     <div class="text-left row mt-2">
-                      <v-chip class="mx-3" color="green">
+                      <v-chip class="mx-3" color="green" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ appromo }}
@@ -127,7 +127,7 @@
                       </v-chip>
                     </div>
                     <div class="text-left row mt-2">
-                      <v-chip class="mx-3" color="error">
+                      <v-chip class="mx-3" color="error" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ repromo }}
@@ -148,7 +148,7 @@
           </v-col>
 
           <v-col md="3">
-            <v-card density="comfortable" elevation="3" class="productcard">
+            <v-card density="comfortable" elevation="6" class="productcard routecard" @click="route_to_page('product')">
               <v-row>
                 <v-col md="8">
                   <v-card-title>
@@ -156,7 +156,7 @@
                   </v-card-title>
                   <div class="pb-5 pt-2 px-3">
                     <div class="text-left row">
-                      <v-chip class="mx-3" color="orange">
+                      <v-chip class="mx-3" color="orange" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ irprod }}
@@ -166,7 +166,7 @@
                       </v-chip>
                     </div>
                     <div class="text-left row mt-2">
-                      <v-chip class="mx-3" color="green">
+                      <v-chip class="mx-3" color="green" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ approd }}
@@ -176,7 +176,7 @@
                       </v-chip>
                     </div>
                     <div class="text-left row mt-2">
-                      <v-chip class="mx-3" color="error">
+                      <v-chip class="mx-3" color="error" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ reprod }}
@@ -197,7 +197,7 @@
           </v-col>
 
           <v-col md="3">
-            <v-card density="comfortable" elevation="3" class="categorycard">
+            <v-card density="comfortable" elevation="6" class="categorycard routecard" @click="route_to_page('category')">
               <v-row>
                 <v-col md="8">
                   <v-card-title>
@@ -205,7 +205,7 @@
                   </v-card-title>
                   <div class="pb-5 pt-2 px-3">
                     <div class="text-left row">
-                      <v-chip class="mx-3" color="orange">
+                      <v-chip class="mx-3" color="orange" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ ircat }}
@@ -215,7 +215,7 @@
                       </v-chip>
                     </div>
                     <div class="text-left row mt-2">
-                      <v-chip class="mx-3" color="green">
+                      <v-chip class="mx-3" color="green" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ apcat }}
@@ -225,7 +225,7 @@
                       </v-chip>
                     </div>
                     <div class="text-left row mt-2">
-                      <v-chip class="mx-3" color="error">
+                      <v-chip class="mx-3" color="error" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ recat }}
@@ -246,7 +246,7 @@
           </v-col>
 
           <v-col md="3">
-            <v-card density="comfortable" elevation="3" class="carriercard">
+            <v-card density="comfortable" elevation="6" class="carriercard routecard" @click="route_to_page('career')">
               <v-row>
                 <v-col md="8">
                   <v-card-title>
@@ -254,7 +254,7 @@
                   </v-card-title>
                   <div class="pb-5 pt-2 px-3">
                     <div class="text-left row">
-                      <v-chip class="mx-3" color="orange">
+                      <v-chip class="mx-3" color="orange" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ ircar }}
@@ -264,7 +264,7 @@
                       </v-chip>
                     </div>
                     <div class="text-left row mt-2">
-                      <v-chip class="mx-3" color="green">
+                      <v-chip class="mx-3" color="green" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ apcar }}
@@ -274,7 +274,7 @@
                       </v-chip>
                     </div>
                     <div class="text-left row mt-2">
-                      <v-chip class="mx-3" color="error">
+                      <v-chip class="mx-3" color="error" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ recar }}
@@ -295,7 +295,7 @@
           </v-col>
 
           <v-col md="3">
-            <v-card density="comfortable" elevation="3" class="storecard">
+            <v-card density="comfortable" elevation="6" class="storecard routecard" @click="route_to_page('store')">
               <v-row>
                 <v-col md="8">
                   <v-card-title>
@@ -303,7 +303,7 @@
                   </v-card-title>
                   <div class="pb-5 pt-2 px-3">
                     <div class="text-left row">
-                      <v-chip class="mx-3" color="orange">
+                      <v-chip class="mx-3" color="orange" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ irstore }}
@@ -313,7 +313,7 @@
                       </v-chip>
                     </div>
                     <div class="text-left row mt-2">
-                      <v-chip class="mx-3" color="green">
+                      <v-chip class="mx-3" color="green" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ apstore }}
@@ -323,7 +323,7 @@
                       </v-chip>
                     </div>
                     <div class="text-left row mt-2">
-                      <v-chip class="mx-3" color="error">
+                      <v-chip class="mx-3" color="error" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ re_store }}
@@ -344,7 +344,8 @@
           </v-col>
 
           <v-col md="3">
-            <v-card density="comfortable" elevation="3" class="testimonialcard">
+            <v-card density="comfortable" elevation="6" class="testimonialcard routecard"
+              @click="route_to_page('testimonial')">
               <v-row>
                 <v-col md="8">
                   <v-card-title>
@@ -352,7 +353,7 @@
                   </v-card-title>
                   <div class="pb-5 pt-2 px-3">
                     <div class="text-left row">
-                      <v-chip class="mx-3" color="green">
+                      <v-chip class="mx-3" color="green" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ aptesti }}
@@ -362,7 +363,7 @@
                       </v-chip>
                     </div>
                     <div class="text-left row mt-2">
-                      <v-chip class="mx-3" color="error">
+                      <v-chip class="mx-3" color="error" size="small">
                         <template v-slot:prepend>
                           <v-avatar class="avatarcount">
                             {{ retesti }}
@@ -372,7 +373,7 @@
                       </v-chip>
                     </div>
                     <div class="text-left row mt-2">
-                      <v-chip class="mx-3" color="error" style="visibility: hidden;">
+                      <v-chip class="mx-3" color="error" style="visibility: hidden;" size="small">
 
                       </v-chip>
                     </div>
@@ -479,6 +480,36 @@ export default {
           console.log(err);
         });
     },
+
+    route_to_page(page) {
+      if (page == 'user') {
+        this.$router.push({ name: 'users' });
+      }
+      else if (page == 'event') {
+        this.$router.push({ name: 'events' });
+      }
+      else if (page == 'promotion') {
+        this.$router.push({ name: 'promotions_offers' });
+      }
+      else if (page == 'product') {
+        this.$router.push({ name: 'products' });
+      }
+      else if (page == 'category') {
+        this.$router.push({ name: 'categories' });
+      }
+      else if (page == 'career') {
+        this.$router.push({ name: 'careers' });
+      }
+      else if (page == 'store') {
+        this.$router.push({ name: 'stores' });
+      }
+      else if (page == 'testimonial') {
+        this.$router.push({ name: 'reviews-testimonials' });
+      }
+      else {
+        this.$router.push({ name: 'dashboard' });
+      }
+    },
   },
 };
 </script>
@@ -487,19 +518,23 @@ export default {
   padding-right: 0px;
 }
 
-.dash-parent .usercard , .testimonialcard{
+.dash-parent .usercard,
+.testimonialcard {
   border-bottom: 4px solid green;
 }
 
-.dash-parent .eventcard , .storecard {
+.dash-parent .eventcard,
+.storecard {
   border-bottom: 4px solid orange;
 }
 
-.dash-parent .promocard, .carriercard {
+.dash-parent .promocard,
+.carriercard {
   border-bottom: 4px solid blue;
 }
 
-.dash-parent .productcard , .categorycard{
+.dash-parent .productcard,
+.categorycard {
   border-bottom: 4px solid red;
 }
 
@@ -524,4 +559,13 @@ export default {
 .icon-wrapper {
   text-align: center;
 }
-</style>
+
+.routecard {
+  cursor: pointer;
+}
+
+.routecard:hover {
+  height: 100.7%;
+  width: 100.7%;
+  box-shadow: 0 18px 26px rgba(21, 1, 1, 0.2);
+}</style>
