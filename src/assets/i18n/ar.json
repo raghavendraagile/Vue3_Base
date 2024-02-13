@@ -346,7 +346,9 @@
   "store_ar": "محل",
   "vacancy_ar":"خالي",
   "careers":"وظائف",
-
+  "go_to_users" : "انتقل إلى المستخدمين",
+  "total" : "المجموع",
+  "categories" : "فئات",
   "--------start_english_translation----------": "--------start_english_translation----------",
   "name_en": "Name",
   "title_en": "Title",
