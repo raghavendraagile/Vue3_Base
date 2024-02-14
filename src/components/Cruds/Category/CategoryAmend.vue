@@ -24,6 +24,26 @@
           <!-- ENGLISH TAB STARTS -->
           <v-window-item :value="1">
             <v-form ref="form" v-model="valid">
+              <v-col cols="4" sm="12" md="4" class="ml-3 pr-5">
+                <v-tooltip :text="this.$t('mall')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-autocomplete
+                      v-if="user_role == 'SuperUser'"
+                      v-bind="props"
+                      v-model="category[0].store_id"
+                      v-bind:label="$t('mall')"
+                      variant="outlined"
+                      density="compact"
+                      :items="malls_en"
+                      item-title="name"
+                      item-value="header_id"
+                      class="required_field"
+                      :rules="fieldRules"
+                      required
+                    ></v-autocomplete>
+                  </template>
+                </v-tooltip>
+              </v-col>
               <v-layout>
                 <v-row class="px-6 mt-2">
                   <v-col cols="6" sm="12" md="4">
@@ -231,6 +251,26 @@
           <!-- ARABIC TAB STARTS -->
           <v-window-item :value="2">
             <v-form ref="form" v-model="valid">
+              <v-col cols="4" sm="12" md="4" class="ml-3 pr-5">
+                <v-tooltip :text="this.$t('mall_ar')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-autocomplete
+                      v-if="user_role == 'SuperUser'"
+                      v-bind="props"
+                      v-model="category[1].store_id"
+                      v-bind:label="$t('mall_ar')"
+                      variant="outlined"
+                      density="compact"
+                      :items="malls_ar"
+                      item-title="name"
+                      item-value="header_id"
+                      class="required_field"
+                      :rules="fieldRules"
+                      required
+                    ></v-autocomplete>
+                  </template>
+                </v-tooltip>
+              </v-col>
               <v-layout>
                 <v-row class="px-6 mt-2">
                   <v-col cols="6" sm="12" md="4">
@@ -297,7 +337,7 @@
                     <v-tooltip :text="$t('description_ar')" location="top">
                       <template v-slot:activator="{ props }">
                         <div v-bind="props">
-                              <!-- @ready="setRtlDirection" -->
+                          <!-- @ready="setRtlDirection" -->
                           <quill-editor
                             ref="quill_editor_ref"
                             :options="editorOptions"
@@ -540,6 +580,8 @@ export default {
     return { onEditorReady, onEditorFocus, onEditorFocusAR, onEditorReadyAR };
   },
   data: () => ({
+    malls_en: "",
+    malls_ar: "",
     google_icon: {
       icon_name: "edit_note",
       color: "google_icon_gradient",
@@ -547,9 +589,10 @@ export default {
     },
     editorOptions: {
       theme: "snow",
-      direction: 'rtl', 
-        placeholder: "أدخل المحتوى هنا",
+      direction: "rtl",
+      placeholder: "أدخل المحتوى هنا",
     },
+
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
     valid: true,
     successmessage: "",
@@ -582,6 +625,7 @@ export default {
         header_id: 0,
         parent_id: 0,
         lang: "en",
+        store_id: null,
       },
       {
         id: 0,
@@ -596,8 +640,10 @@ export default {
         header_id: 0,
         parent_id: 0,
         lang: "ar",
+        store_id: null,
       },
     ],
+    user_role: "",
   }),
 
   computed: {
@@ -612,6 +658,15 @@ export default {
 
   mounted() {
     this.fetchParentCategories();
+    this.user_role = JSON.parse(localStorage.getItem("user_data")).rolename;
+    const storeid = JSON.parse(localStorage.getItem("user_data")).store_id;
+
+    this.category[0].store_id = storeid;
+    this.category[1].store_id = storeid;
+    this.get_malls();
+    // if (this.user_role == 'MallAdmin') {
+    //   this.category[0].store_id =
+    // }
     // setTimeout(()=>{
 
     //   // this.setRtlDirection();
@@ -655,18 +710,32 @@ export default {
   },
 
   methods: {
-setRtlDirection(quill) {
-    quill.on('text-change', () => {
-      const text = quill.getText();
-      const rtlChar = /[\u0590-\u05FF\u0600-\u06FF]/; 
-      console.log("rtl char ",rtlChar)
-      if (rtlChar.test(text)) {
-        quill.root.setAttribute('dir', 'rtl');
-      } else {
-        quill.root.setAttribute('dir', 'ltr');
-      }
-    });
-  },
+    get_malls() {
+      this.initval = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-malls")
+        .then((response) => {
+          console.log(response);
+          this.malls_en = response.data.malls_en;
+          this.malls_ar = response.data.malls_ar;
+          this.initval = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    setRtlDirection(quill) {
+      quill.on("text-change", () => {
+        const text = quill.getText();
+        const rtlChar = /[\u0590-\u05FF\u0600-\u06FF]/;
+        console.log("rtl char ", rtlChar);
+        if (rtlChar.test(text)) {
+          quill.root.setAttribute("dir", "rtl");
+        } else {
+          quill.root.setAttribute("dir", "ltr");
+        }
+      });
+    },
     uploaded_image(img_src) {
       //alert('uploaded image');
       //alert(img_src);
@@ -835,5 +904,4 @@ setRtlDirection(quill) {
   direction: rtl !important;
   text-align: right !important;
 }
-
 </style>

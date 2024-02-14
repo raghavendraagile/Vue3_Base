@@ -209,26 +209,28 @@
                   </v-col>
                 </v-row>
               </v-layout>
-              <div
-                class="d-flex justify-content-end"
-                v-if="category.approval_status == 'In Review'"
-              >
-                <v-chip
-                  @click="statusOnChange('Approved', category.header_id)"
-                  variant="flat"
-                  color="green"
-                  class="mx-1"
+              <div v-if="user_role != 'StoreAdmin'">
+                <div
+                  class="d-flex justify-content-end"
+                  v-if="category.approval_status == 'In Review'"
                 >
-                  {{ $t("approve_ar") }}
-                </v-chip>
-                <v-chip
-                  @click="statusOnChange('Rejected', category.header_id)"
-                  variant="flat"
-                  color="red"
-                  class="mx-1"
-                >
-                  {{ $t("reject_ar") }}
-                </v-chip>
+                  <v-chip
+                    @click="statusOnChange('Approved', category.header_id)"
+                    variant="flat"
+                    color="green"
+                    class="mx-1"
+                  >
+                    {{ $t("approve_ar") }}
+                  </v-chip>
+                  <v-chip
+                    @click="statusOnChange('Rejected', category.header_id)"
+                    variant="flat"
+                    color="red"
+                    class="mx-1"
+                  >
+                    {{ $t("reject_ar") }}
+                  </v-chip>
+                </div>
               </div>
             </v-card>
           </v-window-item>
@@ -274,6 +276,7 @@ export default {
     ReviewComments,
   },
   data: () => ({
+    user_role: "",
     google_icon: {
       icon_name: "category",
       color: "google_icon_gradient",
@@ -300,7 +303,9 @@ export default {
     approval_msg: "",
     enable_review_comment: false,
   }),
-
+  mounted() {
+    this.user_role = JSON.parse(localStorage.getItem("user_data")).rolename;
+  },
   watch: {
     "$route.query.slug": {
       immediate: true,
