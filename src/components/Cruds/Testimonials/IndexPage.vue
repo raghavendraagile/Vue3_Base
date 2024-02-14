@@ -17,7 +17,7 @@
               variant="outlined"
               v-model="search"
               append-icon="search"
-              label="Search"
+              v-bind:label="$t('search')"
               class="srch_bar"
               small
               hide-details

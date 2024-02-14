@@ -75,28 +75,25 @@
                     {{ props.item.selectable.to_meridiem }}
                   </td>
                   <td>
-                    <v-btn
-                      class="hover_shine btn mr-2"
-                      :disabled="isDisabled"
-                      @click="updateIsPublishStatus(props.item.selectable.id)"
-                      size="small"
+                    <v-chip
                       v-bind:color="[
                         props.item.selectable.is_holiday == 1
                           ? 'success'
                           : 'warning',
                       ]"
+                      variant="outlined"
                     >
                       <span
                         v-if="props.item.selectable.is_holiday == 1"
                         class="spanactivesize"
-                        >{{ $t("yes") }}</span
+                        >{{ $t("Yes") }}</span
                       >
                       <span
                         v-if="props.item.selectable.is_holiday == 0"
                         class="spanactivesize"
-                        >{{ $t("no") }}</span
+                        >{{ $t("No") }}</span
                       >
-                    </v-btn>
+                    </v-chip>
                   </td>
                 </tr>
               </template>
@@ -273,13 +270,18 @@ export default {
     this.fetchStoreTimings();
   },
   methods: {
-    // expand() {
-    //   if (this.isExpanded == false) {
-    //     this.isExpanded = true;
-    //   } else {
-    //     this.isExpanded = false;
-    //   }
-    // },
+    getStatusColor(status) {
+      switch (status) {
+        case "Approved":
+          return "green";
+        case "In Review":
+          return "orange";
+        case "Rejected":
+          return "red";
+        default:
+          return "";
+      }
+    },
     cancel() {
       this.showdeleteDialog = false;
     },

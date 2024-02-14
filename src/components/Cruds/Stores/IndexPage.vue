@@ -15,9 +15,9 @@
               density="compact"
               v-on="on"
               variant="outlined"
+              v-bind:label="$t('search')"
               v-model="search"
               append-icon="search"
-              label="Search"
               class="srch_bar"
               small
               hide-details
@@ -54,7 +54,7 @@
       <!-- ENGLISH TAB STARTS -->
       <v-window-item :value="1">
         <v-data-table
-          :headers="headers"
+          :headers="headers_en"
           :items="stores_en"
           :search="search"
           :loading="initval"
@@ -150,7 +150,7 @@
       <!-- ARABIC TAB STARTS -->
       <v-window-item :value="2">
         <v-data-table
-          :headers="headers"
+          :headers="headers_ar"
           :items="stores_ar"
           :search="search"
           :loading="initval"
@@ -305,30 +305,30 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
-    headers() {
+    headers_en() {
       return [
         {
           title: this.$t("store_type"),
           key: "stor_type",
         },
         {
-          title: this.$t("name"),
+          title: this.$t("name_en"),
           key: "name",
         },
         {
-          title: this.$t("email"),
+          title: this.$t("email_en"),
           key: "email",
         },
         {
-          title: this.$t("phone"),
+          title: this.$t("phone_en"),
           key: "phone",
         },
         {
-          title: this.$t("address"),
+          title: this.$t("address_en"),
           key: "address",
         },
         {
-          title: this.$t("sequence"),
+          title: this.$t("sequence_en"),
           key: "seq",
         },
         {
@@ -336,11 +336,56 @@ export default {
           key: "approval_status",
         },
         {
-          title: this.$t("status"),
+          title: this.$t("status_en"),
           key: "status",
         },
         {
-          title: this.$t("action"),
+          title: this.$t("action_en"),
+          align: "center",
+          key: "action",
+        },
+        { 
+          title: "",
+          align: "center",
+        },
+      ];
+    },
+    headers_ar() {
+      return [
+        {
+          title: this.$t("store_type_ar"),
+          key: "stor_type",
+        },
+        {
+          title: this.$t("name_ar"),
+          key: "name",
+        },
+        {
+          title: this.$t("email_ar"),
+          key: "email",
+        },
+        {
+          title: this.$t("phone_ar"),
+          key: "phone",
+        },
+        {
+          title: this.$t("address_ar"),
+          key: "address",
+        },
+        {
+          title: this.$t("sequence_ar"),
+          key: "seq",
+        },
+        {
+          title: this.$t("approval_ar"),
+          key: "approval_status",
+        },
+        {
+          title: this.$t("status_ar"),
+          key: "status",
+        },
+        {
+          title: this.$t("action_ar"),
           align: "center",
           key: "action",
         },

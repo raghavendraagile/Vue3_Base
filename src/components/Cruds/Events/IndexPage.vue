@@ -1,8 +1,6 @@
 
   <template>
   <div>
-    {{events_ar}}<br>
-    {{events_en}}
     <div flat color="white" class="row py-5 pl-5 align-items-center">
       <page-title
         class="col-md-3"

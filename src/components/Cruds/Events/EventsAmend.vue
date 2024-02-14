@@ -12,10 +12,10 @@
       <content-loader v-if="loader"></content-loader>
       <v-tabs v-model="tabs" color="blue">
         <v-tab :value="1">
-          <span>English</span>
+          <span>{{ $t("english") }}</span>
         </v-tab>
         <v-tab :value="2">
-          <span>Arabic</span>
+          <span>{{ $t("arabic") }}</span>
         </v-tab>
       </v-tabs>
       <v-window v-model="tabs">

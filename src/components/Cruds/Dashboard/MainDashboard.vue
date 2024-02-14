@@ -6,7 +6,7 @@
       <div class="dash-parent" v-bind:class="[is_arabic ? 'arabic_row' : '']">
         <v-row>
           <!------- USER CARD ------>
-          <v-col md="3" class="direction_col">
+          <v-col md="3" class="direction_col" v-if="user.rolename == 'SuperUser'">
             <v-card density="comfortable" elevation="6" class="usercard routecard" @click="route_to_page('user')">
               <v-row>
                 <v-col md="12">
@@ -214,7 +214,7 @@
           </v-col>
 
           <!------- CATEGORY CARD ------>
-          <v-col md="3" class="direction_col">
+          <v-col md="3" class="direction_col" v-if="user.rolename == 'SuperUser'">
             <v-card density="comfortable" elevation="6" class="categorycard routecard" @click="route_to_page('category')">
               <v-row>
                 <v-col md="12">
@@ -320,7 +320,7 @@
           </v-col>
 
           <!------- STORE CARD ------>
-          <v-col md="3" class="direction_col">
+          <v-col md="3" class="direction_col" v-if="user.rolename == 'SuperUser'">
             <v-card density="comfortable" elevation="6" class="storecard routecard" @click="route_to_page('store')">
               <v-row>
                 <v-col md="12">
@@ -373,7 +373,7 @@
           </v-col>
 
           <!------- TESTIMONIAL CARD ------>
-          <v-col md="3" class="direction_col">
+          <v-col md="3" class="direction_col" v-if="user.rolename == 'SuperUser'">
             <v-card density="comfortable" elevation="6" class="testimonialcard routecard"
               @click="route_to_page('testimonial')">
               <v-row>
@@ -441,6 +441,7 @@ export default {
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
     search: "",
     is_arabic : false,
+    user:[],
     dasharray:[],
     activeuser: 0,
     inactiveuser: 0,
