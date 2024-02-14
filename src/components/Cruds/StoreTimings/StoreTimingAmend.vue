@@ -28,7 +28,7 @@
                       index="id"
                       :items="stores_en"
                       :disabled="$route.query.slug"
-                      item-value="id"
+                      item-value="header_id"
                       item-title="name"
                     ></v-autocomplete>
                   </template>
@@ -185,6 +185,7 @@
                       v-bind="props"
                       v-bind:label="$t('sequence')"
                       required
+                      v-on:keypress="NumbersOnly"
                       variant="outlined"
                       density="compact"
                     ></v-text-field>
@@ -315,6 +316,19 @@ export default {
     },
   },
   methods: {
+    NumbersOnly(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
     initializeTimingArray() {
       this.weekdays_en.forEach((element) => {
         this.store_timings.push({
@@ -371,8 +385,8 @@ export default {
       this.$axios
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-weekdays")
         .then((response) => {
-          this.store_time = response.data.store_time;
-          this.weekdays_en = response.data.weekdays;
+          this.store_time = response.data.store_time_en;
+          this.weekdays_en = response.data.weekdays_en;
           this.initval = false;
           this.initializeTimingArray();
           this.loader = false;

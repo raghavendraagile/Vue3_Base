@@ -396,6 +396,7 @@
   "phone_en": "Phone",
   "email_en": "E-mail",
   "target_en": "Target",
+  "store_timing": "Store Timing",
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
   "from_day_ar": "من اليوم",
@@ -459,5 +460,6 @@
   "file_input_ar": "إدخال الملف",
   "store_type_ar": "نوع المتاجر",
   "target_ar": "هدف",
-  "mall_en":"Mall"
+  "mall_en":"Mall",
+  "week_day_ar": "يوم الأسبوع"
 }
