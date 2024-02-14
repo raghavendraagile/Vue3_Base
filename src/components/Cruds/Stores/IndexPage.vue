@@ -72,6 +72,14 @@
               <td>{{ props.item.selectable.address }}</td>
               <td>{{ props.item.selectable.seq }}</td>
               <td>
+                <v-chip
+                  :color="getStatusColor(props.item.selectable.approval_status)"
+                  variant="outlined"
+                >
+                  {{ props.item.selectable.approval_status }}
+                </v-chip>
+              </td>
+              <td>
                 <v-btn
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
@@ -92,14 +100,6 @@
                     >{{ $t("inactive") }}</span
                   >
                 </v-btn>
-              </td>
-              <td>
-                <v-chip
-                  :color="getStatusColor(props.item.selectable.approval_status)"
-                  variant="outlined"
-                >
-                  {{ props.item.selectable.approval_status }}
-                </v-chip>
               </td>
               <td class="text-center">
                 <router-link
@@ -167,6 +167,14 @@
               <td>{{ props.item.selectable.address }}</td>
               <td>{{ props.item.selectable.seq }}</td>
               <td>
+                <v-chip
+                  :color="getStatusColor(props.item.selectable.approval_status)"
+                  variant="outlined"
+                >
+                  {{ props.item.selectable.approval_status }}
+                </v-chip>
+              </td>
+              <td>
                 <v-btn
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
@@ -187,14 +195,6 @@
                     >{{ $t("inactive_ar") }}</span
                   >
                 </v-btn>
-              </td>
-              <td>
-                <v-chip
-                  :color="getStatusColor(props.item.selectable.approval_status)"
-                  variant="outlined"
-                >
-                  {{ props.item.selectable.approval_status }}
-                </v-chip>
               </td>
               <td class="text-center">
                 <router-link
@@ -344,7 +344,7 @@ export default {
           align: "center",
           key: "action",
         },
-        { 
+        {
           title: "",
           align: "center",
         },
@@ -389,7 +389,7 @@ export default {
           align: "center",
           key: "action",
         },
-        { 
+        {
           title: "",
           align: "center",
         },

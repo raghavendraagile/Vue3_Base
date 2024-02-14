@@ -86,7 +86,7 @@
   "users": "Admin Users",
   "create_user": "Create/Amend User",
   "postal_code": "Postal Code",
-  "postcode_valid": "Post code must have 4 digits",
+  "postcode_valid": "Post code must have 6 digits",
   "date_of_birth": "Date of Birth",
   "user_type": "User Type",
   "select_role": "Select Role",

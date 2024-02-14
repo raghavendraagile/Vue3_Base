@@ -59,7 +59,9 @@
                         <v-autocomplete
                           v-bind="props"
                           v-model="stores[0].categories"
-                          @update:modelValue="(value) => updateCategories(value)"
+                          @update:modelValue="
+                            (value) => updateCategories(value)
+                          "
                           :rules="fieldRules"
                           v-bind:label="$t('category')"
                           variant="outlined"
@@ -139,6 +141,7 @@
                           v-bind="props"
                           v-model="stores[0].phone"
                           :rules="phoneRules"
+                          v-on:keypress="NumbersOnly"
                           maxlength="100"
                           v-bind:label="$t('phone')"
                           required
@@ -164,6 +167,8 @@
                           item-key="name"
                           item-value="header_id"
                           item-title="name"
+                          required
+                          :rules="fieldRules"
                           v-model="stores[0].country"
                           @update:model-value="fetchStates(stores[0].country)"
                           :items="country_array_en"
@@ -183,6 +188,8 @@
                           item-key="name"
                           item-title="name"
                           item-value="header_id"
+                          required
+                          :rules="fieldRules"
                           v-model="stores[0].state"
                           @update:model-value="fetch_cities(stores[0].state)"
                           :items="state_array_en"
@@ -202,6 +209,8 @@
                           item-key="name"
                           item-value="header_id"
                           item-title="name"
+                          required
+                          :rules="fieldRules"
                           v-model="stores[0].city"
                           :items="city_array_en"
                         ></v-autocomplete>
@@ -215,6 +224,7 @@
                         <v-text-field
                           v-bind:label="$t('postcode')"
                           :rules="postcodeRules"
+                          v-on:keypress="NumbersOnly"
                           v-bind="props"
                           variant="outlined"
                           density="compact"
@@ -330,6 +340,7 @@
                           v-model="stores[0].seq"
                           maxlength="100"
                           :rules="phoneRules"
+                          v-on:keypress="NumbersOnly"
                           v-bind:label="$t('sequence')"
                           required
                           variant="outlined"
@@ -484,7 +495,9 @@
                         <v-autocomplete
                           v-bind="props"
                           v-model="stores[1].categories"
-                          @update:modelValue="(value) => updateCategories(value)"
+                          @update:modelValue="
+                            (value) => updateCategories(value)
+                          "
                           :rules="fieldRules"
                           v-bind:label="$t('category_ar')"
                           variant="outlined"
@@ -566,6 +579,7 @@
                           v-bind="props"
                           v-model="stores[1].phone"
                           :rules="phoneRules"
+                          v-on:keypress="NumbersOnly"
                           maxlength="100"
                           v-bind:label="$t('phone_ar')"
                           required
@@ -592,6 +606,8 @@
                           item-key="name"
                           item-value="header_id"
                           item-title="name"
+                          required
+                          :rules="fieldRules"
                           v-model="stores[1].country"
                           @update:model-value="fetchStates(stores[1].country)"
                           :items="country_array_ar"
@@ -611,6 +627,8 @@
                           item-key="name"
                           item-value="header_id"
                           item-title="name"
+                          required
+                          :rules="fieldRules"
                           v-model="stores[1].state"
                           @update:model-value="fetch_cities(stores[1].state)"
                           :items="state_array_ar"
@@ -629,6 +647,8 @@
                           index="id"
                           item-key="name"
                           item-title="name"
+                          required
+                          :rules="fieldRules"
                           item-value="header_id"
                           v-model="stores[1].city"
                           :items="city_array_ar"
@@ -642,6 +662,7 @@
                         <v-text-field
                           v-bind:label="$t('postcode_ar')"
                           :rules="postcodeRules"
+                          v-on:keypress="NumbersOnly"
                           v-bind="props"
                           variant="outlined"
                           density="compact"
@@ -764,6 +785,7 @@
                         <v-text-field
                           v-bind="props"
                           v-model="stores[1].seq"
+                          v-on:keypress="NumbersOnly"
                           maxlength="100"
                           :rules="phoneRules"
                           v-bind:label="$t('sequence_ar')"
@@ -1042,11 +1064,12 @@ export default {
     },
     phoneRules() {
       return [
-        (v) => (v >= 0 && v <= 999999999999) || this.$t("number_required"),
+        (v) =>
+          (v >= 0 && v <= 999999999999) || this.$t("valid_number_required"),
       ];
     },
     postcodeRules() {
-      return [(v) => (v >= 0 && v <= 9999) || this.$t("postcode_valid")];
+      return [(v) => (v >= 0 && v <= 999999) || this.$t("postcode_valid")];
     },
   },
 
@@ -1120,6 +1143,19 @@ export default {
   },
 
   methods: {
+    NumbersOnly(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
     updateType(stor_type) {
       if (this.tabs == 1) {
         this.stores[1].stor_type = stor_type;
