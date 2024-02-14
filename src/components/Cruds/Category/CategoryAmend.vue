@@ -138,7 +138,10 @@
               <v-layout>
                 <v-row class="mt-2 px-6" max-width="344">
                   <v-col md="12">
-                    <v-tooltip :text="this.$t('meta_title_en')" location="bottom">
+                    <v-tooltip
+                      :text="this.$t('meta_title_en')"
+                      location="bottom"
+                    >
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
@@ -224,7 +227,8 @@
                         </v-hover>
                       </div>
                       <a
-                        class="text-center pointer"
+                        class="text-center"
+                        style="cursor: pointer"
                         @click="downloadImage(category[0].image_path)"
                       >
                         <span
@@ -275,7 +279,10 @@
               <v-layout>
                 <v-row class="px-6 mt-2">
                   <v-col cols="6" sm="12" md="4">
-                    <v-tooltip :text="$t('parent_category_ar')" location="bottom">
+                    <v-tooltip
+                      :text="$t('parent_category_ar')"
+                      location="bottom"
+                    >
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           @update:modelValue="
@@ -458,6 +465,7 @@
                       </div>
                       <a
                         class="text-center pointer"
+                        style="cursor: pointer"
                         @click="downloadImage(category[1].image_path)"
                       >
                         <span
@@ -582,8 +590,8 @@ export default {
     return { onEditorReady, onEditorFocus, onEditorFocusAR, onEditorReadyAR };
   },
   data: () => ({
-    malls_en: "",
-    malls_ar: "",
+    malls_en: [],
+    malls_ar: [],
     google_icon: {
       icon_name: "edit_note",
       color: "google_icon_gradient",
@@ -620,7 +628,7 @@ export default {
         title: "",
         description: "",
         meta_title: "",
-        image_path: "",
+        image_path: null,
         seq: "",
         meta_description: "",
         display_header_menu: 0,
@@ -635,7 +643,7 @@ export default {
         title: "",
         description: "",
         meta_title: "",
-        image_path: "",
+        image_path: null,
         seq: "",
         meta_description: "",
         display_header_menu: 0,
@@ -712,6 +720,9 @@ export default {
   },
 
   methods: {
+    downloadImage(image_url) {
+      window.open(this.envImagePath + image_url, "_blank");
+    },
     NumbersOnly(evt) {
       evt = evt ? evt : window.event;
       var charCode = evt.which ? evt.which : evt.keyCode;
