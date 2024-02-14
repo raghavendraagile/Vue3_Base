@@ -23,7 +23,7 @@
       </div>
     </div>
     <v-form ref="form" v-model="valid">
-      <excelupload @ExcellRecieved=ExcellRecieved></excelupload>
+      <excelupload @ExcellRecieved=ExcellRecieved :response_data = response_data></excelupload>
     </v-form>
     <v-tabs v-model="tabs" color="blue">
       <v-tab :value="1" @click="checkUploadImage">
@@ -149,6 +149,7 @@ export default {
     uploaded_file: null,
     countries_en: [],
     countries_ar: [],
+    response_data: '',
     showdeleteDialog: false,
     delete_id: null,
     status_id: null,
@@ -216,6 +217,7 @@ export default {
           file :this.uploaded_file
         })
           .then((res) => {
+            this.response_data = res.data.status;
             if (res.data.status == "S") {
               this.fetchcountries();
               this.loader = false;

@@ -1,18 +1,18 @@
 <template>
     <div>
-        <v-row>
-        <v-col md="12">
-          <v-alert icon="mdi-message-alert" class="erroralert" v-model="have_error" variant="tonal" closable
-          close-label="Close Alert" color="error" title="Error Message">
-          Please Insert Country name in arabic language also !
-        </v-alert>
-        <v-alert icon="mdi-check-bold" class="erroralert" v-model="alert_message" variant="tonal" closable
-            close-label="Close Alert" color="success" title="Uploaded Succesfully">
-            3 rows Inserted !
-          </v-alert>
-        </v-col>
-      </v-row>
-      
+        <v-row v-if="response_data">
+            <v-col md="12">
+                <v-alert v-if="fail_message" icon="mdi-message-alert" class="erroralert" v-model="have_error"
+                    variant="tonal" closable close-label="Close Alert" color="error" title="Error Message">
+                    {{ fail_message }}
+                </v-alert>
+                <v-alert v-if="success_message" icon="mdi-check-bold" class="erroralert" v-model="alert_message"
+                    variant="tonal" closable close-label="Close Alert" color="success" title="Uploaded Succesfully">
+                    {{ success_message }}
+                </v-alert>
+            </v-col>
+        </v-row>
+
         <v-row>
             <v-col md="9" class="align-self-center pl-6">
                 <div class='fileinputdiv' style="padding-top: 13px;">
@@ -27,7 +27,7 @@
                     <v-tooltip :text="this.$t('cancel')" location="bottom">
                         <template v-slot:activator="{ props }">
                             <v-btn v-if="filename != ''" @click="clearFile" class="ma-1 closebtn" color="error"
-                                size="xx-small" v-bind="props" icon="mdi-close"></v-btn>
+                                :disabled="btn_loader" size="xx-small" v-bind="props" icon="mdi-close"></v-btn>
                         </template>
                     </v-tooltip>
                 </div>
@@ -42,7 +42,9 @@
                 </a>
             </v-col>
             <v-col md="2" class="align-self-center">
-                <v-btn color="primary" v-if="filename" @click="uploadexcell">{{ $t('upload') }}</v-btn>
+                <v-btn color="primary" :disabled="btn_loader" v-if="filename" @click="uploadexcell"><v-progress-circular
+                        class="mr-2" v-if="btn_loader" indeterminate :size="24"></v-progress-circular>{{ $t('upload')
+                        }}</v-btn>
             </v-col>
         </v-row>
     </div>
@@ -51,23 +53,50 @@
 <script>
 import * as XLSX from 'xlsx';
 export default {
+    props: ['response_data'],
     data() {
         return {
             tableData: [],
             filename: '',
-            excel_json: []
+            count_row: 0,
+            excel_json: [],
+            success_message: '',
+            fail_message: '',
+            btn_loader: false,
         };
+    },
+    watch: {
+        "response_data": {
+            immediate: true,
+            handler() {
+                this.btn_loader = false;
+                if (this.response_data == "S") {
+                    this.fail_message = '';
+                    this.success_message = this.count_row + this.$t('rows_inserted');
+                }
+                else {
+                    this.success_message = '';
+                    this.fail_message = this.$t('please_add_data');
+                }
+            }
+        }
     },
     methods: {
         selectFile() {
             document.getElementById("fileselector").click();
         },
         clearFile() {
+            this.fail_message = '';
+            this.success_message = '';
+            this.count_row = 0;
             this.filename = '';
             this.tableData = [];
             this.$refs.file.value = null;
         },
         handleFileUpload(event) {
+            this.count_row = 0;
+            this.fail_message = '';
+            this.success_message = '';
             const file = event.target.files[0];
             this.filename = file.name;
             const reader = new FileReader();
@@ -81,6 +110,12 @@ export default {
             reader.readAsArrayBuffer(file);
         },
         uploadexcell() {
+            this.tableData.forEach(element => {
+                if (element) {
+                    this.count_row = this.count_row + 1;
+                }
+            });
+            this.btn_loader = true;
             this.$emit("ExcellRecieved", this.tableData)
         },
     }

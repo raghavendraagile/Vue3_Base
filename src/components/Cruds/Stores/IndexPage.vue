@@ -135,7 +135,7 @@
               <td>
                 <v-btn
                   size="small"
-                  @click="viewCategory(props.item.selectable.slug)"
+                  @click="viewStores(props.item.selectable.slug)"
                   :disabled="loading"
                   class="ma-1"
                   color="blue"
@@ -230,7 +230,7 @@
               <td>
                 <v-btn
                   size="small"
-                  @click="viewCategory(props.item.selectable.slug)"
+                  @click="viewStores(props.item.selectable.slug)"
                   :disabled="loading"
                   class="ma-1"
                   color="blue"
@@ -421,7 +421,7 @@ export default {
           return "";
       }
     },
-    viewCategory(slug) {
+    viewStores(slug) {
       this.$router.push({
         name: "stores-review",
         query: { slug: slug },
