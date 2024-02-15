@@ -53,6 +53,7 @@
                       variant="outlined"
                       density="compact"
                       maxlength="12"
+                      v-on:keypress="NumbersOnly"
                       required
                     ></v-text-field>
                   </template>
@@ -194,6 +195,7 @@
                       required
                       variant="outlined"
                       density="compact"
+                      v-on:keypress="NumbersOnly"
                     ></v-text-field>
                   </template>
                 </v-tooltip>
@@ -288,6 +290,7 @@
                       variant="outlined"
                       density="compact"
                       maxlength="12"
+                      v-on:keypress="NumbersOnly"
                       required
                     ></v-text-field>
                   </template>
@@ -435,6 +438,7 @@
                       required
                       variant="outlined"
                       density="compact"
+                      v-on:keypress="NumbersOnly"
                     ></v-text-field>
                   </template>
                 </v-tooltip>
@@ -627,8 +631,8 @@ export default {
     },
   },
   mounted() {
-    this.promotions[0].type = "promotions";
-    this.promotions[1].type = "promotions";
+    // this.promotions[0].type = "promotions";
+    // this.promotions[1].type = "promotions";
     this.fetchLookup();
   },
   created() {},
@@ -657,6 +661,19 @@ export default {
     },
   },
   methods: {
+    NumbersOnly(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
     fetchLookup() {
       this.$axios
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_lang_lookup", {

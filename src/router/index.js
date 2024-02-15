@@ -428,11 +428,7 @@ const routes = [
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/CustomerNewsletter/IndexPage.vue"),
   },
-  {
-    path: "/:lang?/excell_upload",
-    name: "home-slider-review",
-    component: () => import("../components/CustomComponents/ExcelUpload.vue"),
-  },
+  
 ];
 
 const router = createRouter({

@@ -12,7 +12,6 @@
                 </v-alert>
             </v-col>
         </v-row>
-
         <v-row>
             <v-col md="9" class="align-self-center pl-6">
                 <div class='fileinputdiv' style="padding-top: 13px;">
@@ -33,7 +32,7 @@
                 </div>
             </v-col>
             <v-col md="1">
-                <a v-bind:href="'@/assets/files/CountryStateCity.xlsx'" download>
+                <a :href="excelldownloadtemplate" download="countrystatecity.xlsx">
                     <v-tooltip text="Download Template" location="bottom">
                         <template v-slot:activator="{ props }">
                             <img style="height: 70px;" v-bind="props" src="../../../public/img/xlsxicon.png" alt />
@@ -67,6 +66,11 @@ export default {
             btn_loader: false,
         };
     },
+    computed: {
+        excelldownloadtemplate() {
+            return process.env.VUE_APP_FILE_DOWNLOAD + '/countrystatecity.xlsx';
+        }
+    },
     watch: {
         "response_data": {
             immediate: true,
@@ -75,7 +79,7 @@ export default {
                 this.fail_alert = false;
                 this.success_alert = false;
                 if (this.response_data == "S") {
-                    this.success_message = (this.count_row-1) + this.$t('rows_inserted');
+                    this.success_message = (this.count_row - 1) + this.$t('rows_inserted');
                     this.filename = '';
                     this.$refs.file.value = null;
                     this.success_alert = false;

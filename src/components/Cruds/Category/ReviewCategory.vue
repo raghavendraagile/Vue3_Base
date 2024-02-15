@@ -47,6 +47,19 @@
                     </div>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
+                    <div
+                      class="d-label"
+                      v-if="category.approval_status == 'Rejected'"
+                    >
+                      {{ $t("rejected_by_en") }}
+                    </div>
+                    <div class="d-label" v-else>{{ $t("approved_by_en") }}</div>
+                    <div v-if="category.review_by">
+                      {{ category.review_by }}
+                    </div>
+                    <div v-else>{{ $t("not_applicable") }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("name_en") }}</div>
                     <div>{{ category.name }}</div>
                   </v-col>
@@ -62,19 +75,7 @@
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
 
-                  <v-col cols="12" sm="6" md="4">
-                    <div
-                      class="d-label"
-                      v-if="category.approval_status == 'Rejected'"
-                    >
-                      {{ $t("rejected_by_en") }}
-                    </div>
-                    <div class="d-label" v-else>{{ $t("approved_by_en") }}</div>
-                    <div v-if="category.review_by">
-                      {{ category.review_by }}
-                    </div>
-                    <div v-else>{{ $t("not_applicable") }}</div>
-                  </v-col>
+                  
                   <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("meta_title_en") }}</div>
                     <div>{{ category.meta_title }}</div>
@@ -153,6 +154,19 @@
                     </div>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
+                    <div
+                      class="d-label"
+                      v-if="category.approval_status == 'Rejected'"
+                    >
+                      {{ $t("rejected_by_ar") }}
+                    </div>
+                    <div class="d-label" v-else>{{ $t("approved_by_ar") }}</div>
+                    <div v-if="category.review_by">
+                      {{ category.review_by }}
+                    </div>
+                    <div v-else>{{ $t("not_applicable") }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("name_ar") }}</div>
                     <div>{{ category.name }}</div>
                   </v-col>
@@ -168,19 +182,7 @@
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
 
-                  <v-col cols="12" sm="6" md="4">
-                    <div
-                      class="d-label"
-                      v-if="category.approval_status == 'Rejected'"
-                    >
-                      {{ $t("rejected_by_ar") }}
-                    </div>
-                    <div class="d-label" v-else>{{ $t("approved_by_ar") }}</div>
-                    <div v-if="category.review_by">
-                      {{ category.review_by }}
-                    </div>
-                    <div v-else>{{ $t("not_applicable") }}</div>
-                  </v-col>
+                  
                   <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("meta_title_ar") }}</div>
                     <div>{{ category.meta_title }}</div>
