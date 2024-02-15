@@ -32,6 +32,24 @@
                   getStatusColor(data_array[index].approval_status)
                 "
               >
+                <v-layout>
+                  <v-row class="px-6 mt-2">
+                    <v-col cols="12" sm="6" md="4">
+                      <div class="d-label">{{ $t("approval_status_en") }}</div>
+                      <div>
+                        <v-chip
+                          class="ma-2"
+                          :color="
+                            getStatusColor(data_array[index].approval_status)
+                          "
+                          variant="outlined"
+                        >
+                          {{ data_array[index].approval_status }}
+                        </v-chip>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-layout>
                 <v-layout
                   v-for="(store_time, index1) in data_array"
                   :key="index1"
@@ -73,23 +91,10 @@
                       </div>
                       <div v-else>{{ $t("not_applicable") }}</div>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <div class="d-label">{{ $t("approval_status_en") }}</div>
-                      <div>
-                        <v-chip
-                          class="ma-2"
-                          :color="getStatusColor(store_time.approval_status)"
-                          variant="outlined"
-                        >
-                          {{ store_time.approval_status }}
-                        </v-chip>
-                      </div>
-                    </v-col>
-
                     <v-col
                       cols="12"
-                      sm="12"
-                      md="12"
+                      sm="6"
+                      md="4"
                       v-if="store_time.approval_status == 'Rejected'"
                     >
                       <div class="d-label">
@@ -135,109 +140,117 @@
           <!-- ARABIC TAB STARTS -->
           <v-window-item :value="2" class="p-3">
             <div v-for="(data_array, index) in all_data_array" :key="index">
-            <v-card
-              variant="elevated"
-              class="p-3 my-3 card-border rtl-direction"
-              v-if="data_array[index] && data_array[index].store_id"
-              :style="
-                'border-color:' +
-                getStatusColor(data_array[index].approval_status)
-              "
-            >
-              <v-layout
-                v-for="(store_time, index) in data_array"
-                :key="index"
+              <v-card
+                variant="elevated"
+                class="p-3 my-3 card-border rtl-direction"
+                v-if="data_array[index] && data_array[index].store_id"
+                :style="
+                  'border-color:' +
+                  getStatusColor(data_array[index].approval_status)
+                "
               >
-                <v-row class="px-6 mt-2">
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("approval_status_ar") }}</div>
-                    <div>
-                      <v-chip
-                        class="ma-2"
-                        :color="getStatusColor(store_time.approval_status)"
-                        variant="outlined"
+                <v-layout>
+                  <v-row class="px-6 mt-2">
+                    <v-col cols="12" sm="6" md="4">
+                      <div class="d-label">{{ $t("approval_status_ar") }}</div>
+                      <div>
+                        <v-chip
+                          class="ma-2"
+                          :color="
+                            getStatusColor(data_array[index].approval_status)
+                          "
+                          variant="outlined"
+                        >
+                          {{ data_array[index].approval_status }}
+                        </v-chip>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-layout>
+                <v-layout
+                  v-for="(store_time, index2) in data_array"
+                  :key="index2"
+                >
+                  <v-row class="px-6 mt-2">
+                    <v-col cols="12" sm="6" md="4">
+                      <div class="d-label">{{ $t("title_ar") }}</div>
+                      <div>{{ store_time.store_detail.name }}</div>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <div class="d-label">{{ $t("week_day_ar") }}</div>
+                      <div>{{ store_time.week_day }}</div>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <div class="d-label">{{ $t("from_time_ar") }}</div>
+                      <div>
+                        {{ store_time.from_time }}
+                        {{ store_time.from_meridiem }}
+                      </div>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <div class="d-label">{{ $t("to_time_ar") }}</div>
+                      <div>
+                        {{ store_time.to_time }} {{ store_time.to_meridiem }}
+                      </div>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <div
+                        class="d-label"
+                        v-if="store_time.approval_status == 'Rejected'"
                       >
-                        {{ store_time.approval_status }}
-                      </v-chip>
-                    </div>
-                  </v-col>
-
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("title_ar") }}</div>
-                    <div>{{ store_time.store_detail.name }}</div>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("week_day_ar") }}</div>
-                    <div>{{ store_time.week_day }}</div>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("from_time_ar") }}</div>
-                    <div>
-                      {{ store_time.from_time }} {{ store_time.from_meridiem }}
-                    </div>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("to_time_ar") }}</div>
-                    <div>
-                      {{ store_time.to_time }} {{ store_time.to_meridiem }}
-                    </div>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div
-                      class="d-label"
+                        {{ $t("rejected_by_ar") }}
+                      </div>
+                      <div class="d-label" v-else>
+                        {{ $t("approved_by_ar") }}
+                      </div>
+                      <div v-if="store_time.review_by">
+                        {{ store_time.review_by }}
+                      </div>
+                      <div v-else>{{ $t("not_applicable") }}</div>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
                       v-if="store_time.approval_status == 'Rejected'"
                     >
-                      {{ $t("rejected_by_ar") }}
-                    </div>
-                    <div class="d-label" v-else>{{ $t("approved_by_ar") }}</div>
-                    <div v-if="store_time.review_by">
-                      {{ store_time.review_by }}
-                    </div>
-                    <div v-else>{{ $t("not_applicable") }}</div>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="12"
-                    md="12"
-                    v-if="store_time.approval_status == 'Rejected'"
+                      <div class="d-label">
+                        {{ $t("reason_for_rejection_ar") }}
+                      </div>
+                      <div v-if="store_time.review_comment">
+                        {{ store_time.review_comment }}
+                      </div>
+                      <div v-else>{{ $t("not_applicable") }}</div>
+                    </v-col>
+                    <v-divider></v-divider>
+                  </v-row>
+                </v-layout>
+                <div
+                  class="d-flex justify-content-end mt-5"
+                  v-if="data_array[index].approval_status == 'In Review'"
+                >
+                  <v-chip
+                    @click="
+                      statusOnChange('Approved', data_array[index].store_id)
+                    "
+                    variant="flat"
+                    color="green"
+                    class="mx-1"
                   >
-                    <div class="d-label">
-                      {{ $t("reason_for_rejection_ar") }}
-                    </div>
-                    <div v-if="store_time.review_comment">
-                      {{ store_time.review_comment }}
-                    </div>
-                    <div v-else>{{ $t("not_applicable") }}</div>
-                  </v-col>
-                  <v-divider></v-divider>
-                </v-row>
-              </v-layout>
-              <div
-                class="d-flex justify-content-end mt-5"
-                v-if="data_array[index].approval_status == 'In Review'"
-              >
-                <v-chip
-                  @click="
-                    statusOnChange('Approved', data_array[index].store_id)
-                  "
-                  variant="flat"
-                  color="green"
-                  class="mx-1"
-                >
-                  {{ $t("approve_ar") }}
-                </v-chip>
-                <v-chip
-                  @click="
-                    statusOnChange('Rejected', data_array[index].store_id)
-                  "
-                  variant="flat"
-                  color="red"
-                  class="mx-1"
-                >
-                  {{ $t("reject_ar") }}
-                </v-chip>
-              </div>
-            </v-card>
+                    {{ $t("approve_ar") }}
+                  </v-chip>
+                  <v-chip
+                    @click="
+                      statusOnChange('Rejected', data_array[index].store_id)
+                    "
+                    variant="flat"
+                    color="red"
+                    class="mx-1"
+                  >
+                    {{ $t("reject_ar") }}
+                  </v-chip>
+                </div>
+              </v-card>
             </div>
           </v-window-item>
           <!-- ARABIC TAB END -->

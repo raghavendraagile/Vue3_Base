@@ -250,7 +250,7 @@ export default {
           align: "center",
         },
         {
-          title: this.$t("name_en"),
+          title: this.$t("name"),
           key: "name",
         },
         {
@@ -258,17 +258,17 @@ export default {
           key: "email",
         },
         {
-          title: this.$t("status_en"),
+          title: this.$t("status"),
           align: "left",
           sortable: false,
           key: "status",
         },
         {
-          title: this.$t("approval_en"),
+          title: this.$t("approval"),
           key: "approval_status",
         },
         {
-          title: this.$t("action_en"),
+          title: this.$t("action"),
           align: "center",
           key: "action",
         },

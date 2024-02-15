@@ -1,7 +1,10 @@
 <template>
   <div class="main-20">
-    <div flat color="white" class="row py-5 pl-5 align-items-center component_app_bar position-relative"
->
+    <div
+      flat
+      color="white"
+      class="row py-5 pl-5 align-items-center component_app_bar position-relative"
+    >
       <page-title
         class="col-md-3"
         :heading="$t('category')"
@@ -196,7 +199,7 @@
                   :color="getStatusColor(props.item.selectable.approval_status)"
                   variant="outlined"
                 >
-                  {{ props.item.selectable.approval_status }}
+                  {{ ap_status(props.item.selectable.approval_status) }}
                 </v-chip>
               </td>
               <td class="text-center">
@@ -390,6 +393,18 @@ export default {
   },
 
   methods: {
+    ap_status(status) {
+      switch (status) {
+        case "Approved":
+          return this.$t("approved_ar");
+        case "In Review":
+          return this.$t("inreview_ar");
+        case "Rejected":
+          return this.$t("rejected_ar");
+        default:
+          return "";
+      }
+    },
     getStatusColor(status) {
       switch (status) {
         case "Approved":

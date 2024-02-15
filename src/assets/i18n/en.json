@@ -400,6 +400,13 @@
   "email_en": "E-mail",
   "target_en": "Target",
   "store_timing": "Store Timing",
+  "approval": "Approval",
+  "country_en": "Country",
+  "state_en": "State",
+  "city_en": "City",
+  "website_en": "Website",
+  "store_code": "Store Code",
+  "postcode_en": "Postcode",
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
   "from_day_ar": "من اليوم",
@@ -465,5 +472,9 @@
   "target_ar": "هدف",
   "week_day_ar": "يوم الأسبوع",
   "mall_en": "Mall",
-  "download_en": "Download"
+  "download_en": "Download",
+  "approved_ar":"موافقة",
+  "inreview_ar":"مقابلة",
+  "rejected_ar":"مرفوض",
+  "store_code_ar": "رمز المتجر"
 }
