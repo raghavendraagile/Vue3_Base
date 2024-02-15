@@ -24,7 +24,7 @@ import { apptheme } from "../store/apptheme.js";
             >
             </v-avatar>
           </template>
-          <v-list-item-title style="font-weight: bold; font-size: 14px">
+          <v-list-item-title style="font-weight: bold; font-size: 14px" class="user_name">
             <span
               v-if="user"
               v-bind:class="
@@ -287,5 +287,11 @@ a:hover {
   transform: translateY(20px);
   font-weight: bold;
   color: rgb(77, 77, 253);
+}
+@media only screen and (max-width: 600px) {
+  .user_name {
+    font-size: 13px; 
+    white-space: normal; 
+  }
 }
 </style>

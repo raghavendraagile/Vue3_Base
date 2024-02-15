@@ -165,8 +165,8 @@ export default {
     },
   },
   methods: {
-    cancel(){
-   this.$router.push({
+    cancel() {
+      this.$router.push({
         name: "roles",
       });
     },
@@ -202,7 +202,6 @@ export default {
             .finally(() => {
               this.isDisabled = false;
               this.isBtnLoading = false;
-              // Re-enable the button after the API call
             });
         } else {
           this.$axios
@@ -231,10 +230,12 @@ export default {
             .catch((err) => {
               this.$toast.error(this.$t("something_went_wrong"));
               console.log("error", err);
+            })
+            .finally(() => {
+              this.isDisabled = false;
+              this.isBtnLoading = false;
             });
         }
-        this.isDisabled = false;
-        this.isBtnLoading = false;
       }
     },
     clear() {
