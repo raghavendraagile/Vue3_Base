@@ -53,6 +53,8 @@
       class="mt-2"
       v-model:expanded="expanded"
       :style="$route.params.lang == 'ar' ? 'direction:rtl' : ''"
+      :no-data-text="$t('no_data_available')"
+      :items-per-page-text="$t('rows_per_page')"
     >
       <template v-slot:item="{ item }">
         <!-- -{{ expanded }} -->
@@ -95,7 +97,9 @@
           </td>
           <td>
             <v-chip
-              :color="getStatusColor(item.selectable.store_timings[0].approval_status)"
+              :color="
+                getStatusColor(item.selectable.store_timings[0].approval_status)
+              "
               variant="outlined"
             >
               {{ item.selectable.store_timings[0].approval_status }}
