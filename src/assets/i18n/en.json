@@ -465,5 +465,8 @@
   "target_ar": "هدف",
   "week_day_ar": "يوم الأسبوع",
   "mall_en": "Mall",
-  "download_en": "Download"
+  "download_en": "Download",
+  "approved_ar":"موافقة",
+  "inreview_ar":"مقابلة",
+  "rejected_ar":"مرفوض"
 }
