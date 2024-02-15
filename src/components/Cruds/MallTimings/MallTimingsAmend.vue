@@ -33,7 +33,7 @@
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
-                          v-model="fieldItem.mall_timing_categories"
+                          v-model="fieldItem[0].mall_timing_categories"
                           :rules="fieldRules"
                           v-bind:label="$t('mall_timing_categories_en')"
                           variant="outlined"
@@ -53,7 +53,7 @@
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
-                          v-model="fieldItem.from_day"
+                          v-model="fieldItem[0].from_day"
                           :rules="fieldRules"
                           v-bind:label="$t('from_day_en')"
                           variant="outlined"
@@ -73,7 +73,7 @@
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
-                          v-model="fieldItem.to_day"
+                          v-model="fieldItem[0].to_day"
                           :rules="fieldRules"
                           v-bind:label="$t('to_day_en')"
                           variant="outlined"
@@ -88,7 +88,6 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <!-- ------------- -->
                   <v-col xs="4" md="4" lg="4">
                     <v-tooltip
                       :text="this.$t('from_time_en')"
@@ -97,7 +96,7 @@
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
-                          v-model="fieldItem.from_time"
+                          v-model="fieldItem[0].from_time"
                           :rules="fieldRules"
                           v-bind:label="$t('from_time_en')"
                           variant="outlined"
@@ -117,7 +116,7 @@
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
-                          v-model="fieldItem.to_time"
+                          v-model="fieldItem[0].to_time"
                           :rules="fieldRules"
                           v-bind:label="$t('to_time_en')"
                           variant="outlined"
@@ -145,7 +144,7 @@
                         <v-textarea
                           v-on="on"
                           rows="2"
-                          v-model="fieldItem.description"
+                          v-model="fieldItem[0].description"
                           v-bind="props"
                           :rules="descriptionRules"
                           v-bind:label="$t('description_en')"
@@ -176,7 +175,7 @@
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
-                          v-model="fieldItem.mall_timing_categories"
+                          v-model="fieldItem[1].mall_timing_categories"
                           :rules="fieldRules"
                           v-bind:label="$t('mall_timing_categories_ar')"
                           variant="outlined"
@@ -196,7 +195,7 @@
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
-                          v-model="fieldItem.from_day_ar"
+                          v-model="fieldItem[1].from_day"
                           :rules="fieldRules"
                           v-bind:label="$t('from_day_ar')"
                           variant="outlined"
@@ -216,7 +215,7 @@
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
-                          v-model="fieldItem.to_day_ar"
+                          v-model="fieldItem[1].to_day"
                           :rules="fieldRules"
                           v-bind:label="$t('to_day_ar')"
                           variant="outlined"
@@ -231,7 +230,6 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <!-- ------------- -->
                   <v-col xs="4" md="4" lg="4">
                     <v-tooltip
                       :text="this.$t('from_time_ar')"
@@ -240,7 +238,7 @@
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
-                          v-model="fieldItem.from_time_ar"
+                          v-model="fieldItem[1].from_time"
                           :rules="fieldRules"
                           v-bind:label="$t('from_time_ar')"
                           variant="outlined"
@@ -260,7 +258,7 @@
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
-                          v-model="fieldItem.to_time_ar"
+                          v-model="fieldItem[1].to_time"
                           :rules="fieldRules"
                           v-bind:label="$t('to_time_ar')"
                           variant="outlined"
@@ -288,7 +286,7 @@
                         <v-textarea
                           v-on="on"
                           rows="2"
-                          v-model="fieldItem.description_ar"
+                          v-model="fieldItem[1].description"
                           v-bind="props"
                           :rules="descriptionRules"
                           v-bind:label="$t('description_ar')"
@@ -380,9 +378,28 @@ export default {
     categories_en: [],
     categories_ar: [],
     tabs: 1,
-    fieldItem: {
-      id: 0,
-    },
+    fieldItem:[
+      {
+        id: 0,
+        lang: "en",
+        mall_timing_categories: null,
+        to_day: "",
+        from_day: "",
+        from_time: "",
+        to_time: "",
+        description: "",
+      },
+      {
+        id: 0,
+        lang: "ar",
+        mall_timing_categories: null,
+        to_day: "",
+        from_day: "",
+        from_time: "",
+        to_time: "",
+        description: "",
+      },
+    ],
   }),
 
   computed: {

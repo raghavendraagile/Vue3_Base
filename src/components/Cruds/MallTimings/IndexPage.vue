@@ -6,7 +6,6 @@
         :heading="$t('mall_timings')"
         :google_icon="google_icon"
       ></page-title>
-
       <div class="col-md-4">
         <v-tooltip :text="this.$t('search')" location="bottom">
           <template v-slot:activator="{ props }">
@@ -57,7 +56,7 @@
       <v-window-item :value="1">
         <v-data-table
           :headers="headers"
-          :items="mall_timings"
+          :items="mall_timings_en"
           :search="search"
           :loading="initval"
           v-bind:no-data-text="$t('no_data_available_en')"
@@ -68,7 +67,7 @@
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td>
-                {{ props.item.selectable.child_lookup_category.shortname }}
+                {{ props.item.selectable.child_category.name }}
               </td>
               <td>{{ props.item.selectable.from_day }}</td>
               <td>{{ props.item.selectable.to_day }}</td>
@@ -78,7 +77,7 @@
                 <v-btn
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
-                  @click="updateStatus(props.item.selectable.id)"
+                  @click="updateStatus(props.item.selectable.header_id)"
                   size="small"
                   v-bind:color="[
                     props.item.selectable.status == 1 ? 'success' : 'warning',
@@ -116,7 +115,7 @@
                     <span>{{ $t("edit") }}</span>
                   </v-tooltip>
                 </router-link>
-                <span @click="deleteItem(props.item.selectable.id)">
+                <span @click="deleteItem(props.item.selectable.header_id)">
                   <v-tooltip :text="this.$t('delete')" location="top">
                     <template v-slot:activator="{ props }">
                       <v-icon color="error" type="button" v-bind="props" small
@@ -136,27 +135,27 @@
       <v-window-item :value="2">
         <v-data-table
           :headers="headers_ar"
-          :items="mall_timings"
+          :items="mall_timings_ar"
           :search="search"
           :loading="initval"
           class="rtl-direction"
-          :no-data-text="$t('no_data_available')"
-          :items-per-page-text="$t('rows_per_page')"
+          v-bind:no-data-text="$t('no_data_available_ar')"
+          :items-per-page-text="$t('rows_per_page_ar')"
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td>
-                {{ props.item.selectable.child_lookup_category.shortname_ar }}
+                {{ props.item.selectable.child_category.name }}
               </td>
-              <td>{{ props.item.selectable.from_day_ar }}</td>
-              <td>{{ props.item.selectable.to_day_ar }}</td>
-              <td>{{ props.item.selectable.from_time_ar }}</td>
-              <td>{{ props.item.selectable.to_time_ar }}</td>
+              <td>{{ props.item.selectable.from_day }}</td>
+              <td>{{ props.item.selectable.to_day }}</td>
+              <td>{{ props.item.selectable.from_time }}</td>
+              <td>{{ props.item.selectable.to_time }}</td>
               <td>
                 <v-btn
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
-                  @click="updateStatus(props.item.selectable.id)"
+                  @click="updateStatus(props.item.selectable.header_id)"
                   size="small"
                   v-bind:color="[
                     props.item.selectable.status == 1 ? 'success' : 'warning',
@@ -194,7 +193,7 @@
                     <span>{{ $t("edit") }}</span>
                   </v-tooltip>
                 </router-link>
-                <span @click="deleteItem(props.item.selectable.id)">
+                <span @click="deleteItem(props.item.selectable.header_id)">
                   <v-tooltip :text="this.$t('delete')" location="top">
                     <template v-slot:activator="{ props }">
                       <v-icon color="error" type="button" v-bind="props" small
@@ -239,7 +238,8 @@ export default {
     showConfirmDialog: false,
     delete_id: null,
     dialog: false,
-    mall_timings: [],
+    mall_timings_en: [],
+    mall_timings_ar: [],
     initval: true,
     google_icon: {
       icon_name: "calendar_clock",
@@ -348,7 +348,8 @@ export default {
       this.$axios
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-mall-timings")
         .then((res) => {
-          this.mall_timings = res.data.mall_timings;
+          this.mall_timings_en = res.data.mall_timings_en;
+          this.mall_timings_ar = res.data.mall_timings_ar;
           this.initval = false;
         })
         .catch((err) => {
