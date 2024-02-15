@@ -54,7 +54,7 @@
           :items="events_en"
           v-bind:label="$t('search')"
           :loading="initval"
-          v-bind:no-data-text="$t('no_data_available')"
+          v-bind:no-data-text="$t('no_data_available_en')"
           :items-per-page-text="$t('rows_per_page_en')"
         >
           <template v-slot:item="props">
@@ -183,10 +183,9 @@
           :items="events_ar"
           v-bind:label="$t('search')"
           :loading="initval"
-          v-bind:no-data-text="$t('no_data_available')"
-          :footer-props="{
-            'items-per-page-text': $t('rows_per_page'),
-          }"
+          class="rtl-direction"
+          v-bind:no-data-text="$t('no_data_available_ar')"
+          :items-per-page-text="$t('rows_per_page_ar')"
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">

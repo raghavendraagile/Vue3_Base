@@ -62,9 +62,7 @@
           :search="search"
           :loading="initval"
           v-bind:no-data-text="$t('no_data_available')"
-          :footer-props="{
-            'items-per-page-text': $t('rows_per_page'),
-          }"
+          :items-per-page-text="$t('rows_per_page_en')"
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
@@ -259,8 +257,8 @@
     />
   </div>
 </template>
-    
-  <script>
+
+<script>
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
 export default {
@@ -384,7 +382,7 @@ export default {
     },
   },
   methods: {
-      changeStatusAr(status) {
+    changeStatusAr(status) {
       switch (status) {
         case "Approved":
           return this.$t("approved_ar");
@@ -514,7 +512,7 @@ export default {
   },
 };
 </script>
-  <style scoped>
+<style scoped>
 .list_item {
   cursor: pointer;
 }

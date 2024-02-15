@@ -11,15 +11,19 @@
                 <v-col md="12">
                   <div class="d-flex2">
                     <v-card-title class="d-flex2">
-                    {{ dashboard.name }} <v-btn class="ma-2" :color="dashboard.color" size="small" :icon="dashboard.icon"></v-btn>   
+                      {{ changeNameTranslation(dashboard.name) }}
+                    <v-btn class="ma-2" :color="dashboard.color" size="small" :icon="dashboard.icon"></v-btn>   
                     </v-card-title>
                   </div>
-                  <div class="pb-5 pl-1 pt-1 d-flex1">
-                    <div class="text-left row  px-1" v-for="(status, k) in dashboard.status" :key="k">
-                      <v-chip class="mx-3" :color="status.color" size="small">
-                       <b class="mr-1">{{ status.count }}</b> {{ status.status_name }}
+                  <div class="pb-5 pt-4 d-flex1">
+                    <v-row class="px-5">
+                      <div v-for="(status, k) in dashboard.status" :key="k">
+                        <v-chip class="mr-1" :color="status.color" size="small">
+                       <b class="mx-1">{{ status.count }}</b> {{ changeStatusTranslation(status.status_name) }}
                       </v-chip>
-                    </div>
+                      </div>
+                    </v-row>
+                 
                   </div>
                 </v-col>
               </v-row>
@@ -61,7 +65,7 @@ export default {
       } else {
         this.is_arabic = false;
       }
-    }
+    },
   },
   mounted() {
     this.user = JSON.parse(localStorage.getItem("user_data"));
@@ -69,6 +73,44 @@ export default {
   },
 
   methods: {
+    changeNameTranslation(Name) {
+      switch (Name) {
+        case "Users":
+          return this.$t("user1");
+        case "Events":
+          return this.$t("events");
+        case "Promotions":
+          return this.$t("promotions");
+        case "Products":
+          return this.$t("products");
+        case "Categories":
+          return this.$t("category");
+        case "Careers":
+          return this.$t("careers");
+        case "Stores":
+          return this.$t("stores");
+        case "Testimonials":
+          return this.$t("testimonials");
+        default:
+          return "";
+      }
+    },
+    changeStatusTranslation(status) {
+      switch (status) {
+        case "In Review":
+          return this.$t("in_review");
+        case "Approved":
+          return this.$t("approved");
+        case "Rejected":
+          return this.$t("rejected");
+        case "Active":
+          return this.$t("active");
+        case "Inactive":
+          return this.$t("inactive");
+        default:
+          return "";
+      }
+    },
     fetchDashboard(userId,Role) {
       this.loader = true;
       if(Role == 'SuperUser'){

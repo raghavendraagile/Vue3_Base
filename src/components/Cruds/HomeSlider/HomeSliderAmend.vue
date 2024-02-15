@@ -69,6 +69,8 @@
                           variant="outlined"
                           density="compact"
                           :items="targets_en"
+                          :rules="fieldRules"
+                          class="required_field"
                           item-title="shortname"
                           item-value="shortname"
                         ></v-autocomplete>
@@ -118,8 +120,6 @@
                         <v-text-field
                           v-bind="props"
                           v-model="home_slider[0].seq"
-                          :rules="phoneRules"
-                          class="required_field"
                           maxlength="100"
                           v-bind:label="$t('sequence')"
                           required
@@ -232,6 +232,8 @@
                           v-bind:label="$t('target')"
                           variant="outlined"
                           density="compact"
+                          :rules="fieldRules"
+                          class="required_field"
                           :items="targets_ar"
                           item-title="shortname"
                           item-value="shortname"
@@ -282,8 +284,6 @@
                         <v-text-field
                           v-bind="props"
                           v-model="home_slider[1].seq"
-                          :rules="phoneRules"
-                          class="required_field"
                           maxlength="100"
                           v-bind:label="$t('sequence_ar')"
                           required
@@ -396,8 +396,8 @@
     </div>
   </div>
 </template>
-    
-  <script>
+
+<script>
 import Imageupload from "../../CustomComponents/ImageUploadSlider.vue";
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 import { quillEditor } from "vue3-quill";
@@ -451,6 +451,7 @@ export default {
         image: "",
         header_id: 0,
         lang: "en",
+        seq: null,
       },
       {
         id: 0,
@@ -459,6 +460,7 @@ export default {
         image: "",
         header_id: 0,
         lang: "ar",
+        seq: null,
       },
     ],
     targets_en: [
@@ -588,7 +590,6 @@ export default {
             this.home_slider
           )
           .then((res) => {
-            this.btnloading = false;
             if (Array.isArray(res.data.message)) {
               this.array_data = res.data.message.toString();
             } else {
@@ -609,9 +610,11 @@ export default {
             this.isBtnLoading = false;
             this.$toast.error(this.$t("something_went_wrong"));
             console.log("error", err);
+          })
+          .finally(() => {
+            this.isDisabled = false;
+            this.isBtnLoading = false;
           });
-        this.isDisabled = false;
-        this.isBtnLoading = false;
       }
     },
     onEditorChange(event) {
@@ -646,7 +649,7 @@ export default {
   },
 };
 </script>
-  <style scoped>
+<style scoped>
 #quill_item {
   border: 1px solid #b00020;
 }
@@ -685,4 +688,3 @@ input.larger {
   padding: 1px;
 }
 </style>
-    
