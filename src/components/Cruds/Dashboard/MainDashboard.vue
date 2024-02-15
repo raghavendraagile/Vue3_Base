@@ -65,14 +65,14 @@ export default {
   },
   mounted() {
     this.user = JSON.parse(localStorage.getItem("user_data"));
-    this.fetchDashboard();
+    this.fetchDashboard(this.user.id);
   },
 
   methods: {
-    fetchDashboard() {
+    fetchDashboard(userId) {
       this.loader = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetchdashboard")
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetchdashboard/" + userId)
         .then((res) => {
           this.dashboard_count = res.data.count_dashboard;
           this.loader = false;
