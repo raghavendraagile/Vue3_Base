@@ -306,7 +306,10 @@
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" md="8" sm="8" lg="8">
-                    <v-tooltip :text="$t('meta_description_en')" location="bottom">
+                    <v-tooltip
+                      :text="$t('meta_description_en')"
+                      location="bottom"
+                    >
                       <template v-slot:activator="{ props }">
                         <v-textarea
                           rows="3"
@@ -1029,8 +1032,8 @@
     </div>
   </div>
 </template>
-    
-  <script>
+
+<script>
 import Imageupload from "../../CustomComponents/ImageUpload.vue";
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 export default {
@@ -1363,7 +1366,6 @@ export default {
             social_media: this.social_media,
           })
           .then((res) => {
-            this.btnloading = false;
             if (Array.isArray(res.data.message)) {
               this.array_data = res.data.message.toString();
             } else {
@@ -1380,13 +1382,14 @@ export default {
             }
           })
           .catch((err) => {
-            this.isDisabled = false;
-            this.isBtnLoading = false;
             this.$toast.error(this.$t("something_went_wrong"));
             console.log("error", err);
-          });
-        this.isDisabled = false;
-        this.isBtnLoading = false;
+          })  .finally(() => {
+              this.isDisabled = false;
+              this.isBtnLoading = false;
+            });
+        // this.isDisabled = false;
+        // this.isBtnLoading = false;
       }
     },
     clear() {
@@ -1395,7 +1398,7 @@ export default {
   },
 };
 </script>
-  <style scoped>
+<style scoped>
 input.larger {
   width: 20px;
   height: 20px;
