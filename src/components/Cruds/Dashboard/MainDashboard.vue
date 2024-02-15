@@ -161,6 +161,15 @@ export default {
 .dash-parent .error {
   border-bottom: 4px solid red;
 }
+.dash-parent .pink {
+  border-bottom: 4px solid #E91E63;
+}
+.dash-parent .purple {
+  border-bottom: 4px solid #9C27B0;
+}
+.dash-parent .lime {
+  border-bottom: 4px solid #CDDC39;
+}
 
 .cardlogo {
   align-self: center;
