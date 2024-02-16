@@ -7,6 +7,7 @@
         :google_icon="google_icon"
       ></page-title>
     </div>
+    {{role_array}}
     <div class="card-body">
       <content-loader v-if="loader"></content-loader>
       <v-tabs v-model="tabs" color="blue">
@@ -354,9 +355,11 @@ export default {
     items: [],
     stores_en: [],
     stores_ar: [],
+    role_array: []
   }),
   mounted() {
     this.get_stores();
+    this.fetchRoles();
   },
   computed: {
     fieldRules() {
@@ -397,6 +400,19 @@ export default {
     },
   },
   methods: {
+    fetchRoles() {
+      this.loader = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_reg_roles")
+        .then((response) => {
+          this.loader = false;
+          this.role_array = response.data.roles;
+        })
+        .catch((err) => {
+          this.loader = false;
+          console.log(err);
+        });
+    },
     get_stores() {
       this.initval = true;
       this.$axios

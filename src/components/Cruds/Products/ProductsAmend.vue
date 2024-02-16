@@ -34,6 +34,7 @@
                       :items="stores_en"
                       item-title="name"
                       item-value="id"
+                      class="required_field"
                     ></v-autocomplete>
                   </template>
                 </v-tooltip>
@@ -199,6 +200,7 @@
                       density="compact"
                       :items="stores_ar"
                       item-title="name"
+                      class="required_field rtl"
                       item-value="id"
                     ></v-autocomplete>
                   </template>
