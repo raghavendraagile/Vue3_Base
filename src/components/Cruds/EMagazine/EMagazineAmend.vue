@@ -49,7 +49,7 @@
                   <v-col cols="4" sm="4" md="4">
                     <v-tooltip :text="$t('title')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-text-field v-bind="props" v-model="e_magazine[0].title" :rules="fieldRules" maxlength="100"
+                        <v-text-field v-bind="props" v-model="e_magazine[0].title" :rules="fieldRules" maxlength="70"
                           class="required_field" v-bind:label="$t('title')" required variant="outlined"
                           density="compact"></v-text-field>
                       </template>
@@ -59,7 +59,7 @@
                     <v-tooltip :text="$t('meta_title')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field v-bind="props" v-model="e_magazine[0].meta_title" :rules="fieldRules"
-                          maxlength="100" class="required_field" v-bind:label="$t('meta_title')" required
+                          maxlength="70" class="required_field" v-bind:label="$t('meta_title')" required
                           variant="outlined" density="compact"></v-text-field>
                       </template>
                     </v-tooltip>
@@ -81,7 +81,7 @@
                     <v-tooltip :text="this.$t('meta_description')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-textarea v-on="on" rows="2" v-model="e_magazine[0].meta_description" v-bind="props"
-                          v-bind:label="$t('meta_description')" required variant="outlined" maxlength="2000"
+                          v-bind:label="$t('meta_description')" required variant="outlined" maxlength="160"
                           counter="true"></v-textarea>
                       </template>
                     </v-tooltip>
@@ -191,7 +191,7 @@
                   <v-col cols="4" sm="12" md="4">
                     <v-tooltip :text="$t('title_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-text-field v-bind="props" v-model="e_magazine[1].title" :rules="fieldRules" maxlength="100"
+                        <v-text-field v-bind="props" v-model="e_magazine[1].title" :rules="fieldRules" maxlength="70"
                           v-bind:label="$t('title_ar')" required class="required_field rtl" variant="outlined"
                           density="compact"></v-text-field>
                       </template>
@@ -201,7 +201,7 @@
                     <v-tooltip :text="$t('meta_title_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field v-bind="props" v-model="e_magazine[1].meta_title" :rules="fieldRules"
-                          maxlength="100" v-bind:label="$t('title_ar')" required class="required_field rtl"
+                          maxlength="70" v-bind:label="$t('title_ar')" required class="required_field rtl"
                           variant="outlined" density="compact"></v-text-field>
                       </template>
                     </v-tooltip>
@@ -224,7 +224,7 @@
                       <template v-slot:activator="{ props }">
                         <v-textarea v-on="on" rows="2" v-model="e_magazine[1].meta_description" v-bind="props"
                           v-bind:label="$t('meta_description_ar')" required class="rtl" variant="outlined"
-                          maxlength="2000" counter="true"></v-textarea>
+                          maxlength="160" counter="true"></v-textarea>
                       </template>
                     </v-tooltip>
                   </v-col>

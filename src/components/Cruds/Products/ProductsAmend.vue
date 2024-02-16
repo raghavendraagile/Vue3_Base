@@ -32,7 +32,7 @@
                   <template v-slot:activator="{ props }">
                     <v-text-field v-on="on" v-model="products[0].title" :rules="fieldRules" v-bind:label="$t('title_en')"
                       v-bind="props" required class="required_field" variant="outlined" density="compact"
-                      maxlength="100"></v-text-field>
+                      maxlength="70"></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
@@ -59,7 +59,7 @@
                   <template v-slot:activator="{ props }">
                     <v-text-field v-on="on" v-model="products[0].meta_title" :rules="fieldRules"
                       v-bind:label="$t('meta_title_en')" class="required_field" v-bind="props" variant="outlined"
-                      density="compact" maxlength="100"></v-text-field>
+                      density="compact" maxlength="70"></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
@@ -68,7 +68,7 @@
                 <v-tooltip :text="this.$t('meta_description_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-textarea v-on="on" rows="2" v-model="products[0].meta_description" class="required_field"
-                      :rules="fieldRules" maxlength="2000" counter="true" v-bind="props"
+                      :rules="fieldRules" maxlength="160" counter="true" v-bind="props"
                       v-bind:label="$t('meta_description_en')" variant="outlined"></v-textarea>
                   </template>
                   <span>{{ $t("meta_description_en") }}</span>
@@ -121,7 +121,7 @@
                   <template v-slot:activator="{ props }">
                     <v-text-field v-on="on" v-model="products[1].title" :rules="fieldRules" v-bind:label="$t('title_ar')"
                       v-bind="props" required class="required_field rtl" variant="outlined" density="compact"
-                      maxlength="100"></v-text-field>
+                      maxlength="70"></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
@@ -157,7 +157,7 @@
                 <v-tooltip :text="this.$t('meta_description_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-textarea v-on="on" rows="2" v-model="products[1].meta_description" :rules="fieldRules"
-                      maxlength="2000" v-bind="props" v-bind:label="$t('meta_description_ar')" required
+                      maxlength="160" v-bind="props" v-bind:label="$t('meta_description_ar')" required
                       class="required_field rtl" variant="outlined" counter="true"></v-textarea>
                   </template>
                   <span>{{ $t("meta_description_ar") }}</span>
