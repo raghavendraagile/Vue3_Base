@@ -29,7 +29,7 @@
               <v-layout>
                 <v-row class="px-6 mt-2">
                   <v-col cols="6" sm="12" md="4">
-                    <v-tooltip :text="$t('title')" location="bottom">
+                    <v-tooltip :text="$t('title_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
@@ -37,7 +37,7 @@
                           :rules="fieldRules"
                           class="required_field"
                           maxlength="100"
-                          v-bind:label="$t('title')"
+                          v-bind:label="$t('title_en')"
                           required
                           variant="outlined"
                           density="compact"
@@ -46,13 +46,13 @@
                     </v-tooltip>
                   </v-col>
                   <v-col cols="6" sm="12" md="4">
-                    <v-tooltip :text="$t('action')" location="bottom">
+                    <v-tooltip :text="$t('action_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
                           v-model="home_slider[0].action"
                           maxlength="100"
-                          v-bind:label="$t('action')"
+                          v-bind:label="$t('action_en')"
                           variant="outlined"
                           density="compact"
                         ></v-text-field>
@@ -60,13 +60,13 @@
                     </v-tooltip>
                   </v-col>
                   <v-col cols="6" sm="12" md="4">
-                    <v-tooltip :text="$t('target')" location="bottom">
+                    <v-tooltip :text="$t('target_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
                           v-if="home_slider[0].action != ''"
                           v-model="home_slider[0].target"
-                          v-bind:label="$t('target')"
+                          v-bind:label="$t('target_en')"
                           variant="outlined"
                           density="compact"
                           :items="targets_en"
@@ -84,9 +84,9 @@
                 <v-row class="px-6 pt-0">
                   <v-col cols="12" md="12" lg="12" sm="12" class="pt-0">
                     <v-card-title class="text-left" style="font-size: 17px">{{
-                      $t("description")
+                      $t("description_en")
                     }}</v-card-title>
-                    <v-tooltip :text="$t('description')" location="top">
+                    <v-tooltip :text="$t('description_en')" location="top">
                       <template v-slot:activator="{ props }">
                         <div v-bind="props">
                           <quill-editor
@@ -116,13 +116,13 @@
               <v-layout>
                 <v-row class="mt-2 px-6" max-width="344">
                   <v-col cols="2" sm="2" md="2">
-                    <v-tooltip :text="$t('sequence')" location="bottom">
+                    <v-tooltip :text="$t('sequence_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
                           v-model="home_slider[0].seq"
                           maxlength="100"
-                          v-bind:label="$t('sequence')"
+                          v-bind:label="$t('sequence_en')"
                           required
                           :rules="seqRules"
                           variant="outlined"
@@ -136,24 +136,26 @@
                       <div class="image-container">
                         <v-hover v-slot="{ isHovering, props }">
                           <div style="position: relative" v-bind="props">
+                           
                             <img
                               v-bind:style="
                                 isHovering == true ? 'filter: blur(1px);' : ''
                               "
-                              v-if="home_slider[0].image != ''"
+                              v-if="home_slider[0].image == '' || home_slider[0].image == null"
+                              src="@/assets/images/upload_image_default.png"
+                              width="100"
+                            />
+                             <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-else
+                              
                               :src="envImagePath + home_slider[0].image"
                               width="100"
                               height="65
                           "
                               alt
-                            />
-                            <img
-                              v-bind:style="
-                                isHovering == true ? 'filter: blur(1px);' : ''
-                              "
-                              v-else
-                              src="@/assets/images/upload_image_default.png"
-                              width="100"
                             />
                             <div v-show="isHovering" class="camera-icon">
                               <v-icon @click="uploadFile">mdi-camera</v-icon>
@@ -303,20 +305,21 @@
                               v-bind:style="
                                 isHovering == true ? 'filter: blur(1px);' : ''
                               "
-                              v-if="home_slider[1].image != ''"
+                              v-if="home_slider[1].image == '' || home_slider[1].image == null"
+                              src="@/assets/images/upload_image_default.png"
+                              width="100"
+                            />
+                             <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-else
+                              
                               :src="envImagePath + home_slider[1].image"
                               width="100"
                               height="65
                           "
                               alt
-                            />
-                            <img
-                              v-bind:style="
-                                isHovering == true ? 'filter: blur(1px);' : ''
-                              "
-                              v-else
-                              src="@/assets/images/upload_image_default.png"
-                              width="100"
                             />
                             <div v-show="isHovering" class="camera-icon">
                               <v-icon @click="uploadFile">mdi-camera</v-icon>
