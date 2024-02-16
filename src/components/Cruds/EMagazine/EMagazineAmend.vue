@@ -25,6 +25,30 @@
             <v-form ref="form" v-model="valid">
               <v-layout>
                 <v-row class="px-6 mt-2">
+                  <v-col xs="12" md="12" lg="12">
+                    <!-- :disabled="$route.query.slug" -->
+                    <v-radio-group
+                      v-model="e_magazine[0].stor_type"
+                      inline
+                      class="radio_item"
+                      @change="updateType(e_magazine[0].stor_type)"
+                    >
+                      <v-radio
+                        v-for="(role_data, rindex) in role_array"
+                        :key="rindex"
+                        :label="role_data.rolename"
+                        :value="role_data.rolename"
+                        class="text--primary"
+                      >
+                      </v-radio>
+                      <!-- <v-radio :label="$t('mall')" value="Mall"></v-radio>
+                    <v-radio value="Store" :label="$t('store')"></v-radio> -->
+                    </v-radio-group>
+                  </v-col>
+                </v-row>
+              </v-layout>
+              <v-layout>
+                <v-row class="px-6 mt-2">
                   <v-col cols="4" sm="12" md="4">
                     <v-tooltip :text="this.$t('store')" location="bottom">
                       <template v-slot:activator="{ props }">
@@ -39,6 +63,9 @@
                           :items="stores_en"
                           item-title="name"
                           item-value="id"
+                          @update:model-value="
+                            updateStore(e_magazine[0].store_id)
+                          "
                         ></v-autocomplete>
                       </template>
                     </v-tooltip>
@@ -252,6 +279,30 @@
             <v-form ref="form" v-model="valid">
               <v-layout>
                 <v-row class="px-6 mt-2">
+                  <v-col xs="12" md="12" lg="12">
+                    <!-- :disabled="$route.query.slug" -->
+                    <v-radio-group
+                      v-model="e_magazine[0].stor_type"
+                      inline
+                      class="radio_item"
+                      @change="updateType(e_magazine[0].stor_type)"
+                    >
+                      <v-radio
+                        v-for="(role_data, rindex) in role_array"
+                        :key="rindex"
+                        :label="changeStatusAr(role_data.rolename)"
+                        :value="role_data.rolename"
+                        class="text--primary"
+                      >
+                      </v-radio>
+                      <!-- <v-radio :label="$t('mall')" value="Mall"></v-radio>
+                    <v-radio value="Store" :label="$t('store')"></v-radio> -->
+                    </v-radio-group>
+                  </v-col>
+                </v-row>
+              </v-layout>
+              <v-layout>
+                <v-row class="px-6 mt-2">
                   <v-col cols="4" sm="12" md="4">
                     <v-tooltip :text="this.$t('store_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
@@ -266,6 +317,9 @@
                           :items="stores_ar"
                           item-title="name"
                           item-value="id"
+                          @update:model-value="
+                            updateStore(e_magazine[1].store_id)
+                          "
                         ></v-autocomplete>
                       </template>
                     </v-tooltip>
@@ -563,6 +617,7 @@ export default {
         meta_title: "",
         meta_description: "",
         lang: "en",
+        stor_type: "",
       },
       {
         id: 0,
@@ -575,6 +630,7 @@ export default {
         meta_title: "",
         meta_description: "",
         lang: "ar",
+        stor_type: "",
       },
     ],
     stores_en: [],
@@ -608,6 +664,7 @@ export default {
   created() {},
   mounted() {
     this.get_stores();
+    this.fetchRoles();
   },
   watch: {
     "$route.query.slug": {
@@ -646,6 +703,42 @@ export default {
   },
 
   methods: {
+     updateStore(stor_type) {
+      if (this.tabs == 1) {
+        this.e_magazine[1].store_id = stor_type;
+      } else {
+        this.e_magazine[0].store_id = stor_type;
+      }
+    },
+    changeStatusAr(status) {
+      switch (status) {
+        case "MallAdmin":
+          return this.$t("mall_admin_ar");
+        case "StoreAdmin":
+          return this.$t("store_admin_ar");
+        // case "Rejected":
+        //   return this.$t("rejected_ar");
+        default:
+          return "";
+      }
+    },
+    fetchRoles() {
+      this.loader = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_reg_roles")
+        .then((response) => {
+          this.loader = false;
+          this.role_array = response.data.roles;
+          if (!this.$route.query.slug) {
+            this.e_magazine[0].stor_type = this.role_array[0].rolename;
+            this.e_magazine[1].stor_type = this.role_array[0].rolename;
+          }
+        })
+        .catch((err) => {
+          this.loader = false;
+          console.log(err);
+        });
+    },
     get_stores() {
       this.initval = true;
       this.$axios
