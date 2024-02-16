@@ -28,7 +28,7 @@
             <v-form ref="form" v-model="valid">
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" sm="12" md="4">
+                  <v-col cols="6" sm="12" md="4">
                     <v-tooltip :text="$t('title')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -45,7 +45,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" sm="12" md="4">
+                  <v-col cols="6" sm="12" md="4">
                     <v-tooltip :text="$t('action')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -59,7 +59,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" sm="12" md="4">
+                  <v-col cols="6" sm="12" md="4">
                     <v-tooltip :text="$t('target')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -115,7 +115,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="mt-2 px-6" max-width="344">
-                  <v-col cols="12" sm="2" md="2">
+                  <v-col cols="2" sm="2" md="2">
                     <v-tooltip :text="$t('sequence')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -278,7 +278,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="mt-2 px-6" max-width="344">
-                  <v-col cols="12" sm="2" md="2">
+                  <v-col cols="2" sm="2" md="2">
                     <v-tooltip :text="$t('sequence_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field

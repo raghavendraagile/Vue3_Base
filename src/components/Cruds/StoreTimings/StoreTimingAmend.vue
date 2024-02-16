@@ -28,7 +28,6 @@
                       variant="outlined"
                       density="compact"
                       required
-                      class="required_field"
                       index="id"
                       :items="stores_en"
                       :disabled="$route.query.slug"
@@ -87,7 +86,6 @@
                       v-bind:label="$t('from_time')"
                       variant="outlined"
                       density="compact"
-                      class="required_field"
                       index="id"
                       :items="store_time"
                       item-value="shortname"
@@ -115,7 +113,6 @@
                       :rules="fieldRules"
                       variant="outlined"
                       density="compact"
-                      class="required_field"
                       required
                       index="id"
                       :items="meridiem"
@@ -144,7 +141,6 @@
                       v-bind:label="$t('to_time')"
                       variant="outlined"
                       density="compact"
-                      class="required_field"
                       required
                       index="id"
                       :items="store_time"
@@ -173,7 +169,6 @@
                       :rules="fieldRules"
                       variant="outlined"
                       density="compact"
-                      class="required_field"
                       required
                       index="id"
                       :items="meridiem"
@@ -204,7 +199,6 @@
                       v-bind:label="$t('sequence')"
                       required
                       v-on:keypress="NumbersOnly"
-                      class="required_field"
                       variant="outlined"
                       density="compact"
                     ></v-text-field>

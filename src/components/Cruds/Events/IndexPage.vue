@@ -21,7 +21,6 @@
               class="srch_bar"
               small
               hide-details
-              v-bind="props"
             ></v-text-field>
           </template>
           <span>{{ $t("search") }}</span>
@@ -53,7 +52,6 @@
         <v-data-table
           :headers="headers_en"
           :items="events_en"
-          :search="search"
           v-bind:label="$t('search')"
           :loading="initval"
           v-bind:no-data-text="$t('no_data_available_en')"
@@ -111,12 +109,12 @@
                   <span
                     v-if="props.item.selectable.status == 1"
                     class="spanactivesize"
-                    >{{ $t("active_en") }}</span
+                    >{{ $t("active") }}</span
                   >
                   <span
                     v-if="props.item.selectable.status == 0"
                     class="spanactivesize"
-                    >{{ $t("inactive_en") }}</span
+                    >{{ $t("inactive") }}</span
                   >
                 </v-btn>
               </td>
@@ -183,7 +181,6 @@
         <v-data-table
           :headers="headers_ar"
           :items="events_ar"
-           :search="search"
           v-bind:label="$t('search')"
           :loading="initval"
           class="rtl-direction"
@@ -242,12 +239,12 @@
                   <span
                     v-if="props.item.selectable.status == 1"
                     class="spanactivesize"
-                    >{{ $t("active_ar") }}</span
+                    >{{ $t("active") }}</span
                   >
                   <span
                     v-if="props.item.selectable.status == 0"
                     class="spanactivesize"
-                    >{{ $t("inactive_ar") }}</span
+                    >{{ $t("inactive") }}</span
                   >
                 </v-btn>
               </td>
@@ -301,7 +298,7 @@
                   :disabled="loading"
                   class="ma-1"
                   color="blue"
-                  >{{ $t("view_ar") }}</v-btn
+                  >{{ $t("view_en") }}</v-btn
                 >
               </td>
             </tr>

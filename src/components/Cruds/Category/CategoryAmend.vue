@@ -23,7 +23,7 @@
           <!-- ENGLISH TAB STARTS -->
           <v-window-item :value="1">
             <v-form ref="form" v-model="valid">
-              <v-col cols="4" sm="12" md="4" class="ml-3 pr-5">
+              <v-col cols="12" sm="12" md="4" class="ml-3 pr-5">
                 <v-tooltip :text="this.$t('mall_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -46,7 +46,7 @@
               </v-col>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="6" lg="6" sm="12" md="4">
+                  <v-col cols="12" sm="12" md="4">
                     <v-tooltip :text="$t('name_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -66,7 +66,7 @@
                     </v-tooltip>
                   </v-col>
 
-                  <v-col cols="6" lg="6" sm="12" md="4">
+                  <v-col cols="12" sm="12" md="4">
                     <v-tooltip :text="$t('name_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -83,7 +83,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="6" sm="12" md="4">
+                  <v-col cols="12" sm="12" md="4">
                     <v-tooltip :text="$t('title_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -112,7 +112,7 @@
                       <template v-slot:activator="{ props }">
                         <div v-bind="props">
                           <quill-editor
-                          style="direction: ltr;"
+                          :options="editorOptions_en"
                             class="hide_quill_input"
                             v-bind:id="
                               quill_item == true
@@ -180,7 +180,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="2" sm="2" md="2">
+                  <v-col cols="12" sm="2" md="2">
                     <v-tooltip :text="$t('sequence_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -257,7 +257,8 @@
           <!-- ARABIC TAB STARTS -->
           <v-window-item :value="2">
             <v-form ref="form" v-model="valid">
-              <v-col cols="4" sm="12" md="4" class="ml-3 pr-5">
+              <v-row class="arabdirection">
+              <v-col cols="12" sm="12" md="4" class="mx-6">
                 <v-tooltip :text="this.$t('mall_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -277,10 +278,10 @@
                     ></v-autocomplete>
                   </template>
                 </v-tooltip>
-              </v-col>
+              </v-col></v-row>
               <v-layout>
-                <v-row class="px-6 mt-2">
-                  <v-col cols="6" sm="12" md="4">
+                <v-row class="px-6 mt-2 arabdirection">
+                  <v-col cols="12" sm="12" md="4">
                     <v-tooltip
                       :text="$t('parent_category_ar')"
                       location="bottom"
@@ -302,7 +303,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="6" sm="12" md="4">
+                  <v-col cols="12" sm="12" md="4">
                     <v-tooltip :text="$t('name_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -319,7 +320,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="6" sm="12" md="4">
+                  <v-col cols="12" sm="12" md="4">
                     <v-tooltip :text="$t('title_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -339,9 +340,9 @@
                 </v-row>
               </v-layout>
               <v-layout>
-                <v-row class="px-6 pt-0">
+                <v-row class="px-6 pt-0 arabdirection">
                   <v-col cols="12" md="12" lg="12" sm="12" class="pt-0">
-                    <v-card-title class="text-left" style="font-size: 17px">{{
+                    <v-card-title class="text-right" style="font-size: 17px">{{
                       $t("description_ar")
                     }}</v-card-title>
                     <v-tooltip :text="$t('description_ar')" location="top">
@@ -349,9 +350,8 @@
                         <div v-bind="props">
                           <!-- @ready="setRtlDirection" -->
                           <quill-editor
-                            ref="quill_editor_ref"
                             :options="editorOptions"
-                            class="hide_quill_input rtl"
+                            class="arabclassquill"
                             v-bind:id="
                               quill_item == true
                                 ? 'quill_item'
@@ -375,7 +375,7 @@
                 </v-row>
               </v-layout>
               <v-layout>
-                <v-row class="mt-2 px-6" max-width="344">
+                <v-row class="mt-2 px-6 arabdirection" max-width="344">
                   <v-col md="12">
                     <v-tooltip
                       :text="this.$t('meta_title_ar')"
@@ -418,7 +418,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="2" sm="2" md="2">
+                  <v-col cols="12" sm="2" md="2">
                     <v-tooltip :text="$t('sequence_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -603,6 +603,10 @@ export default {
       theme: "snow",
       direction: "rtl",
       placeholder: "أدخل المحتوى هنا",
+    },
+    editorOptions_en: {
+      theme: "snow",
+      placeholder: "Enter the content here",
     },
 
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
@@ -948,4 +952,12 @@ export default {
   direction: rtl !important;
   text-align: right !important;
 }
+.arabdirection /deep/ .v-field {
+  direction: rtl !important;
+}
+.arabclassquill /deep/ .ql-editor{
+  text-align: justify !important;
+}
+
+
 </style>

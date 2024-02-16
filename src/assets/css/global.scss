@@ -540,16 +540,8 @@ input::placeholder {
 .v-list-item__content{color: #624e37;}
 .v-tab.v-tab{color: #624e37;}
 .v-list-item__prepend > .v-icon{color: #614f38;}
-.ql-editor .ql-direction-rtl {
-  direction: rtl;
-  text-align: right !important;
-}
 @media (orientation: landscape) {.login-box-custom{margin-top: 249px;margin-bottom: 20px;}}
 @media only screen and (min-width: 200px) and (max-width: 767px) and (orientation : portrait) {
   .login-box-custom{margin:0px 20px;}     
 }
-@media only screen and (min-width: 200px) and (max-width: 500px){
-  .add_new_button{    margin-top: 20px;}
-}
-
 //keyframes end

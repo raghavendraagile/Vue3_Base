@@ -431,6 +431,10 @@ input::placeholder {
   animation: fadeInUp 0.5s forwards;
 }
 
+.arabdirection{
+  direction:rtl;
+}
+
 @keyframes bounceAnimation {
   0%, 100% {
     transform: translateY(0);
@@ -502,11 +506,6 @@ input::placeholder {
   color: #614f38;
 }
 
-.ql-editor .ql-direction-rtl {
-  direction: rtl;
-  text-align: right !important;
-}
-
 @media (orientation: landscape) {
   .login-box-custom {
     margin-top: 249px;
@@ -516,10 +515,5 @@ input::placeholder {
 @media only screen and (min-width: 200px) and (max-width: 767px) and (orientation: portrait) {
   .login-box-custom {
     margin: 0px 20px;
-  }
-}
-@media only screen and (min-width: 200px) and (max-width: 500px) {
-  .add_new_button {
-    margin-top: 20px;
   }
 }/*# sourceMappingURL=global.css.map */

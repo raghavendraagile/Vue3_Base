@@ -413,7 +413,6 @@
   "body_ar" : "جسم",
   "signature_en" : "Signature",
   "logo_en" : "Logo",
-  "parent_promotions_en" : "Parent Promotions",
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
   "enter_the_content_here_ar" : "أدخل المحتوى هنا",
@@ -489,12 +488,11 @@
   "store_code_ar": "رمز المتجر",
   "field_required_ar": "حقل مطلوب",
   "mall_admin_ar":"مجمع تجاري",
-  "store_admin_ar":"محل",
+  "store_admin_ar":"مسؤول المتجر",
   "store_en" : "Store",
   "email_valid_ar": "يجب ان يكون البريد الاكتروني صحيح",
   "valid_number_required_ar": "الرجاء إدخال رقم صالح",
   "description_required_ar": "الوصف مطلوب",
   "postcode_valid_ar": "يجب أن يتكون الرمز البريدي من 6 أرقام",
-  "enter_the_content_here_en" : "Enter the content here",
-  "parent_promotions_ar":"الوصف مطلو"
+  "enter_the_content_here_en" : "Enter the content here"
 }

@@ -18,7 +18,7 @@
         <v-window-item :value="1">
           <v-form ref="form" v-model="valid">
             <v-row class="mx-auto mt-2" max-width="344">
-              <v-col cols="12" sm="12" md="4">
+              <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('store')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete v-bind="props" v-model="promotions[0].store_id"
@@ -28,7 +28,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('title_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field v-on="on" v-model="promotions[0].title" :rules="fieldRules"
@@ -37,7 +37,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col md="4">
                 <v-tooltip :text="this.$t('phone_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field v-on="on" v-model="promotions[0].phone" v-bind:label="$t('phone_en')"
@@ -46,7 +46,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col md="4">
                 <v-tooltip :text="this.$t('email_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field v-on="on" v-model="promotions[0].email" :rules="emailRules"
@@ -55,7 +55,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col md="4">
                 <v-tooltip :text="this.$t('type_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-select v-bind="props" v-model="promotions[0].type"
@@ -65,7 +65,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col md="4">
                 <v-tooltip :text="this.$t('start_date_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker v-bind="props" :label="$t('start_date_en')" :min="new Date().toISOString().substr(0, 10)"
@@ -74,7 +74,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col md="4">
                 <v-tooltip :text="this.$t('end_date_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker v-bind="props" :label="$t('end_date_en')" :min="new Date().toISOString().substr(0, 10)"
@@ -84,7 +84,7 @@
                   <span>{{ $t("end_date") }}</span>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('meta_title_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field v-on="on" v-model="promotions[0].meta_title" :rules="fieldRules"
@@ -93,39 +93,16 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="12">
-                 <v-card-title class="text-left" style="font-size: 17px">{{
-                      $t("description_en")
-                    }}</v-card-title>
-                    <v-tooltip :text="$t('description_en')" location="top">
-                      <template v-slot:activator="{ props }">
-                        <div v-bind="props">
-                          <!-- @ready="setRtlDirection" -->
-                          <quill-editor
-                            ref="quill_editor_ref"
-                            :options="editorOptions"
-                            class="hide_quill_input"
-                            v-bind:id="
-                              quill_item == true
-                                ? 'quill_item'
-                                : 'quill_item_border'
-                            "
-                            v-model:value="promotions[0].description"
-                            @blur="onEditorBlurAR($event)"
-                            @focus="onEditorFocusAR($event)"
-                            @ready="setRtlDirection"
-                            @change="onEditorChangeAR($event)"
-                          />
-                          <small
-                            v-if="quill_item"
-                            class="text-danger ml-5 required_item shake"
-                            >Field Required</small
-                          >
-                        </div>
-                      </template>
-                    </v-tooltip>
+              <v-col md="4">
+                <v-tooltip :text="this.$t('description_en')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-textarea v-on="on" rows="2" v-model="promotions[0].description" :rules="fieldRules"
+                      class="required_field" maxlength="2000" v-bind="props" v-bind:label="$t('description_en')"
+                      variant="outlined" counter="true"></v-textarea>
+                  </template>
+                </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col md="4">
                 <v-tooltip :text="this.$t('meta_description_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-textarea v-on="on" rows="2" v-model="promotions[0].meta_description" :rules="fieldRules"
@@ -134,7 +111,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col cols="2" sm="2" md="2">
                 <v-tooltip :text="$t('sequence_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field v-bind="props" v-model="promotions[0].seq" maxlength="100" :rules="phoneRules"
@@ -143,7 +120,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col md="6">
                 <div>
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">
@@ -177,7 +154,7 @@
         <v-window-item :value="2">
           <v-form ref="form" v-model="valid">
             <v-row class="mx-auto mt-2 arabdirection" max-width="344">
-              <v-col cols="12" sm="12" md="4">
+              <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('store_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete v-bind="props" v-model="promotions[1].store_id"
@@ -187,7 +164,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('title_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field v-on="on" v-model="promotions[1].title" :rules="fieldRules"
@@ -196,7 +173,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col md="4">
                 <v-tooltip :text="this.$t('phone_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field v-on="on" v-model="promotions[1].phone" v-bind:label="$t('phone_ar')"
@@ -205,7 +182,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col md="4">
                 <v-tooltip :text="this.$t('email_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field v-on="on" v-model="promotions[1].email" :rules="emailRules"
@@ -214,7 +191,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col md="4">
                 <v-tooltip :text="this.$t('type_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-select v-bind="props" v-model="promotions[1].type"
@@ -224,7 +201,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col md="4">
                 <v-tooltip :text="this.$t('start_date_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker v-bind="props" :label="$t('start_date_ar')" :min="new Date().toISOString().substr(0, 10)"
@@ -233,7 +210,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col md="4">
                 <v-tooltip :text="this.$t('end_date_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker v-bind="props" :label="$t('end_date_ar')" :min="new Date().toISOString().substr(0, 10)"
@@ -242,7 +219,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('meta_title_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field v-on="on" v-model="promotions[1].meta_title" :rules="fieldRules"
@@ -251,39 +228,16 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="12">
-                <v-card-title class="text-left" style="font-size: 17px">{{
-                      $t("description_ar")
-                    }}</v-card-title>
-                    <v-tooltip :text="$t('description_ar')" location="top">
-                      <template v-slot:activator="{ props }">
-                        <div v-bind="props">
-                          <!-- @ready="setRtlDirection" -->
-                          <quill-editor
-                            ref="quill_editor_ref"
-                            :options="editorOptions"
-                            class="hide_quill_input rtl"
-                            v-bind:id="
-                              quill_item == true
-                                ? 'quill_item'
-                                : 'quill_item_border'
-                            "
-                            v-model:value="promotions[1].description"
-                            @blur="onEditorBlurAR($event)"
-                            @focus="onEditorFocusAR($event)"
-                            @ready="setRtlDirection"
-                            @change="onEditorChangeAR($event)"
-                          />
-                          <small
-                            v-if="quill_item"
-                            class="text-danger ml-5 required_item shake"
-                            >Field Required</small
-                          >
-                        </div>
-                      </template>
-                    </v-tooltip>
+              <v-col md="4">
+                <v-tooltip :text="this.$t('description_ar')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-textarea v-on="on" rows="2" v-model="promotions[1].description" :rules="fieldRules"
+                      maxlength="2000" v-bind="props" v-bind:label="$t('description_ar')" required
+                      class="required_field rtl" variant="outlined" counter="true"></v-textarea>
+                  </template>
+                </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col md="4">
                 <v-tooltip :text="this.$t('meta_description_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-textarea v-on="on" rows="2" v-model="promotions[1].meta_description" :rules="fieldRules"
@@ -293,7 +247,7 @@
                   <span>{{ $t("vacancy") }}</span>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col cols="2" sm="2" md="2">
                 <v-tooltip :text="$t('sequence_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field v-bind="props" v-model="promotions[1].seq" maxlength="100" :rules="phoneRules"
@@ -302,7 +256,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col md="6">
                 <div>
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">
@@ -360,26 +314,8 @@
 <script>
 import DatePicker from "../../CustomComponents/DatePicker.vue";
 import Imageupload from "../../CustomComponents/ImageUpload.vue";
-import { quillEditor } from "vue3-quill";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
 export default {
-  components: { DatePicker, Imageupload,quillEditor },
-   setup() {
-    const onEditorFocus = () => {
-      // console.log("editor focus!", quill);
-    };
-    const onEditorFocusAR = () => {
-      // console.log("editor focus!", quill);
-    };
-    const onEditorReady = () => {
-      // console.log("editor ready!", quill);
-    };
-    const onEditorReadyAR = () => {
-      // console.log("editor ready!", quill);
-    };
-
-    return { onEditorReady, onEditorFocus, onEditorFocusAR, onEditorReadyAR };
-  },
+  components: { DatePicker, Imageupload },
   data: () => ({
     google_icon: {
       icon_name: "edit_note",
@@ -438,7 +374,6 @@ export default {
 
     noimagepreview: "",
     items: [],
-   
   }),
 
   computed: {
@@ -645,41 +580,9 @@ export default {
         //alert("Form is Invalid");
       }
     },
-    onEditorChange(event) {
-      if (event.text.length == 1) {
-        this.quill_item = true;
-      } else {
-        this.quill_item = false;
-      }
-    },
-    onEditorChangeAR(event) {
-      if (event.text.length == 1) {
-        this.quill_item = true;
-      } else {
-        this.quill_item = false;
-      }
-    },
-    onEditorBlur() {
-      // console.log(event.options);
-      if (this.promotions.description == "") {
-        this.quill_item = true;
-      }
-    },
-    onEditorBlurAR(event) {
-      console.log(event.options);
-      if (this.promotions.description_ar == "") {
-        this.quill_item = true;
-      }
-    },
     clear() {
       this.$refs.form.reset();
     },
-    cancel() {
-      this.$router.push({
-        name: "categories",
-      });
-    },
-  
   },
 };
 </script>
