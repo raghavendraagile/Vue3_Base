@@ -188,7 +188,7 @@
         <!-- ARABIC TAB STARTS -->
         <v-window-item :value="2">
           <v-form ref="form" v-model="valid">
-            <v-row class="mx-auto mt-2" max-width="344">
+            <v-row class="mx-auto mt-2 arabdirection" max-width="344">
               <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('store_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
@@ -664,4 +664,8 @@ input.larger {
   border: 2px solid black;
   padding: 1px;
 }
+.arabdirection /deep/ .v-field {
+  direction: rtl !important;
+}
+
 </style>
