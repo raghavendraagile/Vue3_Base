@@ -198,10 +198,15 @@ $color-theme-dark: #fff;
   margin-bottom: 5px;
   margin-right: -1pt;
 }
-
+.rtl-page-title{    direction: rtl;
+ 
+  }
+  .component_app_bar{ width: 100%;
+    display: flex;
+    align-items: center;justify-content: space-between;}
 .add_new_button {
   width: auto;
-  position: absolute;
+  // position: absolute;
   right: 35px;
 }
 

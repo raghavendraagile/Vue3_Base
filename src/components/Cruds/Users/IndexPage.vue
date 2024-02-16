@@ -4,6 +4,7 @@
       flat
       color="white"
       class="row py-5 pl-5 align-items-center component_app_bar position-relative"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]"
     >
       <page-title
         class="col-md-3"
@@ -168,7 +169,7 @@ export default {
     isDisabled: false,
     showConfirmDialog: false,
     delete_id: "",
-
+sel_lang: "",
     google_icon: {
       icon_name: "group",
       color: "google_icon_gradient",
@@ -184,8 +185,20 @@ export default {
     showStatusDialog: false,
   }),
   mounted() {
+
     this.user = JSON.parse(localStorage.getItem("user"));
+     this.selectedLang();
     this.fetchUsers();
+    
+  },
+  watch: {
+    '$i18n.locale'(newLocale) {
+      if (newLocale === 'ar') {
+        this.sel_lang = 'ar';
+      } else {''
+        this.sel_lang = 'en';
+      }
+    }
   },
   computed: {
     headers() {
@@ -241,6 +254,9 @@ export default {
   },
 
   methods: {
+     selectedLang() {
+      this.sel_lang = localStorage.getItem("pref_lang") || "en";
+    },
     redirectView(slug) {
       this.$router.push({
         name: "view-my-profile",
