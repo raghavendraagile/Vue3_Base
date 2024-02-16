@@ -1,6 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('create_career')"
@@ -21,7 +24,7 @@
         <!-- ENGLISH TAB STARTS -->
         <v-window-item :value="1">
           <v-form ref="form" v-model="valid">
-            <v-layout>
+            <v-layout  v-if="user.rolename != 'StoreAdmin'">
               <v-row class="px-6 mt-2">
                 <v-col xs="12" md="12" lg="12">
                   <!-- :disabled="$route.query.slug" -->
@@ -34,7 +37,7 @@
                     <v-radio
                       v-for="(role_data, rindex) in role_array"
                       :key="rindex"
-                      :label="role_data.rolename"
+                      :label="changeRoleName(role_data.rolename)"
                       :value="role_data.rolename"
                       class="text--primary"
                     >
@@ -46,7 +49,12 @@
               </v-row>
             </v-layout>
             <v-row class="mx-auto mt-2" max-width="344">
-              <v-col cols="4" sm="12" md="4" v-if="!user.store_id">
+              <v-col
+                cols="4"
+                sm="12"
+                md="4"
+                v-if="user.rolename != 'StoreAdmin'"
+              >
                 <v-tooltip :text="this.$t('store')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -120,7 +128,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col md="8">
+              <v-col :md="user.rolename === 'StoreAdmin' ? 12 : 8">
                 <v-tooltip
                   :text="this.$t('meta_description')"
                   location="bottom"
@@ -169,7 +177,7 @@
         <!-- ARABIC TAB STARTS -->
         <v-window-item :value="2">
           <v-form ref="form" v-model="valid">
-            <v-layout>
+            <v-layout  v-if="user.rolename != 'StoreAdmin'">
               <!-- :disabled="$route.query.slug" -->
               <v-row class="px-6 mt-2">
                 <v-col xs="12" md="12" lg="12">
@@ -194,7 +202,12 @@
               </v-row>
             </v-layout>
             <v-row class="mx-auto mt-2" max-width="344">
-              <v-col cols="4" sm="12" md="4" v-if="!user.store_id">
+              <v-col
+                cols="4"
+                sm="12"
+                md="4"
+                v-if="user.rolename != 'StoreAdmin'"
+              >
                 <v-tooltip :text="this.$t('store_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -269,7 +282,7 @@
                 </v-tooltip>
               </v-col>
 
-              <v-col md="8">
+              <v-col :md="user.rolename === 'StoreAdmin' ? 12 : 8">
                 <v-tooltip
                   :text="this.$t('meta_description_ar')"
                   location="bottom"
@@ -431,7 +444,7 @@ export default {
 
   created() {
     this.user = JSON.parse(localStorage.getItem("user_data"));
-    if (this.user.store_id) {
+    if (this.user.store_id && this.user.rolename == "StoreAdmin") {
       this.careers[0].store_id = this.user.store_id;
       this.careers[1].store_id = this.user.store_id;
     }
@@ -459,15 +472,28 @@ export default {
         }
       },
     },
-    '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
   methods: {
+    changeRoleName(role_name) {
+      switch (role_name) {
+        case "MallAdmin":
+          return this.$t("mall");
+        case "StoreAdmin":
+          return this.$t("store");
+        // case "Rejected":
+        //   return this.$t("rejected_ar");
+        default:
+          return "";
+      }
+    },
     changeStatusAr(status) {
       switch (status) {
         case "MallAdmin":
@@ -501,7 +527,16 @@ export default {
         .then((response) => {
           this.loader = false;
           this.role_array = response.data.roles;
-          if (!this.$route.query.slug) {
+          if (!this.$route.query.slug && this.user.rolename == "SuperUser") {
+            this.careers[0].stor_type = this.role_array[0].rolename;
+            this.careers[1].stor_type = this.role_array[0].rolename;
+          } else if (
+            this.user.rolename === "MallAdmin" &&
+            !this.$route.query.slug
+          ) {
+            this.role_array = response.data.roles.filter(
+              (role) => role.rolename !== "MallAdmin"
+            );
             this.careers[0].stor_type = this.role_array[0].rolename;
             this.careers[1].stor_type = this.role_array[0].rolename;
           }

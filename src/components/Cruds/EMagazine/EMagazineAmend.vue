@@ -1,6 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('create_ammend_e_magazine')"
@@ -23,7 +26,7 @@
           <!-- ENGLISH TAB STARTS -->
           <v-window-item :value="1">
             <v-form ref="form" v-model="valid">
-              <v-layout>
+              <v-layout v-if="user && user.rolename != 'StoreAdmin'">
                 <v-row class="px-6 mt-2">
                   <v-col xs="12" md="12" lg="12">
                     <!-- :disabled="$route.query.slug" -->
@@ -36,7 +39,7 @@
                       <v-radio
                         v-for="(role_data, rindex) in role_array"
                         :key="rindex"
-                        :label="role_data.rolename"
+                        :label="changeRoleName(role_data.rolename)"
                         :value="role_data.rolename"
                         class="text--primary"
                       >
@@ -49,7 +52,12 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="4" sm="12" md="4">
+                  <v-col
+                    cols="4"
+                    sm="12"
+                    md="4"
+                    v-if="user.rolename != 'StoreAdmin'"
+                  >
                     <v-tooltip :text="this.$t('store')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -62,7 +70,7 @@
                           density="compact"
                           :items="stores_en"
                           item-title="name"
-                          item-value="id"
+                          item-value="header_id"
                           @update:model-value="
                             updateStore(e_magazine[0].store_id)
                           "
@@ -277,15 +285,15 @@
           <!-- ARABIC TAB STARTS -->
           <v-window-item :value="2">
             <v-form ref="form" v-model="valid">
-              <v-layout>
+              <v-layout v-if="user.rolename != 'StoreAdmin'">
+                <!-- :disabled="$route.query.slug" -->
                 <v-row class="px-6 mt-2">
                   <v-col xs="12" md="12" lg="12">
-                    <!-- :disabled="$route.query.slug" -->
                     <v-radio-group
-                      v-model="e_magazine[0].stor_type"
+                      v-model="e_magazine[1].stor_type"
                       inline
                       class="radio_item"
-                      @change="updateType(e_magazine[0].stor_type)"
+                      @change="updateType(e_magazine[1].stor_type)"
                     >
                       <v-radio
                         v-for="(role_data, rindex) in role_array"
@@ -303,20 +311,25 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="4" sm="12" md="4">
+                  <v-col
+                    cols="4"
+                    sm="12"
+                    md="4"
+                    v-if="user.rolename != 'StoreAdmin'"
+                  >
                     <v-tooltip :text="this.$t('store_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
                           v-model="e_magazine[1].store_id"
                           v-bind:label="$t('store_ar')"
-                          class="required_field"
+                          class="required_field rtl"
                           :rules="fieldRules"
                           variant="outlined"
                           density="compact"
                           :items="stores_ar"
                           item-title="name"
-                          item-value="id"
+                          item-value="header_id"
                           @update:model-value="
                             updateStore(e_magazine[1].store_id)
                           "
@@ -647,6 +660,7 @@ export default {
     sel_lang: "",
     folder: "e_magazin_file_upload",
     is_disabled: false,
+    user: "",
   }),
 
   computed: {
@@ -662,10 +676,17 @@ export default {
     },
   },
 
-  created() {},
+  created() {
+    this.fetchRoles();
+  },
   mounted() {
     this.get_stores();
-    this.fetchRoles();
+
+    this.user = JSON.parse(localStorage.getItem("user_data"));
+    if (this.user.store_id && this.user.rolename == "StoreAdmin") {
+      this.e_magazine[0].store_id = this.user.store_id;
+      this.e_magazine[1].store_id = this.user.store_id;
+    }
   },
   watch: {
     "$route.query.slug": {
@@ -680,38 +701,60 @@ export default {
                 this.$route.query.slug
             )
             .then((res) => {
-              if (Array.isArray(res.data.message)) {
-                this.e_magazine = res.data.message.toString();
-              } else {
-                this.e_magazine = res.data.message;
-              }
-              if (res.data.status == "S") {
-                this.e_magazine = res.data.e_magazine;
-                this.loader = false;
-              } else {
-                this.$toast.error(this.$t("something_went_wrong"));
-                this.loader = false;
-              }
-            })
-            .catch((err) => {
-              this.loader = false;
-              this.$toast.error(this.$t("something_went_wrong"));
-              console.log(err);
+              this.e_magazine = res.data.e_magazine;
+
+              //   if (Array.isArray(res.data.message)) {
+              //     this.e_magazine = res.data.message.toString();
+              //   } else {
+              //     this.e_magazine = res.data.message;
+              //   }
+              //   if (res.data.status == "S") {
+              //     this.e_magazine = res.data.e_magazine;
+              //     this.loader = false;
+              //   } else {
+              //     this.$toast.error(this.$t("something_went_wrong"));
+              //     this.loader = false;
+              //   }
+              // })
+              // .catch((err) => {
+              //   this.loader = false;
+              //   this.$toast.error(this.$t("something_went_wrong"));
+              //   console.log(err);
             });
         }
       },
     },
-     '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
 
   methods: {
-     updateStore(stor_type) {
+    updateType(stor_type) {
+      if (this.tabs == 1) {
+        this.e_magazine[1].stor_type = stor_type;
+      } else {
+        this.e_magazine[0].stor_type = stor_type;
+      }
+    },
+    changeRoleName(role_name) {
+      switch (role_name) {
+        case "MallAdmin":
+          return this.$t("mall");
+        case "StoreAdmin":
+          return this.$t("store");
+        // case "Rejected":
+        //   return this.$t("rejected_ar");
+        default:
+          return "";
+      }
+    },
+    updateStore(stor_type) {
       if (this.tabs == 1) {
         this.e_magazine[1].store_id = stor_type;
       } else {
@@ -737,7 +780,16 @@ export default {
         .then((response) => {
           this.loader = false;
           this.role_array = response.data.roles;
-          if (!this.$route.query.slug) {
+          if (!this.$route.query.slug && this.user.rolename == "SuperUser") {
+            this.e_magazine[0].stor_type = this.role_array[0].rolename;
+            this.e_magazine[1].stor_type = this.role_array[0].rolename;
+          } else if (
+            this.user.rolename === "MallAdmin" &&
+            !this.$route.query.slug
+          ) {
+            this.role_array = response.data.roles.filter(
+              (role) => role.rolename !== "MallAdmin"
+            );
             this.e_magazine[0].stor_type = this.role_array[0].rolename;
             this.e_magazine[1].stor_type = this.role_array[0].rolename;
           }
