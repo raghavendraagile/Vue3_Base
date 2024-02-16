@@ -1,31 +1,19 @@
 <template>
   <div class="mx-2 mt-3 p-0">
     <div class="text-center">
-      <page-title
-        class="col-md-4"
-        :heading="$t('amend_email_template')"
-        :google_icon="google_icon"
-      ></page-title>
+      <page-title class="col-md-4" :heading="$t('amend_email_template')" :google_icon="google_icon"></page-title>
     </div>
     <div class="mb-3">
       <content-loader v-if="loader"></content-loader>
       <div class="card-body" style="box-shadow: none !important">
         <v-form ref="form" v-model="valid">
-          <v-row class="px-6 mt-4">
+          <v-row class="px-6 mt-4" v-bind:class="is_arabic ? 'arabclass' : ''">
             <v-col cols="12" sm="6" md="6">
               <v-tooltip :text="$t('name')" location="bottom">
                 <template v-slot:activator="{ props }">
-                  <v-text-field
-                    :disabled="fieldItem.id == 0 ? disabled : ''"
-                    v-bind="props"
-                    maxlength="100"
-                    v-model="fieldItem.template_name"
-                    :rules="fieldRules"
-                    v-bind:label="$t('name')"
-                    required
-                    variant="outlined"
-                    density="compact"
-                  ></v-text-field>
+                  <v-text-field :disabled="fieldItem.id == 0 ? disabled : ''" v-bind="props" maxlength="100"
+                    v-model="fieldItem.template_name" :rules="fieldRules" v-bind:label="$t('name')" required
+                    variant="outlined" density="compact"></v-text-field>
                 </template>
               </v-tooltip>
             </v-col>
@@ -40,107 +28,73 @@
           </v-tabs>
           <div>
             <div>
-              <v-row class="px-6 mt-4">
+              <v-row class="px-6 mt-4" v-bind:class="fieldItem.lang == 'ar' ? 'arabclass' : ''">
                 <v-col cols="12" sm="12" md="4">
-                  <v-tooltip :text="$t('select_mode')" location="bottom">
+                  <v-tooltip :text="fieldItem.lang == 'en' ? $t('select_mode_en') : $t('select_mode_ar')"
+                    location="bottom">
                     <template v-slot:activator="{ props }">
-                      <v-autocomplete
-                        class="rtl-dir"
-                        v-bind:label="$t('select_mode')"
-                        item-value="header_id"
-                        item-title="shortname"
-                        density="compact"
-                        variant="outlined"
-                        v-bind="props"
-                        index="id"
-                        v-model="fieldItem.template_type_id"
-                        :rules="fieldRules1"
-                        :items="tabs == 1 ? temp_type_en : temp_type_ar"
-                        outlined
-                        required
-                        dense
-                      ></v-autocomplete>
+                      <v-autocomplete class="rtl-dir" v-bind:class="fieldItem.lang == 'ar' ? 'arabclass' : ''"
+                        v-bind:label="fieldItem.lang == 'en' ? $t('select_mode_en') : $t('select_mode_ar')"
+                        item-value="header_id" item-title="shortname" density="compact" variant="outlined" v-bind="props"
+                        index="id" v-model="fieldItem.template_type_id" :rules="fieldRules1"
+                        :items="tabs == 1 ? temp_type_en : temp_type_ar" outlined required dense></v-autocomplete>
                     </template>
                   </v-tooltip>
                 </v-col>
                 <v-col cols="12" sm="12" md="8">
-                  <v-tooltip :text="$t('subject')" location="bottom">
+                  <v-tooltip :text="fieldItem.lang == 'en' ? $t('subject_en') : $t('subject_ar')" location="bottom">
                     <template v-slot:activator="{ props }">
-                      <v-text-field
-                        v-bind="props"
-                        v-model="fieldItem.template_subject"
-                        :rules="fieldRules"
-                        maxlength="100"
-                        v-bind:label="$t('subject')"
-                        required
-                        variant="outlined"
-                        density="compact"
-                      ></v-text-field>
+                      <v-text-field v-bind="props" v-model="fieldItem.template_subject" :rules="fieldRules"
+                        v-bind:class="fieldItem.lang == 'ar' ? 'arabclass' : ''" maxlength="100"
+                        v-bind:label="fieldItem.lang == 'en' ? $t('subject_en') : $t('subject_ar')" required
+                        variant="outlined" density="compact"></v-text-field>
                     </template>
                   </v-tooltip>
                 </v-col>
               </v-row>
               <v-row class="px-6 pt-0">
-                <v-col cols="12" md="12" lg="12" sm="12" class="pt-0">
-                  <v-card-title class="text-left" style="font-size: 17px">{{
-                    $t("body")
-                  }}</v-card-title>
-                  <v-tooltip :text="$t('body')" location="top">
+                <v-col cols="12" md="12" lg="12" sm="12" class="pt-0"
+                  v-bind:class="fieldItem.lang == 'ar' ? 'arabclass' : ''">
+                  <v-card-title v-bind:class="fieldItem.lang == 'ar' ? 'text-right' : 'text-left'"
+                    style="font-size: 17px">
+                    <span v-if="fieldItem.lang == 'ar'">
+                      {{ $t("body_ar") }}
+                    </span>
+                    <span v-else> {{ $t("body_en") }}</span>
+                  </v-card-title>
+                  <v-tooltip :text="fieldItem.lang == 'en' ? $t('body_en') : $t('body_ar')" location="top">
                     <template v-slot:activator="{ props }">
                       <div v-bind="props">
-                        <quill-editor
-                        :key="quill_d"
-                          :options="editorOptions"
-                          v-bind:style="tabs == 2 ? 'rt-input' : ''"
-                          class="hide_quill_input"
-                          v-bind:id="
-                            quill_item == true
-                              ? 'quill_item'
-                              : 'quill_item_border'
-                          "
-                          v-model:value="fieldItem.template_body"
-                          @blur="onEditorBlur($event)"
-                          @focus="onEditorFocus($event)"
-                          @ready="onEditorReady($event)"
-                          @change="onEditorChange($event)"
-                        />
-                        <small
-                          v-if="quill_item"
-                          class="text-danger ml-5 required_item shake"
-                          >Field Required</small
-                        >
+                        <quill-editor :key="quill_d" :options="editorOptions" v-bind:style="tabs == 2 ? 'rt-input' : ''"
+                          class="hide_quill_input" v-bind:id="quill_item == true
+                            ? 'quill_item'
+                            : 'quill_item_border'
+                            " v-model:value="fieldItem.template_body" @blur="onEditorBlur($event)"
+                          @focus="onEditorFocus($event)" @ready="onEditorReady($event)"
+                          @change="onEditorChange($event)" />
+                        <small v-if="quill_item" class="text-danger ml-5 required_item shake">Field Required</small>
                       </div>
                     </template>
                   </v-tooltip>
                 </v-col>
               </v-row>
               <v-row class="px-6 mb-2">
-                <v-col cols="12" md="12" lg="12" sm="12">
-                  <v-card-title class="text-left" style="font-size: 17px">{{
-                    $t("signature")
-                  }}</v-card-title>
-                  <v-tooltip :text="$t('signature')" location="top">
+                <v-col cols="12" md="12" lg="12" sm="12" v-bind:class="fieldItem.lang == 'ar' ? 'arabclass' : ''">
+                  <v-card-title v-bind:class="fieldItem.lang == 'ar' ? 'text-right' : 'text-left'"
+                    style="font-size: 17px">
+                    <span v-if="fieldItem.lang == 'ar'">{{ $t('signature_ar') }}</span> <span v-else>{{ $t("signature_en")
+                    }}</span>
+                  </v-card-title>
+                  <v-tooltip :text="fieldItem.lang == 'en' ? $t('signature_en') : $t('signature_ar')" location="top">
                     <template v-slot:activator="{ props }">
                       <div v-bind="props">
-                        <quill-editor
-                          :options="editorOptions"
-                          v-bind:style="tabs == 2 ? 'rt-input' : ''"
-                          class="hide_quill_input"
-                          v-bind:id="
-                            quill_sign == true
-                              ? 'quill_item1'
-                              : 'quill_item_border1'
-                          "
-                          v-model:value="fieldItem.template_signature"
-                          v-bind:label="$t('body')"
-                          @change="onEditorChangeSignature($event)"
-                          @blur="onEditorBlurSign($event)"
-                        />
-                        <small
-                          v-if="quill_sign"
-                          class="text-danger ml-5 required_item shake"
-                          >Field Required</small
-                        >
+                        <quill-editor :options="editorOptions" v-bind:style="tabs == 2 ? 'rt-input' : ''"
+                          class="hide_quill_input" v-bind:id="quill_sign == true
+                            ? 'quill_item1'
+                            : 'quill_item_border1'
+                            " v-model:value="fieldItem.template_signature" v-bind:label="$t('body')"
+                          @change="onEditorChangeSignature($event)" @blur="onEditorBlurSign($event)" />
+                        <small v-if="quill_sign" class="text-danger ml-5 required_item shake">Field Required</small>
                         <!-- <QuillEditor theme="snow" v-model:content="fieldItem.template_signature"
                     contentType="html" name="template_body" v-bind:label="$t('body')" />-->
                       </div>
@@ -156,14 +110,7 @@
         <v-tooltip :text="$t('cancel')" location="bottom">
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="d-inline-block mr-2">
-              <v-btn
-                v-bind="props"
-                size="small"
-                @click="cancel()"
-                :disabled="loading"
-                class="ma-1"
-                color="cancel"
-              >
+              <v-btn v-bind="props" size="small" @click="cancel()" :disabled="loading" class="ma-1" color="cancel">
                 {{ $t("cancel") }}
               </v-btn>
             </div>
@@ -172,22 +119,10 @@
         <v-tooltip :text="$t('submit')" location="bottom">
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="d-inline-block">
-              <v-btn
-                :disabled="isDisabled"
-                @click="submit"
-                size="small"
-                class="mr-2"
-                color="success"
-              >
+              <v-btn :disabled="isDisabled" @click="submit" size="small" class="mr-2" color="success">
                 {{ $t("submit") }}
-                <v-progress-circular
-                  v-if="isDisabled"
-                  indeterminate
-                  width="1"
-                  color="cancel"
-                  size="x-small"
-                  class="ml-2"
-                ></v-progress-circular>
+                <v-progress-circular v-if="isDisabled" indeterminate width="1" color="cancel" size="x-small"
+                  class="ml-2"></v-progress-circular>
               </v-btn>
             </div>
           </template>
@@ -229,7 +164,7 @@ export default {
     quill_item: false,
     quill_sign: false,
     tabs: 1,
-    quill_d:0,
+    quill_d: 0,
     google_icon: {
       icon_name: "edit_note",
       color: "google_icon_gradient",
@@ -273,6 +208,7 @@ export default {
     mode_items: [],
     item: [],
     orgs: [],
+    is_arabic: false,
     disabled: false,
     showerrmsg: false,
     email: "",
@@ -296,13 +232,20 @@ export default {
   created() {
     this.fetchLookup();
   },
-  mounted() {},
+  mounted() { },
   watch: {
     tabs(newVal) {
       if (newVal === 2) {
         this.editorOptions.direction = "rtl";
       } else {
         this.editorOptions.direction = "ltr";
+      }
+    },
+    '$i18n.locale'(newLocale) {
+      if (newLocale === 'ar') {
+        this.is_arabic = true;
+      } else {
+        this.is_arabic = false;
       }
     },
     "$route.query.slug": {
@@ -314,8 +257,8 @@ export default {
           this.$axios
             .get(
               process.env.VUE_APP_API_URL_ADMIN +
-                "emailtemplates/" +
-                this.$route.query.slug
+              "emailtemplates/" +
+              this.$route.query.slug
             )
             .then((res) => {
               this.loader = false;
@@ -445,8 +388,8 @@ export default {
           this.$axios
             .patch(
               process.env.VUE_APP_API_URL_ADMIN +
-                "emailtemplates/" +
-                this.template_slug,
+              "emailtemplates/" +
+              this.template_slug,
               this.fieldItem
             )
             .then((res) => {
@@ -493,49 +436,69 @@ export default {
   direction: rtl;
   text-align: right;
 }
+
 #quill_item {
   border: 1px solid #b00020;
 }
+
 #quill_item_border {
   border: 1px solid #d1d5db;
 }
+
 #quill_item1 {
   border: 1px solid #b00020;
 }
+
 #quill_item_border1 {
   border: 1px solid #d1d5db;
 }
+
 .ql-tooltip {
   display: none !important;
 }
-.hide_quill_input >>> input {
+
+.hide_quill_input>>>input {
   display: none !important;
 }
+
 .required_item {
   position: absolute !important;
 }
+
 .shake {
   animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   transform: translate3d(0, 0, 0);
 }
+
+.arabclass .v-field {
+  direction: rtl !important;
+}
+
+.arabclass {
+  direction: rtl !important;
+}
+
 @keyframes shake {
+
   10%,
   90% {
     transform: translate3d(-1px, 0, 0);
   }
+
   20%,
   80% {
     transform: translate3d(2px, 0, 0);
   }
+
   30%,
   50%,
   70% {
     transform: translate3d(-4px, 0, 0);
   }
+
   40%,
   60% {
     transform: translate3d(4px, 0, 0);
   }
-}
-</style>
+}</style>
   
