@@ -141,10 +141,8 @@ export default {
     PageTitle,
     quillEditor,
   },
+
   setup() {
-    // const onEditorBlur = (quill) => {
-    //   console.log('editor blur!', quill)
-    // }
     const onEditorFocus = (quill) => {
       console.log("editor focus!", quill);
     };
@@ -215,6 +213,7 @@ export default {
     editorOptions: {
       direction: "rtl",
       theme: "snow",
+      placeholder: 'Insert content here...',
     },
     temp_type_en: [],
     temp_type_ar: [],
@@ -237,8 +236,10 @@ export default {
     tabs(newVal) {
       if (newVal === 2) {
         this.editorOptions.direction = "rtl";
+        this.editorOptions.placeholder = this.$t("enter_the_content_here_ar");
       } else {
         this.editorOptions.direction = "ltr";
+        this.editorOptions.placeholder = this.$t("enter_the_content_here_en");
       }
     },
     '$i18n.locale'(newLocale) {
@@ -500,5 +501,6 @@ export default {
   60% {
     transform: translate3d(4px, 0, 0);
   }
-}</style>
+}
+</style>
   

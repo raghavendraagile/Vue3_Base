@@ -402,6 +402,7 @@
   "create_promotion": "إنشاء/تعديل العروض الترويجية والعروض",
   "mall_admin_ar":"مشرف المركز التجاري",
   "store_admin_ar":"مسؤول المتجر",
+  "enter_the_content_here_ar" : "أدخل المحتوى هنا",
   "--------start_english_translation----------": "--------start_english_translation----------",
   "name_en": "Name",
   "title_en": "Title",
@@ -450,5 +451,6 @@
   "to_time_en": "To Timing",
   "select_mode_en" : "Select Mode",
   "body_en" : "Body",
-  "signature_en" : "Signature"
+  "signature_en" : "Signature",
+  "enter_the_content_here_en" : "Enter the content here..."
 }
