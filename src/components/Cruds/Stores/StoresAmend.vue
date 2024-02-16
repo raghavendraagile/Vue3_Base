@@ -498,7 +498,7 @@
           <v-window-item :value="2">
             <v-form ref="form" v-model="valid">
               <v-layout>
-                <v-row class="px-6 mt-2">
+                <v-row class="px-6 mt-2 arabclass">
                   <v-col xs="12" sm="12" md="12" lg="12">
                     <v-radio-group
                       v-model="stores[1].stor_type"
@@ -514,7 +514,7 @@
                 </v-row>
               </v-layout>
               <v-layout>
-                <v-row class="headings">
+                <v-row class="headings arabclass">
                   <v-col xs="12" sm="12" md="12" lg="12">
                     <h6 class="m-4" v-if="stores[1].stor_type == 'Mall'">
                       <b>{{ $t("mall_details_ar") }}</b>
@@ -526,7 +526,7 @@
                 </v-row>
               </v-layout>
               <v-layout v-if="stores[1].stor_type == 'Store'">
-                <v-row class="px-6 mt-2">
+                <v-row class="px-6 mt-2 arabclass">
                   <v-col xs="12" sm="12" md="4" lg="4">
                     <v-tooltip :text="this.$t('category_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
@@ -575,7 +575,7 @@
                 </v-row>
               </v-layout>
               <v-layout>
-                <v-row class="px-6 mt-2">
+                <v-row class="px-6 mt-2 arabclass">
                   <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('name_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
@@ -631,7 +631,7 @@
                 </v-row>
               </v-layout>
               <v-layout>
-                <v-row class="px-6 mt-2">
+                <v-row class="px-6 mt-2 arabclass">
                   <v-col cols="12" md="3" xs="6" sm="6" lg="3">
                     <v-tooltip :text="$t('country_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
@@ -718,7 +718,7 @@
                 </v-row>
               </v-layout>
               <v-layout>
-                <v-row class="px-6 mt-2">
+                <v-row class="px-6 mt-2 arabclass">
                   <v-col cols="12" md="4" xs="12" sm="12" lg="4">
                     <v-tooltip :text="$t('address_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
@@ -760,7 +760,7 @@
                 </v-row>
               </v-layout>
               <v-layout>
-                <v-row class="px-6 mt-2">
+                <v-row class="px-6 mt-2 arabclass">
                   <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('meta_title_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
@@ -813,7 +813,7 @@
                 </v-row>
               </v-layout>
               <v-layout>
-                <v-row class="px-6 mt-2">
+                <v-row class="px-6 mt-2 arabclass">
                   <v-col cols="12" md="12" xs="12" sm="12" lg="12">
                     <v-tooltip
                       :text="$t('meta_description_ar')"
@@ -839,7 +839,7 @@
                 </v-row>
               </v-layout>
               <v-layout>
-                <v-row class="px-6 mt-2">
+                <v-row class="px-6 mt-2 arabclass">
                   <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('sequence_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
@@ -971,15 +971,38 @@
         <h6 class="m-4" v-if="tabs == 1">
           <b>{{ $t("social_media") }}</b>
         </h6>
-        <h6 class="m-4" v-else>
+        <h6 class="m-4 arabclass" v-else>
           <b>{{ $t("social_media_ar") }}</b>
         </h6>
       </div>
       <div>
         <v-layout>
-          <v-row class="px-6 mt-2">
+          <v-row class="px-6 mt-2"  v-if="tabs == 1">
             <v-col
               v-for="(media_data, media_index) in social_media_en"
+              :key="media_index"
+              cols="12"
+              sm="4"
+              md="4"
+            >
+              <v-tooltip :text="media_data.longname" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-text-field
+                    v-bind="props"
+                    v-model="social_media[media_index].link"
+                    maxlength="100"
+                    v-bind:label="media_data.longname"
+                    required
+                    variant="outlined"
+                    density="compact"
+                  ></v-text-field>
+                </template>
+              </v-tooltip>
+            </v-col>
+          </v-row>
+          <v-row class="px-6 mt-2 arabclass"  v-else>
+            <v-col
+              v-for="(media_data, media_index) in social_media_ar"
               :key="media_index"
               cols="12"
               sm="4"
@@ -1206,7 +1229,7 @@ export default {
             .then((response) => {
               console.log(response);
               this.social_media_en = response.data.social_media_en;
-              // this.social_media_ar = response.data.social_media_ar;
+             this.social_media_ar = response.data.social_media_ar;
               response.data.social_media_en.forEach((element) => {
                 console.log(element.longname);
                 if (this.social_media.store_id > 0) {
@@ -1278,7 +1301,7 @@ export default {
         .then((response) => {
           console.log(response);
           this.social_media_en = response.data.social_media_en;
-          // this.social_media_ar = response.data.social_media_ar;
+          this.social_media_ar = response.data.social_media_ar;
           response.data.social_media_en.forEach((element) => {
             console.log(element.longname);
             this.social_media.push({
@@ -1476,5 +1499,11 @@ input.larger {
 .image-width {
   border: 3px solid black;
   padding: 1px;
+}
+.arabclass /deep/ .v-field {
+  direction: rtl !important;
+}
+.arabclass{
+  direction: rtl !important;
 }
 </style>
