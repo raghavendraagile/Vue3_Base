@@ -10,7 +10,6 @@
     <div class="mb-3 mx-auto">
       <div class="card-body">
         <content-loader v-if="loader"></content-loader>
-
         <v-tabs v-model="tabs" color="blue">
           <v-tab :value="1">
             <span>{{ $t("english") }}</span>

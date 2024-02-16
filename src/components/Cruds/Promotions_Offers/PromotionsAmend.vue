@@ -1,11 +1,7 @@
 <template>
   <div class="mx-2 mt-3 p-0">
     <div class="container my-3 p-0">
-      <page-title
-        class="col-md-4 ml-2"
-        :heading="$t('create_promotion')"
-        :google_icon="google_icon"
-      ></page-title>
+      <page-title class="col-md-4 ml-2" :heading="$t('create_promotion')" :google_icon="google_icon"></page-title>
     </div>
     <div class="card-body">
       <content-loader v-if="loader"></content-loader>
@@ -25,124 +21,65 @@
               <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('store')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-autocomplete
-                      v-bind="props"
-                      v-model="promotions[0].store_id"
-                      v-bind:label="$t('store')"
-                      variant="outlined"
-                      density="compact"
-                      :items="stores_en"
-                      item-title="name"
-                      item-value="id"
-                      class="required_field"
-                    ></v-autocomplete>
+                    <v-autocomplete v-bind="props" v-model="promotions[0].store_id"
+                      @update:modelValue="(value) => updateMall(value)" v-bind:label="$t('store_en')" variant="outlined"
+                      density="compact" :items="stores_en" item-title="name" item-value="header_id"
+                      class="required_field"></v-autocomplete>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('title_en')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-on="on"
-                      v-model="promotions[0].title"
-                      :rules="fieldRules"
-                      v-bind:label="$t('title_en')"
-                      v-bind="props"
-                      required
-                      class="required_field"
-                      variant="outlined"
-                      density="compact"
-                      maxlength="100"
-                    ></v-text-field>
+                    <v-text-field v-on="on" v-model="promotions[0].title" :rules="fieldRules"
+                      v-bind:label="$t('title_en')" v-bind="props" required class="required_field" variant="outlined"
+                      density="compact" maxlength="100"></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
                 <v-tooltip :text="this.$t('phone_en')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-on="on"
-                      v-model="promotions[0].phone"
-                      v-bind:label="$t('phone_en')"
-                      :rules="phoneRules"
-                      v-bind="props"
-                      class="required_field"
-                      variant="outlined"
-                      density="compact"
-                      maxlength="12"
-                      v-on:keypress="NumbersOnly"
-                      required
-                    ></v-text-field>
+                    <v-text-field v-on="on" v-model="promotions[0].phone" v-bind:label="$t('phone_en')"
+                      :rules="phoneRules" v-bind="props" class="required_field" variant="outlined" density="compact"
+                      maxlength="12" v-on:keypress="NumbersOnly" required></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
                 <v-tooltip :text="this.$t('email_en')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-on="on"
-                      v-model="promotions[0].email"
-                      :rules="emailRules"
-                      v-bind:label="$t('email_en')"
-                      v-bind="props"
-                      required
-                      class="required_field"
-                      variant="outlined"
-                      density="compact"
-                      maxlength="500"
-                    ></v-text-field>
+                    <v-text-field v-on="on" v-model="promotions[0].email" :rules="emailRules"
+                      v-bind:label="$t('email_en')" v-bind="props" required class="required_field" variant="outlined"
+                      density="compact" maxlength="500"></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
                 <v-tooltip :text="this.$t('type_en')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-select
-                      v-bind="props"
-                      v-model="promotions[0].type"
-                      :rules="fieldRules"
-                      v-bind:label="$t('type_en')"
-                      variant="outlined"
-                      density="compact"
-                      class="required_field"
-                      required
-                      index="id"
-                      :items="p_type_en"
-                      item-value="shortname"
-                      item-title="longname"
-                    ></v-select>
+                    <v-select v-bind="props" v-model="promotions[0].type"
+                      @update:modelValue="(value) => updateType(value)" :rules="fieldRules" v-bind:label="$t('type_en')"
+                      variant="outlined" density="compact" class="required_field" required index="id" :items="p_type_en"
+                      item-value="header_id" item-title="longname"></v-select>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
                 <v-tooltip :text="this.$t('start_date_en')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <DatePicker
-                      v-bind="props"
-                      :label="$t('start_date_en')"
-                      :min="new Date().toISOString().substr(0, 10)"
-                      :stored_date="promotions[0].start_date"
-                      @formatted_date="formatted_start_date"
-                      dense
-                      :class_required="'RequiredField'"
-                      v-on="on"
-                    />
+                    <DatePicker v-bind="props" :label="$t('start_date_en')" :min="new Date().toISOString().substr(0, 10)"
+                      :stored_date="promotions[0].start_date" @formatted_date="formatted_start_date" dense
+                      :class_required="'RequiredField'" v-on="on" />
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
                 <v-tooltip :text="this.$t('end_date_en')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <DatePicker
-                      v-bind="props"
-                      :label="$t('end_date_en')"
-                      :min="new Date().toISOString().substr(0, 10)"
-                      :stored_date="promotions[0].end_date"
-                      @formatted_date="formatted_end_date"
-                      dense
-                      :class_required="'RequiredField'"
-                      v-on="on"
-                    />
+                    <DatePicker v-bind="props" :label="$t('end_date_en')" :min="new Date().toISOString().substr(0, 10)"
+                      :stored_date="promotions[0].end_date" @formatted_date="formatted_end_date" dense
+                      :class_required="'RequiredField'" v-on="on" />
                   </template>
                   <span>{{ $t("end_date") }}</span>
                 </v-tooltip>
@@ -150,74 +87,36 @@
               <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('meta_title_en')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-on="on"
-                      v-model="promotions[0].meta_title"
-                      :rules="fieldRules"
-                      v-bind:label="$t('meta_title_en')"
-                      v-bind="props"
-                      variant="outlined"
-                      class="required_field"
-                      density="compact"
-                      maxlength="100"
-                    ></v-text-field>
+                    <v-text-field v-on="on" v-model="promotions[0].meta_title" :rules="fieldRules"
+                      v-bind:label="$t('meta_title_en')" v-bind="props" variant="outlined" class="required_field"
+                      density="compact" maxlength="100"></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
                 <v-tooltip :text="this.$t('description_en')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-textarea
-                      v-on="on"
-                      rows="2"
-                      v-model="promotions[0].description"
-                      :rules="fieldRules"
-                      class="required_field"
-                      maxlength="2000"
-                      v-bind="props"
-                      v-bind:label="$t('description_en')"
-                      variant="outlined"
-                      counter="true"
-                    ></v-textarea>
+                    <v-textarea v-on="on" rows="2" v-model="promotions[0].description" :rules="fieldRules"
+                      class="required_field" maxlength="2000" v-bind="props" v-bind:label="$t('description_en')"
+                      variant="outlined" counter="true"></v-textarea>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
-                <v-tooltip
-                  :text="this.$t('meta_description_en')"
-                  location="bottom"
-                >
+                <v-tooltip :text="this.$t('meta_description_en')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-textarea
-                      v-on="on"
-                      rows="2"
-                      v-model="promotions[0].meta_description"
-                      :rules="fieldRules"
-                      maxlength="100"
-                      v-bind="props"
-                                            class="required_field"
-
-                      v-bind:label="$t('meta_description_en')"
-                      variant="outlined"
-                      counter="true"
-                    ></v-textarea>
+                    <v-textarea v-on="on" rows="2" v-model="promotions[0].meta_description" :rules="fieldRules"
+                      maxlength="100" v-bind="props" class="required_field" v-bind:label="$t('meta_description_en')"
+                      variant="outlined" counter="true"></v-textarea>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col cols="2" sm="2" md="2">
                 <v-tooltip :text="$t('sequence_en')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-bind="props"
-                      v-model="promotions[0].seq"
-                      maxlength="100"
-                      :rules="phoneRules"
-                      v-bind:label="$t('sequence_en')"
-                      required
-                      variant="outlined"
-                      density="compact"
-                      v-on:keypress="NumbersOnly"
-                    ></v-text-field>
+                    <v-text-field v-bind="props" v-model="promotions[0].seq" maxlength="100" :rules="phoneRules"
+                      v-bind:label="$t('sequence_en')" required variant="outlined" density="compact"
+                      v-on:keypress="NumbersOnly"></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
@@ -226,51 +125,26 @@
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">
                       <div style="position: relative" v-bind="props">
-                        <img
-                          v-bind:style="
-                            isHovering == true ? 'filter: blur(1px);' : ''
-                          "
-                          v-if="promotions[0].image_path != ''"
-                          :src="envImagePath + promotions[0].image_path"
-                          width="100"
-                          height="65
-                          "
-                          alt
-                        />
-                        <img
-                          v-bind:style="
-                            isHovering == true ? 'filter: blur(1px);' : ''
-                          "
-                          v-else
-                          src="@/assets/images/upload_image_default.png"
-                          width="100"
-                        />
+                        <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                          " v-if="promotions[0].image_path != ''" :src="envImagePath + promotions[0].image_path"
+                          width="100" height="65
+                          " alt />
+                        <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                          " v-else src="@/assets/images/upload_image_default.png" width="100" />
                         <div v-show="isHovering" class="camera-icon">
                           <v-icon @click="uploadFile">mdi-camera</v-icon>
                         </div>
                       </div>
                     </v-hover>
                   </div>
-                  <a
-                    class="text-center image_cursor"
-                    @click="downloadImage(promotions[0].image_path)"
-                  >
-                    <span
-                      v-if="promotions[0].image_path"
-                      class="download_btn_color"
-                      >{{ $t("download_en") }}</span
-                    >
+                  <a class="text-center image_cursor" @click="downloadImage(promotions[0].image_path)">
+                    <span v-if="promotions[0].image_path" class="download_btn_color">{{ $t("download_en") }}</span>
                   </a>
                 </div>
 
                 <br />
-                <Imageupload
-                  :folder="'promotions_offers'"
-                  :resizewidth="200"
-                  :resizeheight="200"
-                  @uploaded_image="uploaded_image"
-                  :upload_profile="uploadfile"
-                />
+                <Imageupload :folder="'promotions_offers'" :resizewidth="200" :resizeheight="200"
+                  @uploaded_image="uploaded_image" :upload_profile="uploadfile" />
               </v-col>
             </v-row>
           </v-form>
@@ -279,187 +153,96 @@
         <!-- ARABIC TAB STARTS -->
         <v-window-item :value="2">
           <v-form ref="form" v-model="valid">
-            <v-row class="mx-auto mt-2" max-width="344">
+            <v-row class="mx-auto mt-2 arabdirection" max-width="344">
               <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('store_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-autocomplete
-                      v-bind="props"
-                      v-model="promotions[1].store_id"
-                      v-bind:label="$t('store_ar')"
-                      variant="outlined"
-                      density="compact"
-                      :items="stores_ar"
-                      item-title="name"
-                      item-value="id"
-                      class="required_field rtl"
-                    ></v-autocomplete>
+                    <v-autocomplete v-bind="props" v-model="promotions[1].store_id"
+                      @update:modelValue="(value) => updateMall(value)" v-bind:label="$t('store_ar')" variant="outlined"
+                      density="compact" :items="stores_ar" item-title="name" item-value="header_id"
+                      class="required_field rtl"></v-autocomplete>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('title_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-on="on"
-                      v-model="promotions[1].title"
-                      :rules="fieldRules"
-                      v-bind:label="$t('title_ar')"
-                      v-bind="props"
-                      required
-                      class="required_field rtl"
-                      variant="outlined"
-                      density="compact"
-                      maxlength="100"
-                    ></v-text-field>
+                    <v-text-field v-on="on" v-model="promotions[1].title" :rules="fieldRules"
+                      v-bind:label="$t('title_ar')" v-bind="props" required class="required_field rtl" variant="outlined"
+                      density="compact" maxlength="100"></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
                 <v-tooltip :text="this.$t('phone_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-on="on"
-                      v-model="promotions[1].phone"
-                      v-bind:label="$t('phone_ar')"
-                      :rules="phoneRules"
-                      v-bind="props"
-                      class="required_field rtl"
-                      variant="outlined"
-                      density="compact"
-                      maxlength="12"
-                      v-on:keypress="NumbersOnly"
-                      required
-                    ></v-text-field>
+                    <v-text-field v-on="on" v-model="promotions[1].phone" v-bind:label="$t('phone_ar')"
+                      :rules="phoneRules" v-bind="props" class="required_field rtl" variant="outlined" density="compact"
+                      maxlength="12" v-on:keypress="NumbersOnly" required></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
                 <v-tooltip :text="this.$t('email_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-on="on"
-                      v-model="promotions[1].email"
-                      :rules="emailRules"
-                      v-bind:label="$t('email_ar')"
-                      v-bind="props"
-                      required
-                      class="required_field rtl"
-                      variant="outlined"
-                      density="compact"
-                      maxlength="500"
-                    ></v-text-field>
+                    <v-text-field v-on="on" v-model="promotions[1].email" :rules="emailRules"
+                      v-bind:label="$t('email_ar')" v-bind="props" required class="required_field rtl" variant="outlined"
+                      density="compact" maxlength="500"></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
                 <v-tooltip :text="this.$t('type_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-select
-                      v-bind="props"
-                      v-model="promotions[1].type"
-                      :rules="fieldRules"
-                      v-bind:label="$t('type_ar')"
-                      variant="outlined"
-                      density="compact"
-                      class="required_field"
-                      required
-                      index="id"
-                      :items="p_type_ar"
-                      item-value="shortname"
-                      item-title="longname"
-                    ></v-select>
+                    <v-select v-bind="props" v-model="promotions[1].type"
+                      @update:modelValue="(value) => updateType(value)" :rules="fieldRules" v-bind:label="$t('type_ar')"
+                      variant="outlined" density="compact" class="required_field" required index="id" :items="p_type_ar"
+                      item-value="header_id" item-title="longname"></v-select>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
                 <v-tooltip :text="this.$t('start_date_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <DatePicker
-                      v-bind="props"
-                      :label="$t('start_date_ar')"
-                      :min="new Date().toISOString().substr(0, 10)"
-                      :stored_date="promotions[1].start_date"
-                      @formatted_date="formatted_start_date_ar"
-                      dense
-                      :class_required="'RequiredField'"
-                      v-on="on"
-                    />
+                    <DatePicker v-bind="props" :label="$t('start_date_ar')" :min="new Date().toISOString().substr(0, 10)"
+                      :stored_date="promotions[1].start_date" @formatted_date="formatted_start_date_ar" dense
+                      :class_required="'RequiredField'" v-on="on" />
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
                 <v-tooltip :text="this.$t('end_date_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <DatePicker
-                      v-bind="props"
-                      :label="$t('end_date_ar')"
-                      :min="new Date().toISOString().substr(0, 10)"
-                      :stored_date="promotions[1].end_date"
-                      @formatted_date="formatted_end_date_ar"
-                      dense
-                      :class_required="'RequiredField'"
-                      v-on="on"
-                    />
+                    <DatePicker v-bind="props" :label="$t('end_date_ar')" :min="new Date().toISOString().substr(0, 10)"
+                      :stored_date="promotions[1].end_date" @formatted_date="formatted_end_date_ar" dense
+                      :class_required="'RequiredField'" v-on="on" />
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('meta_title_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-on="on"
-                      v-model="promotions[1].meta_title"
-                      :rules="fieldRules"
-                      v-bind:label="$t('meta_title_ar')"
-                      v-bind="props"
-                      required
-                      class="required_field rtl"
-                      variant="outlined"
-                      density="compact"
-                      maxlength="100"
-                    ></v-text-field>
+                    <v-text-field v-on="on" v-model="promotions[1].meta_title" :rules="fieldRules"
+                      v-bind:label="$t('meta_title_ar')" v-bind="props" required class="required_field rtl"
+                      variant="outlined" density="compact" maxlength="100"></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
                 <v-tooltip :text="this.$t('description_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-textarea
-                      v-on="on"
-                      rows="2"
-                      v-model="promotions[1].description"
-                      :rules="fieldRules"
-                      maxlength="2000"
-                      v-bind="props"
-                      v-bind:label="$t('description_ar')"
-                      required
-                      class="required_field rtl"
-                      variant="outlined"
-                      counter="true"
-                    ></v-textarea>
+                    <v-textarea v-on="on" rows="2" v-model="promotions[1].description" :rules="fieldRules"
+                      maxlength="2000" v-bind="props" v-bind:label="$t('description_ar')" required
+                      class="required_field rtl" variant="outlined" counter="true"></v-textarea>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
-                <v-tooltip
-                  :text="this.$t('meta_description_ar')"
-                  location="bottom"
-                >
+                <v-tooltip :text="this.$t('meta_description_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-textarea
-                      v-on="on"
-                      rows="2"
-                      v-model="promotions[1].meta_description"
-                      :rules="fieldRules"
-                      maxlength="2000"
-                      v-bind="props"
-                      v-bind:label="$t('meta_description_ar')"
-                      required
-                      class="required_field rtl"
-                      variant="outlined"
-                      counter="true"
-                    ></v-textarea>
+                    <v-textarea v-on="on" rows="2" v-model="promotions[1].meta_description" :rules="fieldRules"
+                      maxlength="2000" v-bind="props" v-bind:label="$t('meta_description_ar')" required
+                      class="required_field rtl" variant="outlined" counter="true"></v-textarea>
                   </template>
                   <span>{{ $t("vacancy") }}</span>
                 </v-tooltip>
@@ -467,17 +250,9 @@
               <v-col cols="2" sm="2" md="2">
                 <v-tooltip :text="$t('sequence_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-bind="props"
-                      v-model="promotions[1].seq"
-                      maxlength="100"
-                      :rules="phoneRules"
-                      v-bind:label="$t('sequence_ar')"
-                      required
-                      variant="outlined"
-                      density="compact"
-                      v-on:keypress="NumbersOnly"
-                    ></v-text-field>
+                    <v-text-field v-bind="props" v-model="promotions[1].seq" maxlength="100" :rules="phoneRules"
+                      v-bind:label="$t('sequence_ar')" required variant="outlined" density="compact"
+                      v-on:keypress="NumbersOnly"></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
@@ -486,51 +261,26 @@
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">
                       <div style="position: relative" v-bind="props">
-                        <img
-                          v-bind:style="
-                            isHovering == true ? 'filter: blur(1px);' : ''
-                          "
-                          v-if="promotions[1].image_path != ''"
-                          :src="envImagePath + promotions[1].image_path"
-                          width="100"
-                          height="65
-                          "
-                          alt
-                        />
-                        <img
-                          v-bind:style="
-                            isHovering == true ? 'filter: blur(1px);' : ''
-                          "
-                          v-else
-                          src="@/assets/images/upload_image_default.png"
-                          width="100"
-                        />
+                        <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                          " v-if="promotions[1].image_path != ''" :src="envImagePath + promotions[1].image_path"
+                          width="100" height="65
+                          " alt />
+                        <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                          " v-else src="@/assets/images/upload_image_default.png" width="100" />
                         <div v-show="isHovering" class="camera-icon">
                           <v-icon @click="uploadFile">mdi-camera</v-icon>
                         </div>
                       </div>
                     </v-hover>
                   </div>
-                  <a
-                    class="text-center image_cursor"
-                    @click="downloadImage(promotions[1].image_path)"
-                  >
-                    <span
-                      v-if="promotions[1].image_path"
-                      class="download_btn_color"
-                      >{{ $t("download_ar") }}</span
-                    >
+                  <a class="text-center image_cursor" @click="downloadImage(promotions[1].image_path)">
+                    <span v-if="promotions[1].image_path" class="download_btn_color">{{ $t("download_ar") }}</span>
                   </a>
                 </div>
 
                 <br />
-                <Imageupload
-                  :folder="'promotions_offers'"
-                  :resizewidth="0.4"
-                  :resizeheight="0.1"
-                  @uploaded_image="uploaded_image"
-                  :upload_profile="uploadfile"
-                />
+                <Imageupload :folder="'promotions_offers'" :resizewidth="0.4" :resizeheight="0.1"
+                  @uploaded_image="uploaded_image" :upload_profile="uploadfile" />
               </v-col>
             </v-row>
           </v-form>
@@ -541,37 +291,18 @@
       <v-tooltip :text="this.$t('cancel')" location="bottom">
         <template v-slot:activator="{ props }">
           <div v-bind="props" class="d-inline-block mr-2">
-            <v-btn
-              v-bind="props"
-              size="small"
-              @click="$router.go(-1)"
-              :disabled="loading"
-              class="ma-1"
-              color="cancel"
-              >{{ $t("cancel") }}</v-btn
-            >
+            <v-btn v-bind="props" size="small" @click="$router.push('promotions_offers')" :disabled="loading" class="ma-1"
+              color="cancel">{{ $t("cancel") }}</v-btn>
           </div>
         </template>
       </v-tooltip>
       <v-tooltip :text="this.$t('submit')" location="bottom">
         <template v-slot:activator="{ props }">
           <div v-bind="props" class="d-inline-block">
-            <v-btn
-              :disabled="isDisabled"
-              @click="submit"
-              size="small"
-              class="mr-2"
-              color="success"
-            >
+            <v-btn :disabled="isDisabled" @click="submit" size="small" class="mr-2" color="success">
               {{ $t("submit") }}
-              <v-progress-circular
-                v-if="isBtnLoading"
-                indeterminate
-                width="1"
-                color="cancel"
-                size="x-small"
-                class="ml-2"
-              ></v-progress-circular>
+              <v-progress-circular v-if="isBtnLoading" indeterminate width="1" color="cancel" size="x-small"
+                class="ml-2"></v-progress-circular>
             </v-btn>
           </div>
         </template>
@@ -677,7 +408,7 @@ export default {
     this.fetchLookup();
     this.get_stores();
   },
-  created() {},
+  created() { },
   watch: {
     "$route.query.slug": {
       immediate: true,
@@ -689,8 +420,8 @@ export default {
           this.$axios
             .get(
               process.env.VUE_APP_API_URL_ADMIN +
-                "edit_promotions_offers/" +
-                this.$route.query.slug
+              "edit_promotions_offers/" +
+              this.$route.query.slug
             )
             .then((res) => {
               console.log("CALLED IN ROUTE");
@@ -703,7 +434,21 @@ export default {
     },
   },
   methods: {
-       downloadImage(image_url) {
+    updateType(type) {
+      if (this.tabs == 1) {
+        this.promotions[1].type = type;
+      } else {
+        this.promotions[0].type = type;
+      }
+    },
+    updateMall(promo) {
+      if (this.tabs == 1) {
+        this.promotions[1].store_id = promo;
+      } else {
+        this.promotions[0].store_id = promo;
+      }
+    },
+    downloadImage(image_url) {
       window.open(this.envImagePath + image_url, "_blank");
     },
     get_stores() {
@@ -838,24 +583,36 @@ input.larger {
   width: 20px;
   height: 20px;
 }
+
 .upload_doc {
   margin-top: -14px;
 }
+
 .upload_image {
   margin-bottom: 3px;
 }
+
 .download_btn_color {
   color: blue;
 }
+
 .image-width {
   border: 2px solid black;
   padding: 1px;
 }
+
 .rtl :deep() input {
   text-align: right;
   direction: rtl;
 }
-.image_cursor{
+
+.image_cursor {
   cursor: pointer;
+}
+.arabdirection{
+  direction:rtl;
+}
+.arabdirection /deep/ .v-field{
+  direction:rtl;
 }
 </style>

@@ -452,5 +452,6 @@
   "select_mode_en" : "Select Mode",
   "body_en" : "Body",
   "signature_en" : "Signature",
-  "enter_the_content_here_en" : "Enter the content here..."
+  "enter_the_content_here_en" : "Enter the content here...",
+  "store_en" : "Store"
 }
