@@ -490,5 +490,10 @@
   "field_required_ar": "حقل مطلوب",
   "mall_admin_ar":"مجمع تجاري",
   "store_admin_ar":"مسؤول المتجر",
-  "store_en" : "Store"
+  "store_en" : "Store",
+  "email_valid_ar": "يجب ان يكون البريد الاكتروني صحيح",
+  "valid_number_required_ar": "الرجاء إدخال رقم صالح",
+  "description_required_ar": "الوصف مطلوب",
+  "postcode_valid_ar": "يجب أن يتكون الرمز البريدي من 6 أرقام"
+
 }

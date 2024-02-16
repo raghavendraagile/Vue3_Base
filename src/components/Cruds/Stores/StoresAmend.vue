@@ -1,6 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('create_amend_stores')"
@@ -274,7 +277,7 @@
                           variant="outlined"
                           density="compact"
                           class="required_field"
-                          maxlength="250"
+                          maxlength="2000"
                           :rules="descriptionRules"
                           counter="true"
                           v-model="stores[0].description"
@@ -295,7 +298,7 @@
                           v-bind="props"
                           v-model="stores[0].meta_title"
                           :rules="fieldRules"
-                          maxlength="100"
+                          maxlength="70"
                           class="required_field"
                           v-bind:label="$t('meta_title_en')"
                           required
@@ -305,42 +308,17 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" md="8" sm="8" lg="8">
-                    <v-tooltip
-                      :text="$t('meta_description_en')"
-                      location="bottom"
-                    >
-                      <template v-slot:activator="{ props }">
-                        <v-textarea
-                          rows="3"
-                          v-bind="props"
-                          variant="outlined"
-                          density="compact"
-                          :rules="descriptionRules"
-                          maxlength="250"
-                          class="required_field"
-                          counter="true"
-                          v-model="stores[0].meta_description"
-                          v-bind:label="$t('meta_description_en')"
-                          required
-                        ></v-textarea>
-                      </template>
-                    </v-tooltip>
-                  </v-col>
-                </v-row>
-              </v-layout>
-              <v-layout>
-                <v-row class="px-6 mt-2">
                   <v-col cols="4" sm="4" md="4">
                     <v-tooltip :text="$t('store_code')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
                           v-model="stores[0].store_code"
-                          maxlength="100"
+                          maxlength="15"
                           v-bind:label="$t('store_code')"
-                          required
+                          :rules="fieldRules"
                           class="required_field"
+                          required
                           variant="outlined"
                           density="compact"
                         ></v-text-field>
@@ -362,7 +340,37 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="2" sm="2" md="2">
+                </v-row>
+              </v-layout>
+              <v-layout>
+                <v-row class="px-6 mt-2">
+                  <v-col cols="12" md="12" sm="12" lg="12">
+                    <v-tooltip
+                      :text="$t('meta_description_en')"
+                      location="bottom"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <v-textarea
+                          rows="3"
+                          v-bind="props"
+                          variant="outlined"
+                          density="compact"
+                          :rules="descriptionRules"
+                          maxlength="160"
+                          class="required_field"
+                          counter="true"
+                          v-model="stores[0].meta_description"
+                          v-bind:label="$t('meta_description_en')"
+                          required
+                        ></v-textarea>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-layout>
+              <v-layout>
+                <v-row class="px-6 mt-2">
+                  <v-col cols="4" sm="12" md="4">
                     <v-tooltip :text="$t('sequence_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -380,7 +388,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="2" sm="2" md="2">
+                  <v-col cols="4" sm="12" md="4">
                     <div>
                       <span class="mb-5">{{ $t("logo_en") }}</span>
                       <div class="image-container">
@@ -390,7 +398,7 @@
                               v-bind:style="
                                 isHovering == true ? 'filter: blur(1px);' : ''
                               "
-                              v-if="stores[0].icon != ''"
+                              v-if="stores[0].icon != '' || stores[0].icon != ''"
                               :src="envImagePath + stores[0].icon"
                               width="100"
                               height="65
@@ -529,7 +537,7 @@
                           @update:modelValue="
                             (value) => updateCategories(value)
                           "
-                          :rules="fieldRules"
+                          :rules="fieldRulesAr"
                           v-bind:label="$t('category_ar')"
                           variant="outlined"
                           density="compact"
@@ -551,7 +559,7 @@
                           v-bind="props"
                           v-model="stores[1].mall_name"
                           @update:modelValue="(value) => updateMallName(value)"
-                          :rules="fieldRules"
+                          :rules="fieldRulesAr"
                           v-bind:label="$t('mall_name_ar')"
                           variant="outlined"
                           density="compact"
@@ -575,7 +583,7 @@
                         <v-text-field
                           v-bind="props"
                           v-model="stores[1].name"
-                          :rules="fieldRules"
+                          :rules="fieldRulesAr"
                           maxlength="100"
                           v-bind:label="$t('name_ar')"
                           required
@@ -592,7 +600,7 @@
                         <v-text-field
                           v-bind="props"
                           v-model="stores[1].email"
-                          :rules="[...fieldRules, ...emailRules]"
+                          :rules="[...fieldRulesAr, ...emailRulesAr]"
                           maxlength="100"
                           v-bind:label="$t('email_ar')"
                           required
@@ -609,7 +617,7 @@
                         <v-text-field
                           v-bind="props"
                           v-model="stores[1].phone"
-                          :rules="phoneRules"
+                          :rules="phoneRulesAr"
                           v-on:keypress="NumbersOnly"
                           maxlength="12"
                           v-bind:label="$t('phone_ar')"
@@ -639,7 +647,7 @@
                           class="required_field rtl"
                           item-title="name"
                           required
-                          :rules="fieldRules"
+                          :rules="fieldRulesAr"
                           v-model="stores[1].country"
                           @update:model-value="fetchStates(stores[1].country)"
                           :items="country_array_ar"
@@ -661,7 +669,7 @@
                           item-value="header_id"
                           item-title="name"
                           required
-                          :rules="fieldRules"
+                          :rules="fieldRulesAr"
                           v-model="stores[1].state"
                           @update:model-value="fetch_cities(stores[1].state)"
                           :items="state_array_ar"
@@ -682,7 +690,7 @@
                           item-title="name"
                           class="required_field rtl"
                           required
-                          :rules="fieldRules"
+                          :rules="fieldRulesAr"
                           item-value="header_id"
                           v-model="stores[1].city"
                           :items="city_array_ar"
@@ -695,7 +703,7 @@
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind:label="$t('postcode_ar')"
-                          :rules="postcodeRules"
+                          :rules="postcodeRulesAr"
                           v-on:keypress="NumbersOnly"
                           v-bind="props"
                           variant="outlined"
@@ -723,7 +731,7 @@
                           maxlength="250"
                           counter="true"
                           class="required_field rtl"
-                          :rules="fieldRules"
+                          :rules="fieldRulesAr"
                           v-model="stores[1].address"
                           v-bind:label="$t('address_ar')"
                           required
@@ -739,9 +747,9 @@
                           v-bind="props"
                           variant="outlined"
                           density="compact"
-                          maxlength="250"
+                          maxlength="2000"
                           class="required_field rtl"
-                          :rules="descriptionRules"
+                          :rules="descriptionRulesAr"
                           counter="true"
                           v-model="stores[1].description"
                           v-bind:label="$t('description_ar')"
@@ -760,8 +768,8 @@
                         <v-text-field
                           v-bind="props"
                           v-model="stores[1].meta_title"
-                          :rules="fieldRules"
-                          maxlength="100"
+                          :rules="fieldRulesAr"
+                          maxlength="70"
                           v-bind:label="$t('meta_title_ar')"
                           required
                           class="required_field rtl"
@@ -771,40 +779,16 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" md="8" sm="8" lg="8">
-                    <v-tooltip
-                      :text="$t('meta_description_ar')"
-                      location="bottom"
-                    >
-                      <template v-slot:activator="{ props }">
-                        <v-textarea
-                          rows="3"
-                          v-bind="props"
-                          variant="outlined"
-                          density="compact"
-                          :rules="descriptionRules"
-                          maxlength="250"
-                          counter="true"
-                          class="required_field rtl"
-                          v-model="stores[1].meta_description"
-                          v-bind:label="$t('meta_description_ar')"
-                          required
-                        ></v-textarea>
-                      </template>
-                    </v-tooltip>
-                  </v-col>
-                </v-row>
-              </v-layout>
-              <v-layout>
-                <v-row class="px-6 mt-2">
                   <v-col cols="6" sm="6" md="4">
                     <v-tooltip :text="$t('store_code_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
                           v-model="stores[1].store_code"
-                          maxlength="100"
+                          maxlength="15"
                           v-bind:label="$t('store_code_ar')"
+                          :rules="fieldRulesAr"
+                          class="required_field rtl"
                           required
                           variant="outlined"
                           density="compact"
@@ -827,7 +811,37 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="2" sm="2" md="2">
+                </v-row>
+              </v-layout>
+              <v-layout>
+                <v-row class="px-6 mt-2">
+                  <v-col cols="12" md="12" sm="12" lg="12">
+                    <v-tooltip
+                      :text="$t('meta_description_ar')"
+                      location="bottom"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <v-textarea
+                          rows="3"
+                          v-bind="props"
+                          variant="outlined"
+                          density="compact"
+                          :rules="descriptionRulesAr"
+                          maxlength="160"
+                          counter="true"
+                          class="required_field rtl"
+                          v-model="stores[1].meta_description"
+                          v-bind:label="$t('meta_description_ar')"
+                          required
+                        ></v-textarea>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-layout>
+              <v-layout>
+                <v-row class="px-6 mt-2">
+                  <v-col cols="4" sm="12" md="4">
                     <v-tooltip :text="$t('sequence_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -835,7 +849,7 @@
                           v-model="stores[1].seq"
                           v-on:keypress="NumbersOnly"
                           maxlength="5"
-                          :rules="phoneRules"
+                          :rules="phoneRulesAr"
                           v-bind:label="$t('sequence_ar')"
                           required
                           class="required_field rtl"
@@ -845,7 +859,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="2" sm="2" md="2">
+                  <v-col cols="4" sm="12" md="4">
                     <div>
                       <span class="mb-5">{{ $t("logo_ar") }}</span>
                       <div class="image-container">
@@ -1100,9 +1114,15 @@ export default {
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
     },
+    fieldRulesAr() {
+      return [(v) => !!v || this.$t("field_required_ar")];
+    },
 
     descriptionRules() {
       return [(v) => !!v || this.$t("description_required")];
+    },
+    descriptionRulesAr() {
+      return [(v) => !!v || this.$t("description_required_ar")];
     },
 
     emailRules() {
@@ -1111,14 +1131,29 @@ export default {
         (v) => /.+@.+/.test(v) || this.$t("email_valid"),
       ];
     },
+    emailRulesAr() {
+      return [
+        (v) => !!v || this.$t("email_required"),
+        (v) => /.+@.+/.test(v) || this.$t("email_valid_ar"),
+      ];
+    },
     phoneRules() {
       return [
         (v) =>
           (v >= 0 && v <= 999999999999) || this.$t("valid_number_required"),
       ];
     },
+    phoneRulesAr() {
+      return [
+        (v) =>
+          (v >= 0 && v <= 999999999999) || this.$t("valid_number_required_ar"),
+      ];
+    },
     postcodeRules() {
       return [(v) => (v >= 0 && v <= 999999) || this.$t("postcode_valid")];
+    },
+    postcodeRulesAr() {
+      return [(v) => (v >= 0 && v <= 999999) || this.$t("postcode_valid_ar")];
     },
   },
 
@@ -1189,13 +1224,14 @@ export default {
         }
       },
     },
-    '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
 
   methods: {
@@ -1392,10 +1428,11 @@ export default {
           .catch((err) => {
             this.$toast.error(this.$t("something_went_wrong"));
             console.log("error", err);
-          })  .finally(() => {
-              this.isDisabled = false;
-              this.isBtnLoading = false;
-            });
+          })
+          .finally(() => {
+            this.isDisabled = false;
+            this.isBtnLoading = false;
+          });
         // this.isDisabled = false;
         // this.isBtnLoading = false;
       }
