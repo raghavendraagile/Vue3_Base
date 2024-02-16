@@ -48,18 +48,18 @@
           <!-- ARABIC TAB STARTS -->
           <v-window-item :value="2">
             <v-form ref="form" v-model="valid">
-              <v-row class="mx-auto mt-2" max-width="344">
+              <v-row class="mx-auto mt-2 arabdirection" max-width="344">
                 <v-col md="6">
-                  <v-tooltip :text="this.$t('name')" location="bottom">
+                  <v-tooltip :text="this.$t('name_ar')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-text-field
                         v-on="on"
                         v-model="country[1].name"
                         :rules="fieldRules"
-                        v-bind:label="$t('name')"
+                        v-bind:label="$t('name_ar')"
                         required
                         v-bind="props"
-                        class="required_field rtl"
+                        class="rtl required_field"
                         variant="outlined"
                         density="compact"
                       ></v-text-field>
@@ -260,5 +260,8 @@ input.larger {
 .image-width {
   border: 2px solid black;
   padding: 1px;
+}
+.arabdirection /deep/ .v-field{
+  direction:rtl;
 }
 </style>

@@ -22,7 +22,7 @@
           <!-- ENGLISH TAB STARTS -->
           <v-window-item :value="1">
             <v-form ref="form" v-model="valid">
-              <v-row class="mx-auto mt-2" max-width="344">
+              <v-row class="mx-auto mt-2 " max-width="344">
                 <v-col cols="12" md="6">
                   <v-tooltip :text="this.$t('country')" location="bottom">
                     <template v-slot:activator="{ props }">
@@ -62,15 +62,15 @@
           <!-- ARABIC TAB STARTS -->
           <v-window-item :value="2">
             <v-form ref="form" v-model="valid">
-              <v-row class="mx-auto mt-2" max-width="344">
+              <v-row class="mx-auto mt-2 arabdirection" max-width="344">
                 <v-col cols="12" md="6">
-                  <v-tooltip :text="this.$t('country')" location="bottom">
+                  <v-tooltip :text="this.$t('country_ar')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-text-field
                         v-on="on"
                         readonly="isReadOnly"
                         v-model="country[1].name"
-                        v-bind:label="$t('country')"
+                        v-bind:label="$t('country_ar')"
                         v-bind="props"
                         variant="outlined"
                         density="compact"
@@ -79,13 +79,13 @@
                   </v-tooltip>
                 </v-col>
                 <v-col md="6">
-                  <v-tooltip :text="this.$t('state')" location="bottom">
+                  <v-tooltip :text="this.$t('state_ar')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-text-field
                         v-on="on"
                         v-model="state[1].name"
                         :rules="fieldRules"
-                        v-bind:label="$t('state')"
+                        v-bind:label="$t('state_ar')"
                         required
                         v-bind="props"
                         class="required_field"
@@ -333,5 +333,8 @@ input.larger {
 .image-width {
   border: 2px solid black;
   padding: 1px;
+}
+.arabdirection /deep/ .v-field{
+  direction:rtl;
 }
 </style>
