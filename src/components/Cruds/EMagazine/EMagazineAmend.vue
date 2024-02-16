@@ -287,7 +287,7 @@
             <v-form ref="form" v-model="valid">
               <v-layout v-if="user.rolename != 'StoreAdmin'">
                 <!-- :disabled="$route.query.slug" -->
-                <v-row class="px-6 mt-2">
+                <v-row class="px-6 mt-2 arabdirection">
                   <v-col xs="12" md="12" lg="12">
                     <v-radio-group
                       v-model="e_magazine[1].stor_type"
@@ -310,7 +310,7 @@
                 </v-row>
               </v-layout>
               <v-layout>
-                <v-row class="px-6 mt-2">
+                <v-row class="px-6 mt-2 arabdirection">
                   <v-col
                     cols="4"
                     sm="12"
@@ -374,7 +374,7 @@
                 </v-row>
               </v-layout>
               <v-layout>
-                <v-row class="mt-2 px-6" max-width="344">
+                <v-row class="mt-2 px-6 arabdirection" max-width="344">
                   <v-col md="12">
                     <v-tooltip
                       :text="this.$t('description_ar')"
@@ -420,7 +420,7 @@
                 </v-row>
               </v-layout>
               <v-layout>
-                <v-row class="px-6 mt-2">
+                <v-row class="px-6 mt-2 arabdirection">
                   <v-col cols="6" sm="6" md="6" class="d-flex">
                     <v-tooltip
                       :text="this.$t('show_file')"
@@ -1010,5 +1010,8 @@ input.larger {
 }
 .d-flex {
   display: flex;
+}
+.arabdirection /deep/ .v-field{
+  direction:rtl;
 }
 </style>
