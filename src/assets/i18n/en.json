@@ -412,7 +412,6 @@
   "body_en" : "Body",
   "body_ar" : "جسم",
   "signature_en" : "Signature",
-  "enter_the_content_here_en" : "Enter the content here...",
   "logo_en" : "Logo",
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
@@ -494,6 +493,6 @@
   "email_valid_ar": "يجب ان يكون البريد الاكتروني صحيح",
   "valid_number_required_ar": "الرجاء إدخال رقم صالح",
   "description_required_ar": "الوصف مطلوب",
-  "postcode_valid_ar": "يجب أن يتكون الرمز البريدي من 6 أرقام"
-
+  "postcode_valid_ar": "يجب أن يتكون الرمز البريدي من 6 أرقام",
+  "enter_the_content_here_en" : "Enter the content here"
 }

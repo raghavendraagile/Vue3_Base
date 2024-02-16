@@ -66,6 +66,7 @@
                     <template v-slot:activator="{ props }">
                       <div v-bind="props">
                         <quill-editor :key="quill_d" :options="editorOptions" v-bind:style="tabs == 2 ? 'rt-input' : ''"
+                        v-bind:class="tabs == 2 ? 'arabclassquill' : ''"
                           class="hide_quill_input" v-bind:id="quill_item == true
                             ? 'quill_item'
                             : 'quill_item_border'
@@ -88,7 +89,8 @@
                   <v-tooltip :text="fieldItem.lang == 'en' ? $t('signature_en') : $t('signature_ar')" location="top">
                     <template v-slot:activator="{ props }">
                       <div v-bind="props">
-                        <quill-editor :options="editorOptions" v-bind:style="tabs == 2 ? 'rt-input' : ''"
+                        <quill-editor :key="quill_key" :options="editorOptions" v-bind:style="tabs == 2 ? 'rt-input' : ''"
+                        v-bind:class="tabs == 2 ? 'arabclassquill' : ''"
                           class="hide_quill_input" v-bind:id="quill_sign == true
                             ? 'quill_item1'
                             : 'quill_item_border1'
@@ -159,6 +161,7 @@ export default {
     return { onEditorReady, onEditorFocus, onEditorFocusAR, onEditorReadyAR };
   },
   data: () => ({
+    quill_key : 0,
     quill_item: false,
     quill_sign: false,
     tabs: 1,
@@ -211,15 +214,16 @@ export default {
     showerrmsg: false,
     email: "",
     editorOptions: {
+      placeholder: "Enter the content here",
       direction: "rtl",
       theme: "snow",
-      placeholder: 'Insert content here...',
     },
     temp_type_en: [],
     temp_type_ar: [],
   }),
 
   computed: {
+  
     fieldRules() {
       return [(v) => (!!v && !!v.trim()) || this.$t("field_required")];
     },
@@ -231,15 +235,21 @@ export default {
   created() {
     this.fetchLookup();
   },
-  mounted() { },
+  mounted() { 
+    this.editorOptions.placeholder = this.$t('enter_the_content_here_en');
+  },
   watch: {
     tabs(newVal) {
       if (newVal === 2) {
         this.editorOptions.direction = "rtl";
-        this.editorOptions.placeholder = this.$t("enter_the_content_here_ar");
+        this.quill_key++;
+        this.quill_d++;
+        this.editorOptions.placeholder = this.$t('enter_the_content_here_ar');
       } else {
         this.editorOptions.direction = "ltr";
-        this.editorOptions.placeholder = this.$t("enter_the_content_here_en");
+        this.quill_d++;
+        this.quill_key++;
+        this.editorOptions.placeholder = this.$t('enter_the_content_here_en');
       }
     },
     '$i18n.locale'(newLocale) {
@@ -478,7 +488,9 @@ export default {
 .arabclass {
   direction: rtl !important;
 }
-
+.arabclassquill .ql-editor{
+  text-align: justify ;
+}
 @keyframes shake {
 
   10%,
