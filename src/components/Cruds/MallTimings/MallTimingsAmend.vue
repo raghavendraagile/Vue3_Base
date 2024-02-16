@@ -14,7 +14,6 @@
           <v-tab :value="1">
             <span>{{ $t("english") }}</span>
           </v-tab>
-
           <v-tab :value="2">
             <span>{{ $t("arabic") }}</span>
           </v-tab>
@@ -166,7 +165,7 @@
           <v-window-item :value="2">
             <v-form ref="form" v-model="valid">
               <v-layout>
-                <v-row class="px-6 mt-2">
+                <v-row class="px-6 mt-2 arabdirection">
                   <v-col xs="4" md="4" lg="4">
                     <v-tooltip
                       :text="this.$t('mall_timing_categories_ar')"
@@ -276,7 +275,7 @@
                 </v-row>
               </v-layout>
               <v-layout>
-                <v-row class="mt-2 px-6" max-width="344">
+                <v-row class="mt-2 px-6 arabdirection" max-width="344">
                   <v-col md="12">
                     <v-tooltip
                       :text="this.$t('description_ar')"
@@ -521,5 +520,9 @@ export default {
   },
 };
 </script>
-  <style scoped></style>
+  <style scoped>
+.arabdirection .v-field {
+  direction: rtl !important;
+}
+</style>
     
