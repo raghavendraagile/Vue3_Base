@@ -56,7 +56,7 @@
               </v-layout>
               <v-layout v-if="stores[0].stor_type == 'Store'">
                 <v-row class="px-6 mt-2">
-                  <v-col xs="4" md="4" lg="4">
+                  <v-col cols="12" xs="12" sm="12" md="4" lg="4">
                     <v-tooltip :text="this.$t('category')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -80,7 +80,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col xs="4" md="4" lg="4">
+                  <v-col xs="12" sm="12" md="4" lg="4">
                     <v-tooltip :text="this.$t('mall_name')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -105,7 +105,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="4" sm="4" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('name_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -122,7 +122,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="4" sm="4" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('email_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -139,7 +139,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="4" sm="4" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('phone_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -161,7 +161,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" md="3" sm="3" lg="3">
+                  <v-col cols="12" md="3" xs="6" sm="6" lg="3">
                     <v-tooltip :text="$t('country_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -183,7 +183,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" md="3" sm="3" lg="3">
+                  <v-col cols="12" md="3" xs="6" sm="6" lg="3">
                     <v-tooltip :text="$t('state_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -205,7 +205,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" md="3" sm="3" lg="3">
+                  <v-col cols="12" md="3" xs="6" sm="6" lg="3">
                     <v-tooltip :text="$t('city_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -226,8 +226,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-
-                  <v-col cols="12" md="3" lg="3" sm="3" px-2>
+                  <v-col cols="12" md="3" lg="3" xs="6" sm="6" px-2>
                     <v-tooltip :text="$t('postcode_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -249,7 +248,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" md="4" sm="4" lg="4">
+                  <v-col cols="12" md="4" xs="12" sm="12" lg="4">
                     <v-tooltip :text="$t('address_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-textarea
@@ -268,7 +267,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" md="8" sm="8" lg="8">
+                  <v-col cols="12" md="8" xs="12" sm="12" lg="8">
                     <v-tooltip :text="$t('description_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-textarea
@@ -291,7 +290,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="4" sm="4" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('meta_title_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -308,7 +307,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="4" sm="4" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('store_code')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -325,7 +324,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="4" sm="4" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('website_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -344,7 +343,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" md="12" sm="12" lg="12">
+                  <v-col cols="12" md="12" xs="12" sm="12" lg="12">
                     <v-tooltip
                       :text="$t('meta_description_en')"
                       location="bottom"
@@ -370,7 +369,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="4" sm="12" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('sequence_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -388,7 +387,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="4" sm="12" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <div>
                       <span class="mb-5">{{ $t("logo_en") }}</span>
                       <div class="image-container">
@@ -500,7 +499,7 @@
             <v-form ref="form" v-model="valid">
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col xs="12" md="12" lg="12">
+                  <v-col xs="12" sm="12" md="12" lg="12">
                     <v-radio-group
                       v-model="stores[1].stor_type"
                       inline
@@ -516,7 +515,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="headings">
-                  <v-col xs="12" md="12" lg="12">
+                  <v-col xs="12" sm="12" md="12" lg="12">
                     <h6 class="m-4" v-if="stores[1].stor_type == 'Mall'">
                       <b>{{ $t("mall_details_ar") }}</b>
                     </h6>
@@ -528,7 +527,7 @@
               </v-layout>
               <v-layout v-if="stores[1].stor_type == 'Store'">
                 <v-row class="px-6 mt-2">
-                  <v-col xs="4" md="4" lg="4">
+                  <v-col xs="12" sm="12" md="4" lg="4">
                     <v-tooltip :text="this.$t('category_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -552,7 +551,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col xs="4" md="4" lg="4">
+                  <v-col xs="12" sm="12" md="4" lg="4">
                     <v-tooltip :text="this.$t('mall_name')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -577,7 +576,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="4" sm="4" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('name_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -594,7 +593,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="4" sm="4" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('email_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -611,7 +610,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="4" sm="4" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('phone_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -633,7 +632,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" md="3" sm="3" lg="3">
+                  <v-col cols="12" md="3" xs="6" sm="6" lg="3">
                     <v-tooltip :text="$t('country_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -655,7 +654,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" md="3" sm="3" lg="3">
+                  <v-col cols="12" md="3" xs="6" sm="6" lg="3">
                     <v-tooltip :text="$t('state_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -677,7 +676,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" md="3" sm="3" lg="3">
+                  <v-col cols="12" md="3" xs="6" sm="6" lg="3">
                     <v-tooltip :text="$t('city_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -698,7 +697,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" md="3" lg="3" sm="3" px-2>
+                  <v-col cols="12" md="3" lg="3" xs="6" sm="6" px-2>
                     <v-tooltip :text="$t('postcode_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -720,7 +719,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" md="4" sm="4" lg="4">
+                  <v-col cols="12" md="4" xs="12" sm="12" lg="4">
                     <v-tooltip :text="$t('address_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-textarea
@@ -739,7 +738,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" md="8" sm="8" lg="8">
+                  <v-col cols="12" md="8" xs="12" sm="12" lg="8">
                     <v-tooltip :text="$t('description_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-textarea
@@ -762,7 +761,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="4" sm="4" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('meta_title_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -779,7 +778,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="6" sm="6" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('store_code_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -796,7 +795,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="6" sm="6" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('website_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -815,7 +814,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" md="12" sm="12" lg="12">
+                  <v-col cols="12" md="12" xs="12" sm="12" lg="12">
                     <v-tooltip
                       :text="$t('meta_description_ar')"
                       location="bottom"
@@ -841,7 +840,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="4" sm="12" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('sequence_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -859,7 +858,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="4" sm="12" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <div>
                       <span class="mb-5">{{ $t("logo_ar") }}</span>
                       <div class="image-container">
@@ -982,7 +981,7 @@
             <v-col
               v-for="(media_data, media_index) in social_media_en"
               :key="media_index"
-              cols="4"
+              cols="12"
               sm="4"
               md="4"
             >
