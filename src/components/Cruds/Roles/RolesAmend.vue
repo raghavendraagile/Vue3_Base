@@ -107,7 +107,7 @@ export default {
     valid: true,
     successmessage: "",
     message: "",
-    valid_error: false,
+    sel_lang :"",
     file: "",
     loading: false,
     isBtnLoading: false,

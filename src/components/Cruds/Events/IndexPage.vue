@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div flat color="white" class="row py-5 pl-5 align-items-center">
+    <div flat color="white" class="row py-5 pl-5 align-items-center component_app_bar" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
       <page-title
         class="col-md-3"
         :heading="$t('events')"
@@ -370,13 +370,24 @@ export default {
     valid: false,
     message: "",
     user: "",
+    sel_lang: "",
     showStatusDialog: false,
   }),
   mounted() {
     this.user = JSON.parse(localStorage.getItem("user"));
     this.fetchEvents();
-  },
+  
 
+  },
+watch:{
+    '$i18n.locale'(newLocale) {
+      if (newLocale === 'ar') {
+        this.sel_lang = 'ar';
+      } else {''
+        this.sel_lang = 'en';
+      }
+    }
+},
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
@@ -463,6 +474,7 @@ export default {
     },
   },
   methods: {
+    
     changeStatusAr(status) {
       switch (status) {
         case "Approved":
