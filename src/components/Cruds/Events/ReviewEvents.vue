@@ -1,6 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('events')"
@@ -82,7 +85,6 @@
                     </div>
                   </v-col>
 
-                  
                   <v-col
                     cols="12"
                     sm="12"
@@ -99,36 +101,29 @@
                   </v-col>
                 </v-row>
               </v-layout>
-                <v-col
-                    cols="12"
-                    sm="12"
-                    md="4"
-                   
+              <!-- <v-col cols="12" sm="12" md="4"> -->
+                <div
+                  class="d-flex justify-content-end"
+                  v-if="event.approval_status == 'In Review' && user_role != 'StoreAdmin'"
+                >
+                  <v-chip
+                    @click="statusOnChange('Approved', event.header_id)"
+                    variant="flat"
+                    color="green"
+                    class="mx-1"
                   >
-
-              <div
-              
-                class="d-flex justify-content-end"
-                v-if="event.approval_status == 'In Review'"
-              >
-                <v-chip
-                  @click="statusOnChange('Approved', event.header_id)"
-                  variant="flat"
-                  color="green"
-                  class="mx-1"
-                >
-                  {{ $t("approve_en") }}
-                </v-chip>
-                <v-chip
-                  @click="statusOnChange('Rejected', event.header_id)"
-                  variant="flat"
-                  color="red"
-                  class="mx-1"
-                >
-                  {{ $t("reject_en") }}
-                </v-chip>
-              </div>
-                </v-col>
+                    {{ $t("approve_en") }}
+                  </v-chip>
+                  <v-chip
+                    @click="statusOnChange('Rejected', event.header_id)"
+                    variant="flat"
+                    color="red"
+                    class="mx-1"
+                  >
+                    {{ $t("reject_en") }}
+                  </v-chip>
+                </div>
+              <!-- </v-col> -->
             </v-card>
           </v-window-item>
           <!-- ENGLISH TAB END -->
@@ -143,7 +138,7 @@
             >
               <v-layout>
                 <v-row class="px-6 mt-2">
-                   <v-col cols="12" sm="6" md="3">
+                  <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("title_ar") }}</div>
                     <div>{{ event.title }}</div>
                   </v-col>
@@ -172,8 +167,6 @@
                     </div>
                   </v-col>
 
-                 
-
                   <v-col cols="12" sm="6" md="3">
                     <div
                       class="d-label"
@@ -187,7 +180,7 @@
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
-                  
+
                   <v-col
                     cols="12"
                     sm="12"
@@ -203,12 +196,11 @@
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
                 </v-row>
-                <v-row class="px-6 mt-2">
-                </v-row>
+                <v-row class="px-6 mt-2"> </v-row>
               </v-layout>
               <div
                 class="d-flex justify-content-end"
-                v-if="event.approval_status == 'In Review'"
+                v-if="event.approval_status == 'In Review' && user_role != 'StoreAdmin'"
               >
                 <v-chip
                   @click="statusOnChange('Approved', event.header_id)"
@@ -259,8 +251,8 @@
     </ReviewComments>
   </div>
 </template>
-    
-  <script>
+
+<script>
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
 import ReviewComments from "../../CustomComponents/ReviewComments.vue";
@@ -289,6 +281,7 @@ export default {
     tabs: 1,
     events_en: [],
     events_ar: [],
+    user_role:"",
     showApprovalDialog: false,
     selected: {
       header_id: null,
@@ -304,25 +297,26 @@ export default {
       handler() {
         if (this.$route.query.slug) {
           this.fetcheventDetails();
+          this.user_role = JSON.parse(
+            localStorage.getItem("user_data")
+          ).rolename;
         }
       },
     },
-     '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
 
-  mounted(){
- 
-  },
+  mounted() {},
 
   methods: {
-     
-      changeStatusAr(status) {
+    changeStatusAr(status) {
       switch (status) {
         case "Approved":
           return this.$t("approved_ar");
@@ -455,4 +449,3 @@ export default {
   border-width: 1px;
 }
 </style>
-    

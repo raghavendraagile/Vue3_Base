@@ -1,6 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('create_events')"
@@ -21,8 +24,39 @@
         <!-- ENGLISH TAB STARTS -->
         <v-window-item :value="1">
           <v-form ref="form" v-model="valid">
+              <v-layout  v-if="user.rolename != 'StoreAdmin'">
+              <v-row class="px-6 mt-2">
+                <v-col xs="12" md="12" lg="12">
+                  <!-- :disabled="$route.query.slug" -->
+                  <v-radio-group
+                    v-model="events[0].stor_type"
+                    inline
+                    class="radio_item"
+                    @change="updateType(events[0].stor_type)"
+                  >
+                    <v-radio
+                      v-for="(role_data, rindex) in role_array"
+                      :key="rindex"
+                      :label="changeRoleName(role_data.rolename)"
+                      :value="role_data.rolename"
+                      class="text--primary"
+                    >
+                    </v-radio>
+                    <!-- <v-radio :label="$t('mall')" value="Mall"></v-radio>
+                    <v-radio value="Store" :label="$t('store')"></v-radio> -->
+                  </v-radio-group>
+                </v-col>
+              </v-row>
+            </v-layout>
             <v-row class="mx-auto mt-2" max-width="344">
-              <v-col cols="12" sm="12" md="12" lg="3" xs="12">
+              <v-col
+                cols="12"
+                sm="12"
+                md="12"
+                lg="3"
+                xs="12"
+                v-if="user.rolename != 'StoreAdmin'"
+              >
                 <v-tooltip :text="this.$t('store')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -41,7 +75,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="3">
+              <v-col cols="12" sm="12" :md="user.rolename === 'StoreAdmin' ? 4 : 3">
                 <v-tooltip :text="this.$t('title')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -59,7 +93,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="3">
+              <v-col cols="12" sm="12" :md="user.rolename === 'StoreAdmin' ? 4 : 3">
                 <v-tooltip :text="this.$t('start_date_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker
@@ -77,7 +111,7 @@
                   <span>{{ $t("start_date_en") }}</span>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="3">
+              <v-col cols="12" sm="12" :md="user.rolename === 'StoreAdmin' ? 4 : 3">
                 <v-tooltip :text="this.$t('end_date_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker
@@ -96,34 +130,33 @@
                 </v-tooltip>
               </v-col>
               <v-col cols="12" sm="12" md="12">
-                 <v-card-title class="text-left" style="font-size: 17px">{{
-                      $t("description_en")
-                    }}</v-card-title>
+                <v-card-title class="text-left" style="font-size: 17px">{{
+                  $t("description_en")
+                }}</v-card-title>
                 <v-tooltip :text="this.$t('description_en')" location="bottom">
-                   <template v-slot:activator="{ props }">
-                        <div v-bind="props">
-                          <quill-editor
-                           style="direction: ltr;"
-                            class="hide_quill_input"
-                            v-bind:id="
-                              quill_item == true
-                                ? 'quill_item'
-                                : 'quill_item_border'
-                            "
-                            v-model:value="events[0].description"
-                            @blur="onEditorBlur($event)"
-                            @focus="onEditorFocus($event)"
-                            @ready="onEditorReady($event)"
-                            @change="onEditorChange($event)"
-                          />
-                          <small
-                            v-if="quill_item"
-                            class="text-danger ml-5 required_item shake"
-                            >Field Required</small
-                          >
-                        </div>
-                      </template>
-                  
+                  <template v-slot:activator="{ props }">
+                    <div v-bind="props">
+                      <quill-editor
+                        style="direction: ltr"
+                        class="hide_quill_input"
+                        v-bind:id="
+                          quill_item == true
+                            ? 'quill_item'
+                            : 'quill_item_border'
+                        "
+                        v-model:value="events[0].description"
+                        @blur="onEditorBlur($event)"
+                        @focus="onEditorFocus($event)"
+                        @ready="onEditorReady($event)"
+                        @change="onEditorChange($event)"
+                      />
+                      <small
+                        v-if="quill_item"
+                        class="text-danger ml-5 required_item shake"
+                        >Field Required</small
+                      >
+                    </div>
+                  </template>
                 </v-tooltip>
               </v-col>
               <v-col cols="12" sm="12" md="6">
@@ -186,13 +219,14 @@
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">
                       <div style="position: relative" v-bind="props">
-                        
                         <img
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                          v-if="events[0].image_path == '' || events[0].image_path == null"
-                         
+                          v-if="
+                            events[0].image_path == '' ||
+                            events[0].image_path == null
+                          "
                           src="@/assets/images/upload_image_default.png"
                           width="100"
                         />
@@ -200,7 +234,7 @@
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                           v-else
+                          v-else
                           :src="envImagePath + events[0].image_path"
                           width="100"
                           height="65
@@ -241,7 +275,31 @@
         <!-- ARABIC TAB STARTS -->
         <v-window-item :value="2">
           <v-form ref="form" v-model="valid">
-           <v-row class="mx-auto mt-2 arabdirection" max-width="344">
+                 <v-layout  v-if="user.rolename != 'StoreAdmin'">
+              <!-- :disabled="$route.query.slug" -->
+              <v-row class="px-6 mt-2">
+                <v-col xs="12" md="12" lg="12">
+                  <v-radio-group
+                    v-model="events[1].stor_type"
+                    inline
+                    class="radio_item"
+                    @change="updateType(events[1].stor_type)"
+                  >
+                    <v-radio
+                      v-for="(role_data, rindex) in role_array"
+                      :key="rindex"
+                      :label="changeStatusAr(role_data.rolename)"
+                      :value="role_data.rolename"
+                      class="text--primary"
+                    >
+                    </v-radio>
+                    <!-- <v-radio :label="$t('mall')" value="Mall"></v-radio>
+                    <v-radio value="Store" :label="$t('store')"></v-radio> -->
+                  </v-radio-group>
+                </v-col>
+              </v-row>
+            </v-layout>
+            <v-row class="mx-auto mt-2 arabdirection" max-width="344">
               <v-col cols="12" sm="12" md="3">
                 <v-tooltip :text="this.$t('store_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
@@ -317,36 +375,34 @@
                 </v-tooltip>
               </v-col>
               <v-col cols="12" sm="12" md="12">
-                
-                   <v-card-title class="text-left" style="font-size: 17px">{{
-                      $t("description_ar")
-                    }}</v-card-title>
+                <v-card-title class="text-left" style="font-size: 17px">{{
+                  $t("description_ar")
+                }}</v-card-title>
                 <v-tooltip :text="this.$t('description_ar')" location="bottom">
-                   <template v-slot:activator="{ props }">
-                        <div v-bind="props">
-                          <quill-editor
-                         ref="quill_editor_ref"
-                            :options="editorOptions"
-                            class="hide_quill_input rtl"
-                            v-bind:id="
-                              quill_item == true
-                                ? 'quill_item'
-                                : 'quill_item_border'
-                            "
-                            v-model:value="events[1].description"
-                            @blur="onEditorBlurAR($event)"
-                            @focus="onEditorFocusAR($event)"
-                            @ready="setRtlDirection"
-                            @change="onEditorChangeAR($event)"
-                          />
-                          <small
-                            v-if="quill_item"
-                            class="text-danger ml-5 required_item shake"
-                            >Field Required</small
-                          >
-                        </div>
-                      </template>
-                  
+                  <template v-slot:activator="{ props }">
+                    <div v-bind="props">
+                      <quill-editor
+                        ref="quill_editor_ref"
+                        :options="editorOptions"
+                        class="hide_quill_input rtl"
+                        v-bind:id="
+                          quill_item == true
+                            ? 'quill_item'
+                            : 'quill_item_border'
+                        "
+                        v-model:value="events[1].description"
+                        @blur="onEditorBlurAR($event)"
+                        @focus="onEditorFocusAR($event)"
+                        @ready="setRtlDirection"
+                        @change="onEditorChangeAR($event)"
+                      />
+                      <small
+                        v-if="quill_item"
+                        class="text-danger ml-5 required_item shake"
+                        >Field Required</small
+                      >
+                    </div>
+                  </template>
                 </v-tooltip>
               </v-col>
               <v-col cols="12" sm="12" md="6">
@@ -413,12 +469,14 @@
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">
                       <div style="position: relative" v-bind="props">
-                         <img
+                        <img
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                          v-if="events[1].image_path == '' || events[1].image_path == null"
-                         
+                          v-if="
+                            events[1].image_path == '' ||
+                            events[1].image_path == null
+                          "
                           src="@/assets/images/upload_image_default.png"
                           width="100"
                         />
@@ -426,7 +484,7 @@
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                           v-else
+                          v-else
                           :src="envImagePath + events[1].image_path"
                           width="100"
                           height="65
@@ -514,7 +572,7 @@ import Imageupload from "../../CustomComponents/ImageUpload.vue";
 import { quillEditor } from "vue3-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 export default {
-  components: { DatePicker, Imageupload,quillEditor },
+  components: { DatePicker, Imageupload, quillEditor },
   setup() {
     const onEditorFocus = () => {
       // console.log("editor focus!", quill);
@@ -557,6 +615,7 @@ export default {
     events_ar: [],
     stores_en: [],
     stores_ar: [],
+        user: "",
     events: [
       {
         id: 0,
@@ -570,6 +629,7 @@ export default {
         meta_description: "",
         lang: "en",
         store_id: null,
+        stor_type:"",
       },
       {
         id: 0,
@@ -583,12 +643,12 @@ export default {
         meta_description: "",
         lang: "ar",
         store_id: null,
+        stor_type:"",
       },
     ],
     uploadfilear: false,
     noimagepreview: "",
     items: [],
-    
   }),
 
   computed: {
@@ -623,10 +683,16 @@ export default {
   },
   mounted() {
     this.get_stores();
-    
-    
+        this.fetchRoles();
+
   },
-  created() {},
+  created() {
+       this.user = JSON.parse(localStorage.getItem("user_data"));
+    if (this.user.store_id && this.user.rolename == "StoreAdmin") {
+      this.events[0].store_id = this.user.store_id;
+      this.events[1].store_id = this.user.store_id;
+    }
+  },
   watch: {
     "$route.query.slug": {
       immediate: true,
@@ -650,16 +716,74 @@ export default {
         }
       },
     },
-      '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
   methods: {
-    
+    changeRoleName(role_name) {
+      switch (role_name) {
+        case "MallAdmin":
+          return this.$t("mall");
+        case "StoreAdmin":
+          return this.$t("store");
+        // case "Rejected":
+        //   return this.$t("rejected_ar");
+        default:
+          return "";
+      }
+    },
+    changeStatusAr(status) {
+      switch (status) {
+        case "MallAdmin":
+          return this.$t("mall_admin_ar");
+        case "StoreAdmin":
+          return this.$t("store_admin_ar");
+        // case "Rejected":
+        //   return this.$t("rejected_ar");
+        default:
+          return "";
+      }
+    },
+    updateType(stor_type) {
+      if (this.tabs == 1) {
+        this.events[1].stor_type = stor_type;
+      } else {
+        this.events[0].stor_type = stor_type;
+      }
+    },
+
+    fetchRoles() {
+      this.loader = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_reg_roles")
+        .then((response) => {
+          this.loader = false;
+          this.role_array = response.data.roles;
+          if (!this.$route.query.slug && this.user.rolename == "SuperUser") {
+            this.events[0].stor_type = this.role_array[0].rolename;
+            this.events[1].stor_type = this.role_array[0].rolename;
+          } else if (
+            this.user.rolename === "MallAdmin" &&
+            !this.$route.query.slug
+          ) {
+            this.role_array = response.data.roles.filter(
+              (role) => role.rolename !== "MallAdmin"
+            );
+            this.events[0].stor_type = this.role_array[0].rolename;
+            this.events[1].stor_type = this.role_array[0].rolename;
+          }
+        })
+        .catch((err) => {
+          this.loader = false;
+          console.log(err);
+        });
+    },
     downloadImage(image_url) {
       window.open(this.envImagePath + image_url, "_blank");
     },
@@ -813,7 +937,7 @@ export default {
       this.$router.push({
         name: "categories",
       });
-    },        
+    },
   },
 };
 </script>
@@ -842,5 +966,4 @@ input.larger {
 .arabdirection /deep/ .v-field {
   direction: rtl !important;
 }
-
 </style>
