@@ -156,7 +156,7 @@
           :loading="initval"
           class="rtl-direction"
           :no-data-text="$t('no_data_available')"
-          :items-per-page-text="$t('rows_per_page')"
+          :items-per-page-text="$t('rows_per_page_ar')"
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">

@@ -2,7 +2,7 @@
   <div class="main-20 position-relative">
     <div flat color="white" class="row py-5 pl-5 align-items-center">
       <page-title
-        class="col-md-3"
+        class="col-md-6"
         :heading="$t('reviews_testimonials')"
         :google_icon="google_icon"
       ></page-title>
@@ -47,14 +47,13 @@
           :search="search"
           :loading="initval"
           v-bind:no-data-text="$t('no_data_available')"
-          :footer-props="{
-            'items-per-page-text': $t('rows_per_page'),
-          }"
+          :items-per-page-text="$t('rows_per_page')"
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td>
-                {{ props.item.selectable.customer_id }}
+                {{ props.item.selectable.customer.firstname }}
+                {{ props.item.selectable.customer.lastname }}
               </td>
               <td>{{ props.item.selectable.testimonial_details }}</td>
               <td>
@@ -108,7 +107,7 @@
                   >
                 </v-btn>
               </td>
-              <td class="text-center">
+              <!-- <td class="text-center">
                 <span @click="deleteItem(props.item.selectable.id)">
                   <v-tooltip :text="this.$t('delete')" location="top">
                     <template v-slot:activator="{ props }">
@@ -119,7 +118,7 @@
                     <span>{{ $t("delete") }}</span>
                   </v-tooltip>
                 </span>
-              </td>
+              </td> -->
             </tr>
           </template>
         </v-data-table>
@@ -133,14 +132,13 @@
           :search="search"
           :loading="initval"
           v-bind:no-data-text="$t('no_data_available')"
-          :footer-props="{
-            'items-per-page-text': $t('rows_per_page'),
-          }"
+          :items-per-page-text="$t('rows_per_page')"
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td>
-                {{ props.item.selectable.customer_id }}
+                {{ props.item.selectable.customer.firstname }}
+                {{ props.item.selectable.customer.lastname }}
               </td>
               <td>{{ props.item.selectable.testimonial_details }}</td>
               <td>
@@ -194,7 +192,7 @@
                   >
                 </v-btn>
               </td>
-              <td class="text-center">
+              <!-- <td class="text-center">
                 <span @click="deleteItem(props.item.selectable.id)">
                   <v-tooltip :text="this.$t('delete')" location="top">
                     <template v-slot:activator="{ props }">
@@ -205,7 +203,7 @@
                     <span>{{ $t("delete") }}</span>
                   </v-tooltip>
                 </span>
-              </td>
+              </td> -->
             </tr>
           </template>
         </v-data-table>
@@ -285,11 +283,11 @@ export default {
           title: this.$t("status"),
           key: "status",
         },
-        {
-          title: this.$t("action"),
-          align: "center",
-          key: "email",
-        },
+        // {
+        //   title: this.$t("action"),
+        //   align: "center",
+        //   key: "email",
+        // },
       ];
     },
   },
