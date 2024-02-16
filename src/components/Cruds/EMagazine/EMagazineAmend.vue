@@ -17,7 +17,6 @@
           <v-tab :value="1">
             <span>{{ $t("english") }}</span>
           </v-tab>
-
           <v-tab :value="2">
             <span>{{ $t("arabic") }}</span>
           </v-tab>
@@ -1013,5 +1012,11 @@ input.larger {
 }
 .arabdirection /deep/ .v-field{
   direction:rtl;
+}
+.arabdirection /deep/ .v-input {
+  direction: rtl !important;
+}
+.arabdirection /deep/ .v-input {
+  direction: rtl !important;
 }
 </style>

@@ -277,7 +277,7 @@
           <v-form ref="form" v-model="valid">
                  <v-layout  v-if="user.rolename != 'StoreAdmin'">
               <!-- :disabled="$route.query.slug" -->
-              <v-row class="px-6 mt-2">
+              <v-row class="px-6 mt-2 arabdirection">
                 <v-col xs="12" md="12" lg="12">
                   <v-radio-group
                     v-model="events[1].stor_type"
@@ -964,6 +964,9 @@ input.larger {
   direction: rtl;
 }
 .arabdirection /deep/ .v-field {
+  direction: rtl !important;
+}
+.arabdirection /deep/ .v-input {
   direction: rtl !important;
 }
 </style>
