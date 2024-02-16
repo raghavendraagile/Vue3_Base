@@ -142,7 +142,7 @@
         <!-- ARABIC TAB STARTS -->
         <v-window-item :value="2">
           <v-form ref="form" v-model="valid">
-            <v-row class="mx-auto mt-2" max-width="344">
+            <v-row class="mx-auto mt-2 arabdirection" max-width="344">
               <v-col cols="12" sm="12" md="6">
                 <v-tooltip :text="this.$t('shortname_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
@@ -181,7 +181,7 @@
               </v-col>
             </v-row>
             <v-layout>
-              <v-row class="mx-auto mt-2" max-width="344">
+              <v-row class="mx-auto mt-2 arabdirection" max-width="344">
                 <v-col md="12">
                   <v-tooltip
                     :text="this.$t('description_ar')"
@@ -207,7 +207,7 @@
                 </v-col>
               </v-row>
             </v-layout>
-            <v-row class="mx-auto mt-2" max-width="344">
+            <v-row class="mx-auto mt-2 arabdirection" max-width="344">
               <v-col md="6">
                 <div>
                   <span class="mb-5">{{ $t("icon_ar") }}</span>
@@ -493,5 +493,8 @@ export default {
 input.larger {
   width: 20px;
   height: 20px;
+}
+.arabdirection /deep/ .v-field{
+  direction:rtl;
 }
 </style>

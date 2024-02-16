@@ -431,6 +431,10 @@ input::placeholder {
   animation: fadeInUp 0.5s forwards;
 }
 
+.arabdirection{
+  direction:rtl;
+}
+
 @keyframes bounceAnimation {
   0%, 100% {
     transform: translateY(0);
