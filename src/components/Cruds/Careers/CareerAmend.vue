@@ -1,6 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('create_career')"
@@ -59,7 +62,7 @@
                       density="compact"
                       :items="stores_en"
                       item-title="name"
-                      item-value="id"
+                      item-value="header_id"
                       @update:model-value="updateStore(careers[0].store_id)"
                     ></v-autocomplete>
                   </template>
@@ -131,7 +134,7 @@
                       rows="2"
                       v-model="careers[0].meta_description"
                       :rules="fieldRules"
-                      maxlength="1000"
+                      maxlength="160"
                       v-bind="props"
                       v-bind:label="$t('meta_description')"
                       required
@@ -280,7 +283,7 @@
                       rows="2"
                       v-model="careers[1].meta_description"
                       :rules="fieldRules"
-                      maxlength="100"
+                      maxlength="160"
                       v-bind="props"
                       v-bind:label="$t('meta_description_ar')"
                       required
@@ -404,16 +407,23 @@ export default {
         store_id: null,
       },
     ],
+    mall_stores_array_en: [],
+    mall_stores_array_ar: [],
     noimagepreview: "",
     items: [],
     stores_en: [],
     stores_ar: [],
+    mal_data_en: [],
+    mal_data_er: [],
     role_array: [],
+    stores_data_ar: [],
+    stores_data_en: [],
     sel_lang: "",
     user: "",
   }),
   mounted() {
     this.get_stores();
+    this.fetchMall();
     this.fetchRoles();
   },
   computed: {
@@ -431,10 +441,6 @@ export default {
 
   created() {
     this.user = JSON.parse(localStorage.getItem("user_data"));
-    if (this.user.store_id) {
-      this.careers[0].store_id = this.user.store_id;
-      this.careers[1].store_id = this.user.store_id;
-    }
   },
   watch: {
     "$route.query.slug": {
@@ -454,18 +460,21 @@ export default {
               console.log("CALLED IN ROUTE");
               console.log(res);
               this.careers = res.data.careers;
+              this.assignType(this.careers[0].stor_type);
+
               this.loader = false;
             });
         }
       },
     },
-    '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
   methods: {
     changeStatusAr(status) {
@@ -481,11 +490,39 @@ export default {
       }
     },
     updateType(stor_type) {
-      if (this.tabs == 1) {
-        this.careers[1].stor_type = stor_type;
-      } else {
-        this.careers[0].stor_type = stor_type;
-      }
+        this.careers[1].store_id = null;
+          this.careers[0].store_id = null;
+      this.assignType(stor_type);
+    },
+    assignType(stor_type) {
+      setTimeout(() => {
+        // if (!this.careers[0].slug) {
+        //   this.careers[1].store_id = null;
+        //   this.careers[0].store_id = null;
+        // }
+        if (this.tabs == 1) {
+          this.careers[1].stor_type = stor_type;
+          if (stor_type == "MallAdmin") {
+            this.stores_en = this.mal_data_en;
+            this.stores_ar = this.mal_data_ar;
+          } else {
+            // alert("asdsad");
+
+            this.stores_en = this.stores_data_en;
+            this.stores_ar = this.stores_data_ar;
+            // console.log("asdasd", this.stores_data_en);
+          }
+        } else {
+          this.careers[0].stor_type = stor_type;
+          if (stor_type == "MallAdmin") {
+            this.stores_en = this.mal_data_en;
+            this.stores_ar = this.mal_data_ar;
+          } else {
+            this.stores_en = this.stores_data_en;
+            this.stores_ar = this.stores_data_ar;
+          }
+        }
+      }, 1000);
     },
     updateStore(stor_type) {
       if (this.tabs == 1) {
@@ -504,6 +541,7 @@ export default {
           if (!this.$route.query.slug) {
             this.careers[0].stor_type = this.role_array[0].rolename;
             this.careers[1].stor_type = this.role_array[0].rolename;
+            this.updateType(this.careers[0].stor_type);
           }
         })
         .catch((err) => {
@@ -517,8 +555,36 @@ export default {
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-stores")
         .then((response) => {
           console.log(response);
-          this.stores_en = response.data.stores_en;
-          this.stores_ar = response.data.stores_ar;
+          this.stores_data_en = response.data.stores_en;
+          this.stores_data_ar = response.data.stores_ar;
+
+          // const default_en = {
+          //   id: 0,
+          //   name: this.$t("select_en"),
+          //   header_id: 0,
+          // };
+          // const default_ar = {
+          //   id: 0,
+          //   name: this.$t("select_ar"),
+          //   header_id: 0,
+          // };
+
+          // this.stores_en = [default_en, ...this.stores_en];
+          // this.stores_ar = [default_ar, ...this.stores_ar];
+          this.initval = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    fetchMall() {
+      this.initval = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-malls")
+        .then((response) => {
+          console.log(response);
+          this.mal_data_en = response.data.malls_en;
+          this.mal_data_ar = response.data.malls_ar;
 
           // const default_en = {
           //   id: 0,
