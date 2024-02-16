@@ -11,7 +11,7 @@
       <v-form autocomplete="off" ref="form" v-model="valid" v-bind:class="[is_arabic ? 'arabicclass' : '']">
         <v-container>
           <v-row class="mx-auto mt-2" max-width="344">
-            <v-col md="6">
+            <v-col md="6" class="emailclass">
               <strong>{{ $t("email") }}:</strong>
               &nbsp;&nbsp;
               {{ userprofile.email }}
@@ -258,6 +258,9 @@ export default {
 </script>
 <style scoped>
 .arabicclass /deep/ .v-field-label{
+  direction: rtl;
+}
+.arabicclass .emailclass{
   direction: rtl;
 }
 </style>
