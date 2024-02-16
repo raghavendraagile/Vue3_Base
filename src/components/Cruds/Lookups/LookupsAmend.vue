@@ -192,7 +192,6 @@
                         v-on="on"
                         rows="2"
                         v-model="lookup[1].description"
-
                         maxlength="100"
                         v-bind="props"
                         v-bind:label="$t('description_ar')"

@@ -1,6 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('store_timing')"
@@ -34,7 +37,7 @@
               >
                 <v-layout>
                   <v-row class="px-6 mt-2">
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="6" xs="12" sm="12" md="4">
                       <div class="d-label">{{ $t("approval_status_en") }}</div>
                       <div>
                         <v-chip
@@ -55,28 +58,28 @@
                   :key="index1"
                 >
                   <v-row class="px-6 mt-2">
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="6" xs="12" sm="12" md="4">
                       <div class="d-label">{{ $t("title_en") }}</div>
                       <div>{{ store_time.store_detail.name }}</div>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="6" xs="12" sm="12" md="4">
                       <div class="d-label">{{ $t("week_day") }}</div>
                       <div>{{ store_time.week_day }}</div>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <div class="d-label">{{ $t("from_time") }}</div>
+                    <v-col cols="6" xs="12" sm="12" md="4">
+                      <div class="d-label">{{ $t("from_time_en") }}</div>
                       <div>
                         {{ store_time.from_time }}
                         {{ store_time.from_meridiem }}
                       </div>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <div class="d-label">{{ $t("to_time") }}</div>
+                    <v-col cols="6" xs="12" sm="12" md="4">
+                      <div class="d-label">{{ $t("to_time_en") }}</div>
                       <div>
                         {{ store_time.to_time }} {{ store_time.to_meridiem }}
                       </div>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="6" xs="12" sm="12" md="4">
                       <div
                         class="d-label"
                         v-if="store_time.approval_status == 'Rejected'"
@@ -92,8 +95,9 @@
                       <div v-else>{{ $t("not_applicable") }}</div>
                     </v-col>
                     <v-col
-                      cols="12"
-                      sm="6"
+                      cols="6"
+                      xs="12"
+                      sm="12"
                       md="4"
                       v-if="store_time.approval_status == 'Rejected'"
                     >
@@ -151,7 +155,7 @@
               >
                 <v-layout>
                   <v-row class="px-6 mt-2">
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="6" xs="12" sm="12" md="4">
                       <div class="d-label">{{ $t("approval_status_ar") }}</div>
                       <div>
                         <v-chip
@@ -172,28 +176,28 @@
                   :key="index2"
                 >
                   <v-row class="px-6 mt-2">
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="6" xs="12" sm="12" md="4">
                       <div class="d-label">{{ $t("title_ar") }}</div>
                       <div>{{ store_time.store_detail.name }}</div>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="6" xs="12" sm="12" md="4">
                       <div class="d-label">{{ $t("week_day_ar") }}</div>
                       <div>{{ store_time.week_day }}</div>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="6" xs="12" sm="12" md="4">
                       <div class="d-label">{{ $t("from_time_ar") }}</div>
                       <div>
                         {{ store_time.from_time }}
                         {{ store_time.from_meridiem }}
                       </div>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="6" xs="12" sm="12" md="4">
                       <div class="d-label">{{ $t("to_time_ar") }}</div>
                       <div>
                         {{ store_time.to_time }} {{ store_time.to_meridiem }}
                       </div>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="6" xs="12" sm="12" md="4">
                       <div
                         class="d-label"
                         v-if="store_time.approval_status == 'Rejected'"
@@ -209,8 +213,9 @@
                       <div v-else>{{ $t("not_applicable") }}</div>
                     </v-col>
                     <v-col
-                      cols="12"
-                      sm="6"
+                      cols="6"
+                      xs="12"
+                      sm="12"
                       md="4"
                       v-if="store_time.approval_status == 'Rejected'"
                     >
@@ -306,7 +311,7 @@ export default {
     message: "",
     valid_error: false,
     file: "",
-    sel_lang:"",
+    sel_lang: "",
     loading: false,
     isBtnLoading: false,
     isDisabled: false,
@@ -331,13 +336,14 @@ export default {
         }
       },
     },
-    '$i18n.locale'(newLocale) {
-        if (newLocale === 'ar') {
-          this.sel_lang = 'ar';
-        } else {''
-          this.sel_lang = 'en';
-        }
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
+    },
   },
 
   methods: {

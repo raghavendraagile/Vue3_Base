@@ -241,8 +241,13 @@
         <!-- ARABIC TAB STARTS -->
         <v-window-item :value="2">
           <v-form ref="form" v-model="valid">
+<<<<<<< HEAD
             <v-row class="mx-auto mt-2" max-width="344">
               <v-col cols="12" sm="12" md="3">
+=======
+            <v-row class="mx-auto mt-2 arabdirection" max-width="344">
+              <v-col cols="3" sm="12" md="3">
+>>>>>>> e42f2a1e6aa1bc7bfa4b70c10b5e428159e98d8e
                 <v-tooltip :text="this.$t('store_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -472,7 +477,7 @@
             <v-btn
               v-bind="props"
               size="small"
-              @click="$router.go(-1)"
+              @click="$router.push('events')"
               :disabled="loading"
               class="ma-1"
               color="cancel"
@@ -839,4 +844,8 @@ input.larger {
   text-align: right;
   direction: rtl;
 }
+.arabdirection /deep/ .v-field {
+  direction: rtl !important;
+}
+
 </style>

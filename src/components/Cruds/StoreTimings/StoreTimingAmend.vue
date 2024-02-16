@@ -1,6 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('create_store_timings')"
@@ -13,7 +16,7 @@
         <v-form ref="form" v-model="valid">
           <v-layot>
             <v-row class="px-6">
-              <v-col xs="12" lg="4" md="4">
+              <v-col cols="12" xs="12" sm="12" md="4" lg="4">
                 <v-tooltip :text="this.$t('store_name')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -25,6 +28,7 @@
                       variant="outlined"
                       density="compact"
                       required
+                      class="required_field"
                       index="id"
                       :items="stores_en"
                       :disabled="$route.query.slug"
@@ -42,7 +46,7 @@
               v-for="(day, day_index) in weekdays_en"
               :key="day_index"
             >
-              <v-col xs="2" lg="2" md="2">
+              <v-col cols="12" xs="12" sm="12" lg="12" md="12">
                 <v-checkbox
                   v-model="store_timings[day_index].is_holiday"
                   v-bind:label="$t('is_holiday')"
@@ -51,7 +55,7 @@
                   hide-details
                 ></v-checkbox>
               </v-col>
-              <v-col xs="12" lg="2" md="2">
+              <v-col cols="12" xs="12" sm="12" lg="2" md="2">
                 <v-tooltip :text="this.$t(day.shortname)" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -66,7 +70,9 @@
                 </v-tooltip>
               </v-col>
               <v-col
+                cols="12"
                 xs="12"
+                sm="6"
                 lg="2"
                 md="2"
                 v-bind:class="[
@@ -81,6 +87,7 @@
                       v-bind:label="$t('from_time')"
                       variant="outlined"
                       density="compact"
+                      class="required_field"
                       index="id"
                       :items="store_time"
                       item-value="shortname"
@@ -91,9 +98,11 @@
                 </v-tooltip>
               </v-col>
               <v-col
+                cols="12"
                 xs="12"
-                lg="1"
-                md="1"
+                sm="6"
+                lg="2"
+                md="2"
                 v-bind:class="[
                   store_timings[day_index].is_holiday == 1 ? 'disable' : '',
                 ]"
@@ -106,6 +115,7 @@
                       :rules="fieldRules"
                       variant="outlined"
                       density="compact"
+                      class="required_field"
                       required
                       index="id"
                       :items="meridiem"
@@ -117,7 +127,9 @@
                 </v-tooltip>
               </v-col>
               <v-col
+                cols="12"
                 xs="12"
+                sm="6"
                 lg="2"
                 md="2"
                 v-bind:class="[
@@ -132,6 +144,7 @@
                       v-bind:label="$t('to_time')"
                       variant="outlined"
                       density="compact"
+                      class="required_field"
                       required
                       index="id"
                       :items="store_time"
@@ -143,9 +156,11 @@
                 </v-tooltip>
               </v-col>
               <v-col
+                cols="12"
                 xs="12"
-                lg="1"
-                md="1"
+                sm="6"
+                lg="2"
+                md="2"
                 v-bind:class="[
                   store_timings[day_index].is_holiday == 1 ? 'disable' : '',
                 ]"
@@ -158,6 +173,7 @@
                       :rules="fieldRules"
                       variant="outlined"
                       density="compact"
+                      class="required_field"
                       required
                       index="id"
                       :items="meridiem"
@@ -169,7 +185,9 @@
                 </v-tooltip>
               </v-col>
               <v-col
+                cols="12"
                 xs="12"
+                sm="6"
                 lg="2"
                 md="2"
                 v-bind:class="[
@@ -186,6 +204,7 @@
                       v-bind:label="$t('sequence')"
                       required
                       v-on:keypress="NumbersOnly"
+                      class="required_field"
                       variant="outlined"
                       density="compact"
                     ></v-text-field>
@@ -247,7 +266,7 @@ export default {
     valid: false,
     loader: false,
     file: "",
-    sel_lang:"",
+    sel_lang: "",
     isBtnLoading: false,
     showupload: "",
     isDisabled: false,
@@ -314,13 +333,14 @@ export default {
         }
       },
     },
-    '$i18n.locale'(newLocale) {
-        if (newLocale === 'ar') {
-          this.sel_lang = 'ar';
-        } else {''
-          this.sel_lang = 'en';
-        }
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
+    },
   },
   methods: {
     NumbersOnly(evt) {

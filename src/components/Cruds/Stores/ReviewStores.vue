@@ -1,6 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('stores')"
@@ -32,7 +35,7 @@
             >
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" xs="12" sm="3" md="3">
                     <div class="d-label">{{ $t("approval_status_en") }}</div>
                     <div>
                       <v-chip
@@ -44,12 +47,27 @@
                       </v-chip>
                     </div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" xs="12" sm="3" md="3">
                     <div class="d-label">{{ $t("name_en") }}</div>
                     <div>{{ store.name }}</div>
                   </v-col>
-
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" xs="12" sm="3" md="3">
+                    <div class="d-label">{{ $t("type_en") }}</div>
+                    <div>{{ store.stor_type }}</div>
+                  </v-col>
+                  <v-col cols="12" xs="12" sm="3" md="3">
+                    <div class="d-label">{{ $t("email_en") }}</div>
+                    <div>{{ store.email }}</div>
+                  </v-col>
+                  <v-col cols="12" xs="12" sm="3" md="3">
+                    <div class="d-label">{{ $t("phone_en") }}</div>
+                    <div>{{ store.phone }}</div>
+                  </v-col>
+                  <v-col cols="12" xs="12" sm="3" md="3">
+                    <div class="d-label">{{ $t("address_en") }}</div>
+                    <div>{{ store.address }}</div>
+                  </v-col>
+                  <v-col cols="12" xs="12" sm="3" md="3">
                     <div
                       class="d-label"
                       v-if="store.approval_status == 'Rejected'"
@@ -62,20 +80,21 @@
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" xs="12" sm="3" md="3">
                     <div class="d-label">{{ $t("meta_title_en") }}</div>
                     <div>{{ store.meta_title }}</div>
                   </v-col>
-                  <v-col cols="12" sm="12" md="12">
+                  <v-col cols="12" xs="12" sm="12" md="12">
                     <div class="d-label">{{ $t("description_en") }}</div>
                     <div v-html="store.description"></div>
                   </v-col>
-                  <v-col cols="12" sm="12" md="12">
+                  <v-col cols="12" xs="12" sm="12" md="12">
                     <div class="d-label">{{ $t("meta_description_en") }}</div>
                     <div>{{ store.meta_description }}</div>
                   </v-col>
                   <v-col
                     cols="12"
+                    xs="12"
                     sm="12"
                     md="12"
                     v-if="store.approval_status == 'Rejected'"
@@ -125,7 +144,7 @@
             >
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("approval_status_ar") }}</div>
                     <div>
                       <v-chip
@@ -137,12 +156,27 @@
                       </v-chip>
                     </div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("name_ar") }}</div>
                     <div>{{ store.name }}</div>
                   </v-col>
-
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" xs="12" sm="3" md="3">
+                    <div class="d-label">{{ $t("type_ar") }}</div>
+                    <div>{{ store.stor_type }}</div>
+                  </v-col>
+                  <v-col cols="12" xs="12" sm="3" md="3">
+                    <div class="d-label">{{ $t("email_ar") }}</div>
+                    <div>{{ store.email }}</div>
+                  </v-col>
+                  <v-col cols="12" xs="12" sm="3" md="3">
+                    <div class="d-label">{{ $t("phone_ar") }}</div>
+                    <div>{{ store.phone }}</div>
+                  </v-col>
+                  <v-col cols="12" xs="12" sm="3" md="3">
+                    <div class="d-label">{{ $t("address_ar") }}</div>
+                    <div>{{ store.address }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3">
                     <div
                       class="d-label"
                       v-if="store.approval_status == 'Rejected'"
@@ -155,7 +189,7 @@
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("meta_title_ar") }}</div>
                     <div>{{ store.meta_title }}</div>
                   </v-col>
@@ -285,13 +319,14 @@ export default {
         }
       },
     },
-    '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
 
   methods: {
