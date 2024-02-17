@@ -64,6 +64,7 @@
                       v-bind:label="$t('store_en')"
                       variant="outlined"
                       density="compact"
+                      :rules="fieldRules"
                       :items="stores_en"
                       item-title="name"
                       item-value="header_id"
@@ -136,6 +137,7 @@
                       @update:modelValue="(value) => updateType(value)"
                       v-bind:label="$t('type_en')"
                       variant="outlined"
+                      :rules="fieldRules"
                       density="compact"
                       class="required_field"
                       required
@@ -349,6 +351,7 @@
                       v-model="promotions[1].store_id"
                       @update:modelValue="(value) => updateMall(value)"
                       v-bind:label="$t('store_ar')"
+                      :rules="fieldRules"
                       variant="outlined"
                       density="compact"
                       :items="stores_ar"
@@ -425,6 +428,7 @@
                       variant="outlined"
                       density="compact"
                       class="required_field"
+                      :rules="fieldRules"
                       required
                       index="id"
                       :items="p_type_ar"
@@ -994,12 +998,12 @@ export default {
         this.isDisabled = true;
         this.isBtnLoading = true;
         this.loader = true;
-          if (this.user.rolename == "StoreAdmin") {
+        if (this.user.rolename == "StoreAdmin") {
           this.promotions[0].store_id = this.user.store_id;
           this.promotions[1].store_id = this.user.store_id;
           this.promotions[0].stor_type = this.user.rolename;
           this.promotions[1].stor_type = this.user.rolename;
-        } 
+        }
         // Form is valid, process
         this.$axios
           .post(

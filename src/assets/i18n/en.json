@@ -413,6 +413,7 @@
   "body_ar" : "جسم",
   "signature_en" : "Signature",
   "logo_en" : "Logo",
+  "file_preview_en" : "File Preview",
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
   "enter_the_content_here_ar" : "أدخل المحتوى هنا",
@@ -496,5 +497,6 @@
   "postcode_valid_ar": "يجب أن يتكون الرمز البريدي من 6 أرقام",
   "enter_the_content_here_en" : "Enter the content here",
   "display_in_header_menu_ar" :"عرض في القائمة الرئيسية",
-  "file_required":"File Required"
+  "file_required":"File Required",
+  "file_preview_ar" : "الوصف مطلو"
 }

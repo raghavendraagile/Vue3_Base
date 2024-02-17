@@ -115,20 +115,34 @@
               </v-layout>
               <v-layout>
                 <v-row class="mt-2 px-6" max-width="344">
-                  <v-col md="12">
-                    <v-tooltip :text="this.$t('description')" location="bottom">
+                 
+                    <v-col cols="12" md="12" lg="12" sm="12" class="pt-0">
+                    <v-card-title class="text-left" style="font-size: 17px">{{
+                      $t("description_en")
+                    }}</v-card-title>
+                    <v-tooltip :text="$t('description_en')" location="top">
                       <template v-slot:activator="{ props }">
-                        <v-textarea
-                          v-on="on"
-                          rows="2"
-                          v-model="e_magazine[0].description"
-                          v-bind="props"
-                          v-bind:label="$t('description')"
-                          required
-                          variant="outlined"
-                          maxlength="2000"
-                          counter="true"
-                        ></v-textarea>
+                        <div v-bind="props">
+                          <quill-editor
+                            class="hide_quill_input"
+                            v-bind:id="
+                              quill_item == true
+                                ? 'quill_item'
+                                : 'quill_item_border'
+                            "
+                            maxlength="2000"
+                            v-model:value="e_magazine[0].description"
+                            @blur="onEditorBlur($event)"
+                            @focus="onEditorFocus($event)"
+                            @ready="onEditorReady($event)"
+                            @change="onEditorChange($event)"
+                          />
+                          <small
+                            v-if="quill_item"
+                            class="text-danger ml-5 required_item shake"
+                            >Field Required</small
+                          >
+                        </div>
                       </template>
                     </v-tooltip>
                   </v-col>
@@ -374,24 +388,33 @@
               </v-layout>
               <v-layout>
                 <v-row class="mt-2 px-6 arabdirection" max-width="344">
-                  <v-col md="12">
-                    <v-tooltip
-                      :text="this.$t('description_ar')"
-                      location="bottom"
-                    >
+                  <v-col cols="12" md="12" lg="12" sm="12" class="pt-0">
+                    <v-card-title class="text-right" style="font-size: 17px">{{
+                      $t("description_ar")
+                    }}</v-card-title>
+                    <v-tooltip :text="$t('description_ar')" location="top">
                       <template v-slot:activator="{ props }">
-                        <v-textarea
-                          v-on="on"
-                          rows="2"
-                          v-model="e_magazine[1].description"
-                          v-bind="props"
-                          v-bind:label="$t('description_ar')"
-                          required
-                          class="rtl"
-                          variant="outlined"
-                          maxlength="2000"
-                          counter="true"
-                        ></v-textarea>
+                        <div v-bind="props">
+                          <quill-editor
+                            class="hide_quill_input"
+                            v-bind:id="
+                              quill_item == true
+                                ? 'quill_item'
+                                : 'quill_item_border'
+                            "
+                            maxlength="2000"
+                            v-model:value="e_magazine[1].description"
+                            @blur="onEditorBlur($event)"
+                            @focus="onEditorFocus($event)"
+                            @ready="onEditorReady($event)"
+                            @change="onEditorChange($event)"
+                          />
+                          <small
+                            v-if="quill_item"
+                            class="text-danger ml-5 required_item shake"
+                            >Field Required</small
+                          >
+                        </div>
                       </template>
                     </v-tooltip>
                   </v-col>
@@ -594,10 +617,29 @@
 <script>
 import Imageupload from "../../CustomComponents/ImageUpload.vue";
 import PageTitle from "../../CustomComponents/PageTitle.vue";
+import { quillEditor } from "vue3-quill";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
 export default {
   components: {
     PageTitle,
     Imageupload,
+    quillEditor
+  },
+  setup() {
+    const onEditorFocus = () => {
+      // console.log("editor focus!", quill);
+    };
+    const onEditorFocusAR = () => {
+      // console.log("editor focus!", quill);
+    };
+    const onEditorReady = () => {
+      // console.log("editor ready!", quill);
+    };
+    const onEditorReadyAR = () => {
+      // console.log("editor ready!", quill);
+    };
+
+    return { onEditorReady, onEditorFocus, onEditorFocusAR, onEditorReadyAR };
   },
   data: () => ({
     google_icon: {
@@ -1017,10 +1059,38 @@ export default {
 
       }
     },
+    onEditorChange(event) {
+      if (event.text.length == 1) {
+        this.quill_item = true;
+      } else {
+        this.quill_item = false;
+      }
+    },
+    onEditorChangeAR(event) {
+      if (event.text.length == 1) {
+        this.quill_item = true;
+      } else {
+        this.quill_item = false;
+      }
+    },
+    onEditorBlur() {
+      // console.log(event.options);
+      if (this.e_magazine.description == "") {
+        this.quill_item = true;
+      }
+    },
+    onEditorBlurAR(event) {
+      console.log(event.options);
+      if (this.e_magazine.description_ar == "") {
+        this.quill_item = true;
+      }
+    },
     clear() {
       this.$refs.form.reset();
     },
+     
   },
+  
 };
 </script>
 <style scoped>

@@ -1,6 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('events')"
@@ -32,9 +35,30 @@
             >
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("title_en") }}</div>
                     <div>{{ event.title }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("meta_title_en") }}</div>
+                    <div>{{ event.meta_title }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="3">
+                    <div class="d-label">{{ $t("description_en") }}</div>
+                    <div v-html="event.description"></div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="3">
+                    <div class="d-label">{{ $t("meta_description_en") }}</div>
+                    <div>{{ event.meta_description }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="6">
+                    <div class="d-label">{{ $t("file_preview_en") }}</div>
+                    <div class="col-md-9">
+                          <v-chip size="small" v-bind="props">{{
+                              event.file_upload
+                            }}</v-chip>
+                          
+                      </div>
                   </v-col>
                   <!-- <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("parent_event_en") }}</div>
@@ -43,8 +67,31 @@
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col> -->
-
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="12" md="6">
+                    <div class="d-label">{{ $t("image_preview_en") }}</div>
+                    <div>
+                      <img
+                        v-bind:style="
+                          isHovering == true ? 'filter: blur(1px);' : ''
+                        "
+                        v-if="event.image_path != null"
+                        :src="envImagePath + event.image_path"
+                        width="100"
+                        height="65
+                          "
+                        alt
+                      />
+                      <img
+                        v-bind:style="
+                          isHovering == true ? 'filter: blur(1px);' : ''
+                        "
+                        v-else
+                        src="@/assets/images/upload_image_default.png"
+                        width="100"
+                      />
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3">
                     <div
                       class="d-label"
                       v-if="event.approval_status == 'Rejected'"
@@ -57,7 +104,7 @@
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("approval_status_en") }}</div>
                     <div>
                       <v-chip
@@ -70,22 +117,10 @@
                     </div>
                   </v-col>
 
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("meta_title_en") }}</div>
-                    <div>{{ event.meta_title }}</div>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="4">
-                    <div class="d-label">{{ $t("description_en") }}</div>
-                    <div v-html="event.description"></div>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="4">
-                    <div class="d-label">{{ $t("meta_description_en") }}</div>
-                    <div>{{ event.meta_description }}</div>
-                  </v-col>
                   <v-col
                     cols="12"
                     sm="12"
-                    md="12"
+                    md="3"
                     v-if="event.approval_status == 'Rejected'"
                   >
                     <div class="d-label">
@@ -100,7 +135,10 @@
               </v-layout>
               <div
                 class="d-flex justify-content-end"
-                v-if="event.approval_status == 'In Review'&& user_role != 'StoreAdmin'"
+                v-if="
+                  event.approval_status == 'In Review' &&
+                  user_role != 'StoreAdmin'
+                "
               >
                 <v-chip
                   @click="statusOnChange('Approved', event.header_id)"
@@ -133,6 +171,56 @@
             >
               <v-layout>
                 <v-row class="px-6 mt-2">
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("title_ar") }}</div>
+                    <div>{{ event.title }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("meta_title_ar") }}</div>
+                    <div>{{ event.meta_title }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="3">
+                    <div class="d-label">{{ $t("description_ar") }}</div>
+                    <div v-html="event.description"></div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="3">
+                    <div class="d-label">{{ $t("meta_description_ar") }}</div>
+                    <div>{{ event.meta_description }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="6">
+                    <div class="d-label">{{ $t("file_preview_en") }}</div>
+                    <div class="col-md-9">
+                         
+                            <v-chip size="small" v-bind="props">{{
+                              event.file_upload
+                            }}</v-chip>
+                         
+                      </div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="6">
+                    <div class="d-label">{{ $t("image_preview_ar") }}</div>
+                    <div>
+                      <img
+                        v-bind:style="
+                          isHovering == true ? 'filter: blur(1px);' : ''
+                        "
+                        v-if="event.image_path != null"
+                        :src="envImagePath + event.image_path"
+                        width="100"
+                        height="65
+                          "
+                        alt
+                      />
+                      <img
+                        v-bind:style="
+                          isHovering == true ? 'filter: blur(1px);' : ''
+                        "
+                        v-else
+                        src="@/assets/images/upload_image_default.png"
+                        width="100"
+                      />
+                    </div>
+                  </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("approval_status_ar") }}</div>
                     <div>
@@ -144,11 +232,6 @@
                         {{ changeStatusAr(event.approval_status) }}
                       </v-chip>
                     </div>
-                  </v-col>
-
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("title_ar") }}</div>
-                    <div>{{ event.title }}</div>
                   </v-col>
 
                   <v-col cols="12" sm="6" md="4">
@@ -164,18 +247,7 @@
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("meta_title_ar") }}</div>
-                    <div>{{ event.meta_title }}</div>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="12">
-                    <div class="d-label">{{ $t("description_ar") }}</div>
-                    <div v-html="event.description"></div>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="12">
-                    <div class="d-label">{{ $t("meta_description_ar") }}</div>
-                    <div>{{ event.meta_description }}</div>
-                  </v-col>
+
                   <v-col
                     cols="12"
                     sm="12"
@@ -194,7 +266,10 @@
               </v-layout>
               <div
                 class="d-flex justify-content-end"
-                v-if="event.approval_status == 'In Review' && user_role != 'StoreAdmin'"
+                v-if="
+                  event.approval_status == 'In Review' &&
+                  user_role != 'StoreAdmin'
+                "
               >
                 <v-chip
                   @click="statusOnChange('Approved', event.header_id)"
@@ -277,7 +352,7 @@ export default {
     events_en: [],
     events_ar: [],
     showApprovalDialog: false,
-        user_role:"",
+    user_role: "",
 
     selected: {
       header_id: null,
@@ -293,22 +368,24 @@ export default {
       handler() {
         if (this.$route.query.slug) {
           this.fetcheventDetails();
-              this.user_role = JSON.parse(localStorage.getItem("user_data")).rolename;
-
+          this.user_role = JSON.parse(
+            localStorage.getItem("user_data")
+          ).rolename;
         }
       },
     },
-     '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
 
   methods: {
-      changeStatusAr(status) {
+    changeStatusAr(status) {
       switch (status) {
         case "Approved":
           return this.$t("approved_ar");
