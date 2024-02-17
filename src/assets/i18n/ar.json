@@ -453,5 +453,6 @@
   "body_en" : "Body",
   "signature_en" : "Signature",
   "enter_the_content_here_en" : "Enter the content here...",
-  "store_en" : "Store"
+  "store_en" : "Store",
+  "display_in_header_menu_ar" :"عرض في القائمة الرئيسية"
 }

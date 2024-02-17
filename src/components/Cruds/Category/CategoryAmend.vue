@@ -1,6 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('create_amend_category')"
@@ -60,7 +63,7 @@
                           density="compact"
                           :items="category_en"
                           item-title="name"
-                          item-value="id"
+                          item-value="header_id"
                         ></v-autocomplete>
                       </template>
                     </v-tooltip>
@@ -112,7 +115,7 @@
                       <template v-slot:activator="{ props }">
                         <div v-bind="props">
                           <quill-editor
-                          :options="editorOptions_en"
+                            :options="editorOptions_en"
                             class="hide_quill_input"
                             v-bind:id="
                               quill_item == true
@@ -149,7 +152,8 @@
                           v-model="category[0].meta_title"
                           :rules="fieldRules"
                           class="required_field"
-                          maxlength="150"
+                          maxlength="70"
+                          counter="true"
                           v-bind:label="$t('meta_title_en')"
                           required
                           variant="outlined"
@@ -174,7 +178,7 @@
                           required
                           class="required_field"
                           variant="outlined"
-                          maxlength="250"
+                          maxlength="160"
                           counter="true"
                         ></v-textarea>
                       </template>
@@ -258,27 +262,27 @@
           <v-window-item :value="2">
             <v-form ref="form" v-model="valid">
               <v-row class="arabdirection">
-              <v-col cols="12" sm="12" md="4" class="mx-6">
-                <v-tooltip :text="this.$t('mall_ar')" location="bottom">
-                  <template v-slot:activator="{ props }">
-                    <v-autocomplete
-                      v-if="user_role == 'SuperUser'"
-                      v-bind="props"
-                      v-model="category[1].store_id"
-                      @update:modelValue="(value) => updateMall(value)"
-                      v-bind:label="$t('mall_ar')"
-                      variant="outlined"
-                      density="compact"
-                      :items="malls_ar"
-                      item-title="name"
-                      item-value="header_id"
-                      class="required_field"
-                      :rules="fieldRules"
-                      required
-                    ></v-autocomplete>
-                  </template>
-                </v-tooltip>
-              </v-col></v-row>
+                <v-col cols="12" sm="12" md="4" class="mx-6">
+                  <v-tooltip :text="this.$t('mall_ar')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-autocomplete
+                        v-if="user_role == 'SuperUser'"
+                        v-bind="props"
+                        v-model="category[1].store_id"
+                        @update:modelValue="(value) => updateMall(value)"
+                        v-bind:label="$t('mall_ar')"
+                        variant="outlined"
+                        density="compact"
+                        :items="malls_ar"
+                        item-title="name"
+                        item-value="header_id"
+                        class="required_field"
+                        :rules="fieldRules"
+                        required
+                      ></v-autocomplete>
+                    </template>
+                  </v-tooltip> </v-col
+              ></v-row>
               <v-layout>
                 <v-row class="px-6 mt-2 arabdirection">
                   <v-col cols="12" sm="12" md="4">
@@ -298,7 +302,7 @@
                           density="compact"
                           :items="category_ar"
                           item-title="name"
-                          item-value="id"
+                          item-value="header_id"
                         ></v-autocomplete>
                       </template>
                     </v-tooltip>
@@ -387,7 +391,8 @@
                           v-model="category[1].meta_title"
                           :rules="fieldRules"
                           class="required_field rtl"
-                          maxlength="150"
+                          maxlength="70"
+                          counter="true"
                           v-bind:label="$t('meta_title_ar')"
                           required
                           variant="outlined"
@@ -412,7 +417,7 @@
                           required
                           class="required_field rtl"
                           variant="outlined"
-                          maxlength="250"
+                          maxlength="160"
                           counter="true"
                         ></v-textarea>
                       </template>
@@ -496,25 +501,37 @@
       </div>
       <v-layout>
         <v-row class="mt-2 px-6" max-width="344">
-          <v-col md="6">
-            <v-tooltip
-              :text="this.$t('display_in_header_menu')"
-              location="bottom"
-            >
-              <template v-slot:activator="{ props }">
-                <v-switch
-                  v-bind="props"
-                  color="blue"
-                  :model-value="category[0].display_header_menu === 1"
-                  @update:model-value="
-                    (value) => (category[0].display_header_menu = value ? 1 : 0)
-                  "
-                  hide-details
-                  inset
-                  :label="$t('display_in_header_menu')"
-                ></v-switch>
-              </template>
-            </v-tooltip>
+          <v-col md="12">
+            <div>
+              <v-tooltip
+                :text="
+                  tabs == 1
+                    ? $t('display_in_header_menu')
+                    : $t('display_in_header_menu_ar')
+                "
+                location="bottom"
+              >
+                <template v-slot:activator="{ props }">
+                  <v-switch
+                   v-bind:style="tabs == 1 ? 'direction:ltr' : 'direction:rtl'"
+                    v-bind="props"
+                    color="blue"
+                    :model-value="category[0].display_header_menu === 1"
+                    @update:model-value="
+                      (value) =>
+                        (category[0].display_header_menu = value ? 1 : 0)
+                    "
+                    hide-details
+                    inset
+                    :label="
+                      tabs == 1
+                        ? $t('display_in_header_menu')
+                        : $t('display_in_header_menu_ar')
+                    "
+                  ></v-switch>
+                </template>
+              </v-tooltip>
+            </div>
           </v-col>
         </v-row>
       </v-layout>
@@ -620,10 +637,6 @@ export default {
     isDisabled: false,
     loader: false,
     tabs: 1,
-    default_sel: {
-      id: 0,
-      name: "--SELECT--",
-    },
     category_en: [],
     category_ar: [],
     uploadfile: false,
@@ -639,7 +652,7 @@ export default {
         meta_description: "",
         display_header_menu: 0,
         header_id: 0,
-        parent_id: 0,
+        parent_id: null,
         lang: "en",
         store_id: null,
       },
@@ -654,7 +667,7 @@ export default {
         meta_description: "",
         display_header_menu: 0,
         header_id: 0,
-        parent_id: 0,
+        parent_id: null,
         lang: "ar",
         store_id: null,
       },
@@ -724,13 +737,14 @@ export default {
         }
       },
     },
-     '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
 
   methods: {
@@ -803,25 +817,9 @@ export default {
     },
     updateParent(lang, value) {
       if (lang == "en") {
-        if (value == 0) {
-          this.category[1].parent_id = 0;
-        } else {
-          let header = this.category_en.filter((record) => record.id === value);
-          let pr_id = this.category_ar.filter(
-            (record) => record.header_id === header[0].header_id
-          );
-          this.category[1].parent_id = pr_id[0].id;
-        }
+          this.category[1].parent_id = value;
       } else {
-        if (value == 0) {
-          this.category[0].parent_id = 0;
-        } else {
-          let header = this.category_ar.filter((record) => record.id === value);
-          let pr_id = this.category_en.filter(
-            (record) => record.header_id === header[0].header_id
-          );
-          this.category[0].parent_id = pr_id[0].id;
-        }
+          this.category[0].parent_id = value;
       }
     },
     fetchParentCategories() {
@@ -832,14 +830,14 @@ export default {
           this.category_ar = res.data.category_ar;
 
           const default_en = {
-            id: 0,
+            id: null,
             name: this.$t("select_en"),
-            header_id: 0,
+            header_id: null,
           };
           const default_ar = {
-            id: 0,
+            id: null,
             name: this.$t("select_ar"),
-            header_id: 0,
+            header_id: null,
           };
 
           this.category_en = [default_en, ...this.category_en];
@@ -955,9 +953,7 @@ export default {
 .arabdirection /deep/ .v-field {
   direction: rtl !important;
 }
-.arabclassquill /deep/ .ql-editor{
+.arabclassquill /deep/ .ql-editor {
   text-align: justify !important;
 }
-
-
 </style>
