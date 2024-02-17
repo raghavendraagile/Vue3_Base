@@ -821,7 +821,6 @@ export default {
           this.loader = false;
           this.role_array = response.data.roles;
           if (!this.$route.query.slug && this.user.rolename == "SuperUser") {
-            alert("ASd");
             this.events[0].stor_type = this.role_array[0].rolename;
             this.events[1].stor_type = this.role_array[0].rolename;
             this.updateType(this.events[0].stor_type);
