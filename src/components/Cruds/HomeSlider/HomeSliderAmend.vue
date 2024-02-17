@@ -182,7 +182,7 @@
                   </v-col>
                   <v-col cols="12" sm="2" md="2">
                     <div>
-                      <div class="image-container">
+                      <div class="image-container" v-bind:class="[have_noimage ? 'errorborder' : '']">
                         <v-hover v-slot="{ isHovering, props }">
                           <div style="position: relative" v-bind="props">
                             <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
