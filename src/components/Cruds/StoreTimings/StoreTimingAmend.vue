@@ -1,8 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    {{sel_lang}}
     <div
-      class="my-3 p-0"
+      flat
+      color="white"
+      class="row py-5 pl-5 align-items-center component_app_bar position-relative"
       v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
     >
       <page-title
@@ -28,6 +29,7 @@
                       v-bind:label="$t('store_name')"
                       variant="outlined"
                       density="compact"
+                      class="required_field"
                       required
                       index="id"
                       :items="stores_en"
@@ -40,12 +42,11 @@
               </v-col>
             </v-row>
           </v-layot>
-          <v-layot>
+          <v-layot v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']">
             <v-row
               class="px-6"
               v-for="(day, day_index) in weekdays_en"
               :key="day_index"
-              
             >
               <v-col cols="12" xs="12" sm="12" lg="12" md="12">
                 <v-checkbox
@@ -219,7 +220,7 @@
               <v-btn
                 v-bind="props"
                 size="small"
-                @click="$router.go(-1)"
+                @click="cancel"
                 :disabled="isDisabled"
                 class="ma-1"
                 color="cancel"
@@ -275,7 +276,7 @@ export default {
     weekdays_en: [],
     weekdays_ar: [],
     store_time: [],
-    lang:"",
+    lang: "",
     meridiem: [
       {
         id: 0,
@@ -309,8 +310,8 @@ export default {
   },
   mounted() {
     this.get_stores();
-   this.$i18n.locale = localStorage.getItem("pref_lang");
-    this.sel_lang = this.$i18n.locale;
+    this.$i18n.locale = localStorage.getItem("pref_lang");
+    // this.sel_lang = this.$i18n.locale;
   },
   watch: {
     "$route.query.slug": {
@@ -333,10 +334,22 @@ export default {
         }
       },
     },
-    
-    
+
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
+      }
+    },
   },
   methods: {
+     cancel() {
+      this.$router.push({
+        name: "store-timings",
+      });
+    },
     NumbersOnly(evt) {
       evt = evt ? evt : window.event;
       var charCode = evt.which ? evt.which : evt.keyCode;
@@ -418,7 +431,7 @@ export default {
     },
 
     submit() {
-      if (this.valid == true) {
+      if (this.$refs.form.validate() && this.valid == true) {
         this.isDisabled = true;
         this.isBtnLoading = true;
         // Form is valid, process
@@ -471,4 +484,3 @@ input.larger {
   display: none;
 }
 </style>
-
