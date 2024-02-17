@@ -336,7 +336,7 @@
                           v-model="e_magazine[1].store_id"
                           :label="label_text_ar"
                           class="required_field rtl"
-                          :rules="fieldRules"
+                          :rules="fieldRulesAR"
                           variant="outlined"
                           density="compact"
                           :items="stores_ar"
@@ -355,7 +355,7 @@
                         <v-text-field
                           v-bind="props"
                           v-model="e_magazine[1].title"
-                          :rules="fieldRules"
+                          :rules="fieldRulesAR"
                           maxlength="70"
                           v-bind:label="$t('title_ar')"
                           required
@@ -372,7 +372,7 @@
                         <v-text-field
                           v-bind="props"
                           v-model="e_magazine[1].meta_title"
-                          :rules="fieldRules"
+                          :rules="fieldRulesAR"
                           maxlength="70"
                           v-bind:label="$t('title_ar')"
                           required
@@ -485,7 +485,7 @@
                           show-size
                           :label="$t('file_input_ar')"
                           outlined
-                          :rules="fileRules"
+                          :rules="fileRulesAR"
                           :error="errorUpload"
                           :error-messages="errorUploadMessage"
                           @input="clearUploadErrors"
@@ -713,12 +713,18 @@ export default {
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
     },
+    fieldRulesAR() {
+      return [(v) => !!v || this.$t("field_required_ar")];
+    },
 
     descriptionRules() {
       return [(v) => !!v || this.$t("description_required")];
     },
     fileRules() {
       return [(v) => v.length > 0 || this.$t("file_required")];
+    },
+    fileRulesAR() {
+      return [(v) => v.length > 0 || this.$t("file_required_ar")];
     },
   },
 

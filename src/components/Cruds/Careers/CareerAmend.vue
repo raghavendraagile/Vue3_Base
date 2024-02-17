@@ -217,7 +217,7 @@
                       :label="label_text_ar"
                       variant="outlined"
                       density="compact"
-                      :rules="fieldRules"
+                      :rules="fieldRulesAR"
                       class="required_field rtl"
                       :items="stores_en"
                       item-title="name"
@@ -233,7 +233,7 @@
                     <v-text-field
                       v-on="on"
                       v-model="careers[1].title"
-                      :rules="fieldRules"
+                      :rules="fieldRulesAR"
                       v-bind:label="$t('title_ar')"
                       v-bind="props"
                       required
@@ -270,7 +270,7 @@
                     <v-text-field
                       v-on="on"
                       v-model="careers[1].meta_title"
-                      :rules="fieldRules"
+                      :rules="fieldRulesAR"
                       v-bind:label="$t('meta_title_ar')"
                       v-bind="props"
                       required
@@ -293,7 +293,7 @@
                       v-on="on"
                       rows="2"
                       v-model="careers[1].meta_description"
-                      :rules="fieldRules"
+                      :rules="fieldRulesAR"
                       maxlength="160"
                       v-bind="props"
                       v-bind:label="$t('meta_description_ar')"
@@ -313,7 +313,7 @@
                       v-on="on"
                       rows="2"
                       v-model="careers[1].description"
-                      :rules="fieldRules"
+                      :rules="fieldRulesAR"
                       maxlength="2000"
                       v-bind="props"
                       v-bind:label="$t('description_ar')"
@@ -441,6 +441,9 @@ export default {
   computed: {
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
+    },
+    fieldRulesAR() {
+      return [(v) => !!v || this.$t("field_required_ar")];
     },
 
     numberRules() {

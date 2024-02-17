@@ -456,5 +456,8 @@
   "enter_the_content_here_en" : "Enter the content here...",
   "store_en" : "Store",
   "image_preview_en":"Image Preview",
-  "display_in_header_menu_ar" :"عرض في القائمة الرئيسية"
+  "display_in_header_menu_ar" :"عرض في القائمة الرئيسية",
+  "file_required":"File Required",
+  "file_required_ar":"الملف مطلوب"
+
 }

@@ -261,7 +261,7 @@
                      :label="label_text_ar"
                       variant="outlined"
                       density="compact"
-                      :rules="fieldRules"
+                      :rules="fieldRulesAR"
                       :items="stores_ar"
                       @update:modelValue="(value) => updateStore(value)"
                       item-title="name"
@@ -277,7 +277,7 @@
                     <v-text-field
                       v-on="on"
                       v-model="products[1].title"
-                      :rules="fieldRules"
+                      :rules="fieldRulesAR"
                       v-bind:label="$t('title_ar')"
                       v-bind="props"
                       required
@@ -296,7 +296,7 @@
                       v-on="on"
                       rows="2"
                       v-model="products[1].description"
-                      :rules="fieldRules"
+                      :rules="fieldRulesAR"
                       maxlength="2000"
                       counter="true"
                       v-bind="props"
@@ -331,7 +331,7 @@
                     <v-text-field
                       v-on="on"
                       v-model="products[1].meta_title"
-                      :rules="fieldRules"
+                      :rules="fieldRulesAR"
                       v-bind:label="$t('meta_title_ar')"
                       v-bind="props"
                       required
@@ -354,7 +354,7 @@
                       v-on="on"
                       rows="2"
                       v-model="products[1].meta_description"
-                      :rules="fieldRules"
+                      :rules="fieldRulesAR"
                       maxlength="160"
                       v-bind="props"
                       v-bind:label="$t('meta_description_ar')"
@@ -557,6 +557,9 @@ export default {
 
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
+    },
+    fieldRulesAR() {
+      return [(v) => !!v || this.$t("field_required_ar")];
     },
   },
   mounted() {
