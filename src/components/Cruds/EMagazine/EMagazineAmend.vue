@@ -57,12 +57,12 @@
                     md="4"
                     v-if="user.rolename != 'StoreAdmin'"
                   >
-                    <v-tooltip :text="this.$t('store')" location="bottom">
+                    <v-tooltip :text="labelText" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
                           v-model="e_magazine[0].store_id"
-                          v-bind:label="$t('store')"
+                          :label="labelText"
                           variant="outlined"
                           class="required_field"
                           :rules="fieldRules"
@@ -115,8 +115,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="mt-2 px-6" max-width="344">
-                 
-                    <v-col cols="12" md="12" lg="12" sm="12" class="pt-0">
+                  <v-col cols="12" md="12" lg="12" sm="12" class="pt-0">
                     <v-card-title class="text-left" style="font-size: 17px">{{
                       $t("description_en")
                     }}</v-card-title>
@@ -330,12 +329,12 @@
                     md="4"
                     v-if="user.rolename != 'StoreAdmin'"
                   >
-                    <v-tooltip :text="this.$t('store_ar')" location="bottom">
+                    <v-tooltip :text="label_text_ar" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
                           v-model="e_magazine[1].store_id"
-                          v-bind:label="$t('store_ar')"
+                          :label="label_text_ar"
                           class="required_field rtl"
                           :rules="fieldRules"
                           variant="outlined"
@@ -623,7 +622,7 @@ export default {
   components: {
     PageTitle,
     Imageupload,
-    quillEditor
+    quillEditor,
   },
   setup() {
     const onEditorFocus = () => {
@@ -647,6 +646,8 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
+    labelText: "Mall",
+    label_text_ar: "مجمع تجاري",
     valid: true,
     successmessage: "",
     message: "",
@@ -704,8 +705,8 @@ export default {
     user: "",
     stores_data_ar: [],
     stores_data_en: [],
-    mal_data_en:[],
-    mal_data_ar:[],
+    mal_data_en: [],
+    mal_data_ar: [],
   }),
 
   computed: {
@@ -804,19 +805,27 @@ export default {
         if (this.tabs == 1) {
           this.e_magazine[1].stor_type = stor_type;
           if (stor_type == "MallAdmin") {
+            this.labelText = this.$t("mall");
+            this.label_text_ar = this.$t("mall_ar");
             this.stores_en = this.mal_data_en;
             this.stores_ar = this.mal_data_ar;
           } else {
+            this.labelText = this.$t("store");
+            this.label_text_ar = this.$t("store_ar");
             this.stores_en = this.stores_data_en;
             console.log("dfsdf", this.stores_data_en);
             this.stores_ar = this.stores_data_ar;
           }
         } else {
-          this.careers[0].stor_type = stor_type;
+          this.e_magazine[0].stor_type = stor_type;
           if (stor_type == "MallAdmin") {
+            this.labelText = this.$t("mall");
+            this.label_text_ar = this.$t("mall_ar");
             this.stores_en = this.mal_data_en;
             this.stores_ar = this.mal_data_ar;
           } else {
+            this.labelText = this.$t("store");
+            this.label_text_ar = this.$t("store_ar");
             this.stores_en = this.stores_data_en;
             this.stores_ar = this.stores_data_ar;
           }
@@ -1021,12 +1030,12 @@ export default {
       if (this.$refs.form.validate()) {
         this.isDisabled = true;
         this.isBtnLoading = true;
-  if (this.user.rolename == "StoreAdmin") {
+        if (this.user.rolename == "StoreAdmin") {
           this.e_magazine[0].store_id = this.user.store_id;
           this.e_magazine[1].store_id = this.user.store_id;
           this.e_magazine[0].stor_type = this.user.rolename;
           this.e_magazine[1].stor_type = this.user.rolename;
-        } 
+        }
         // Form is valid, process
         this.$axios
           .post(
@@ -1050,13 +1059,13 @@ export default {
             }
           })
           .catch((err) => {
-
             this.$toast.error(this.$t("something_went_wrong"));
             console.log("error", err);
-          }).finally(()=>{
-       this.isDisabled = false;
-        this.isBtnLoading = false;          });
-
+          })
+          .finally(() => {
+            this.isDisabled = false;
+            this.isBtnLoading = false;
+          });
       }
     },
     onEditorChange(event) {
@@ -1088,9 +1097,7 @@ export default {
     clear() {
       this.$refs.form.reset();
     },
-     
   },
-  
 };
 </script>
 <style scoped>

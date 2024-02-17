@@ -56,14 +56,14 @@
                 md="4"
                 v-if="user.rolename != 'StoreAdmin'"
               >
-                <v-tooltip :text="this.$t('store')" location="bottom">
+                <v-tooltip :text="labelText" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
                       v-bind="props"
                       v-model="careers[0].store_id"
                       :rules="fieldRules"
                       class="required_field"
-                      v-bind:label="$t('store')"
+                      :label="labelText"
                       variant="outlined"
                       density="compact"
                       :items="stores_en"
@@ -209,12 +209,12 @@
                 md="4"
                 v-if="user.rolename != 'StoreAdmin'"
               >
-                <v-tooltip :text="this.$t('store_ar')" location="bottom">
+                <v-tooltip :text="label_text_ar" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
                       v-bind="props"
                       v-model="careers[1].store_id"
-                      v-bind:label="$t('store_ar')"
+                      :label="label_text_ar"
                       variant="outlined"
                       density="compact"
                       :rules="fieldRules"
@@ -392,6 +392,8 @@ export default {
     checkbox_value: false,
     careers_en: [],
     careers_ar: [],
+    labelText: "Mall",
+    label_text_ar: "مجمع تجاري",
     careers: [
       {
         id: 0,
@@ -522,11 +524,14 @@ export default {
         if (this.tabs == 1) {
           this.careers[1].stor_type = stor_type;
           if (stor_type == "MallAdmin") {
+            this.labelText = this.$t("mall");
+            this.label_text_ar = this.$t("mall_ar");
             this.stores_en = this.mal_data_en;
             this.stores_ar = this.mal_data_ar;
           } else {
             // alert("asdsad");
-
+            this.labelText = this.$t("store");
+            this.label_text_ar = this.$t("store_ar");
             this.stores_en = this.stores_data_en;
             this.stores_ar = this.stores_data_ar;
             // console.log("asdasd", this.stores_data_en);
@@ -534,9 +539,13 @@ export default {
         } else {
           this.careers[0].stor_type = stor_type;
           if (stor_type == "MallAdmin") {
+            this.labelText = this.$t("mall");
+            this.label_text_ar = this.$t("mall_ar");
             this.stores_en = this.mal_data_en;
             this.stores_ar = this.mal_data_ar;
           } else {
+            this.labelText = this.$t("store");
+            this.label_text_ar = this.$t("store_ar");
             this.stores_en = this.stores_data_en;
             this.stores_ar = this.stores_data_ar;
           }
@@ -731,6 +740,4 @@ input.larger {
 .arabdirection /deep/ .v-input {
   direction: rtl !important;
 }
-
-
 </style>

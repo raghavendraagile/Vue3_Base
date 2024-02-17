@@ -55,13 +55,14 @@
                 md="4"
                 v-if="user.rolename != 'StoreAdmin'"
               >
-                <v-tooltip :text="this.$t('store')" location="bottom">
+                <!-- v-bind:label="$t('store_en')" -->
+                <v-tooltip :text="labelText" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
                       v-bind="props"
                       v-model="promotions[0].store_id"
                       @update:modelValue="(value) => updateMall(value)"
-                      v-bind:label="$t('store_en')"
+                      :label="labelText"
                       variant="outlined"
                       density="compact"
                       :rules="fieldRules"
@@ -344,13 +345,13 @@
                 md="4"
                 v-if="user.rolename != 'StoreAdmin'"
               >
-                <v-tooltip :text="this.$t('store_ar')" location="bottom">
+                <v-tooltip :text="label_text_ar" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
                       v-bind="props"
                       v-model="promotions[1].store_id"
                       @update:modelValue="(value) => updateMall(value)"
-                      v-bind:label="$t('store_ar')"
+                      :label="label_text_ar"
                       :rules="fieldRules"
                       variant="outlined"
                       density="compact"
@@ -678,7 +679,8 @@ export default {
     stores_data_ar: [],
     stores_data_en: [],
     user: "",
-
+    labelText: "Mall",
+    label_text_ar: "مجمع تجاري",
     promotions: [
       {
         id: 0,
@@ -882,11 +884,13 @@ export default {
         if (this.tabs == 1) {
           this.promotions[1].stor_type = stor_type;
           if (stor_type == "MallAdmin") {
+            this.labelText = this.$t("mall");
+            this.label_text_ar = this.$t("mall_ar");
             this.stores_en = this.mal_data_en;
             this.stores_ar = this.mal_data_ar;
           } else {
-            // alert("asdsad");
-
+            this.labelText = this.$t("store");
+            this.label_text_ar = this.$t("store_ar");
             this.stores_en = this.stores_data_en;
             this.stores_ar = this.stores_data_ar;
             // console.log("asdasd", this.stores_data_en);
@@ -894,9 +898,13 @@ export default {
         } else {
           this.promotions[0].stor_type = stor_type;
           if (stor_type == "MallAdmin") {
+            this.labelText = this.$t("mall");
+            this.label_text_ar = this.$t("mall_ar");
             this.stores_en = this.mal_data_en;
             this.stores_ar = this.mal_data_ar;
           } else {
+            this.labelText = this.$t("store");
+            this.label_text_ar = this.$t("store_ar");
             this.stores_en = this.stores_data_en;
             this.stores_ar = this.stores_data_ar;
           }

@@ -50,7 +50,7 @@
                         isHovering == true ? 'filter: blur(1px);' : ''
                       "
                       v-if="product.image_path == null"
-                      src="@/assets/images/upload_image_default.png"
+                      src="@/assets/images/no_image.png"
                       width="100"
                     />
                     <img
@@ -164,7 +164,7 @@
                         isHovering == true ? 'filter: blur(1px);' : ''
                       "
                       v-if="product.image_path == null"
-                      src="@/assets/images/upload_image_default.png"
+                      src="@/assets/images/no_image.png"
                       width="100"
                     />
                     <img

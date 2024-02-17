@@ -57,12 +57,12 @@
                 xs="12"
                 v-if="user.rolename != 'StoreAdmin'"
               >
-                <v-tooltip :text="this.$t('store')" location="bottom">
+                <v-tooltip :text="labelText" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
                       v-bind="props"
                       v-model="events[0].store_id"
-                      v-bind:label="$t('store')"
+                      :label="labelText"
                       @update:modelValue="(value) => updateStore(value)"
                       variant="outlined"
                       density="compact"
@@ -305,13 +305,13 @@
             </v-layout>
             <v-row class="mx-auto mt-2 arabdirection" max-width="344">
               <v-col cols="12" sm="12" md="3">
-                <v-tooltip :text="this.$t('store_ar')" location="bottom">
+                <v-tooltip :text="label_text_ar" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
                       v-bind="props"
                       v-model="events[1].store_id"
                       @update:modelValue="(value) => updateStore(value)"
-                      v-bind:label="$t('store_ar')"
+                      :label="label_text_ar"
                       variant="outlined"
                       density="compact"
                       :items="stores_ar"
@@ -604,6 +604,8 @@ export default {
       direction: "rtl",
       placeholder: "أدخل المحتوى هنا",
     },
+    labelText: "Mall",
+    label_text_ar: "مجمع تجاري",
     tabs: 1,
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
     valid: true,
@@ -692,7 +694,7 @@ export default {
     this.fetchMall();
   },
   created() {
-      this.fetchRoles();
+    this.fetchRoles();
     this.user = JSON.parse(localStorage.getItem("user_data"));
     // if (this.user.store_id && this.user.rolename == "StoreAdmin") {
     //   this.events[0].store_id = this.user.store_id;
@@ -744,11 +746,14 @@ export default {
         if (this.tabs == 1) {
           this.events[1].stor_type = stor_type;
           if (stor_type == "MallAdmin") {
+            this.labelText = this.$t("mall");
+            this.label_text_ar = this.$t("mall_ar");
             this.stores_en = this.mal_data_en;
             this.stores_ar = this.mal_data_ar;
           } else {
             // alert("asdsad");
-
+            this.labelText = this.$t("store");
+            this.label_text_ar = this.$t("store_ar");
             this.stores_en = this.stores_data_en;
             this.stores_ar = this.stores_data_ar;
             // console.log("asdasd", this.stores_data_en);
@@ -756,9 +761,13 @@ export default {
         } else {
           this.events[0].stor_type = stor_type;
           if (stor_type == "MallAdmin") {
+            this.labelText = this.$t("mall");
+            this.label_text_ar = this.$t("mall_ar");
             this.stores_en = this.mal_data_en;
             this.stores_ar = this.mal_data_ar;
           } else {
+            this.labelText = this.$t("store");
+            this.label_text_ar = this.$t("store_ar");
             this.stores_en = this.stores_data_en;
             this.stores_ar = this.stores_data_ar;
           }
@@ -812,9 +821,7 @@ export default {
           this.loader = false;
           this.role_array = response.data.roles;
           if (!this.$route.query.slug && this.user.rolename == "SuperUser") {
-            alert(
-              "ASd"
-            )
+            alert("ASd");
             this.events[0].stor_type = this.role_array[0].rolename;
             this.events[1].stor_type = this.role_array[0].rolename;
             this.updateType(this.events[0].stor_type);
@@ -943,12 +950,12 @@ export default {
         this.isDisabled = true;
         this.isBtnLoading = true;
         this.loader = true;
-          if (this.user.rolename == "StoreAdmin") {
+        if (this.user.rolename == "StoreAdmin") {
           this.events[0].store_id = this.user.store_id;
           this.events[1].store_id = this.user.store_id;
           this.events[0].stor_type = this.user.rolename;
           this.events[1].stor_type = this.user.rolename;
-        } 
+        }
         // Form is valid, process
         this.$axios
           .post(process.env.VUE_APP_API_URL_ADMIN + "save_events", this.events)
