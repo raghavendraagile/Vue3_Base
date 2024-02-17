@@ -184,6 +184,7 @@
           :items="careers_data_ar"
           :search="search"
           :loading="initval"
+           class="rtl-direction"
           v-bind:no-data-text="$t('no_data_available_ar')"
           :footer-props="{
             'items-per-page-text': $t('rows_per_page'),

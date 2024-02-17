@@ -61,7 +61,7 @@
           :items="home_sliders_en"
           :search="search"
           :loading="initval"
-          v-bind:no-data-text="$t('no_data_available')"
+          v-bind:no-data-text="$t('no_data_available_en')"
           :items-per-page-text="$t('rows_per_page_en')"
         >
           <template v-slot:item="props">
@@ -154,7 +154,7 @@
           :search="search"
           :loading="initval"
           class="rtl-direction"
-          :no-data-text="$t('no_data_available')"
+          :no-data-text="$t('no_data_available_ar')"
           :items-per-page-text="$t('rows_per_page')"
         >
           <template v-slot:item="props">

@@ -1,5 +1,6 @@
 <template>
   <div class="mx-2 mt-3 p-0">
+    {{sel_lang}}
     <div
       class="my-3 p-0"
       v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
@@ -14,7 +15,7 @@
     <div class="mb-3 mx-auto">
       <div class="card-body">
         <v-form ref="form" v-model="valid">
-          <v-layot>
+          <v-layot v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']">
             <v-row class="px-6">
               <v-col cols="12" xs="12" sm="12" md="4" lg="4">
                 <v-tooltip :text="this.$t('store_name')" location="bottom">
@@ -44,9 +45,11 @@
               class="px-6"
               v-for="(day, day_index) in weekdays_en"
               :key="day_index"
+              
             >
               <v-col cols="12" xs="12" sm="12" lg="12" md="12">
                 <v-checkbox
+                  v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
                   v-model="store_timings[day_index].is_holiday"
                   v-bind:label="$t('is_holiday')"
                   color="green"
@@ -272,6 +275,7 @@ export default {
     weekdays_en: [],
     weekdays_ar: [],
     store_time: [],
+    lang:"",
     meridiem: [
       {
         id: 0,
@@ -305,6 +309,8 @@ export default {
   },
   mounted() {
     this.get_stores();
+   this.$i18n.locale = localStorage.getItem("pref_lang");
+    this.sel_lang = this.$i18n.locale;
   },
   watch: {
     "$route.query.slug": {
@@ -327,14 +333,8 @@ export default {
         }
       },
     },
-    "$i18n.locale"(newLocale) {
-      if (newLocale === "ar") {
-        this.sel_lang = "ar";
-      } else {
-        ("");
-        this.sel_lang = "en";
-      }
-    },
+    
+    
   },
   methods: {
     NumbersOnly(evt) {

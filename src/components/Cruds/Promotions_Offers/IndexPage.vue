@@ -61,6 +61,7 @@
           :headers="headers_en"
           :items="promotions_en"
           :search="search"
+          
           :loading="initval"
           :no-data-text="$t('no_data_available_en')"
           :items-per-page-text="$t('rows_per_page_en')"
@@ -202,6 +203,7 @@
           :items="promotions_ar"
           :search="search"
           :loading="initval"
+           class="rtl-direction"
           :no-data-text="$t('no_data_available_ar')"
           :items-per-page-text="$t('rows_per_page_ar')"
         >
