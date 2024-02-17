@@ -414,6 +414,7 @@
   "signature_en" : "Signature",
   "logo_en" : "Logo",
   "file_preview_en" : "File Preview",
+  "image_preview_en":"Image Preview",
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
   "enter_the_content_here_ar" : "أدخل المحتوى هنا",
@@ -498,5 +499,6 @@
   "enter_the_content_here_en" : "Enter the content here",
   "display_in_header_menu_ar" :"عرض في القائمة الرئيسية",
   "file_required":"File Required",
-  "file_preview_ar" : "الوصف مطلو"
+  "file_preview_ar" : "الوصف مطلو",
+  "image_preview_ar":"معاينة الصورة"
 }

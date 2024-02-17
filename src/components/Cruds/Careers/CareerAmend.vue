@@ -732,7 +732,5 @@ input.larger {
   direction: rtl !important;
 }
 
-.arabdirection /deep/ .v-input {
-  direction: rtl !important;
-}
+
 </style>

@@ -24,8 +24,37 @@
         <!-- ENGLISH TAB STARTS -->
         <v-window-item :value="1">
           <v-form ref="form" v-model="valid">
+            <v-layout v-if="user.rolename != 'StoreAdmin'">
+              <v-row class="px-6 mt-2">
+                <v-col xs="12" md="12" lg="12">
+                  <!-- :disabled="$route.query.slug" -->
+                  <v-radio-group
+                    v-model="products[0].stor_type"
+                    inline
+                    class="radio_item"
+                    @change="updateType(products[0].stor_type)"
+                  >
+                    <v-radio
+                      v-for="(role_data, rindex) in role_array"
+                      :key="rindex"
+                      :label="changeRoleName(role_data.rolename)"
+                      :value="role_data.rolename"
+                      class="text--primary"
+                    >
+                    </v-radio>
+                    <!-- <v-radio :label="$t('mall')" value="Mall"></v-radio>
+                    <v-radio value="Store" :label="$t('store')"></v-radio> -->
+                  </v-radio-group>
+                </v-col>
+              </v-row>
+            </v-layout>
             <v-row class="mx-auto mt-2" max-width="344">
-              <v-col cols="4" sm="12" md="4">
+              <v-col
+                cols="4"
+                sm="12"
+                md="4"
+                v-if="user.rolename != 'StoreAdmin'"
+              >
                 <v-tooltip :text="this.$t('store')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -193,8 +222,37 @@
         <!-- ARABIC TAB STARTS -->
         <v-window-item :value="2">
           <v-form ref="form" v-model="valid">
+            <v-layout v-if="user.rolename != 'StoreAdmin'">
+              <!-- :disabled="$route.query.slug" -->
+              <v-row class="px-6 mt-2 arabdirection">
+                <v-col xs="12" md="12" lg="12">
+                  <v-radio-group
+                    v-model="products[1].stor_type"
+                    inline
+                    class="radio_item"
+                    @change="updateType(products[1].stor_type)"
+                  >
+                    <v-radio
+                      v-for="(role_data, rindex) in role_array"
+                      :key="rindex"
+                      :label="changeStatusAr(role_data.rolename)"
+                      :value="role_data.rolename"
+                      class="text--primary"
+                    >
+                    </v-radio>
+                    <!-- <v-radio :label="$t('mall')" value="Mall"></v-radio>
+                    <v-radio value="Store" :label="$t('store')"></v-radio> -->
+                  </v-radio-group>
+                </v-col>
+              </v-row>
+            </v-layout>
             <v-row class="mx-auto mt-2 arabdirection" max-width="344">
-              <v-col cols="4" sm="12" md="4">
+              <v-col
+                cols="4"
+                sm="12"
+                md="4"
+                v-if="user.rolename != 'StoreAdmin'"
+              >
                 <v-tooltip :text="this.$t('store_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -429,6 +487,12 @@ export default {
     isDisabled: false,
     checkbox_value: false,
     uploadfile: false,
+    mal_data_en: [],
+    mal_data_er: [],
+    role_array: [],
+    stores_data_ar: [],
+    stores_data_en: [],
+    user: "",
     products: [
       {
         id: 0,
@@ -442,6 +506,7 @@ export default {
         meta_description: "",
         lang: "en",
         seq: null,
+        stor_type: "",
       },
       {
         id: 0,
@@ -455,6 +520,7 @@ export default {
         meta_description: "",
         lang: "ar",
         seq: null,
+        stor_type: "",
       },
     ],
     stores_en: [],
@@ -493,8 +559,12 @@ export default {
   },
   mounted() {
     this.get_stores();
+    this.fetchMall();
   },
-  created() {},
+  created() {
+    this.fetchRoles();
+    this.user = JSON.parse(localStorage.getItem("user_data"));
+  },
   watch: {
     "$route.query.slug": {
       immediate: true,
@@ -513,6 +583,8 @@ export default {
               console.log("CALLED IN ROUTE");
               console.log(res);
               this.products = res.data.products;
+              this.assignType(this.products[0].stor_type);
+
               this.loader = false;
             });
         }
@@ -529,12 +601,120 @@ export default {
   },
 
   methods: {
+    changeRoleName(role_name) {
+      switch (role_name) {
+        case "MallAdmin":
+          return this.$t("mall");
+        case "StoreAdmin":
+          return this.$t("store");
+        // case "Rejected":
+        //   return this.$t("rejected_ar");
+        default:
+          return "";
+      }
+    },
+    changeStatusAr(status) {
+      switch (status) {
+        case "MallAdmin":
+          return this.$t("mall_admin_ar");
+        case "StoreAdmin":
+          return this.$t("store_admin_ar");
+        // case "Rejected":
+        //   return this.$t("rejected_ar");
+        default:
+          return "";
+      }
+    },
     updateStore(store) {
       if (this.tabs == 1) {
         this.products[1].store_id = store;
       } else {
         this.products[0].store_id = store;
       }
+    },
+    updateType(stor_type) {
+      this.products[1].store_id = null;
+      this.products[0].store_id = null;
+      this.assignType(stor_type);
+    },
+    assignType(stor_type) {
+      setTimeout(() => {
+        if (this.tabs == 1) {
+          this.products[1].stor_type = stor_type;
+          if (stor_type == "MallAdmin") {
+            this.stores_en = this.mal_data_en;
+            this.stores_ar = this.mal_data_ar;
+          } else {
+            // alert("asdsad");
+
+            this.stores_en = this.stores_data_en;
+            this.stores_ar = this.stores_data_ar;
+            // console.log("asdasd", this.stores_data_en);
+          }
+        } else {
+          this.products[0].stor_type = stor_type;
+          if (stor_type == "MallAdmin") {
+            this.stores_en = this.mal_data_en;
+            this.stores_ar = this.mal_data_ar;
+          } else {
+            this.stores_en = this.stores_data_en;
+            this.stores_ar = this.stores_data_ar;
+          }
+        }
+      }, 1000);
+    },
+    fetchRoles() {
+      this.loader = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_reg_roles")
+        .then((response) => {
+          this.loader = false;
+          this.role_array = response.data.roles;
+          if (!this.$route.query.slug && this.user.rolename == "SuperUser") {
+            this.products[0].stor_type = this.role_array[0].rolename;
+            this.products[1].stor_type = this.role_array[0].rolename;
+            this.updateType(this.products[0].stor_type);
+          } else if (
+            this.user.rolename === "MallAdmin" &&
+            !this.$route.query.slug
+          ) {
+            this.role_array = response.data.roles.filter(
+              (role) => role.rolename == "StoreAdmin"
+            );
+            this.products[0].stor_type = this.role_array[0].rolename;
+            this.products[1].stor_type = this.role_array[0].rolename;
+            this.updateType(this.products[0].stor_type);
+          } else if (
+            this.user.rolename === "MallAdmin" &&
+            this.$route.query.slug
+          ) {
+            this.role_array = response.data.roles.filter(
+              (role) => role.rolename == "StoreAdmin"
+            );
+            this.assignType(this.products[0].stor_type);
+          }
+          // if (!this.$route.query.slug) {
+
+          // }
+        })
+        .catch((err) => {
+          this.loader = false;
+          console.log(err);
+        });
+    },
+    fetchMall() {
+      this.initval = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-malls")
+        .then((response) => {
+          console.log(response);
+          this.mal_data_en = response.data.malls_en;
+          this.mal_data_ar = response.data.malls_ar;
+          this.initval = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     downloadImage(image_url) {
       window.open(this.envImagePath + image_url, "_blank");
@@ -557,29 +737,28 @@ export default {
         name: "products",
       });
     },
-    get_stores() {
-      this.initval = true;
+     get_stores() {
+      // this.initval = true;
       this.$axios
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-stores")
         .then((response) => {
           console.log(response);
-          this.stores_en = response.data.stores_en;
-          this.stores_ar = response.data.stores_ar;
-
-          // const default_en = {
-          //   id: 0,
-          //   name: this.$t("select_en"),
-          //   header_id: 0,
-          // };
-          // const default_ar = {
-          //   id: 0,
-          //   name: this.$t("select_ar"),
-          //   header_id: 0,
-          // };
-
-          // this.stores_en = [default_en, ...this.stores_en];
-          // this.stores_ar = [default_ar, ...this.stores_ar];
-          this.initval = false;
+          this.stores_data_en = response.data.stores_en;
+          this.stores_data_ar = response.data.stores_ar;
+          if (this.user.rolename == "MallAdmin") {
+            //      this.role_array = response.data.roles.filter(
+            //   (role) => role.rolename == "StoreAdmin"
+            // );
+            this.stores_data_en = this.stores_data_en.filter((x) => {
+              console.log("x", x);
+              return x.mall_name == this.user.store_id;
+            });
+            this.user.store_id;
+            this.stores_data_ar = this.stores_data_ar.filter((x) => {
+              return x.mall_name == this.user.store_id;
+            });
+          }
+          // this.initval = false;
         })
         .catch((err) => {
           console.log(err);
@@ -623,6 +802,12 @@ export default {
       if (this.$refs.form.validate() && this.valid == true) {
         this.isDisabled = true;
         this.isBtnLoading = true;
+        if (this.user.rolename == "StoreAdmin") {
+          this.products[0].store_id = this.user.store_id;
+          this.products[1].store_id = this.user.store_id;
+          this.products[0].stor_type = this.user.rolename;
+          this.products[1].stor_type = this.user.rolename;
+        } // Form is valid, process
         this.loader = true;
         // Form is valid, process
         this.$axios
@@ -691,6 +876,10 @@ input.larger {
 }
 
 .arabdirection /deep/ .v-field {
+  direction: rtl;
+}
+
+.arabdirection /deep/ .v-input {
   direction: rtl !important;
 }
 </style>

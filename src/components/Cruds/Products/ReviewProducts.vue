@@ -1,6 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('products')"
@@ -33,6 +36,44 @@
               <v-layout>
                 <v-row class="px-6 mt-2">
                   <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("title_en") }}</div>
+                    <div>{{ product.title }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="6">
+                    <div class="d-label">{{ $t("description_en") }}</div>
+                    <div v-html="product.description"></div>
+                  </v-col>
+                     <v-col cols="12" sm="6" md="2" class="image-preview">
+                    <div class="d-label">{{ $t("image_preview_en") }}</div>
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-if="product.image_path == null"
+                      src="@/assets/images/upload_image_default.png"
+                      width="100"
+                    />
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-else
+                      :src="envImagePath + product.image_path"
+                      width="100"
+                      height="65
+                          "
+                      alt
+                    />
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("meta_title_en") }}</div>
+                    <div>{{ product.meta_title }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="6">
+                    <div class="d-label">{{ $t("meta_description_en") }}</div>
+                    <div>{{ product.meta_description }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("approval_status_en") }}</div>
                     <div>
                       <v-chip
@@ -56,25 +97,7 @@
                       {{ product.review_by }}
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
-                  </v-col>
-
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("title_en") }}</div>
-                    <div>{{ product.title }}</div>
-                  </v-col>
-
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("meta_title_en") }}</div>
-                    <div>{{ product.meta_title }}</div>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="12">
-                    <div class="d-label">{{ $t("description_en") }}</div>
-                    <div v-html="product.description"></div>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="12">
-                    <div class="d-label">{{ $t("meta_description_en") }}</div>
-                    <div>{{ product.meta_description }}</div>
-                  </v-col>
+                  </v-col>             
                   <v-col
                     cols="12"
                     sm="12"
@@ -93,7 +116,7 @@
               </v-layout>
               <div
                 class="d-flex justify-content-end"
-                v-if="product.approval_status == 'In Review'"
+                v-if="product.approval_status == 'In Review' && user_role != 'StoreAdmin' "
               >
                 <v-chip
                   @click="statusOnChange('Approved', product.header_id)"
@@ -126,6 +149,45 @@
             >
               <v-layout>
                 <v-row class="px-6 mt-2">
+                   <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("title_ar") }}</div>
+                    <div>{{ product.title }}</div>
+                  </v-col>
+                       <v-col cols="12" sm="12" md="6">
+                    <div class="d-label">{{ $t("description_ar") }}</div>
+                    <div v-html="product.description"></div>
+                  </v-col>
+                     <v-col cols="12" sm="6" md="2" class="image-preview">
+                    <div class="d-label">{{ $t("image_preview_ar") }}</div>
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-if="product.image_path == null"
+                      src="@/assets/images/upload_image_default.png"
+                      width="100"
+                    />
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-else
+                      :src="envImagePath + product.image_path"
+                      width="100"
+                      height="65
+                          "
+                      alt
+                    />
+                  </v-col>
+                       <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("meta_title_ar") }}</div>
+                    <div>{{ product.meta_title }}</div>
+                  </v-col>
+             
+                  <v-col cols="12" sm="12" md="6">
+                    <div class="d-label">{{ $t("meta_description_ar") }}</div>
+                    <div>{{ product.meta_description }}</div>
+                  </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("approval_status_ar") }}</div>
                     <div>
@@ -151,23 +213,9 @@
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("title_ar") }}</div>
-                    <div>{{ product.title }}</div>
-                  </v-col>
+                 
 
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("meta_title_ar") }}</div>
-                    <div>{{ product.meta_title }}</div>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="12">
-                    <div class="d-label">{{ $t("description_ar") }}</div>
-                    <div v-html="product.description"></div>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="12">
-                    <div class="d-label">{{ $t("meta_description_ar") }}</div>
-                    <div>{{ product.meta_description }}</div>
-                  </v-col>
+             
                   <v-col
                     cols="12"
                     sm="12"
@@ -186,7 +234,7 @@
               </v-layout>
               <div
                 class="d-flex justify-content-end"
-                v-if="product.approval_status == 'In Review'"
+                v-if="product.approval_status == 'In Review' &&  user_role != 'StoreAdmin'"
               >
                 <v-chip
                   @click="statusOnChange('Approved', product.header_id)"
@@ -237,8 +285,8 @@
     </ReviewComments>
   </div>
 </template>
-    
-  <script>
+
+<script>
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
 import ReviewComments from "../../CustomComponents/ReviewComments.vue";
@@ -265,6 +313,7 @@ export default {
     isBtnLoading: false,
     isDisabled: false,
     loader: false,
+    user_role:"",
     tabs: 1,
     product_en: [],
     product_ar: [],
@@ -283,20 +332,23 @@ export default {
       handler() {
         if (this.$route.query.slug) {
           this.fetchProductDetails();
+          this.user_role = JSON.parse(localStorage.getItem("user_data")).rolename;
+
         }
       },
     },
-    '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
 
   methods: {
-      changeStatusAr(status) {
+    changeStatusAr(status) {
       switch (status) {
         case "Approved":
           return this.$t("approved_ar");
@@ -428,5 +480,6 @@ export default {
   border-style: solid;
   border-width: 1px;
 }
+/* .image-preview {
+} */
 </style>
-    

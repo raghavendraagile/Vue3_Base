@@ -403,6 +403,7 @@
   "mall_admin_ar":"مجمع تجاري",
   "store_admin_ar":"محل",
   "enter_the_content_here_ar" : "أدخل المحتوى هنا",
+  "image_preview_ar":"معاينة الصورة",  
   "--------start_english_translation----------": "--------start_english_translation----------",
   "name_en": "Name",
   "title_en": "Title",
@@ -454,5 +455,6 @@
   "signature_en" : "Signature",
   "enter_the_content_here_en" : "Enter the content here...",
   "store_en" : "Store",
+  "image_preview_en":"Image Preview",
   "display_in_header_menu_ar" :"عرض في القائمة الرئيسية"
 }
