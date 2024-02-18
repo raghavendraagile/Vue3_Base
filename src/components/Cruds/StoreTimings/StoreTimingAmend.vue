@@ -14,8 +14,12 @@
     <content-loader v-if="loader"></content-loader>
     <div class="mb-3 mx-auto">
       <div class="card-body">
-        <v-form ref="form" v-model="valid">
-          <v-layout v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']">
+        <v-form
+          ref="form"
+          v-model="valid"
+          v-bind:style="sel_lang == 'ar' ? 'direction:rtl' : ''"
+        >
+          <v-layout>
             <v-row class="px-6">
               <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="$t('store_name')" location="bottom">
@@ -52,8 +56,15 @@
             <v-row class="px-6 day-container">
               <v-col cols="12" sm="12" md="12" class="py-0">
                 <v-row>
-                  <v-col cols="12" sm="6" md="2" >
-                    <div class="day-label">{{ store_timings[day_index].week_day }}</div>
+                  <v-col cols="12" sm="6" md="2">
+                    <div class="day-label">
+                      <span v-if="sel_lang == 'ar'">{{
+                        changeArWeekday(store_timings[day_index].week_day)
+                      }}</span>
+                      <span v-else>{{
+                        store_timings[day_index].week_day
+                      }}</span>
+                    </div>
                   </v-col>
                   <v-col cols="12" sm="6" md="2">
                     <v-checkbox
@@ -356,6 +367,26 @@ export default {
     },
   },
   methods: {
+    changeArWeekday(day) {
+      switch (day) {
+        case "Monday":
+          return this.$t("monday_ar");
+        case "Tuesday":
+          return this.$t("tuesday_ar");
+        case "Wednesday":
+          return this.$t("wednesday_ar");
+        case "Thursday":
+          return this.$t("thursday_ar");
+        case "Friday":
+          return this.$t("friday_ar");
+        case "Saturday":
+          return this.$t("saturday_ar");
+        case "Sunday":
+          return this.$t("sunday_ar");
+        default:
+          return "";
+      }
+    },
     NumbersOnly(evt) {
       evt = evt ? evt : window.event;
       var charCode = evt.which ? evt.which : evt.keyCode;
@@ -442,7 +473,7 @@ export default {
           this.initval = false;
           if (this.page_type == "add") {
             this.initializeTimingArray();
-          } 
+          }
           this.loader = false;
         })
         .catch((err) => {
@@ -537,12 +568,12 @@ input.larger {
   display: flex;
   color: gray;
 }
-.day-label{
+.day-label {
   font-size: 22px;
   font-weight: 400;
   margin-top: 10px;
 }
-.day-container{
+.day-container {
   margin: 10px 20px;
   background: #f2f2f28c;
   border-radius: 6px;
