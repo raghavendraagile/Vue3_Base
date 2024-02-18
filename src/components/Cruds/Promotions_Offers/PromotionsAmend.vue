@@ -24,7 +24,7 @@
         <!-- ENGLISH TAB STARTS -->
         <v-window-item :value="1">
           <v-form ref="form" v-model="valid">
-            <v-layout v-if="user.rolename != 'StoreAdmin'">
+            <v-layout v-if="user.rolename != 'StoreAdmin'" style="direction:rtl">
               <v-row class="px-6 mt-2">
                 <v-col xs="12" md="12" lg="12">
                   <!-- :disabled="$route.query.slug" -->
@@ -313,7 +313,7 @@
         <!-- ENGLISH TAB STOPS -->
         <!-- ARABIC TAB STARTS -->
         <v-window-item :value="2">
-          <v-form ref="form" v-model="valid">
+          <v-form ref="form" v-model="valid" style="direction:rtl; text-align:end">
             <v-layout v-if="user.rolename != 'StoreAdmin'">
               <!-- :disabled="$route.query.slug" -->
               <v-row class="px-6 mt-2 arabdirection">

@@ -517,13 +517,14 @@
           <!-- ENGLISH TAB END -->
           <!-- ARABIC TAB STARTS -->
           <v-window-item :value="2">
-            <v-form ref="form" v-model="valid">
+            <v-form ref="form" v-model="valid" class="rtl-direction">
               <v-layout v-if="user.rolename != 'StoreAdmin'">
-                <v-row class="px-6 mt-2 arabdirection">
+                <v-row class="px-6 mt-2">
                   <v-col xs="12" sm="12" md="12" lg="12">
                     <v-radio-group
                       v-model="stores[1].stor_type"
                       inline
+                      style="direction:rtl"
                       class="radio_item"
                       :disabled="$route.query.slug"
                       @change="updateType(stores[1].stor_type)"
@@ -535,7 +536,7 @@
                 </v-row>
               </v-layout>
               <v-layout>
-                <v-row class="headings arabdirection">
+                <v-row class="headings">
                   <v-col xs="12" sm="12" md="12" lg="12">
                     <h6 class="m-4" v-if="stores[1].stor_type == 'Mall'">
                       <b>{{ $t("mall_details_ar") }}</b>
@@ -998,15 +999,15 @@
           <!-- ARABIC TAB END -->
         </v-window>
       </div>
-      <div class="headings">
-        <h6 class="m-4" v-if="tabs == 1">
-          <b>{{ $t("social_media") }}</b>
-        </h6>
-        <h6 class="m-4 arabdirection" v-else>
-          <b>{{ $t("social_media_ar") }}</b>
-        </h6>
-      </div>
-      <div>
+      <div v-if="social_media_en.length > 0 && social_media_ar.length > 0">
+          <div class="headings">
+            <h6 class="m-4" v-if="tabs == 1">
+              <b>{{ $t("social_media") }}</b>
+            </h6>
+            <h6 class="m-4 arabdirection" v-else>
+              <b>{{ $t("social_media_ar") }}</b>
+            </h6>
+          </div>
         <v-layout>
           <v-row class="px-6 mt-2" v-if="tabs == 1">
             <v-col
@@ -1289,6 +1290,7 @@ export default {
               this.$toast.error(this.$t("something_went_wrong"));
               console.log(err);
             });
+
           this.$axios
             .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-social-media")
             .then((response) => {
@@ -1296,7 +1298,6 @@ export default {
               this.social_media_en = response.data.social_media_en;
               this.social_media_ar = response.data.social_media_ar;
               response.data.social_media_en.forEach((element) => {
-                console.log(element.longname);
                 if (this.social_media.store_id > 0) {
                   this.social_media.longname = element.longname;
                 }
@@ -1323,16 +1324,15 @@ export default {
 
   methods: {
     cancel() {
-      if(this.user.rolename=='StoreAdmin'){
-      this.$router.push({
-        name: "my_stores",
-      });
-      }else{
-      this.$router.push({
-        name: "stores",
-      });
+      if (this.user.rolename == "StoreAdmin") {
+        this.$router.push({
+          name: "my_stores",
+        });
+      } else {
+        this.$router.push({
+          name: "stores",
+        });
       }
-
     },
     NumbersOnly(evt) {
       evt = evt ? evt : window.event;
@@ -1435,7 +1435,7 @@ export default {
             this.stores[1].stor_type = "Store";
             this.stores[0].mall_name = this.user.store_id;
             this.stores[1].mall_name = this.user.store_id;
-          } 
+          }
           // } else {
 
           // }
