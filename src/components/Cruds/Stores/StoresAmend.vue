@@ -26,9 +26,10 @@
           <!-- ENGLISH TAB STARTS -->
           <v-window-item :value="1">
             <v-form ref="form" v-model="valid">
-              <v-layout>
+              <v-layout v-if="user.rolename != 'StoreAdmin'">
                 <v-row class="px-6 mt-2">
                   <v-col xs="12" md="12" lg="12">
+                    <!-- {{user.rolename}} -->
                     <v-radio-group
                       v-model="stores[0].stor_type"
                       inline
@@ -36,8 +37,19 @@
                       :disabled="$route.query.slug"
                       @change="updateType(stores[0].stor_type)"
                     >
-                      <v-radio :label="$t('mall')" value="Mall"></v-radio>
-                      <v-radio value="Store" :label="$t('store')"></v-radio>
+                      <v-radio
+                        :label="$t('mall')"
+                        value="Mall"
+                        v-if="user.rolename === 'SuperUser'"
+                      ></v-radio>
+                      <v-radio
+                        value="Store"
+                        :label="$t('store')"
+                        v-if="
+                          user.rolename == 'SuperUser' ||
+                          user.rolename == 'MallAdmin'
+                        "
+                      ></v-radio>
                     </v-radio-group>
                   </v-col>
                 </v-row>
@@ -54,6 +66,7 @@
                   </v-col>
                 </v-row>
               </v-layout>
+              <!-- {{stores[0].categories}} -->
               <v-layout v-if="stores[0].stor_type == 'Store'">
                 <v-row class="px-6 mt-2">
                   <v-col cols="12" xs="12" sm="12" md="4" lg="4">
@@ -65,7 +78,7 @@
                           @update:modelValue="
                             (value) => updateCategories(value)
                           "
-                          :rules="fieldRules"
+                          :rules="fieldRulesArray"
                           v-bind:label="$t('category')"
                           variant="outlined"
                           density="compact"
@@ -80,7 +93,13 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col xs="12" sm="12" md="4" lg="4">
+                  <v-col
+                    xs="12"
+                    sm="12"
+                    md="4"
+                    lg="4"
+                    v-if="user.rolename != 'StoreAdmin'"
+                  >
                     <v-tooltip :text="this.$t('mall_name')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -91,6 +110,7 @@
                           v-bind:label="$t('mall_name')"
                           variant="outlined"
                           density="compact"
+                          :disabled="user.rolename == 'MallAdmin'"
                           class="required_field"
                           required
                           index="id"
@@ -308,17 +328,17 @@
                       </template>
                     </v-tooltip>
                   </v-col>
+                  <!-- :rules="fieldRules" -->
+                  <!-- class="required_field" -->
                   <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('store_code')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
                           v-model="stores[0].store_code"
-                          :rules="fieldRules"
                           v-bind:label="$t('store_code')"
                           variant="outlined"
                           density="compact"
-                          class="required_field"
                           required
                           index="id"
                           :items="shop_codes"
@@ -398,9 +418,7 @@
                               v-bind:style="
                                 isHovering == true ? 'filter: blur(1px);' : ''
                               "
-                              v-if="
-                                stores[0].icon != '' || stores[0].icon != ''
-                              "
+                              v-if="stores[0].icon != null"
                               :src="envImagePath + stores[0].icon"
                               width="100"
                               height="65
@@ -500,7 +518,7 @@
           <!-- ARABIC TAB STARTS -->
           <v-window-item :value="2">
             <v-form ref="form" v-model="valid">
-              <v-layout>
+              <v-layout v-if="user.rolename != 'StoreAdmin'">
                 <v-row class="px-6 mt-2 arabdirection">
                   <v-col xs="12" sm="12" md="12" lg="12">
                     <v-radio-group
@@ -554,7 +572,13 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col xs="12" sm="12" md="4" lg="4">
+                  <v-col
+                    xs="12"
+                    sm="12"
+                    md="4"
+                    lg="4"
+                    v-if="user.rolename != 'StoreAdmin'"
+                  >
                     <v-tooltip :text="this.$t('mall_name')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -782,17 +806,17 @@
                       </template>
                     </v-tooltip>
                   </v-col>
+                  <!-- :rules="fieldRules" -->
+                  <!-- class="required_field" -->
                   <v-col cols="12" xs="12" sm="12" md="4">
                     <v-tooltip :text="$t('store_code_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
                           v-model="stores[1].store_code"
-                          :rules="fieldRules"
                           v-bind:label="$t('store_code_ar')"
                           variant="outlined"
                           density="compact"
-                          class="required_field"
                           required
                           counter="true"
                           index="id"
@@ -875,7 +899,7 @@
                               v-bind:style="
                                 isHovering == true ? 'filter: blur(1px);' : ''
                               "
-                              v-if="stores[1].icon != ''"
+                              v-if="stores[1].icon != null"
                               :src="envImagePath + stores[1].icon"
                               width="100"
                               height="65
@@ -1039,7 +1063,7 @@
               <v-btn
                 v-bind="props"
                 size="small"
-                @click="$router.go(-1)"
+                @click="cancel"
                 :disabled="loading"
                 class="ma-1"
                 color="cancel"
@@ -1106,19 +1130,23 @@ export default {
         stor_type: "Mall",
         categories: [],
         mall_name: "",
-        icon: "",
+        icon: null,
         background_image: "",
+        store_code: "",
         website: "",
+        seq: null,
       },
       {
         id: 0,
         lang: "ar",
         stor_type: "Mall",
         categories: [],
+        store_code: "",
         mall_name: "",
-        icon: "",
+        icon: null,
         background_image: "",
         website: "",
+        seq: null,
       },
     ],
     categories_en: [],
@@ -1138,9 +1166,15 @@ export default {
     social_media_en: [],
     social_media_ar: [],
     shop_codes: [],
+    user: "",
   }),
 
   computed: {
+    fieldRulesArray() {
+      return [
+        (v) => (Array.isArray(v) && v.length > 0) || this.$t("field_required"),
+      ];
+    },
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
     },
@@ -1208,12 +1242,14 @@ export default {
   },
 
   created() {
-    this.get_categories();
     this.get_countries();
     this.fetchShopCodes();
   },
 
   mounted() {
+    this.user = JSON.parse(localStorage.getItem("user_data"));
+    this.get_categories();
+
     if (!this.$route.query.slug) {
       this.fetch_social_media();
     }
@@ -1286,6 +1322,18 @@ export default {
   },
 
   methods: {
+    cancel() {
+      if(this.user.rolename=='StoreAdmin'){
+      this.$router.push({
+        name: "my_stores",
+      });
+      }else{
+      this.$router.push({
+        name: "stores",
+      });
+      }
+
+    },
     NumbersOnly(evt) {
       evt = evt ? evt : window.event;
       var charCode = evt.which ? evt.which : evt.keyCode;
@@ -1382,6 +1430,15 @@ export default {
           this.categories_ar = response.data.category_ar;
           this.mall_names_en = response.data.mall_names_en;
           this.mall_names_ar = response.data.mall_names_ar;
+          if (this.user.rolename == "MallAdmin") {
+            this.stores[0].stor_type = "Store";
+            this.stores[1].stor_type = "Store";
+            this.stores[0].mall_name = this.user.store_id;
+            this.stores[1].mall_name = this.user.store_id;
+          } 
+          // } else {
+
+          // }
           this.initval = false;
         })
         .catch((err) => {
@@ -1502,9 +1559,15 @@ export default {
             if (res.data.status == "S") {
               this.$toast.success(this.array_data);
               this.message = res.data.message;
-              this.$router.push({
-                name: "stores",
-              });
+              if (this.user.rolename == "StoreAdmin") {
+                this.$router.push({
+                  name: "my_stores",
+                });
+              } else {
+                this.$router.push({
+                  name: "stores",
+                });
+              }
             } else {
               this.$toast.error(this.array_data);
             }

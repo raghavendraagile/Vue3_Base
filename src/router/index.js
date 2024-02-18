@@ -428,6 +428,16 @@ const routes = [
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/CustomerNewsletter/IndexPage.vue"),
   },
+
+  //MyStores
+    // Stores
+    {
+      path: "/:lang?/my_stores",
+      name: "my_stores",
+      // meta: { layout: "userpages" },
+      component: () => import("../components/Cruds/MyStores/IndexPage.vue"),
+    },
+   
   
 ];
 

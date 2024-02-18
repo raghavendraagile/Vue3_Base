@@ -1,9 +1,19 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('stores')"
+        :google_icon="google_icon"
+        v-if="user.rolename != 'StoreAdmin'"
+      ></page-title>
+      <page-title
+        v-else
+        class="col-md-4 ml-2"
+        :heading="$t('my_store')"
         :google_icon="google_icon"
       ></page-title>
     </div>
@@ -22,6 +32,7 @@
         </v-tabs>
         <v-window v-model="tabs">
           <!-- ENGLISH TAB STARTS -->
+
           <v-window-item :value="1" class="p-3">
             <v-card
               variant="elevated"
@@ -33,6 +44,85 @@
               <v-layout>
                 <v-row class="px-6 mt-2">
                   <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("name_en") }}</div>
+                    <div>{{ store.name }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("email_en") }}</div>
+                    <div>{{ store.email }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="2">
+                    <div class="d-label">{{ $t("phone_en") }}</div>
+                    <div>{{ store.email }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="2" class="image-preview">
+                    <div class="d-label">{{ $t("image_preview_en") }}</div>
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-if="store.icon == null"
+                      src="@/assets/images/no_image.png"
+                      width="100"
+                    />
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-else
+                      :src="envImagePath + store.icon"
+                      width="100"
+                      height="65
+                          "
+                      alt
+                    />
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("category_en") }}</div>
+                    <div
+                      v-for="(cat, cat_index) in category_en"
+                      :key="cat_index"
+                    >
+                      <v-chip
+                        color="green"
+                        v-if="store.categories.includes(cat.header_id)"
+                      >
+                        <span>{{ cat.name }}</span>
+                      </v-chip>
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("mall_en") }}</div>
+                    <div v-if="store.mall_details">
+                      {{ store.mall_details.name }}
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("address_en") }}</div>
+                    <div>
+                      {{ store.address }}
+                    </div>
+                  </v-col>
+
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("description_en") }}</div>
+                    <div>
+                      {{ store.description }}
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("meta_title_en") }}</div>
+                    <div>
+                      {{ store.meta_title }}
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("meta_description_en") }}</div>
+                    <div>
+                      {{ store.meta_description }}
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("approval_status_en") }}</div>
                     <div>
                       <v-chip
@@ -43,10 +133,6 @@
                         {{ store.approval_status }}
                       </v-chip>
                     </div>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("name_en") }}</div>
-                    <div>{{ store.name }}</div>
                   </v-col>
 
                   <v-col cols="12" sm="6" md="4">
@@ -62,18 +148,7 @@
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("meta_title_en") }}</div>
-                    <div>{{ store.meta_title }}</div>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="12">
-                    <div class="d-label">{{ $t("description_en") }}</div>
-                    <div v-html="store.description"></div>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="12">
-                    <div class="d-label">{{ $t("meta_description_en") }}</div>
-                    <div>{{ store.meta_description }}</div>
-                  </v-col>
+
                   <v-col
                     cols="12"
                     sm="12"
@@ -92,7 +167,10 @@
               </v-layout>
               <div
                 class="d-flex justify-content-end"
-                v-if="store.approval_status == 'In Review'"
+                v-if="
+                  store.approval_status == 'In Review' &&
+                  user.rolename != 'StoreAdmin'
+                "
               >
                 <v-chip
                   @click="statusOnChange('Approved', store.header_id)"
@@ -126,6 +204,90 @@
               <v-layout>
                 <v-row class="px-6 mt-2">
                   <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("name_ar") }}</div>
+                    <div>{{ store.name }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("email_ar") }}</div>
+                    <div>{{ store.email }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="2">
+                    <div class="d-label">{{ $t("phone_ar") }}</div>
+                    <div>{{ store.email }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="2" class="image-preview">
+                    <div class="d-label">{{ $t("image_preview_ar") }}</div>
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-if="store.icon == null"
+                      src="@/assets/images/no_image.png"
+                      width="100"
+                    />
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-else
+                      :src="envImagePath + store.icon"
+                      width="100"
+                      height="65
+                          "
+                      alt
+                    />
+                  </v-col>
+                   <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("category_ar") }}</div>
+                    <div
+                      v-for="(cat, cat_index) in category_en"
+                      :key="cat_index"
+                    >
+                      <v-chip
+                        color="green"
+                        v-if="store.categories.includes(cat.header_id)"
+                      >
+                        <span>{{ cat.name }}</span>
+                      </v-chip>
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("mall_ar") }}</div>
+                    <div v-if="store.mall_details">
+                      {{ store.mall_details.name }}
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("address_ar") }}</div>
+                    <div>
+                      {{ store.address }}
+                    </div>
+                  </v-col>
+                  <!-- <v-col cols="12" sm="6" md="2">
+                    <div class="d-label">{{ $t("title_en") }}</div>
+                    <div >
+                        {{ store.title }}
+                    </div>
+                  </v-col> -->
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("description_ar") }}</div>
+                    <div>
+                      {{ store.description }}
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("meta_title_ar") }}</div>
+                    <div>
+                      {{ store.meta_title }}
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("meta_description_ar") }}</div>
+                    <div>
+                      {{ store.meta_description }}
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("approval_status_ar") }}</div>
                     <div>
                       <v-chip
@@ -133,13 +295,9 @@
                         :color="getStatusColor(store.approval_status)"
                         variant="outlined"
                       >
-                        {{ changeStatusAr(store.approval_status) }}
+                        {{ store.approval_status }}
                       </v-chip>
                     </div>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("name_ar") }}</div>
-                    <div>{{ store.name }}</div>
                   </v-col>
 
                   <v-col cols="12" sm="6" md="4">
@@ -155,18 +313,7 @@
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("meta_title_ar") }}</div>
-                    <div>{{ store.meta_title }}</div>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="12">
-                    <div class="d-label">{{ $t("description_ar") }}</div>
-                    <div v-html="store.description"></div>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="12">
-                    <div class="d-label">{{ $t("meta_description_ar") }}</div>
-                    <div>{{ store.meta_description }}</div>
-                  </v-col>
+
                   <v-col
                     cols="12"
                     sm="12"
@@ -185,7 +332,10 @@
               </v-layout>
               <div
                 class="d-flex justify-content-end"
-                v-if="store.approval_status == 'In Review'"
+                v-if="
+                  store.approval_status == 'In Review' &&
+                  user.rolename != 'StoreAdmin'
+                "
               >
                 <v-chip
                   @click="statusOnChange('Approved', store.header_id)"
@@ -258,6 +408,7 @@ export default {
     successmessage: "",
     message: "",
     valid_error: false,
+    user: "",
     file: "",
     loading: false,
     isBtnLoading: false,
@@ -266,6 +417,8 @@ export default {
     tabs: 1,
     stores_en: [],
     stores_ar: [],
+    category_en: [],
+    category_ar: [],
     showApprovalDialog: false,
     selected: {
       header_id: null,
@@ -282,19 +435,38 @@ export default {
       handler() {
         if (this.$route.query.slug) {
           this.fetchStoreDetails();
+          this.user = JSON.parse(localStorage.getItem("user_data"));
+
+          this.fetchCategory();
         }
       },
     },
-    '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
 
   methods: {
+    fetchCategory() {
+      this.initval = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-category")
+        .then((res) => {
+          this.category_en = res.data.category_en;
+          this.category_ar = res.data.category_ar;
+          this.initval = false;
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          this.initval = false;
+          console.log(err);
+        });
+    },
     changeStatusAr(status) {
       switch (status) {
         case "Approved":
@@ -405,9 +577,15 @@ export default {
       }
     },
     cancel() {
-      this.$router.push({
-        name: "stores",
-      });
+      if (this.user.rolename == "StoreAdmin") {
+        this.$router.push({
+          name: "my_stores",
+        });
+      } else {
+        this.$router.push({
+          name: "stores",
+        });
+      }
     },
     closeReviewComment() {
       this.enable_review_comment = false;

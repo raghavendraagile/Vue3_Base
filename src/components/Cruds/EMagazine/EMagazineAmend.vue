@@ -920,7 +920,7 @@ export default {
               console.log("x", x);
               return x.mall_name == this.user.store_id;
             });
-            this.user.store_id;
+            // this.user.store_id;
             this.stores_data_ar = this.stores_data_ar.filter((x) => {
               return x.mall_name == this.user.store_id;
             });
