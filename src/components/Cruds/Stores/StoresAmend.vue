@@ -124,7 +124,12 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" xs="12" sm="12" :md="stores[0].stor_type == 'Store'?3:6">
+                  <v-col
+                    cols="12"
+                    xs="12"
+                    sm="12"
+                    :md="stores[0].stor_type == 'Store' ? 3 : 6"
+                  >
                     <v-tooltip :text="$t('name_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -182,7 +187,13 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" xs="12" sm="12" md="3" v-if="stores[0].stor_type == 'Store'">
+                  <v-col
+                    cols="12"
+                    xs="12"
+                    sm="12"
+                    md="3"
+                    v-if="stores[0].stor_type == 'Store'"
+                  >
                     <v-tooltip :text="$t('store_code')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -461,6 +472,15 @@
                           </div>
                         </v-hover>
                       </div>
+                      <span>
+                        <v-icon
+                          small
+                          v-if="stores[0].icon"
+                          class="mr-2 edit_btn icon_size delete_icon"
+                          @click="removeImage(0)"
+                          >mdi mdi-trash-can-outline</v-icon
+                        >
+                      </span>
                       <a
                         class="text-center pointer"
                         @click="downloadImage(stores[0].icon)"
@@ -683,7 +703,13 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" xs="12" sm="12" md="3" v-if="stores[0].stor_type == 'Store'">
+                  <v-col
+                    cols="12"
+                    xs="12"
+                    sm="12"
+                    md="3"
+                    v-if="stores[0].stor_type == 'Store'"
+                  >
                     <v-tooltip :text="$t('store_code_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -964,6 +990,15 @@
                           </div>
                         </v-hover>
                       </div>
+                      <span>
+                        <v-icon
+                          small
+                          v-if="stores[1].icon"
+                          class="mr-2 edit_btn icon_size delete_icon_ar"
+                          @click="removeImage(1)"
+                          >mdi mdi-trash-can-outline</v-icon
+                        >
+                      </span>
                       <a
                         class="text-center pointer"
                         @click="downloadImage(stores[1].icon)"
@@ -1660,6 +1695,13 @@ export default {
     clear() {
       this.$refs.form.reset();
     },
+    removeImage(index) {
+      if (index == 1) {
+        this.stores[1].icon = null;
+      } else {
+        this.stores[0].icon = null;
+      }
+    },
   },
 };
 </script>
@@ -1713,5 +1755,21 @@ input.larger {
 
 .arabdirection /deep/ .v-input {
   direction: rtl !important;
+}
+.delete_icon {
+  position: relative;
+  left: 112px;
+  bottom: 90px;
+}
+.delete_icon_ar {
+  position: relative;
+  right: 110px;
+  bottom: 90px;
+}
+.download_btn_color {
+  color: blue;
+}
+.pointer {
+  cursor: pointer;
 }
 </style>
