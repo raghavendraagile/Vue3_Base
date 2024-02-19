@@ -703,6 +703,7 @@ export default {
         stor_type: "",
       },
     ],
+    role_array:[],
     stores_en: [],
     stores_ar: [],
     envImagePath: process.env.VUE_APP_IMAGE_PATH,

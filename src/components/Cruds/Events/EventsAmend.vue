@@ -37,6 +37,7 @@
                     <v-radio
                       v-for="(role_data, rindex) in role_array"
                       :key="rindex"
+                      :disabled="this.$route.query.slug"
                       :label="changeRoleName(role_data.rolename)"
                       :value="role_data.rolename"
                       class="text--primary"
@@ -50,7 +51,9 @@
             </v-layout>
             <v-row class="mx-auto mt-2" max-width="344">
               <v-col
-                cols="12" sm="12" md="3"
+                cols="12"
+                sm="12"
+                md="3"
                 v-if="user.rolename != 'StoreAdmin'"
               >
                 <v-tooltip :text="labelText" location="bottom">
@@ -62,6 +65,10 @@
                       @update:modelValue="(value) => updateStore(value)"
                       variant="outlined"
                       density="compact"
+                      :disabled="
+                        user.rolename == 'MallAdmin' &&
+                        events[0].stor_type == 'MallAdmin'
+                      "
                       :items="stores_en"
                       item-title="name"
                       item-value="header_id"
@@ -71,9 +78,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col
-               cols="12" sm="12" md="3"
-              >
+              <v-col cols="12" sm="12" md="3">
                 <v-tooltip :text="this.$t('title')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -272,7 +277,11 @@
         <!-- ENGLISH TAB STOPS -->
         <!-- ARABIC TAB STARTS -->
         <v-window-item :value="2">
-          <v-form ref="form" v-model="valid" style="direction:rtl; text-align:end">
+          <v-form
+            ref="form"
+            v-model="valid"
+            style="direction: rtl; text-align: end"
+          >
             <v-layout v-if="user.rolename != 'StoreAdmin'">
               <!-- :disabled="$route.query.slug" -->
               <v-row class="px-6 mt-2 arabdirection">
@@ -286,6 +295,7 @@
                     <v-radio
                       v-for="(role_data, rindex) in role_array"
                       :key="rindex"
+                      :disabled="this.$route.query.slug"
                       :label="changeStatusAr(role_data.rolename)"
                       :value="role_data.rolename"
                       class="text--primary"
@@ -299,7 +309,11 @@
             </v-layout>
             <v-row class="mx-auto mt-2 arabdirection" max-width="344">
               <v-col cols="12" sm="12" md="3">
-                <v-tooltip :text="label_text_ar" location="bottom">
+                <v-tooltip
+                  :text="label_text_ar"
+                  location="bottom"
+                  v-if="user.rolename != 'StoreAdmin'"
+                >
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
                       v-bind="props"
@@ -308,6 +322,10 @@
                       :label="label_text_ar"
                       variant="outlined"
                       density="compact"
+                      :disabled="
+                        user.rolename == 'MallAdmin' &&
+                        events[1].stor_type == 'MallAdmin'
+                      "
                       :items="stores_ar"
                       item-title="name"
                       item-value="header_id"
@@ -345,7 +363,7 @@
                       :stored_date="events[1].start_date"
                       @formatted_date="formatted_start_date_ar"
                       dense
-                      :translation = "'arabic'"
+                      :translation="'arabic'"
                       :class_required="'RequiredField rtl'"
                       :rules="fieldRulesAr"
                       v-on="on"
@@ -361,7 +379,7 @@
                       v-bind="props"
                       :label="$t('end_date_ar')"
                       :rules="fieldRulesAr"
-                      :translation = "'arabic'"
+                      :translation="'arabic'"
                       :min="new Date().toISOString().substr(0, 10)"
                       :stored_date="events[1].end_date"
                       @formatted_date="formatted_end_date_ar"
@@ -603,6 +621,7 @@ export default {
     labelText: "Mall",
     label_text_ar: "مجمع تجاري",
     tabs: 1,
+    role_array:[],
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
     valid: true,
     loader: false,
@@ -653,6 +672,7 @@ export default {
     uploadfilear: false,
     noimagepreview: "",
     items: [],
+    mall_id: null,
   }),
 
   computed: {
@@ -741,22 +761,43 @@ export default {
       setTimeout(() => {
         if (this.tabs == 1) {
           this.events[1].stor_type = stor_type;
-          if (stor_type == "MallAdmin") {
+          if (stor_type == "MallAdmin" && this.user.rolename == "MallAdmin") {
+            // alert(stor_type);
+            if (!this.$route.query.slug) {
+              this.events[1].store_id = this.mall_id;
+              this.events[0].store_id = this.mall_id;
+            }
+            this.labelText = this.$t("mall");
+            this.label_text_ar = this.$t("mall_ar");
+            this.stores_en = this.mal_data_en;
+            this.stores_ar = this.mal_data_ar;
+          } else if (stor_type == "MallAdmin") {
             this.labelText = this.$t("mall");
             this.label_text_ar = this.$t("mall_ar");
             this.stores_en = this.mal_data_en;
             this.stores_ar = this.mal_data_ar;
           } else {
-            // alert("asdsad");
+            // alert("sadasd");
             this.labelText = this.$t("store");
             this.label_text_ar = this.$t("store_ar");
             this.stores_en = this.stores_data_en;
             this.stores_ar = this.stores_data_ar;
-            // console.log("asdasd", this.stores_data_en);
           }
         } else {
           this.events[0].stor_type = stor_type;
-          if (stor_type == "MallAdmin") {
+          if (stor_type == "MallAdmin" && this.user.rolename == "MallAdmin") {
+            console.log("asdasd", this.stores_en);
+            if (!this.$route.query.slug) {
+              this.events[1].store_id = this.mall_id;
+              this.events[0].store_id = this.mall_id;
+            }
+            this.labelText = this.$t("mall");
+            this.label_text_ar = this.$t("mall_ar");
+            this.stores_en = this.mal_data_en;
+            this.stores_ar = this.mal_data_ar;
+          } else if (stor_type == "MallAdmin") {
+            // this.events[1].store_id = this.mall_id;
+            // this.events[0].store_id = this.mall_id;
             this.labelText = this.$t("mall");
             this.label_text_ar = this.$t("mall_ar");
             this.stores_en = this.mal_data_en;
@@ -768,7 +809,7 @@ export default {
             this.stores_ar = this.stores_data_ar;
           }
         }
-      }, 1000);
+      }, 1500);
     },
     fetchMall() {
       this.initval = true;
@@ -778,7 +819,15 @@ export default {
           console.log(response);
           this.mal_data_en = response.data.malls_en;
           this.mal_data_ar = response.data.malls_ar;
-          this.initval = false;
+           if (this.user.rolename == "MallAdmin" && !this.$route.query.slug) {
+            this.mal_data_en.filter((ele) => {
+              if (ele.header_id === this.user.store_id) {
+                this.events[0].store_id = ele.header_id;
+                this.events[1].store_id = ele.header_id;
+                this.mall_id = ele.header_id;
+              }
+            });
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -816,7 +865,7 @@ export default {
         .then((response) => {
           this.loader = false;
           this.role_array = response.data.roles;
-          if (!this.$route.query.slug && this.user.rolename == "SuperUser") {
+         if (!this.$route.query.slug && this.user.rolename == "SuperUser") {
             this.events[0].stor_type = this.role_array[0].rolename;
             this.events[1].stor_type = this.role_array[0].rolename;
             this.updateType(this.events[0].stor_type);
@@ -824,9 +873,9 @@ export default {
             this.user.rolename === "MallAdmin" &&
             !this.$route.query.slug
           ) {
-            this.role_array = response.data.roles.filter(
-              (role) => role.rolename !== "MallAdmin"
-            );
+            // this.role_array = response.data.roles.filter(
+            //   (role) => role.rolename == "StoreAdmin"
+            // );
             this.events[0].stor_type = this.role_array[0].rolename;
             this.events[1].stor_type = this.role_array[0].rolename;
             this.updateType(this.events[0].stor_type);
@@ -834,9 +883,6 @@ export default {
             this.user.rolename === "MallAdmin" &&
             this.$route.query.slug
           ) {
-            this.role_array = response.data.roles.filter(
-              (role) => role.rolename == "StoreAdmin"
-            );
             this.assignType(this.events[0].stor_type);
           }
         })

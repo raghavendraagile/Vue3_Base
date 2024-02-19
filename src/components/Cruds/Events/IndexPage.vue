@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div flat color="white" class="row py-5 pl-5 align-items-center component_app_bar" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      flat
+      color="white"
+      class="row py-5 pl-5 align-items-center component_app_bar"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-3"
         :heading="$t('events')"
@@ -65,11 +70,11 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td>
-                <span v-if="props.item.selectable.description">
-                  {{ props.item.selectable.description }}</span
-                >
-                <span v-else>{{ $t("not_appllicable") }}</span>
+              <td v-if="props.item.selectable.description">
+                <span v-html="props.item.selectable.description"> </span>
+              </td>
+              <td v-else>
+                <span>{{ $t("not_appllicable") }}</span>
               </td>
               <td>
                 <span v-if="props.item.selectable.start_date">
@@ -195,11 +200,11 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td>
-                <span v-if="props.item.selectable.description">
-                  {{ props.item.selectable.description }}</span
-                >
-                <span v-else>{{ $t("not_appllicable") }}</span>
+              <td v-if="props.item.selectable.description">
+                <span v-html="props.item.selectable.description"> </span>
+              </td>
+              <td v-else>
+                <span>{{ $t("not_appllicable") }}</span>
               </td>
 
               <td>
@@ -376,18 +381,17 @@ export default {
   mounted() {
     this.user = JSON.parse(localStorage.getItem("user"));
     this.fetchEvents();
-  
-
   },
-watch:{
-    '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+  watch: {
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
-},
+    },
+  },
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
@@ -474,7 +478,6 @@ watch:{
     },
   },
   methods: {
-    
     changeStatusAr(status) {
       switch (status) {
         case "Approved":
