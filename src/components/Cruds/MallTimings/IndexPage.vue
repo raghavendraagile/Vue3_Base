@@ -1,6 +1,11 @@
 <template>
   <div class="main-20 position-relative">
-    <div flat color="white" class="row py-5 pl-5 align-items-center component_app_bar" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      flat
+      color="white"
+      class="row py-5 pl-5 align-items-center component_app_bar"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-3"
         :heading="$t('mall_timings')"
@@ -67,7 +72,10 @@
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td>
-                {{ props.item.selectable.child_category.name }}
+                <span v-if="props.item.selectable.child_category">{{
+                  props.item.selectable.child_category.name
+                }}</span>
+                <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td>{{ props.item.selectable.from_day }}</td>
               <td>{{ props.item.selectable.to_day }}</td>
@@ -145,7 +153,10 @@
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td>
-                {{ props.item.selectable.child_category.name }}
+                <span v-if="props.item.selectable.child_category">{{
+                  props.item.selectable.child_category.name
+                }}</span>
+                <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td>{{ props.item.selectable.from_day }}</td>
               <td>{{ props.item.selectable.to_day }}</td>
@@ -249,7 +260,7 @@ export default {
     status_id: null,
     showStatusDialog: false,
     tabs: 1,
-    sel_lang:""
+    sel_lang: "",
   }),
 
   computed: {
@@ -328,13 +339,14 @@ export default {
     dialog(val) {
       val || this.close();
     },
-    '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
 
   created() {},

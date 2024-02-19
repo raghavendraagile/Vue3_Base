@@ -261,7 +261,7 @@
           <!-- ARABIC TAB STARTS -->
           <v-window-item :value="2">
             <v-form ref="form" v-model="valid">
-              <v-row class="arabdirection" style="direction:rtl">
+              <v-row class="arabdirection" style="direction: rtl">
                 <v-col cols="12" sm="12" md="4" class="pr-5">
                   <v-tooltip :text="this.$t('mall_ar')" location="bottom">
                     <template v-slot:activator="{ props }">
@@ -849,6 +849,9 @@ export default {
         });
     },
     submit() {
+      this.isBtnLoading = true;
+      this.isDisabled = true;
+      this.loading = true;
       if (this.category.description == "") {
         this.quill_item = true;
       }
@@ -892,9 +895,12 @@ export default {
             this.isBtnLoading = false;
             this.$toast.error(this.$t("something_went_wrong"));
             console.log("error", err);
+          })
+          .finally(() => {
+            this.isBtnLoading = false;
+            this.isDisabled = false;
+            this.loading = false;
           });
-        this.isDisabled = false;
-        this.isBtnLoading = false;
       }
     },
     onEditorChange(event) {
