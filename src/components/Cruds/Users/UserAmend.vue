@@ -531,7 +531,7 @@ export default {
     },
 
     postcodeRules() {
-      return [(v) => (v >= 0 && v <= 9999) || this.$t("postcode_valid")];
+      return [(v) => (v >= 0 && v <= 999999) || this.$t("postcode_valid")];
     },
 
     fieldRules() {
