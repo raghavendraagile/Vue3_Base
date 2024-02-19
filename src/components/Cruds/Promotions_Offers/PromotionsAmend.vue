@@ -310,6 +310,15 @@
                       >{{ $t("download_en") }}</span
                     >
                   </a>
+                  <span>
+                    <v-icon
+                      small
+                      v-if="promotions[0].image_path"
+                      class="mr-2 edit_btn icon_size delete_icon"
+                      @click="removeImage(0)"
+                      >mdi mdi-trash-can-outline</v-icon
+                    >
+                  </span>
                 </div>
 
                 <br />
@@ -371,7 +380,7 @@
                       v-model="promotions[1].store_id"
                       @update:modelValue="(value) => updateMall(value)"
                       :label="label_text_ar"
-                      :rules="fieldRules"
+                      :rules="fieldRulesAr"
                       variant="outlined"
                       :loading="store_loader"
                       density="compact"
@@ -393,7 +402,7 @@
                     <v-text-field
                       v-on="on"
                       v-model="promotions[1].title"
-                      :rules="fieldRules"
+                      :rules="fieldRulesAr"
                       v-bind:label="$t('title_ar')"
                       v-bind="props"
                       required
@@ -430,7 +439,7 @@
                     <v-text-field
                       v-on="on"
                       v-model="promotions[1].email"
-                      :rules="emailRules"
+                      :rules="emailRulesAr"
                       v-bind:label="$t('email_ar')"
                       v-bind="props"
                       required
@@ -451,7 +460,7 @@
                       @update:modelValue="
                         (value) => updatePromotionType(value, 0)
                       "
-                      :rules="fieldRules"
+                      :rules="fieldRulesAr"
                       v-bind:label="$t('type_ar')"
                       variant="outlined"
                       density="compact"
@@ -503,7 +512,7 @@
                     <v-text-field
                       v-on="on"
                       v-model="promotions[1].meta_title"
-                      :rules="fieldRules"
+                      :rules="fieldRulesAr"
                       v-bind:label="$t('meta_title_ar')"
                       v-bind="props"
                       required
@@ -522,7 +531,7 @@
                       v-on="on"
                       rows="2"
                       v-model="promotions[1].description"
-                      :rules="fieldRules"
+                      :rules="fieldRulesAr"
                       maxlength="2000"
                       v-bind="props"
                       v-bind:label="$t('description_ar')"
@@ -544,7 +553,7 @@
                       v-on="on"
                       rows="2"
                       v-model="promotions[1].meta_description"
-                      :rules="fieldRules"
+                      :rules="fieldRulesAr"
                       maxlength="160"
                       v-bind="props"
                       v-bind:label="$t('meta_description_ar')"
@@ -604,16 +613,27 @@
                       </div>
                     </v-hover>
                   </div>
-                  <a
-                    class="text-center image_cursor"
-                    @click="downloadImage(promotions[1].image_path)"
-                  >
-                    <span
-                      v-if="promotions[1].image_path"
-                      class="download_btn_color"
-                      >{{ $t("download_ar") }}</span
+                  <div class="text-right">
+                    <a
+                      class="text-center image_cursor"
+                      @click="downloadImage(promotions[1].image_path)"
                     >
-                  </a>
+                      <span
+                        v-if="promotions[1].image_path"
+                        class="download_btn_color"
+                        >{{ $t("download_ar") }}</span
+                      >
+                    </a>
+                    <span>
+                      <v-icon
+                        small
+                        v-if="promotions[1].image_path"
+                        class="mr-2 edit_btn icon_size delete_icon_ar"
+                        @click="removeImage(1)"
+                        >mdi mdi-trash-can-outline</v-icon
+                      >
+                    </span>
+                  </div>
                 </div>
 
                 <br />
@@ -622,7 +642,7 @@
                   :resizewidth="0.4"
                   :resizeheight="0.1"
                   @uploaded_image="uploaded_image"
-                  :upload_profile="uploadfile"
+                  :upload_profile="uploadfilear"
                 />
               </v-col>
             </v-row>
@@ -696,6 +716,7 @@ export default {
     isDisabled: false,
     checkbox_value: false,
     uploadfile: false,
+    uploadfilear: false,
     p_type_en: [],
     p_type_ar: [],
     stores_en: [],
@@ -760,6 +781,15 @@ export default {
           this.$t("email_valid"),
       ];
     },
+    emailRulesAr() {
+      return [
+        (v) => !!v || this.$t("email_required_ar"),
+        (v) =>
+          !v ||
+          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+          this.$t("email_valid"),
+      ];
+    },
     phoneRules() {
       return [
         (v) => (v >= 0 && v <= 999999999999) || this.$t("number_required"),
@@ -775,6 +805,10 @@ export default {
 
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
+    },
+
+    fieldRulesAr() {
+      return [(v) => !!v || this.$t("field_required_ar")];
     },
   },
   mounted() {
@@ -848,6 +882,13 @@ export default {
         //   return this.$t("rejected_ar");
         default:
           return "";
+      }
+    },
+    removeImage(index) {
+      if (index == 1) {
+        this.promotions[1].image_path = null;
+      } else {
+        this.promotions[0].image_path = null;
       }
     },
     fetchMall() {
@@ -1039,24 +1080,31 @@ export default {
       }
     },
     uploadFile() {
-      //alert('hai');
-      if (this.uploadfile == false) {
-        this.uploadfile = true;
+      if (this.tabs == 1) {
+        if (this.uploadfile == false) {
+          this.uploadfile = true;
+        } else {
+          this.uploadfile = false;
+        }
       } else {
-        this.uploadfile = false;
+        if (this.uploadfilear == false) {
+          this.uploadfilear = true;
+        } else {
+          this.uploadfilear = false;
+        }
       }
     },
     formatted_start_date(formatted_date) {
       this.promotions[0].start_date = formatted_date;
       this.promotions[1].start_date = formatted_date;
-      this.promotions[1].end_date = '';
-      this.promotions[0].end_date = '';
+      this.promotions[1].end_date = "";
+      this.promotions[0].end_date = "";
     },
     formatted_start_date_ar(formatted_date) {
       this.promotions[1].start_date = formatted_date;
       this.promotions[0].start_date = formatted_date;
-      this.promotions[1].end_date = '';
-      this.promotions[0].end_date = '';
+      this.promotions[1].end_date = "";
+      this.promotions[0].end_date = "";
     },
     formatted_end_date(formatted_date) {
       this.promotions[0].end_date = formatted_date;
@@ -1162,7 +1210,16 @@ input.larger {
 .arabdirection /deep/ .v-input {
   direction: rtl !important;
 }
-
+.delete_icon_ar {
+  position: relative;
+  right: 65px;
+  bottom: 90px;
+}
+.delete_icon {
+  position: relative;
+  left: 45px;
+  bottom: 90px;
+}
 /* .arabdirection /deep/ .v-input {
   direction: rtl !important;
 } */
