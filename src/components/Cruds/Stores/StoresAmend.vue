@@ -1317,7 +1317,7 @@ export default {
             (digitsOnly.length > 0 &&
               digitsOnly.length <= 12 &&
               /^\d+$/.test(digitsOnly)) ||
-            this.$t("valid_number_required")
+            this.$t("valid_number_required_ar")
           );
         },
       ];
