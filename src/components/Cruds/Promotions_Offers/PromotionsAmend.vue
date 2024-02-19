@@ -73,6 +73,7 @@
                         user.rolename == 'MallAdmin' &&
                         promotions[0].stor_type == 'MallAdmin'
                       "
+                      :loading="store_loader"
                       density="compact"
                       :rules="fieldRules"
                       :items="stores_en"
@@ -146,11 +147,14 @@
                     <v-select
                       v-bind="props"
                       v-model="promotions[0].type"
-                      @update:modelValue="(value) => updateType(value)"
                       v-bind:label="$t('type_en')"
                       variant="outlined"
+                      @update:modelValue="
+                        (value) => updatePromotionType(value, 1)
+                      "
                       density="compact"
                       class="required_field"
+                      :rules="fieldRules"
                       required
                       index="id"
                       :items="p_type_en"
@@ -369,6 +373,7 @@
                       :label="label_text_ar"
                       :rules="fieldRules"
                       variant="outlined"
+                      :loading="store_loader"
                       density="compact"
                       :disabled="
                         user.rolename == 'MallAdmin' &&
@@ -443,7 +448,9 @@
                     <v-select
                       v-bind="props"
                       v-model="promotions[1].type"
-                      @update:modelValue="(value) => updateType(value)"
+                      @update:modelValue="
+                        (value) => updatePromotionType(value, 0)
+                      "
                       :rules="fieldRules"
                       v-bind:label="$t('type_ar')"
                       variant="outlined"
@@ -681,6 +688,7 @@ export default {
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
     valid: true,
     loader: false,
+    store_loader: false,
     file: "",
     sel_lang: "",
     isBtnLoading: false,
@@ -815,6 +823,9 @@ export default {
     },
   },
   methods: {
+    updatePromotionType(value, index) {
+      this.promotions[index].type = value;
+    },
     changeRoleName(role_name) {
       switch (role_name) {
         case "MallAdmin":
@@ -901,12 +912,15 @@ export default {
         });
     },
     updateType(stor_type) {
-      // this.promotions[1].store_id = null;
-      // this.promotions[0].store_id = null;
+      this.promotions[1].store_id = null;
+      this.promotions[0].store_id = null;
       this.assignType(stor_type);
     },
     assignType(stor_type) {
+      this.store_loader = true;
       setTimeout(() => {
+        this.store_loader = false;
+
         if (this.tabs == 1) {
           this.promotions[1].stor_type = stor_type;
           if (stor_type == "MallAdmin" && this.user.rolename == "MallAdmin") {
