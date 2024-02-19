@@ -173,7 +173,9 @@
                     <span v-if="sel_lang == 'ar'">{{
                       changeArMeridian(props.item.selectable.from_meridiem)
                     }}</span>
-                    <span v-else>{{ props.item.selectable.from_meridiem }}</span>
+                    <span v-else>{{
+                      props.item.selectable.from_meridiem
+                    }}</span>
                   </td>
                   <td v-else>{{ $t("holiday") }}</td>
                   <td v-if="props.item.selectable.is_holiday == 0">
@@ -421,12 +423,16 @@ export default {
         .then((res) => {
           this.initval = false;
           let store_timing = [];
-          res.data.store_timings.map((ele) => {
-            if (ele.store_timings) {
-              console.log(ele);
-              store_timing.push(ele);
-            }
-          });
+          console.log("timings array",res.data.store_timings)
+          if (res.data.store_timings) {
+            // alert("alert")
+            res.data.store_timings.map((timings) => {
+              if (timings.store_timings) {
+                // console.log(ele);
+                store_timing.push(timings);
+              }
+            });
+          }
           this.store_timings = store_timing;
         })
         .catch((err) => {

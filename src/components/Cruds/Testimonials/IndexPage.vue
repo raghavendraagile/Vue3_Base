@@ -51,9 +51,17 @@
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
-              <td>
+               <td
+                v-if="
+                  props.item.selectable.customer &&
+                  props.item.selectable.customer.firstname
+                "
+              >
                 {{ props.item.selectable.customer.firstname }}
                 {{ props.item.selectable.customer.lastname }}
+              </td>
+              <td v-else>
+                {{ $t("not_appllicable") }}
               </td>
               <td>{{ props.item.selectable.testimonial_details }}</td>
               <td>
@@ -136,9 +144,17 @@
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
-              <td>
+              <td
+                v-if="
+                  props.item.selectable.customer &&
+                  props.item.selectable.customer.firstname
+                "
+              >
                 {{ props.item.selectable.customer.firstname }}
                 {{ props.item.selectable.customer.lastname }}
+              </td>
+              <td v-else>
+                {{ $t("not_appllicable") }}
               </td>
               <td>{{ props.item.selectable.testimonial_details }}</td>
               <td>
@@ -234,8 +250,8 @@
     />
   </div>
 </template>
-    
-  <script>
+
+<script>
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
 export default {
@@ -459,7 +475,7 @@ export default {
   },
 };
 </script>
-  <style scoped>
+<style scoped>
 .list_item {
   cursor: pointer;
 }

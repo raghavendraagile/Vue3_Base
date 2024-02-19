@@ -471,7 +471,9 @@ export default {
         .get(process.env.VUE_APP_API_URL_ADMIN + "stores")
         .then((res) => {
           this.stores_en = res.data.stores_en;
+
           this.stores_ar = res.data.stores_ar;
+          
           this.initval = false;
         })
         .catch((err) => {

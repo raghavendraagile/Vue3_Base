@@ -4,7 +4,7 @@
       flat
       color="white"
       class="row py-5 pl-5 align-items-center component_app_bar position-relative"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
     >
       <page-title
         class="col-md-3"
@@ -169,7 +169,7 @@ export default {
     isDisabled: false,
     showConfirmDialog: false,
     delete_id: "",
-sel_lang: "",
+    sel_lang: "",
     google_icon: {
       icon_name: "group",
       color: "google_icon_gradient",
@@ -184,21 +184,24 @@ sel_lang: "",
     user: "",
     showStatusDialog: false,
   }),
+  created(){
+  this.user = JSON.parse(localStorage.getItem("user_data"));
+   console.log("asdasd", this.user)
+  },
   mounted() {
-
-    this.user = JSON.parse(localStorage.getItem("user"));
-     this.selectedLang();
+ 
+    this.selectedLang();
     this.fetchUsers();
-    
   },
   watch: {
-    '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
   computed: {
     headers() {
@@ -254,7 +257,7 @@ sel_lang: "",
   },
 
   methods: {
-     selectedLang() {
+    selectedLang() {
       this.sel_lang = localStorage.getItem("pref_lang") || "en";
     },
     redirectView(slug) {
@@ -315,10 +318,14 @@ sel_lang: "",
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetchuser")
         .then((res) => {
           this.allUsers = res.data.usersdata;
+          this.allUsers = this.allUsers.filter((elem) => {
+            console.log("dsaasd",this.user);
+            return elem.id !== this.user.id;
+          });
           this.initval = false;
         })
         .catch((err) => {
-          this.$toast.success(this.$t("something_went_wrong"));
+          this.$toast.error(this.$t("something_went_wrong"));
           console.log(" error" + err);
         });
     },
