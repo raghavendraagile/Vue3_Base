@@ -934,6 +934,9 @@ input.larger {
 .arabdirection /deep/ .v-input {
   direction: rtl !important;
 }
+.arabdirection /deep/ .v-messages__message {
+  text-align: right !important;
+}
 .delete_icon_ar {
   position: relative;
   right: 35px;
