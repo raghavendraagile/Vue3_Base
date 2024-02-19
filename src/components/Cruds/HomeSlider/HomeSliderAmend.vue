@@ -129,7 +129,7 @@
                           v-bind:label="$t('sequence_en')"
                           class="required_field rtl"
                           required
-                          :rules="[...fieldRules,...seqRules]"
+                          :rules="[...fieldRules, ...seqRules]"
                           variant="outlined"
                           density="compact"
                           v-on:keypress="NumbersOnly"
@@ -183,6 +183,15 @@
                           >{{ $t("download") }}</span
                         >
                       </a>
+                      <span>
+                        <v-icon
+                          small
+                          v-if="home_slider[0].image"
+                          class="mr-2 edit_btn icon_size delete_icon"
+                          @click="removeImage(0)"
+                          >mdi mdi-trash-can-outline</v-icon
+                        >
+                      </span>
                     </div>
                     <br />
                     <Imageupload
@@ -303,7 +312,7 @@
                           v-bind:label="$t('sequence_ar')"
                           required
                           class="required_field rtl"
-                          :rules="[...fieldRulesAR,...seqRulesAR]"
+                          :rules="[...fieldRulesAR, ...seqRulesAR]"
                           variant="outlined"
                           density="compact"
                           v-on:keypress="NumbersOnly"
@@ -357,6 +366,15 @@
                           >{{ $t("download") }}</span
                         >
                       </a>
+                      <span>
+                        <v-icon
+                          small
+                          v-if="home_slider[1].image"
+                          class="mr-2 edit_btn icon_size delete_icon_ar"
+                          @click="removeImage(1)"
+                          >mdi mdi-trash-can-outline</v-icon
+                        >
+                      </span>
                     </div>
                     <br />
                     <Imageupload
@@ -593,6 +611,13 @@ export default {
   },
 
   methods: {
+    removeImage(index) {
+      if (index == 1) {
+        this.home_slider[1].image = null;
+      } else {
+        this.home_slider[0].image = null;
+      }
+    },
     NumbersOnly(evt) {
       evt = evt ? evt : window.event;
       var charCode = evt.which ? evt.which : evt.keyCode;
@@ -636,9 +661,15 @@ export default {
       if (this.home_slider.description_ar == "") {
         this.quill_item_ar = true;
       }
-      if ((this.$refs.form.validate() && this.valid == true) &&
-        ((this.tabs == 1 && (this.home_slider[0].image != '' && this.home_slider[0].image != null)) ||
-          (this.tabs == 2 && (this.home_slider[1].image != '' && this.home_slider[1].image != null)))
+      if (
+        this.$refs.form.validate() &&
+        this.valid == true &&
+        ((this.tabs == 1 &&
+          this.home_slider[0].image != "" &&
+          this.home_slider[0].image != null) ||
+          (this.tabs == 2 &&
+            this.home_slider[1].image != "" &&
+            this.home_slider[1].image != null))
       ) {
         if (
           this.home_slider.description == "" ||
@@ -681,9 +712,15 @@ export default {
             this.isDisabled = false;
             this.isBtnLoading = false;
           });
-      }
-      else {
-        if ((this.tabs == 1 && (this.home_slider[0].image == '' || this.home_slider[0].image == null)) || (this.tabs == 2 && (this.home_slider[1].image == '' || this.home_slider[1].image == null))) {
+      } else {
+        if (
+          (this.tabs == 1 &&
+            (this.home_slider[0].image == "" ||
+              this.home_slider[0].image == null)) ||
+          (this.tabs == 2 &&
+            (this.home_slider[1].image == "" ||
+              this.home_slider[1].image == null))
+        ) {
           this.have_noimage = true;
         }
       }
@@ -780,5 +817,15 @@ input.larger {
 }
 .arabdirection /deep/ .v-field {
   direction: rtl !important;
+}
+.delete_icon_ar {
+  position: relative;
+  right: 35px;
+  bottom: 90px;
+}
+.delete_icon {
+  position: relative;
+  left: 45px;
+  bottom: 90px;
 }
 </style>
