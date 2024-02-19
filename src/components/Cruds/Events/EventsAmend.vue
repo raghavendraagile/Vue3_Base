@@ -50,11 +50,7 @@
             </v-layout>
             <v-row class="mx-auto mt-2" max-width="344">
               <v-col
-                cols="12"
-                sm="12"
-                md="12"
-                lg="3"
-                xs="12"
+                cols="12" sm="12" md="3"
                 v-if="user.rolename != 'StoreAdmin'"
               >
                 <v-tooltip :text="labelText" location="bottom">
@@ -76,9 +72,7 @@
                 </v-tooltip>
               </v-col>
               <v-col
-                cols="12"
-                sm="12"
-                :md="user.rolename != 'StoreAdmin' ? 4 : 3"
+               cols="12" sm="12" md="3"
               >
                 <v-tooltip :text="this.$t('title')" location="bottom">
                   <template v-slot:activator="{ props }">
@@ -278,7 +272,7 @@
         <!-- ENGLISH TAB STOPS -->
         <!-- ARABIC TAB STARTS -->
         <v-window-item :value="2">
-          <v-form ref="form" v-model="valid">
+          <v-form ref="form" v-model="valid" style="direction:rtl; text-align:end">
             <v-layout v-if="user.rolename != 'StoreAdmin'">
               <!-- :disabled="$route.query.slug" -->
               <v-row class="px-6 mt-2 arabdirection">

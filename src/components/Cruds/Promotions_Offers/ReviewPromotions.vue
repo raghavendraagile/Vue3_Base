@@ -57,13 +57,7 @@
                     <div class="d-label">{{ $t("title_en") }}</div>
                     <div>{{ promotion.title }}</div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("parent_promotions_en") }}</div>
-                    <div v-if="promotion.parent_promotions">
-                      {{ promotion.parent_promotions }}
-                    </div>
-                    <div v-else>{{ $t("not_applicable") }}</div>
-                  </v-col>
+                 
 
                   <v-col cols="12" sm="6" md="4">
                     <div
@@ -166,13 +160,7 @@
                     <div class="d-label">{{ $t("title_ar") }}</div>
                     <div>{{ promotion.title }}</div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("parent_promotions_ar") }}</div>
-                    <div v-if="promotion.parent_promotions">
-                      {{ promotion.parent_promotions }}
-                    </div>
-                    <div v-else>{{ $t("not_applicable") }}</div>
-                  </v-col>
+                  
 
                   <v-col cols="12" sm="6" md="4">
                     <div

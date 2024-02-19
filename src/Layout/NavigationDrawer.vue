@@ -15,7 +15,7 @@ import { navigation } from "../store/navigation.js";
           <span>
             <img
               v-bind:src="app_image_url"
-              style="width: 90px"
+              style="width: 167px"
             />
           </span>
         </div>

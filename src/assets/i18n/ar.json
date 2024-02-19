@@ -475,9 +475,10 @@
   "friday_ar":"الجمعه",
   "saturday_ar":"السبت",
   "holiday_ar":"عطلة",
-  "holiday":"Holiday",
+  "holiday":"عطلة",
   "am_ar":"صباحًا",
-  "pm_ar":"مساءً"
+  "pm_ar":"مساءً",
+  "week_day": "يوم الأسبوع"
 
 
 

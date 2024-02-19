@@ -32,7 +32,6 @@ $color-theme-dark: #fff;
 }
 //light theme start
 #app.theme-light {
-
   .v-navigation-drawer,
   .v-toolbar__content,
   body {
@@ -59,7 +58,6 @@ $color-theme-dark: #fff;
 
 //dark theme start
 #app.theme-dark {
-
   .mdi-checkbox-blank-outline,
   .mdi-checkbox-marked {
     color: rgb(2, 173, 2) !important;
@@ -125,13 +123,11 @@ $color-theme-dark: #fff;
   }
 
   .v-table {
-    &>.v-list-item {
+    & > .v-list-item {
       background: #222 !important;
       color: white;
     }
   }
-
-
 }
 
 //dark theme end
@@ -198,12 +194,15 @@ $color-theme-dark: #fff;
   margin-bottom: 5px;
   margin-right: -1pt;
 }
-.rtl-page-title{    direction: rtl;
- 
-  }
-  .component_app_bar{ width: 100%;
-    display: flex;
-    align-items: center;justify-content: space-between;}
+.rtl-page-title {
+  direction: rtl;
+}
+.component_app_bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .add_new_button {
   width: auto;
   // position: absolute;
@@ -227,11 +226,11 @@ $color-theme-dark: #fff;
   animation-timing-function: ease-in-out !important;
 }
 
-.v-input--error:not(.v-input--disabled) .v-input__details>.v-icon,
+.v-input--error:not(.v-input--disabled) .v-input__details > .v-icon,
 .v-input--error:not(.v-input--disabled) .v-input__details .v-messages,
-.v-input--error:not(.v-input--disabled) .v-input__prepend>.v-icon,
+.v-input--error:not(.v-input--disabled) .v-input__prepend > .v-icon,
 .v-input--error:not(.v-input--disabled) .v-input__prepend .v-messages,
-.v-input--error:not(.v-input--disabled) .v-input__append>.v-icon,
+.v-input--error:not(.v-input--disabled) .v-input__append > .v-icon,
 .v-input--error:not(.v-input--disabled) .v-input__append .v-messages {
   animation-name: shakeError !important;
   animation-fill-mode: forwards !important;
@@ -244,7 +243,7 @@ $color-theme-dark: #fff;
 }
 
 /* Custom Css */
-.v-main>div {
+.v-main > div {
   margin: 9px;
   // box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
@@ -267,7 +266,7 @@ $color-theme-dark: #fff;
   border-radius: 10px;
 }
 
-.login-box-custom>div {
+.login-box-custom > div {
   display: flex;
   display: flex;
   justify-content: space-between;
@@ -422,7 +421,7 @@ input::placeholder {
 }
 
 .switch-lang {
-  display: inline-block; 
+  display: inline-block;
   transition: all 0.5s ease;
 }
 
@@ -431,16 +430,16 @@ input::placeholder {
   cursor: pointer;
 }
 
-.rtl-direction{
+.rtl-direction {
   text-align: right;
   direction: rtl;
 }
 
-.green_btn_color{
+.green_btn_color {
   color: white !important;
   background: green !important;
 }
-.dialog-header{
+.dialog-header {
   background: #614f38;
   color: white;
 }
@@ -461,7 +460,6 @@ input::placeholder {
 //keyframes start
 
 @keyframes bounceAnimation {
-
   0%,
   100% {
     transform: translateY(0);
@@ -472,9 +470,9 @@ input::placeholder {
   }
 }
 
-
 @keyframes bounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -537,11 +535,24 @@ input::placeholder {
     transform: translateX(-2px);
   }
 }
-.v-list-item__content{color: #624e37;}
-.v-tab.v-tab{color: #624e37;}
-.v-list-item__prepend > .v-icon{color: #614f38;}
-@media (orientation: landscape) {.login-box-custom{margin-top: 249px;margin-bottom: 20px;}}
-@media only screen and (min-width: 200px) and (max-width: 767px) and (orientation : portrait) {
-  .login-box-custom{margin:0px 20px;}     
+.v-list-item__content {
+  color: #624e37;
+}
+.v-tab.v-tab {
+  color: #624e37;
+}
+.v-list-item__prepend > .v-icon {
+  color: #614f38;
+}
+@media (orientation: landscape) {
+  .login-box-custom {
+    margin-top: 60px;
+    margin-bottom: 20px;
+  }
+}
+@media only screen and (min-width: 200px) and (max-width: 767px) and (orientation: portrait) {
+  .login-box-custom {
+    margin: 0px 20px;
+  }
 }
 //keyframes end

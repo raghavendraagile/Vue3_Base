@@ -91,7 +91,7 @@
           <!-- ENGLISH TAB END -->
           <!-- ARABIC TAB STARTS -->
           <v-window-item :value="2">
-            <v-form ref="form" v-model="valid">
+            <v-form ref="form" v-model="valid" style="direction:rtl; text-align:end">
               <v-layout>
                 <v-row class="px-6 mt-2 arabdirection">
                   <v-col xs="4" md="4" lg="4">

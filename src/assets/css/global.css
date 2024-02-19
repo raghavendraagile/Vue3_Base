@@ -431,10 +431,6 @@ input::placeholder {
   animation: fadeInUp 0.5s forwards;
 }
 
-.arabdirection{
-  direction:rtl;
-}
-
 @keyframes bounceAnimation {
   0%, 100% {
     transform: translateY(0);
@@ -508,7 +504,7 @@ input::placeholder {
 
 @media (orientation: landscape) {
   .login-box-custom {
-    margin-top: 249px;
+    margin-top: 60px;
     margin-bottom: 20px;
   }
 }

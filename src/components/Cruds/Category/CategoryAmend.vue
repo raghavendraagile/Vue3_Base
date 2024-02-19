@@ -513,7 +513,7 @@
               >
                 <template v-slot:activator="{ props }">
                   <v-switch
-                   v-bind:style="tabs == 1 ? 'direction:ltr' : 'direction:rtl'"
+                    v-bind:style="tabs == 1 ? 'direction:ltr' : 'direction:rtl'"
                     v-bind="props"
                     color="blue"
                     :model-value="category[0].display_header_menu === 1"
@@ -696,16 +696,11 @@ export default {
     this.user_role = JSON.parse(localStorage.getItem("user_data")).rolename;
     const storeid = JSON.parse(localStorage.getItem("user_data")).store_id;
 
-    this.category[0].store_id = storeid;
-    this.category[1].store_id = storeid;
     this.get_malls();
-    // if (this.user_role == 'MallAdmin') {
-    //   this.category[0].store_id =
-    // }
-    // setTimeout(()=>{
-
-    //   // this.setRtlDirection();
-    // },5000)
+    if (this.user_role == "MallAdmin") {
+      this.category[0].store_id = storeid;
+      this.category[1].store_id = storeid;
+    }
   },
 
   watch: {
@@ -822,9 +817,9 @@ export default {
     },
     updateParent(lang, value) {
       if (lang == "en") {
-          this.category[1].parent_id = value;
+        this.category[1].parent_id = value;
       } else {
-          this.category[0].parent_id = value;
+        this.category[0].parent_id = value;
       }
     },
     fetchParentCategories() {

@@ -295,7 +295,7 @@
                         :color="getStatusColor(store.approval_status)"
                         variant="outlined"
                       >
-                        {{ store.approval_status }}
+                        {{ changeStatusAr(store.approval_status) }}
                       </v-chip>
                     </div>
                   </v-col>
@@ -452,6 +452,7 @@ export default {
   },
 
   methods: {
+    
     fetchCategory() {
       this.initval = true;
       this.$axios

@@ -69,7 +69,7 @@
               <!-- {{stores[0].categories}} -->
               <v-layout v-if="stores[0].stor_type == 'Store'">
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" xs="12" sm="12" md="4" lg="4">
+                  <v-col cols="12" xs="12" sm="12" md="6">
                     <v-tooltip :text="this.$t('category')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -96,8 +96,7 @@
                   <v-col
                     xs="12"
                     sm="12"
-                    md="4"
-                    lg="4"
+                    md="6"
                     v-if="user.rolename != 'StoreAdmin'"
                   >
                     <v-tooltip :text="this.$t('mall_name')" location="bottom">
@@ -125,7 +124,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" xs="12" sm="12" md="4">
+                  <v-col cols="12" xs="12" sm="12" :md="stores[0].stor_type == 'Store'?3:6">
                     <v-tooltip :text="$t('name_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -142,11 +141,14 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" xs="12" sm="12" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="3">
                     <v-tooltip :text="$t('email_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
+                          @update:modelValue="
+                            (value) => updateMallEmail(value, 1)
+                          "
                           v-model="stores[0].email"
                           :rules="[...fieldRules, ...emailRules]"
                           maxlength="100"
@@ -159,11 +161,14 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" xs="12" sm="12" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="3">
                     <v-tooltip :text="$t('phone_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
+                          @update:modelValue="
+                            (value) => updateMallPhone(value, 1)
+                          "
                           v-model="stores[0].phone"
                           :rules="phoneRules"
                           v-on:keypress="NumbersOnly"
@@ -174,6 +179,27 @@
                           variant="outlined"
                           density="compact"
                         ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" xs="12" sm="12" md="3" v-if="stores[0].stor_type == 'Store'">
+                    <v-tooltip :text="$t('store_code')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          @update:modelValue="
+                            (value) => updateMallSCode(value, 1)
+                          "
+                          v-model="stores[0].store_code"
+                          v-bind:label="$t('store_code')"
+                          variant="outlined"
+                          density="compact"
+                          required
+                          index="id"
+                          :items="shop_codes"
+                          item-value="shop_code"
+                          item-title="shop_code"
+                        ></v-autocomplete>
                       </template>
                     </v-tooltip>
                   </v-col>
@@ -197,7 +223,10 @@
                           required
                           :rules="fieldRules"
                           v-model="stores[0].country"
-                          @update:model-value="fetchStates(stores[0].country)"
+                          @update:model-value="
+                            fetchStates(stores[0].country);
+                            updateCountryF(stores[0].country, 1);
+                          "
                           :items="country_array_en"
                         ></v-autocomplete>
                       </template>
@@ -219,7 +248,10 @@
                           required
                           :rules="fieldRules"
                           v-model="stores[0].state"
-                          @update:model-value="fetch_cities(stores[0].state)"
+                          @update:model-value="
+                            fetch_cities(stores[0].state);
+                            updateStateF(stores[0].state, 1);
+                          "
                           :items="state_array_en"
                         ></v-autocomplete>
                       </template>
@@ -241,6 +273,7 @@
                           required
                           :rules="fieldRules"
                           v-model="stores[0].city"
+                          @update:model-value="updateCityF(stores[0].city, 1)"
                           :items="city_array_en"
                         ></v-autocomplete>
                       </template>
@@ -258,6 +291,9 @@
                           class="required_field"
                           density="compact"
                           maxlength="12"
+                          @update:modelValue="
+                            (value) => updateMallPost(value, 1)
+                          "
                           v-model="stores[0].post_code"
                           required
                         ></v-text-field>
@@ -268,7 +304,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" md="4" xs="12" sm="12" lg="4">
+                  <v-col cols="12" md="4" xs="12" sm="12" lg="6">
                     <v-tooltip :text="$t('address_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-textarea
@@ -287,7 +323,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" md="8" xs="12" sm="12" lg="8">
+                  <v-col cols="12" md="8" xs="12" sm="12" lg="6">
                     <v-tooltip :text="$t('description_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-textarea
@@ -310,7 +346,43 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
+                  <!-- :rules="fieldRules" -->
+                  <!-- class="required_field" -->
+
                   <v-col cols="12" xs="12" sm="12" md="4">
+                    <v-tooltip :text="$t('website_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          @update:modelValue="
+                            (value) => updateMallweb(value, 1)
+                          "
+                          v-model="stores[0].website"
+                          maxlength="100"
+                          v-bind:label="$t('website_en')"
+                          required
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" xs="12" sm="12" md="2">
+                    <v-tooltip :text="$t('sequence_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          v-model="stores[0].seq"
+                          maxlength="5"
+                          v-on:keypress="NumbersOnly"
+                          v-bind:label="$t('sequence_en')"
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" xs="12" sm="12" md="6">
                     <v-tooltip :text="$t('meta_title_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -322,41 +394,6 @@
                           v-bind:label="$t('meta_title_en')"
                           required
                           counter="true"
-                          variant="outlined"
-                          density="compact"
-                        ></v-text-field>
-                      </template>
-                    </v-tooltip>
-                  </v-col>
-                  <!-- :rules="fieldRules" -->
-                  <!-- class="required_field" -->
-                  <v-col cols="12" xs="12" sm="12" md="4">
-                    <v-tooltip :text="$t('store_code')" location="bottom">
-                      <template v-slot:activator="{ props }">
-                        <v-autocomplete
-                          v-bind="props"
-                          v-model="stores[0].store_code"
-                          v-bind:label="$t('store_code')"
-                          variant="outlined"
-                          density="compact"
-                          required
-                          index="id"
-                          :items="shop_codes"
-                          item-value="shop_code"
-                          item-title="shop_code"
-                        ></v-autocomplete>
-                      </template>
-                    </v-tooltip>
-                  </v-col>
-                  <v-col cols="12" xs="12" sm="12" md="4">
-                    <v-tooltip :text="$t('website_en')" location="bottom">
-                      <template v-slot:activator="{ props }">
-                        <v-text-field
-                          v-bind="props"
-                          v-model="stores[0].website"
-                          maxlength="100"
-                          v-bind:label="$t('website_en')"
-                          required
                           variant="outlined"
                           density="compact"
                         ></v-text-field>
@@ -393,21 +430,6 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" xs="12" sm="12" md="4">
-                    <v-tooltip :text="$t('sequence_en')" location="bottom">
-                      <template v-slot:activator="{ props }">
-                        <v-text-field
-                          v-bind="props"
-                          v-model="stores[0].seq"
-                          maxlength="5"
-                          v-on:keypress="NumbersOnly"
-                          v-bind:label="$t('sequence_en')"
-                          variant="outlined"
-                          density="compact"
-                        ></v-text-field>
-                      </template>
-                    </v-tooltip>
-                  </v-col>
                   <v-col cols="12" xs="12" sm="12" md="4">
                     <div>
                       <span class="mb-5">{{ $t("logo_en") }}</span>
@@ -517,13 +539,14 @@
           <!-- ENGLISH TAB END -->
           <!-- ARABIC TAB STARTS -->
           <v-window-item :value="2">
-            <v-form ref="form" v-model="valid">
+            <v-form ref="form" v-model="valid" class="rtl-direction">
               <v-layout v-if="user.rolename != 'StoreAdmin'">
-                <v-row class="px-6 mt-2 arabdirection">
+                <v-row class="px-6 mt-2">
                   <v-col xs="12" sm="12" md="12" lg="12">
                     <v-radio-group
                       v-model="stores[1].stor_type"
                       inline
+                      style="direction: rtl"
                       class="radio_item"
                       :disabled="$route.query.slug"
                       @change="updateType(stores[1].stor_type)"
@@ -535,7 +558,7 @@
                 </v-row>
               </v-layout>
               <v-layout>
-                <v-row class="headings arabdirection">
+                <v-row class="headings">
                   <v-col xs="12" sm="12" md="12" lg="12">
                     <h6 class="m-4" v-if="stores[1].stor_type == 'Mall'">
                       <b>{{ $t("mall_details_ar") }}</b>
@@ -548,7 +571,7 @@
               </v-layout>
               <v-layout v-if="stores[1].stor_type == 'Store'">
                 <v-row class="px-6 mt-2 arabdirection">
-                  <v-col xs="12" sm="12" md="4" lg="4">
+                  <v-col xs="12" sm="12" md="6">
                     <v-tooltip :text="this.$t('category_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -575,8 +598,7 @@
                   <v-col
                     xs="12"
                     sm="12"
-                    md="4"
-                    lg="4"
+                    md="6"
                     v-if="user.rolename != 'StoreAdmin'"
                   >
                     <v-tooltip :text="this.$t('mall_name')" location="bottom">
@@ -603,7 +625,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2 arabdirection">
-                  <v-col cols="12" xs="12" sm="12" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="3">
                     <v-tooltip :text="$t('name_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -620,10 +642,13 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" xs="12" sm="12" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="3">
                     <v-tooltip :text="$t('email_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
+                          @update:modelValue="
+                            (value) => updateMallEmail(value, 0)
+                          "
                           v-bind="props"
                           v-model="stores[1].email"
                           :rules="[...fieldRulesAr, ...emailRulesAr]"
@@ -637,11 +662,14 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" xs="12" sm="12" md="4">
+                  <v-col cols="12" xs="12" sm="12" md="3">
                     <v-tooltip :text="$t('phone_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
+                          @update:modelValue="
+                            (value) => updateMallPhone(value, 0)
+                          "
                           v-model="stores[1].phone"
                           :rules="phoneRulesAr"
                           v-on:keypress="NumbersOnly"
@@ -652,6 +680,28 @@
                           density="compact"
                           class="required_field rtl"
                         ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" xs="12" sm="12" md="3" v-if="stores[0].stor_type == 'Store'">
+                    <v-tooltip :text="$t('store_code_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          @update:modelValue="
+                            (value) => updateMallSCode(value, 0)
+                          "
+                          v-model="stores[1].store_code"
+                          v-bind:label="$t('store_code_ar')"
+                          variant="outlined"
+                          density="compact"
+                          required
+                          counter="true"
+                          index="id"
+                          :items="shop_codes"
+                          item-value="shop_code"
+                          item-title="shop_code"
+                        ></v-autocomplete>
                       </template>
                     </v-tooltip>
                   </v-col>
@@ -675,7 +725,10 @@
                           required
                           :rules="fieldRulesAr"
                           v-model="stores[1].country"
-                          @update:model-value="fetchStates(stores[1].country)"
+                          @update:model-value="
+                            fetchStates(stores[1].country);
+                            updateCountryF(stores[1].country, 0);
+                          "
                           :items="country_array_ar"
                         ></v-autocomplete>
                       </template>
@@ -697,7 +750,10 @@
                           required
                           :rules="fieldRulesAr"
                           v-model="stores[1].state"
-                          @update:model-value="fetch_cities(stores[1].state)"
+                          @update:model-value="
+                            fetch_cities(stores[1].state, 0);
+                            updateStateF(stores[1].country, 0);
+                          "
                           :items="state_array_ar"
                         ></v-autocomplete>
                       </template>
@@ -719,6 +775,7 @@
                           :rules="fieldRulesAr"
                           item-value="header_id"
                           v-model="stores[1].city"
+                          @update:model-value="updateCityF(stores[1].city, 0)"
                           :items="city_array_ar"
                         ></v-autocomplete>
                       </template>
@@ -736,6 +793,9 @@
                           density="compact"
                           maxlength="12"
                           class="required_field rtl"
+                          @update:modelValue="
+                            (value) => updateMallPost(value, 0)
+                          "
                           v-model="stores[1].post_code"
                           required
                         ></v-text-field>
@@ -746,7 +806,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2 arabdirection">
-                  <v-col cols="12" md="4" xs="12" sm="12" lg="4">
+                  <v-col cols="12" md="4" xs="12" sm="12" lg="6">
                     <v-tooltip :text="$t('address_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-textarea
@@ -765,7 +825,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" md="8" xs="12" sm="12" lg="8">
+                  <v-col cols="12" md="8" xs="12" sm="12" lg="6">
                     <v-tooltip :text="$t('description_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-textarea
@@ -789,6 +849,41 @@
               <v-layout>
                 <v-row class="px-6 mt-2 arabdirection">
                   <v-col cols="12" xs="12" sm="12" md="4">
+                    <v-tooltip :text="$t('website_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          @update:modelValue="
+                            (value) => updateMallweb(value, 0)
+                          "
+                          v-model="stores[1].website"
+                          maxlength="100"
+                          v-bind:label="$t('website_ar')"
+                          required
+                          counter="true"
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" xs="12" sm="12" md="2">
+                    <v-tooltip :text="$t('sequence_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          v-model="stores[1].seq"
+                          v-on:keypress="NumbersOnly"
+                          maxlength="5"
+                          v-bind:label="$t('sequence_ar')"
+                          class="rtl"
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" xs="12" sm="12" md="6">
                     <v-tooltip :text="$t('meta_title_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -808,41 +903,6 @@
                   </v-col>
                   <!-- :rules="fieldRules" -->
                   <!-- class="required_field" -->
-                  <v-col cols="12" xs="12" sm="12" md="4">
-                    <v-tooltip :text="$t('store_code_ar')" location="bottom">
-                      <template v-slot:activator="{ props }">
-                        <v-autocomplete
-                          v-bind="props"
-                          v-model="stores[1].store_code"
-                          v-bind:label="$t('store_code_ar')"
-                          variant="outlined"
-                          density="compact"
-                          required
-                          counter="true"
-                          index="id"
-                          :items="shop_codes"
-                          item-value="shop_code"
-                          item-title="shop_code"
-                        ></v-autocomplete>
-                      </template>
-                    </v-tooltip>
-                  </v-col>
-                  <v-col cols="12" xs="12" sm="12" md="4">
-                    <v-tooltip :text="$t('website_ar')" location="bottom">
-                      <template v-slot:activator="{ props }">
-                        <v-text-field
-                          v-bind="props"
-                          v-model="stores[1].website"
-                          maxlength="100"
-                          v-bind:label="$t('website_ar')"
-                          required
-                          counter="true"
-                          variant="outlined"
-                          density="compact"
-                        ></v-text-field>
-                      </template>
-                    </v-tooltip>
-                  </v-col>
                 </v-row>
               </v-layout>
               <v-layout>
@@ -873,22 +933,6 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2 arabdirection">
-                  <v-col cols="12" xs="12" sm="12" md="4">
-                    <v-tooltip :text="$t('sequence_ar')" location="bottom">
-                      <template v-slot:activator="{ props }">
-                        <v-text-field
-                          v-bind="props"
-                          v-model="stores[1].seq"
-                          v-on:keypress="NumbersOnly"
-                          maxlength="5"
-                          v-bind:label="$t('sequence_ar')"
-                          class="rtl"
-                          variant="outlined"
-                          density="compact"
-                        ></v-text-field>
-                      </template>
-                    </v-tooltip>
-                  </v-col>
                   <v-col cols="12" xs="12" sm="12" md="4">
                     <div>
                       <span class="mb-5">{{ $t("logo_ar") }}</span>
@@ -998,15 +1042,15 @@
           <!-- ARABIC TAB END -->
         </v-window>
       </div>
-      <div class="headings">
-        <h6 class="m-4" v-if="tabs == 1">
-          <b>{{ $t("social_media") }}</b>
-        </h6>
-        <h6 class="m-4 arabdirection" v-else>
-          <b>{{ $t("social_media_ar") }}</b>
-        </h6>
-      </div>
-      <div>
+      <div v-if="social_media_en.length > 0 && social_media_ar.length > 0">
+        <div class="headings">
+          <h6 class="m-4" v-if="tabs == 1">
+            <b>{{ $t("social_media") }}</b>
+          </h6>
+          <h6 class="m-4 arabdirection" v-else>
+            <b>{{ $t("social_media_ar") }}</b>
+          </h6>
+        </div>
         <v-layout>
           <v-row class="px-6 mt-2" v-if="tabs == 1">
             <v-col
@@ -1019,6 +1063,7 @@
               <v-tooltip :text="media_data.longname" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
+                    v-if="social_media[media_index]"
                     v-bind="props"
                     v-model="social_media[media_index].link"
                     maxlength="100"
@@ -1043,6 +1088,7 @@
                 <template v-slot:activator="{ props }">
                   <v-text-field
                     v-bind="props"
+                    v-if="social_media[media_index]"
                     v-model="social_media[media_index].link"
                     maxlength="100"
                     v-bind:label="media_data.longname"
@@ -1167,6 +1213,7 @@ export default {
     social_media_ar: [],
     shop_codes: [],
     user: "",
+    page_type: "add",
   }),
 
   computed: {
@@ -1259,6 +1306,7 @@ export default {
       immediate: true,
       handler() {
         if (this.$route.query.slug) {
+          this.page_type = "edit";
           this.loader = true;
           this.$axios
             .get(
@@ -1289,6 +1337,7 @@ export default {
               this.$toast.error(this.$t("something_went_wrong"));
               console.log(err);
             });
+
           this.$axios
             .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-social-media")
             .then((response) => {
@@ -1296,7 +1345,6 @@ export default {
               this.social_media_en = response.data.social_media_en;
               this.social_media_ar = response.data.social_media_ar;
               response.data.social_media_en.forEach((element) => {
-                console.log(element.longname);
                 if (this.social_media.store_id > 0) {
                   this.social_media.longname = element.longname;
                 }
@@ -1322,17 +1370,31 @@ export default {
   },
 
   methods: {
+    updateMallEmail(value, index) {
+      this.stores[index].email = value;
+    },
+    updateMallPhone(value, index) {
+      this.stores[index].phone = value;
+    },
+    updateMallPost(value, index) {
+      this.stores[index].post_code = value;
+    },
+    updateMallweb(value, index) {
+      this.stores[index].website = value;
+    },
+    updateMallSCode(value, index) {
+      this.stores[index].store_code = value;
+    },
     cancel() {
-      if(this.user.rolename=='StoreAdmin'){
-      this.$router.push({
-        name: "my_stores",
-      });
-      }else{
-      this.$router.push({
-        name: "stores",
-      });
+      if (this.user.rolename == "StoreAdmin") {
+        this.$router.push({
+          name: "my_stores",
+        });
+      } else {
+        this.$router.push({
+          name: "stores",
+        });
       }
-
     },
     NumbersOnly(evt) {
       evt = evt ? evt : window.event;
@@ -1397,11 +1459,9 @@ export default {
       this.$axios
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-social-media")
         .then((response) => {
-          console.log(response);
           this.social_media_en = response.data.social_media_en;
           this.social_media_ar = response.data.social_media_ar;
           response.data.social_media_en.forEach((element) => {
-            console.log(element.longname);
             this.social_media.push({
               id: 0,
               store_id: null,
@@ -1412,8 +1472,6 @@ export default {
               seq: 1,
             });
           });
-          console.log("social_media");
-          console.log(this.social_media);
           this.initval = false;
         })
         .catch((err) => {
@@ -1435,7 +1493,7 @@ export default {
             this.stores[1].stor_type = "Store";
             this.stores[0].mall_name = this.user.store_id;
             this.stores[1].mall_name = this.user.store_id;
-          } 
+          }
           // } else {
 
           // }
@@ -1503,6 +1561,21 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    updateCountryF(country_id, index = null) {
+      this.stores[index].country = country_id;
+      this.stores[0].state = null;
+      this.stores[0].city = null;
+      this.stores[1].state = null;
+      this.stores[1].city = null;
+    },
+    updateStateF(state_id, index = null) {
+      this.stores[index].state = state_id;
+      this.stores[0].city = null;
+      this.stores[1].city = null;
+    },
+    updateCityF(city_id, index = null) {
+      this.stores[index].city = city_id;
     },
     // Uploading a image
     uploaded_image(img_src) {
