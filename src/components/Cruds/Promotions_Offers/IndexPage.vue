@@ -93,14 +93,14 @@
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td> -->
               <td>
-                <span v-if="props.item.selectable.start_date">
-                  {{ formatDate(props.item.selectable.start_date) }}</span
+                <span v-if="props.item.selectable.phone">
+                  {{ props.item.selectable.phone }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td>
-                <span v-if="props.item.selectable.end_date">
-                  {{ formatDate(props.item.selectable.end_date) }}</span
+                <span v-if="props.item.selectable.email">
+                  {{ props.item.selectable.email }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
@@ -234,14 +234,14 @@
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td> -->
               <td>
-                <span v-if="props.item.selectable.start_date">
-                  {{ formatDate(props.item.selectable.start_date) }}</span
+                <span v-if="props.item.selectable.phone">
+                  {{ props.item.selectable.phone }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td>
-                <span v-if="props.item.selectable.end_date">
-                  {{ formatDate(props.item.selectable.end_date) }}</span
+                <span v-if="props.item.selectable.email">
+                  {{ props.item.selectable.email }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>

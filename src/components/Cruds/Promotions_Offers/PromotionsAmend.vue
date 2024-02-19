@@ -28,6 +28,7 @@
               <v-row class="px-6 mt-2">
                 <v-col xs="12" md="12" lg="12">
                   <!-- :disabled="$route.query.slug" -->
+                  <!-- {{promotions[0].stor_type}} -->
                   <v-radio-group
                     v-model="promotions[0].stor_type"
                     inline
@@ -37,6 +38,7 @@
                     <v-radio
                       v-for="(role_data, rindex) in role_array"
                       :key="rindex"
+                      :disabled="this.$route.query.slug"
                       :label="changeRoleName(role_data.rolename)"
                       :value="role_data.rolename"
                       class="text--primary"
@@ -64,6 +66,10 @@
                       @update:modelValue="(value) => updateMall(value)"
                       :label="labelText"
                       variant="outlined"
+                      :disabled="
+                        user.rolename == 'MallAdmin' &&
+                        promotions[0].stor_type == 'MallAdmin'
+                      "
                       density="compact"
                       :rules="fieldRules"
                       :items="stores_en"
@@ -74,6 +80,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
+              <!--  -->
               <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('title_en')" location="bottom">
                   <template v-slot:activator="{ props }">
@@ -129,6 +136,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
+              <!-- :rules="fieldRules" -->
               <v-col md="4">
                 <v-tooltip :text="this.$t('type_en')" location="bottom">
                   <template v-slot:activator="{ props }">
@@ -138,7 +146,6 @@
                       @update:modelValue="(value) => updateType(value)"
                       v-bind:label="$t('type_en')"
                       variant="outlined"
-                      :rules="fieldRules"
                       density="compact"
                       class="required_field"
                       required
@@ -265,7 +272,7 @@
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                          v-if="promotions[0].image_path != ''"
+                          v-if="promotions[0].image_path != null"
                           :src="envImagePath + promotions[0].image_path"
                           width="100"
                           height="65
@@ -327,6 +334,7 @@
                     <v-radio
                       v-for="(role_data, rindex) in role_array"
                       :key="rindex"
+                      :disabled="this.$route.query.slug"
                       :label="changeStatusAr(role_data.rolename)"
                       :value="role_data.rolename"
                       class="text--primary"
@@ -355,6 +363,10 @@
                       :rules="fieldRules"
                       variant="outlined"
                       density="compact"
+                      :disabled="
+                        user.rolename == 'MallAdmin' &&
+                        promotions[0].stor_type == 'MallAdmin'
+                      "
                       :items="stores_ar"
                       item-title="name"
                       item-value="header_id"
@@ -425,11 +437,11 @@
                       v-bind="props"
                       v-model="promotions[1].type"
                       @update:modelValue="(value) => updateType(value)"
+                      :rules="fieldRules"
                       v-bind:label="$t('type_ar')"
                       variant="outlined"
                       density="compact"
                       class="required_field"
-                      :rules="fieldRules"
                       required
                       index="id"
                       :items="p_type_ar"
@@ -557,7 +569,7 @@
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                          v-if="promotions[1].image_path != ''"
+                          v-if="promotions[1].image_path != null"
                           :src="envImagePath + promotions[1].image_path"
                           width="100"
                           height="65
@@ -681,6 +693,7 @@ export default {
     user: "",
     labelText: "Mall",
     label_text_ar: "مجمع تجاري",
+    mall_id: null,
     promotions: [
       {
         id: 0,
@@ -692,7 +705,7 @@ export default {
         start_date: "",
         end_date: "",
         seq: "",
-        image_path: "",
+        image_path: null,
         meta_title: "",
         meta_description: "",
         lang: "en",
@@ -709,7 +722,7 @@ export default {
         start_date: "",
         end_date: "",
         seq: "",
-        image_path: "",
+        image_path: null,
         meta_title: "",
         meta_description: "",
         lang: "ar",
@@ -827,6 +840,15 @@ export default {
           console.log(response);
           this.mal_data_en = response.data.malls_en;
           this.mal_data_ar = response.data.malls_ar;
+          if (this.user.rolename == "MallAdmin" && !this.$route.query.slug) {
+            this.mal_data_en.filter((ele) => {
+              if (ele.header_id === this.user.store_id) {
+                this.promotions[0].store_id = ele.header_id;
+                this.promotions[1].store_id = ele.header_id;
+                this.mall_id = ele.header_id;
+              }
+            });
+          }
 
           // const default_en = {
           this.initval = false;
@@ -850,9 +872,9 @@ export default {
             this.user.rolename === "MallAdmin" &&
             !this.$route.query.slug
           ) {
-            this.role_array = response.data.roles.filter(
-              (role) => role.rolename == "StoreAdmin"
-            );
+            // this.role_array = response.data.roles.filter(
+            //   (role) => role.rolename == "StoreAdmin"
+            // );
             this.promotions[0].stor_type = this.role_array[0].rolename;
             this.promotions[1].stor_type = this.role_array[0].rolename;
             this.updateType(this.promotions[0].stor_type);
@@ -860,9 +882,6 @@ export default {
             this.user.rolename === "MallAdmin" &&
             this.$route.query.slug
           ) {
-            this.role_array = response.data.roles.filter(
-              (role) => role.rolename == "StoreAdmin"
-            );
             this.assignType(this.promotions[0].stor_type);
           }
           // if (!this.$route.query.slug) {
@@ -875,15 +894,19 @@ export default {
         });
     },
     updateType(stor_type) {
+      // alert(stor_type)
       this.promotions[1].store_id = null;
       this.promotions[0].store_id = null;
+
       this.assignType(stor_type);
     },
     assignType(stor_type) {
       setTimeout(() => {
         if (this.tabs == 1) {
           this.promotions[1].stor_type = stor_type;
-          if (stor_type == "MallAdmin") {
+          if (stor_type == "MallAdmin" && stor_type == "MallAdmin") {
+            this.promotions[1].store_id = this.mall_id;
+            this.promotions[0].store_id = this.mall_id;
             this.labelText = this.$t("mall");
             this.label_text_ar = this.$t("mall_ar");
             this.stores_en = this.mal_data_en;
@@ -897,7 +920,10 @@ export default {
           }
         } else {
           this.promotions[0].stor_type = stor_type;
-          if (stor_type == "MallAdmin") {
+          if (stor_type == "MallAdmin" && stor_type == "MallAdmin") {
+            console.log("asdasd", this.stores_en);
+            this.promotions[1].store_id = this.mall_id;
+            this.promotions[0].store_id = this.mall_id;
             this.labelText = this.$t("mall");
             this.label_text_ar = this.$t("mall_ar");
             this.stores_en = this.mal_data_en;
@@ -909,7 +935,7 @@ export default {
             this.stores_ar = this.stores_data_ar;
           }
         }
-      }, 1000);
+      }, 1500);
     },
     updateMall(promo) {
       if (this.tabs == 1) {
