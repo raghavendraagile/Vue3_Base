@@ -186,8 +186,8 @@
                     <br />
                     <Imageupload
                       :folder="'home_slider'"
-                      :resizewidth="1.3"
-                      :resizeheight="1"
+                      :resizewidth="'2000px'"
+                      :resizeheight="'400px'"
                       :no_image_trans="'en'"
                       :no_image="have_noimage"
                       @uploaded_image="uploaded_image"
@@ -360,8 +360,8 @@
                     <br />
                     <Imageupload
                       :folder="'home_slider'"
-                      :resizewidth="1.3"
-                      :resizeheight="1"
+                      :resizewidth="'2000px'"
+                      :resizeheight="'400px'"
                       :no_image_trans="'ar'"
                       :no_image="have_noimage"
                       :viewmodeslider="3"

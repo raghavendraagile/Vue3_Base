@@ -6,7 +6,6 @@
         :heading="$t('e_magazine')"
         :google_icon="google_icon"
       ></page-title>
-
       <div class="col-md-4">
         <v-tooltip :text="this.$t('search')" location="top">
           <template v-slot:activator="{ props }">
@@ -305,6 +304,10 @@ export default {
           align: "center",
           key: "email",
         },
+         {
+          title:" ",
+          align: "center",
+        },
       ];
     },
     headers_ar() {
@@ -329,6 +332,10 @@ export default {
           title: this.$t("action_ar"),
           align: "center",
           key: "email",
+        },
+         {
+          title:" ",
+          align: "center",
         },
       ];
     },

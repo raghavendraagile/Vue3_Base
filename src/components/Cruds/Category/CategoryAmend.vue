@@ -1,5 +1,6 @@
 <template>
   <div class="mx-2 mt-3 p-0">
+    {{category[0]}}
     <div
       class="my-3 p-0"
       v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
