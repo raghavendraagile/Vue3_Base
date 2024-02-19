@@ -2,7 +2,6 @@
   <div>
     <v-menu ref="menu1" v-model="menu1" transition="scale-transition" offset-y max-width="290px" min-width="auto"
       :close-on-content-click="false" :return-value="show_date">
-      {{ rules }}
       <template v-slot:activator="{ props }">
         <v-text-field density="compact" v-model="DateFormatted" :label="label" :rules="fieldRules"
           append-inner-icon="mdi-calendar" :readonly="true" :disabled="disable_field"
@@ -112,7 +111,9 @@ export default {
       immediate: true,
       handler() {
         if (this.max) {
-          this.disabledDates.from = new Date((this.max.split('-')[0]), (this.max.split('-')[1] - 1), (this.max.split('-')[2]));
+          const dateObject = new Date((this.max.split('-')[0]), (this.max.split('-')[1] - 1), (this.max.split('-')[2]));
+          dateObject.setDate(dateObject.getDate() + 1);
+          this.disabledDates.from = dateObject;
         }
         else {
           this.disabledDates.from = '';
