@@ -125,6 +125,15 @@
                       $t("download")
                     }}</span>
                   </a>
+                  <span>
+                    <v-icon
+                      small
+                      v-if="lookup[0].icon"
+                      class="mr-2 edit_btn icon_size delete_icon"
+                      @click="removeImage(0)"
+                      >mdi mdi-trash-can-outline</v-icon
+                    >
+                  </span>
                 </div>
                 <br />
                 <Imageupload
@@ -243,9 +252,18 @@
                     @click="downloadImage(lookup[1].icon)"
                   >
                     <span v-if="lookup[1].icon" class="download_btn_color">{{
-                      $t("download")
+                      $t("download_ar")
                     }}</span>
                   </a>
+                  <span>
+                    <v-icon
+                      small
+                      v-if="lookup[1].icon"
+                      class="mr-2 edit_btn icon_size delete_icon_ar"
+                      @click="removeImage(1)"
+                      >mdi mdi-trash-can-outline</v-icon
+                    >
+                  </span>
                 </div>
                 <br />
                 <Imageupload
@@ -482,6 +500,13 @@ export default {
         //alert("Form is Invalid");
       }
     },
+    removeImage(index) {
+      if (index == 1) {
+        this.lookup[1].icon = null;
+      } else {
+        this.lookup[0].icon = null;
+      }
+    },
     clear() {
       this.$refs.form.reset();
     },
@@ -495,5 +520,15 @@ input.larger {
 }
 .arabdirection /deep/ .v-field{
   direction:rtl;
+}
+.delete_icon {
+  position: relative;
+  left: 45px;
+  bottom: 90px;
+}
+.delete_icon_ar {
+  position: relative;
+  left: 73px;
+  bottom: 90px;
 }
 </style>
