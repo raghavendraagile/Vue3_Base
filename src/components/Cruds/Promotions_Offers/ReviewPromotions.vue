@@ -13,7 +13,6 @@
     <div class="mb-3 mx-auto">
       <div class="card-body">
         <content-loader v-if="loader"></content-loader>
-
         <v-tabs v-model="tabs" color="blue">
           <v-tab :value="1">
             <span>{{ $t("english") }}</span>
@@ -37,7 +36,7 @@
             >
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("approval_status_en") }}</div>
                     <div>
                       <v-chip
@@ -49,17 +48,21 @@
                       </v-chip>
                     </div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("name_en") }}</div>
-                    <div>{{ promotion.name }}</div>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                
+                  <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("title_en") }}</div>
                     <div>{{ promotion.title }}</div>
                   </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("store_type_en") }}</div>
+                    <div>{{ promotion.stor_type }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("name_en") }}</div>
+                    <div>{{ promotion.store_name.name }}</div>
+                  </v-col>
                  
-
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="3">
                     <div
                       class="d-label"
                       v-if="promotion.approval_status == 'Rejected'"
@@ -72,9 +75,17 @@
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("meta_title_en") }}</div>
                     <div>{{ promotion.meta_title }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("start_date_en") }}</div>
+                    <div>{{ formatDate(promotion.start_date) }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("end_date_en") }}</div>
+                    <div>{{ formatDate(promotion.end_date) }}</div>
                   </v-col>
                   <v-col cols="12" sm="12" md="12">
                     <div class="d-label">{{ $t("description_en") }}</div>
@@ -140,7 +151,7 @@
             >
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("approval_status_ar") }}</div>
                     <div>
                       <v-chip
@@ -152,17 +163,21 @@
                       </v-chip>
                     </div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("name_ar") }}</div>
-                    <div>{{ promotion.name }}</div>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("title_ar") }}</div>
                     <div>{{ promotion.title }}</div>
                   </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("store_type_ar") }}</div>
+                    <div>{{ promotion.stor_type }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("name_ar") }}</div>
+                    <div>{{ promotion.store_name.name }}</div>
+                  </v-col>
                   
 
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="3">
                     <div
                       class="d-label"
                       v-if="promotion.approval_status == 'Rejected'"
@@ -175,9 +190,17 @@
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("meta_title_ar") }}</div>
                     <div>{{ promotion.meta_title }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("start_date_ar") }}</div>
+                    <div>{{ formatDate(promotion.start_date) }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("end_date_ar") }}</div>
+                    <div>{{ formatDate(promotion.end_date) }}</div>
                   </v-col>
                   <v-col cols="12" sm="12" md="12">
                     <div class="d-label">{{ $t("description_ar") }}</div>

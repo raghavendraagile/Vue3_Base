@@ -60,8 +60,7 @@
         <v-data-table
           :headers="headers_en"
           :items="promotions_en"
-          :search="search"
-          
+          :search="search"    
           :loading="initval"
           :no-data-text="$t('no_data_available_en')"
           :items-per-page-text="$t('rows_per_page_en')"
@@ -75,8 +74,14 @@
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td>
-                <span v-if="props.item.selectable.description">
-                  {{ props.item.selectable.description }}</span
+                <span v-if="props.item.selectable.start_date">
+                  {{ formatDate(props.item.selectable.start_date) }}</span
+                >
+                <span v-else>{{ $t("not_appllicable") }}</span>
+              </td>
+              <td>
+                <span v-if="props.item.selectable.end_date">
+                  {{ formatDate(props.item.selectable.end_date) }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
@@ -216,8 +221,14 @@
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td>
-                <span v-if="props.item.selectable.description">
-                  {{ props.item.selectable.description }}</span
+                <span v-if="props.item.selectable.start_date">
+                  {{ formatDate(props.item.selectable.start_date) }}</span
+                >
+                <span v-else>{{ $t("not_appllicable") }}</span>
+              </td>
+              <td>
+                <span v-if="props.item.selectable.end_date">
+                  {{ formatDate(props.item.selectable.end_date) }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
@@ -430,8 +441,12 @@ export default {
           key: "title",
         },
         {
-          title: this.$t("description_en"),
-          key: "description",
+          title: this.$t("start_date_en"),
+          key: "start_date",
+        },
+        {
+          title: this.$t("end_date_en"),
+          key: "end_date",
         },
         {
           title: this.$t("phone_en"),
@@ -471,8 +486,12 @@ export default {
           key: "title",
         },
         {
-          title: this.$t("description_ar"),
-          key: "description",
+          title: this.$t("start_date_ar"),
+          key: "start_date",
+        },
+        {
+          title: this.$t("end_date_ar"),
+          key: "end_date",
         },
 
         {

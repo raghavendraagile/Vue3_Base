@@ -478,8 +478,7 @@
   "holiday":"عطلة",
   "am_ar":"صباحًا",
   "pm_ar":"مساءً",
-  "week_day": "يوم الأسبوع"
-
-
-
+  "week_day": "يوم الأسبوع",
+  "store_type_en": "Store Type",
+  "store_type_ar": "نوع المتاجر"
 }
