@@ -1,6 +1,5 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    {{category[0]}}
     <div
       class="my-3 p-0"
       v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
@@ -262,8 +261,8 @@
           <!-- ARABIC TAB STARTS -->
           <v-window-item :value="2">
             <v-form ref="form" v-model="valid">
-              <v-row class="arabdirection">
-                <v-col cols="12" sm="12" md="4" class="mx-6">
+              <v-row class="arabdirection" style="direction:rtl">
+                <v-col cols="12" sm="12" md="4" class="pr-5">
                   <v-tooltip :text="this.$t('mall_ar')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-autocomplete

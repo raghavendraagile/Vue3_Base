@@ -4,7 +4,7 @@
       flat
       color="white"
       class="row py-5 pl-5 align-items-center component_app_bar position-relative"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
     >
       <page-title
         class="col-md-3"
@@ -75,6 +75,7 @@
                 {{ props.item.selectable.parent_category }}
               </td>
               <td v-else>{{ $t("not_appllicable") }}</td>
+              <td>{{ props.item.selectable.mall_name }}</td>
               <td>{{ props.item.selectable.title }}</td>
               <td>
                 <v-btn
@@ -173,6 +174,7 @@
               <td v-else>{{ $t("not_appllicable") }}</td>
 
               <td>{{ props.item.selectable.title }}</td>
+              <td>{{ props.item.selectable.mall_name }}</td>
               <td>
                 <v-btn
                   class="hover_shine btn mr-2"
@@ -288,7 +290,7 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
-    sel_lang:"",
+    sel_lang: "",
     status_id: null,
     showStatusDialog: false,
     tabs: 1,
@@ -309,6 +311,7 @@ export default {
         longname: "Rejected",
       },
     ],
+    role:""
   }),
 
   computed: {
@@ -316,70 +319,40 @@ export default {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
     headers_en() {
-      return [
-        {
-          title: this.$t("name_en"),
-          key: "name",
-        },
-        {
-          title: this.$t("parent_category_en"),
-          key: "parent_category.name",
-        },
-        {
-          title: this.$t("title_en"),
-          key: "title",
-        },
-        {
-          title: this.$t("status_en"),
-          key: "status",
-        },
-        {
-          title: this.$t("approval_en"),
-          key: "approval_status",
-        },
-        {
-          title: this.$t("action_en"),
-          align: "center",
-          key: "action",
-        },
-        {
-          title: " ",
-          align: "center",
-        },
+      let headers = [
+        { title: this.$t("name_en"), key: "name" },
+        { title: this.$t("parent_category_en"), key: "parent_category.name" },
+        { title: this.$t("title_en"), key: "title" },
+        { title: this.$t("status_en"), key: "status" },
+        { title: this.$t("approval_en"), key: "approval_status" },
+        { title: this.$t("action_en"), align: "center", key: "action" },
+        { title: " ", align: "center" },
       ];
+      
+
+      if (this.role === "SuperUser") {
+        headers.splice(2, 0, { title: this.$t("mall_en"), key: "mall_name" });
+      }
+
+      return headers;
     },
     headers_ar() {
-      return [
-        {
-          title: this.$t("name_ar"),
-          key: "name",
-        },
-        {
-          title: this.$t("parent_category_ar"),
-          key: "parent_category.name",
-        },
-        {
-          title: this.$t("title_ar"),
-          key: "title",
-        },
-        {
-          title: this.$t("status_ar"),
-          key: "status",
-        },
-        {
-          title: this.$t("approval_ar"),
-          key: "approval_status",
-        },
-        {
-          title: this.$t("action_ar"),
-          align: "center",
-          key: "action",
-        },
-        {
-          title: "",
-          align: "center",
-        },
+      let headers = [
+        { title: this.$t("name_ar"), key: "name" },
+        { title: this.$t("parent_category_ar"), key: "parent_category.name" },
+        { title: this.$t("title_ar"), key: "title" },
+        { title: this.$t("status_ar"), key: "status" },
+        { title: this.$t("approval_ar"), key: "approval_status" },
+        { title: this.$t("action_ar"), align: "center", key: "action" },
+        { title: "", align: "center" },
       ];
+
+
+      if (this.role === "SuperUser") {
+        headers.splice(2, 0, { title: this.$t("mall_ar"), key: "mall_name" });
+      }
+
+      return headers;
     },
   },
 
@@ -387,17 +360,19 @@ export default {
     dialog(val) {
       val || this.close();
     },
-     '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
 
   created() {},
   mounted() {
+    this.role = JSON.parse(localStorage.getItem("user_data")).rolename;
     this.fetchCategory();
   },
 
