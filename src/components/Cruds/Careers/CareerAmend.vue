@@ -70,6 +70,7 @@
                         user.rolename == 'MallAdmin' &&
                         careers[0].stor_type == 'MallAdmin'
                       "
+                      :loading="store_loader"
                       density="compact"
                       :items="stores_en"
                       item-title="name"
@@ -231,6 +232,7 @@
                         user.rolename == 'MallAdmin' &&
                         careers[1].stor_type == 'MallAdmin'
                       "
+                      :loading="store_loader"
                       :rules="fieldRulesAR"
                       class="required_field rtl"
                       :items="stores_en"
@@ -399,6 +401,7 @@ export default {
     envPath: process.env.VUE_APP_IMAGE_DOWNLOAD_URL,
     valid: true,
     loader: false,
+    store_loader: false,
     file: "",
     isBtnLoading: false,
     showupload: "",
@@ -541,7 +544,9 @@ export default {
       this.assignType(stor_type);
     },
     assignType(stor_type) {
+      this.store_loader = true;
       setTimeout(() => {
+        this.store_loader = false;
         if (this.tabs == 1) {
           this.careers[1].stor_type = stor_type;
           if (stor_type == "MallAdmin" && this.user.rolename == "MallAdmin") {

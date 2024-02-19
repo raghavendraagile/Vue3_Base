@@ -571,8 +571,19 @@
                       :disabled="$route.query.slug"
                       @change="updateType(stores[1].stor_type)"
                     >
-                      <v-radio :label="$t('mall_ar')" value="Mall"></v-radio>
-                      <v-radio :label="$t('store_ar')" value="Store"></v-radio>
+                      <v-radio
+                        :label="$t('mall_ar')"
+                        value="Mall"
+                        v-if="user.rolename === 'SuperUser'"
+                      ></v-radio>
+                      <v-radio
+                        value="Store"
+                        :label="$t('store_ar')"
+                        v-if="
+                          user.rolename == 'SuperUser' ||
+                          user.rolename == 'MallAdmin'
+                        "
+                      ></v-radio>
                     </v-radio-group>
                   </v-col>
                 </v-row>
@@ -632,6 +643,7 @@
                           variant="outlined"
                           density="compact"
                           class="required_field rtl"
+                          :disabled="user.rolename == 'MallAdmin'"
                           required
                           index="id"
                           :items="mall_names_ar"
@@ -1765,11 +1777,5 @@ input.larger {
   position: relative;
   right: 110px;
   bottom: 90px;
-}
-.download_btn_color {
-  color: blue;
-}
-.pointer {
-  cursor: pointer;
 }
 </style>

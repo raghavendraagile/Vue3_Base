@@ -72,6 +72,7 @@
                             user.rolename == 'MallAdmin' &&
                             e_magazine[0].stor_type == 'MallAdmin'
                           "
+                          :loading="store_loader"
                           :items="stores_en"
                           item-title="name"
                           item-value="header_id"
@@ -348,6 +349,7 @@
                           class="required_field rtl"
                           :rules="fieldRulesAR"
                           variant="outlined"
+                          :loading="store_loader"
                           :disabled="
                             user.rolename == 'MallAdmin' &&
                             e_magazine[1].stor_type == 'MallAdmin'
@@ -669,6 +671,7 @@ export default {
     valid_error: false,
     file: "",
     loading: false,
+    store_loader: false,
     isBtnLoading: false,
     isDisabled: false,
     loader: false,
@@ -703,7 +706,7 @@ export default {
         stor_type: "",
       },
     ],
-    role_array:[],
+    role_array: [],
     stores_en: [],
     stores_ar: [],
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
@@ -833,7 +836,9 @@ export default {
       this.assignType(stor_type);
     },
     assignType(stor_type) {
+      this.store_loader = true;
       setTimeout(() => {
+        this.store_loader = false;
         if (this.tabs == 1) {
           this.e_magazine[1].stor_type = stor_type;
           if (stor_type == "MallAdmin" && this.user.rolename == "MallAdmin") {

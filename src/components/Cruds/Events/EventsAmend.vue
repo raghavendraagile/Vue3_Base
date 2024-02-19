@@ -69,6 +69,7 @@
                         user.rolename == 'MallAdmin' &&
                         events[0].stor_type == 'MallAdmin'
                       "
+                      :loading="store_loader"
                       :items="stores_en"
                       item-title="name"
                       item-value="header_id"
@@ -621,7 +622,7 @@ export default {
     labelText: "Mall",
     label_text_ar: "مجمع تجاري",
     tabs: 1,
-    role_array:[],
+    role_array: [],
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
     valid: true,
     loader: false,
@@ -819,7 +820,7 @@ export default {
           console.log(response);
           this.mal_data_en = response.data.malls_en;
           this.mal_data_ar = response.data.malls_ar;
-           if (this.user.rolename == "MallAdmin" && !this.$route.query.slug) {
+          if (this.user.rolename == "MallAdmin" && !this.$route.query.slug) {
             this.mal_data_en.filter((ele) => {
               if (ele.header_id === this.user.store_id) {
                 this.events[0].store_id = ele.header_id;
@@ -865,7 +866,7 @@ export default {
         .then((response) => {
           this.loader = false;
           this.role_array = response.data.roles;
-         if (!this.$route.query.slug && this.user.rolename == "SuperUser") {
+          if (!this.$route.query.slug && this.user.rolename == "SuperUser") {
             this.events[0].stor_type = this.role_array[0].rolename;
             this.events[1].stor_type = this.role_array[0].rolename;
             this.updateType(this.events[0].stor_type);
