@@ -529,5 +529,7 @@
   "store_type_en": "Store Type",
   "floor_ar":"أرضية",
   "from_meridiem_ar": "من الجنوب",
-  "to_meridiem_ar": "إلى الجنوب"
+  "to_meridiem_ar": "إلى الجنوب",
+  "mall/store_en" : "Mall/Store",
+  "mall/store_ar" : "مجمع تجاري/محل"
 }

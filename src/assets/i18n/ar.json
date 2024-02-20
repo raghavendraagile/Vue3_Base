@@ -482,5 +482,7 @@
   "store_type_en": "Store Type",
   "store_type_ar": "نوع المتاجر",
   "floor_en":"Floor",
-  "floor_ar":"أرضية"
+  "floor_ar":"أرضية",
+  "mall/store_en" : "Mall/Store",
+  "mall/store_ar" : "مجمع تجاري/محل"
 }
