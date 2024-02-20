@@ -59,8 +59,8 @@
     />
     <div v-if="no_image" class="v-messages__message error_trans_msg"
     role="alert" aria-live="polite" id="input-10-messages">
-    <div class="v-messages__message" v-if="no_image_trans == 'en'">{{$t('image_required_en')}}</div>
-    <div class="v-messages__message" v-else>{{$t('image_required_ar')}}</div>
+    <div class="v-messages__message img_shake" v-if="no_image_trans == 'en'">{{$t('image_required_en')}}</div>
+    <div class="v-messages__messag img_shake" v-else>{{$t('image_required_ar')}}</div>
   </div>
   </div>
 </template>

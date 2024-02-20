@@ -346,6 +346,9 @@ input::placeholder {
 .mdi-trash-can-outline:hover {
   animation: shake 0.4s;
 }
+.img_shake {
+  animation: shake 0.4s;
+}
 
 .mdi-trash-can-outline {
   color: rgb(var(--v-theme-error)) !important;

@@ -627,13 +627,16 @@ export default {
       if (this.tabs == 1 && (this.category[0].description == "" || this.category[0].description == null)) {
         this.quill_item = true;
       }
-      if (this.tabs == 2 && (this.category[1].description_ar == "" || this.category[1].description_ar == null)) {
+      if (this.tabs == 2 && (this.category[1].description == "" || this.category[1].description == null)) {
         this.quill_item_ar = true;
+      }
+      else{
+        this.quill_item_ar = false;
       }
       if (this.$refs.form.validate() && this.valid == true) {
         if (
           this.category[1].description == "" ||
-          this.category[1].description_ar == ""
+          this.category[1].description == ""
         ) {
           return;
         }
@@ -700,7 +703,7 @@ export default {
     },
     onEditorBlurAR(event) {
       console.log(event.options);
-      if (this.category[1].description_ar == "") {
+      if (this.category[1].description == "") {
         this.quill_item_ar = true;
       }
     },
