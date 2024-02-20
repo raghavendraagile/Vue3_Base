@@ -75,7 +75,9 @@
                 {{ props.item.selectable.parent_category }}
               </td>
               <td v-else>{{ $t("not_appllicable") }}</td>
-              <td>{{ props.item.selectable.mall_name }}</td>
+              <td v-if="role == 'SuperUser'">
+                {{ props.item.selectable.mall_name }}
+              </td>
               <td>{{ props.item.selectable.title }}</td>
               <td>
                 <v-btn
@@ -174,7 +176,9 @@
               <td v-else>{{ $t("not_appllicable") }}</td>
 
               <td>{{ props.item.selectable.title }}</td>
-              <td>{{ props.item.selectable.mall_name }}</td>
+              <td v-if="role == 'SuperUser'">
+                {{ props.item.selectable.mall_name }}
+              </td>
               <td>
                 <v-btn
                   class="hover_shine btn mr-2"
@@ -311,7 +315,7 @@ export default {
         longname: "Rejected",
       },
     ],
-    role:""
+    role: "",
   }),
 
   computed: {
@@ -328,7 +332,6 @@ export default {
         { title: this.$t("action_en"), align: "center", key: "action" },
         { title: " ", align: "center" },
       ];
-      
 
       if (this.role === "SuperUser") {
         headers.splice(2, 0, { title: this.$t("mall_en"), key: "mall_name" });
@@ -346,7 +349,6 @@ export default {
         { title: this.$t("action_ar"), align: "center", key: "action" },
         { title: "", align: "center" },
       ];
-
 
       if (this.role === "SuperUser") {
         headers.splice(2, 0, { title: this.$t("mall_ar"), key: "mall_name" });

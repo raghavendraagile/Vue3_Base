@@ -32,7 +32,6 @@
         </v-tabs>
         <v-window v-model="tabs">
           <!-- ENGLISH TAB STARTS -->
-
           <v-window-item :value="1" class="p-3">
             <v-card
               variant="elevated"
@@ -77,7 +76,12 @@
                       alt
                     />
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                    v-if="store.stor_type == 'Store'"
+                  >
                     <div class="d-label">{{ $t("category_en") }}</div>
                     <div
                       v-for="(cat, cat_index) in category_en"
@@ -85,13 +89,19 @@
                     >
                       <v-chip
                         color="green"
+                        class="m-1"
                         v-if="store.categories.includes(cat.header_id)"
                       >
                         <span>{{ cat.name }}</span>
                       </v-chip>
                     </div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                    v-if="store.stor_type == 'Store'"
+                  >
                     <div class="d-label">{{ $t("mall_en") }}</div>
                     <div v-if="store.mall_details">
                       {{ store.mall_details.name }}
@@ -101,25 +111,6 @@
                     <div class="d-label">{{ $t("address_en") }}</div>
                     <div>
                       {{ store.address }}
-                    </div>
-                  </v-col>
-
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("description_en") }}</div>
-                    <div>
-                      {{ store.description }}
-                    </div>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("meta_title_en") }}</div>
-                    <div>
-                      {{ store.meta_title }}
-                    </div>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("meta_description_en") }}</div>
-                    <div>
-                      {{ store.meta_description }}
                     </div>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
@@ -134,7 +125,6 @@
                       </v-chip>
                     </div>
                   </v-col>
-
                   <v-col cols="12" sm="6" md="4">
                     <div
                       class="d-label"
@@ -147,6 +137,25 @@
                       {{ store.review_by }}
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("meta_title_en") }}</div>
+                    <div>
+                      {{ store.meta_title }}
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="12">
+                    <div class="d-label">{{ $t("description_en") }}</div>
+                    <div>
+                      {{ store.description }}
+                    </div>
+                  </v-col>
+
+                  <v-col cols="12" sm="12" md="12">
+                    <div class="d-label">{{ $t("meta_description_en") }}</div>
+                    <div>
+                      {{ store.meta_description }}
+                    </div>
                   </v-col>
 
                   <v-col
@@ -237,21 +246,32 @@
                       alt
                     />
                   </v-col>
-                   <v-col cols="12" sm="6" md="4">
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                    v-if="store.stor_type == 'Store'"
+                  >
                     <div class="d-label">{{ $t("category_ar") }}</div>
                     <div
-                      v-for="(cat, cat_index) in category_en"
+                      v-for="(cat, cat_index) in category_ar"
                       :key="cat_index"
                     >
                       <v-chip
                         color="green"
+                        class="m-1"
                         v-if="store.categories.includes(cat.header_id)"
                       >
                         <span>{{ cat.name }}</span>
                       </v-chip>
                     </div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                    v-if="store.stor_type == 'Store'"
+                  >
                     <div class="d-label">{{ $t("mall_ar") }}</div>
                     <div v-if="store.mall_details">
                       {{ store.mall_details.name }}
@@ -269,24 +289,6 @@
                         {{ store.title }}
                     </div>
                   </v-col> -->
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("description_ar") }}</div>
-                    <div>
-                      {{ store.description }}
-                    </div>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("meta_title_ar") }}</div>
-                    <div>
-                      {{ store.meta_title }}
-                    </div>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("meta_description_ar") }}</div>
-                    <div>
-                      {{ store.meta_description }}
-                    </div>
-                  </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("approval_status_ar") }}</div>
                     <div>
@@ -312,6 +314,24 @@
                       {{ store.review_by }}
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("meta_title_ar") }}</div>
+                    <div>
+                      {{ store.meta_title }}
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="12">
+                    <div class="d-label">{{ $t("description_ar") }}</div>
+                    <div>
+                      {{ store.description }}
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="12">
+                    <div class="d-label">{{ $t("meta_description_ar") }}</div>
+                    <div>
+                      {{ store.meta_description }}
+                    </div>
                   </v-col>
 
                   <v-col
@@ -452,7 +472,6 @@ export default {
   },
 
   methods: {
-    
     fetchCategory() {
       this.initval = true;
       this.$axios
