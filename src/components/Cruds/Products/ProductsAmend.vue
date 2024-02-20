@@ -49,8 +49,27 @@
               </v-row>
             </v-layout>
             <v-row class="mx-auto mt-2" max-width="344">
+              <v-col cols="12" sm="12" md="4">
+                <v-tooltip :text="this.$t('type_en')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-autocomplete
+                      v-bind="props"
+                      v-model="products[0].type"
+                      :label="this.$t('type_en')"
+                      variant="outlined"
+                      density="compact"
+                      :items="types_en"
+                      :rules="fieldRules"
+                      item-title="shortname"
+                      @update:modelValue="(value) => updateTypes(value)"
+                      item-value="header_id"
+                      class="required_field"
+                    ></v-autocomplete>
+                  </template>
+                </v-tooltip>
+              </v-col>
               <v-col
-                cols="4"
+                cols="12"
                 sm="12"
                 md="4"
                 v-if="user.rolename != 'StoreAdmin'"
@@ -73,7 +92,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="4" sm="12" md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('title_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -91,7 +110,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col md="4">
+              <v-col cols="12" sm="12" md="12">
                 <v-tooltip :text="this.$t('description_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-textarea
@@ -109,7 +128,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="4" sm="12" md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="$t('sequence_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -125,7 +144,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="4" sm="12" md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('meta_title_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -142,8 +161,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-
-              <v-col md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip
                   :text="this.$t('meta_description_en')"
                   location="bottom"
@@ -165,7 +183,7 @@
                   <span>{{ $t("meta_description_en") }}</span>
                 </v-tooltip>
               </v-col>
-              <v-col md="6">
+              <v-col cols="6" sm="6" md="6">
                 <div>
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">
@@ -260,8 +278,27 @@
               </v-row>
             </v-layout>
             <v-row class="mx-auto mt-2 arabdirection" max-width="344">
+              <v-col cols="12" sm="12" md="4">
+                <v-tooltip :text="this.$t('type_ar')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-autocomplete
+                      v-bind="props"
+                      v-model="products[1].type"
+                      :label="this.$t('type_ar')"
+                      variant="outlined"
+                      density="compact"
+                      :items="types_ar"
+                      :rules="fieldRules"
+                      item-title="shortname"
+                      @update:modelValue="(value) => updateTypes(value)"
+                      item-value="header_id"
+                      class="required_field"
+                    ></v-autocomplete>
+                  </template>
+                </v-tooltip>
+              </v-col>
               <v-col
-                cols="4"
+                cols="12"
                 sm="12"
                 md="4"
                 v-if="user.rolename != 'StoreAdmin'"
@@ -284,7 +321,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="4" sm="12" md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('title_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -302,7 +339,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col md="4">
+              <v-col cols="12" sm="12" md="12">
                 <v-tooltip :text="this.$t('description_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-textarea
@@ -321,7 +358,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="4" sm="12" md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="$t('sequence_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -338,7 +375,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="4" sm="12" md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('meta_title_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -356,8 +393,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-
-              <v-col md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip
                   :text="this.$t('meta_description_ar')"
                   location="bottom"
@@ -380,7 +416,7 @@
                   <span>{{ $t("meta_description_ar") }}</span>
                 </v-tooltip>
               </v-col>
-              <v-col md="6">
+              <v-col cols="6" sm="12" md="6">
                 <div>
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">
@@ -552,7 +588,8 @@ export default {
     ],
     stores_en: [],
     stores_ar: [],
-
+    types_en: [],
+    types_ar: [],
     noimagepreview: "",
     items: [],
   }),
@@ -593,6 +630,7 @@ export default {
   },
   created() {
     this.fetchRoles();
+    this.fetchLookup();
     this.user = JSON.parse(localStorage.getItem("user_data"));
   },
   watch: {
@@ -669,6 +707,13 @@ export default {
         this.products[0].store_id = store;
       }
     },
+    updateTypes(type) {
+      if (this.tabs == 1) {
+        this.products[1].type = type;
+      } else {
+        this.products[0].type = type;
+      }
+    },
     updateType(stor_type) {
       this.products[1].store_id = null;
       this.products[0].store_id = null;
@@ -743,6 +788,22 @@ export default {
         })
         .catch((err) => {
           this.loader = false;
+          console.log(err);
+        });
+    },
+    fetchLookup() {
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_lang_lookup", {
+          params: {
+            lookup_type: "PRODUCTS_SERVICES_TYPE",
+          },
+        })
+        .then((response) => {
+          this.types_en = response.data.lookup_en;
+          this.types_ar = response.data.lookup_ar;
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
           console.log(err);
         });
     },
