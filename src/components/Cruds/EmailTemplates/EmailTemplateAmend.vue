@@ -7,12 +7,18 @@
       <content-loader v-if="loader"></content-loader>
       <div class="card-body" style="box-shadow: none !important">
         <v-form ref="form" v-model="valid">
-          <v-row class="px-6 mt-4" v-bind:class="is_arabic ? 'arabclass' : ''">
+          <v-row class="px-6 mt-4" v-bind:class="fieldItem.lang == 'ar' ? 'arabclass' : ''">
             <v-col cols="12" sm="6" md="6">
-              <v-tooltip :text="$t('name')" location="bottom">
+              <v-tooltip 
+              v-bind:text="fieldItem.lang == 'en' ? $t('name') : $t('name_ar')"
+              location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field :disabled="fieldItem.id == 0 ? disabled : ''" v-bind="props" maxlength="100"
-                    v-model="fieldItem.template_name" :rules="fieldRules" v-bind:label="$t('name')" required
+                  class="required_field"
+                    v-model="fieldItem.template_name" 
+                    v-bind:rules="fieldItem.lang == 'en' ? fieldRules : fieldRulesAR"
+                    v-bind:label="fieldItem.lang == 'en' ? $t('name') : $t('name_ar')"
+                    required
                     variant="outlined" density="compact"></v-text-field>
                 </template>
               </v-tooltip>
@@ -33,10 +39,11 @@
                   <v-tooltip :text="fieldItem.lang == 'en' ? $t('select_mode_en') : $t('select_mode_ar')"
                     location="bottom">
                     <template v-slot:activator="{ props }">
-                      <v-autocomplete class="rtl-dir" v-bind:class="fieldItem.lang == 'ar' ? 'arabclass' : ''"
+                      <v-autocomplete class="rtl-dir required_field" v-bind:class="fieldItem.lang == 'ar' ? 'arabclass' : ''"
+                        v-bind:rules="fieldItem.lang == 'en' ? fieldRules : fieldRulesAR"
                         v-bind:label="fieldItem.lang == 'en' ? $t('select_mode_en') : $t('select_mode_ar')"
                         item-value="header_id" item-title="shortname" density="compact" variant="outlined" v-bind="props"
-                        index="id" v-model="fieldItem.template_type_id" :rules="fieldRules1"
+                        index="id" v-model="fieldItem.template_type_id"
                         :items="tabs == 1 ? temp_type_en : temp_type_ar" outlined required dense></v-autocomplete>
                     </template>
                   </v-tooltip>
@@ -44,8 +51,10 @@
                 <v-col cols="12" sm="12" md="8">
                   <v-tooltip :text="fieldItem.lang == 'en' ? $t('subject_en') : $t('subject_ar')" location="bottom">
                     <template v-slot:activator="{ props }">
-                      <v-text-field v-bind="props" v-model="fieldItem.template_subject" :rules="fieldRules"
+                      <v-text-field v-bind="props" v-model="fieldItem.template_subject" 
+                      v-bind:rules="fieldItem.lang == 'en' ? fieldRules : fieldRulesAR"
                         v-bind:class="fieldItem.lang == 'ar' ? 'arabclass' : ''" maxlength="100"
+                        class="required_field"
                         v-bind:label="fieldItem.lang == 'en' ? $t('subject_en') : $t('subject_ar')" required
                         variant="outlined" density="compact"></v-text-field>
                     </template>
@@ -73,7 +82,9 @@
                             " v-model:value="fieldItem.template_body" @blur="onEditorBlur($event)"
                           @focus="onEditorFocus($event)" @ready="onEditorReady($event)"
                           @change="onEditorChange($event)" />
-                        <small v-if="quill_item" class="text-danger ml-5 required_item shake">Field Required</small>
+                        <small v-if="quill_item" class="text-danger ml-5 required_item shake"><span v-if="tabs==2">{{ $t('field_required_ar') }}</span>
+                          <span v-else>{{ $t('field_required') }}</span>
+                        </small>
                       </div>
                     </template>
                   </v-tooltip>
@@ -96,7 +107,8 @@
                             : 'quill_item_border1'
                             " v-model:value="fieldItem.template_signature" v-bind:label="$t('body')"
                           @change="onEditorChangeSignature($event)" @blur="onEditorBlurSign($event)" />
-                        <small v-if="quill_sign" class="text-danger ml-5 required_item shake">Field Required</small>
+                        <small v-if="quill_sign" class="text-danger ml-5 required_item shake"><span v-if="tabs==2">{{ $t('field_required_ar') }}</span>
+                          <span v-else>{{ $t('field_required') }}</span></small>
                         <!-- <QuillEditor theme="snow" v-model:content="fieldItem.template_signature"
                     contentType="html" name="template_body" v-bind:label="$t('body')" />-->
                       </div>
@@ -227,8 +239,8 @@ export default {
     fieldRules() {
       return [(v) => (!!v && !!v.trim()) || this.$t("field_required")];
     },
-    fieldRules1() {
-      return [(v) => !!v || this.$t("field_required")];
+    fieldRulesAR() {
+      return [(v) => !!v || this.$t("field_required_ar")];
     },
   },
 
@@ -490,6 +502,9 @@ export default {
 }
 .arabclassquill .ql-editor{
   text-align: justify ;
+}
+.arabclass  .v-messages__message {
+  text-align: right !important;
 }
 @keyframes shake {
 
