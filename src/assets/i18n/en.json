@@ -417,6 +417,7 @@
   "file_preview_en" : "File Preview",
   "image_preview_en":"Image Preview",
   "my_store":"My Store",
+  "floor_en":"Floor",
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
   "enter_the_content_here_ar" : "أدخل المحتوى هنا",
@@ -525,5 +526,6 @@
   "am_ar":"صباحًا",
   "pm_ar":"مساءً",
   "email_required_ar": "البريد الإلكتروني (مطلوب",
-  "store_type_en": "Store Type"
+  "store_type_en": "Store Type",
+  "floor_ar":"أرضية"
 }

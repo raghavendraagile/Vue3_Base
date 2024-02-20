@@ -218,6 +218,20 @@
                   </template>
                 </v-tooltip>
               </v-col>
+              <v-col cols="12" sm="3" md="3">
+                <v-tooltip :text="$t('floor_en')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      v-model="events[0].floor"
+                      maxlength="5"
+                      v-bind:label="$t('floor_en')"
+                      variant="outlined"
+                      density="compact"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
               <v-col cols="12" sm="6" md="6">
                 <div>
                   <div class="image-container">
@@ -493,6 +507,20 @@
                 </v-tooltip>
               </v-col>
               <v-col cols="12" sm="3" md="3">
+                <v-tooltip :text="$t('floor_ar')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      v-model="events[1].floor"
+                      maxlength="5"
+                      v-bind:label="$t('floor_ar')"
+                      variant="outlined"
+                      density="compact"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col cols="12" sm="3" md="3">
                 <div>
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">
@@ -674,6 +702,7 @@ export default {
         lang: "en",
         store_id: null,
         stor_type: "",
+        floor: "",
       },
       {
         id: 0,
@@ -688,6 +717,7 @@ export default {
         lang: "ar",
         store_id: null,
         stor_type: "",
+        floor: "",
       },
     ],
     uploadfilear: false,

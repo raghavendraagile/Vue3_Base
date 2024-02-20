@@ -253,13 +253,27 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="2" sm="2" md="2">
+              <v-col cols="12" sm="4" md="4">
+                <v-tooltip :text="$t('floor_en')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      v-model="promotions[0].floor"
+                      maxlength="5"
+                      v-bind:label="$t('floor_en')"
+                      variant="outlined"
+                      density="compact"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col cols="12" sm="4" md="4">
                 <v-tooltip :text="$t('sequence_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-bind="props"
                       v-model="promotions[0].seq"
-                      maxlength="100"
+                      maxlength="15"
                       :rules="phoneRules"
                       v-bind:label="$t('sequence_en')"
                       required
@@ -270,7 +284,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col md="6">
+              <v-col cols="12" sm="6" md="6">
                 <div>
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">
@@ -566,13 +580,27 @@
                   <span>{{ $t("vacancy") }}</span>
                 </v-tooltip>
               </v-col>
-              <v-col cols="2" sm="2" md="2">
+              <v-col cols="12" sm="4" md="4">
+                <v-tooltip :text="$t('floor_ar')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      v-model="promotions[1].floor"
+                      maxlength="5"
+                      v-bind:label="$t('floor_ar')"
+                      variant="outlined"
+                      density="compact"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col cols="12" sm="4" md="4">
                 <v-tooltip :text="$t('sequence_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-bind="props"
                       v-model="promotions[1].seq"
-                      maxlength="100"
+                      maxlength="15"
                       :rules="phoneRules"
                       v-bind:label="$t('sequence_ar')"
                       required
@@ -583,7 +611,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col md="6">
+              <v-col cols="12" sm="6" md="6">
                 <div>
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">
@@ -747,6 +775,7 @@ export default {
         lang: "en",
         store_id: null,
         stor_type: "",
+        floor: "",
       },
       {
         id: 0,
@@ -764,6 +793,7 @@ export default {
         lang: "ar",
         store_id: null,
         stor_type: "",
+        floor: "",
       },
     ],
 
