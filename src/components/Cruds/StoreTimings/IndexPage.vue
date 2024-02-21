@@ -268,11 +268,13 @@ export default {
     "$i18n.locale"(newLocale) {
       if (newLocale === "ar") {
         this.sel_lang = "ar";
+        this.fetchStoreTimings();
       } else {
-        ("");
         this.sel_lang = "en";
+        this.fetchStoreTimings();
       }
     },
+    
   },
   computed: {
     formTitle() {

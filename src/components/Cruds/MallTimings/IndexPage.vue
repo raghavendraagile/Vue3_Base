@@ -357,9 +357,9 @@ export default {
       if (newLocale === "ar") {
         this.sel_lang = "ar";
       } else {
-        ("");
         this.sel_lang = "en";
       }
+      
     },
   },
 
