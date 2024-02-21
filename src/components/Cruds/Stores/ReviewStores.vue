@@ -461,6 +461,18 @@ export default {
         }
       },
     },
+    "$route.query.s_tab": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.s_tab) {
+          if (this.$route.query.s_tab == 1) {
+            this.tabs = 1;
+          } else {
+            this.tabs = 2;
+          }
+        }
+      },
+    },
     "$i18n.locale"(newLocale) {
       if (newLocale === "ar") {
         this.sel_lang = "ar";
