@@ -201,12 +201,18 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" sm="12" md="4" class="icon_style">
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="4"
+                    class="icon_style"
+                    style="margin-top: -18px"
+                  >
+                    <span>{{ $t("icon_en") }}</span>
                     <v-tooltip :text="$t('icon_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <Vue3IconPicker
                           v-bind="props"
-                          placeholder="Select icon"
                           v-model="category[0].icon"
                           v-bind:label="$t('icon_en')"
                           variant="outlined"
@@ -463,7 +469,14 @@
                     </template>
                   </v-tooltip>
                 </v-col>
-                <v-col cols="12" sm="12" md="4" class="icon_style">
+                <v-col
+                  cols="12"
+                  sm="12"
+                  md="4"
+                  class="icon_style"
+                  style="margin-top: -18px"
+                >
+                  <span>{{ $t("icon_ar") }}</span>
                   <v-tooltip :text="$t('icon_ar')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <Vue3IconPicker
