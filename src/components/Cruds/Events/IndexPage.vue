@@ -214,7 +214,7 @@
               </td>
               <td v-if="this.role === 'SuperUser'">
                 <span v-if="props.item.selectable.store_name">
-                  {{ props.item.selectable.store_name.stor_type }}</span
+                  {{ changeName(props.item.selectable.store_name.stor_type) }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
@@ -518,6 +518,14 @@ export default {
     },
   },
   methods: {
+        changeName(store){
+ switch (store) {
+        case "Mall":
+          return this.$t("mall_ar");
+        case "Store":
+          return this.$t("store_ar");
+    }
+    },
     changeStatusAr(status) {
       switch (status) {
         case "Approved":
