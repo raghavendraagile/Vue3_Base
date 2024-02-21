@@ -39,6 +39,50 @@
                     <div class="d-label">{{ $t("title_en") }}</div>
                     <div>{{ event.title }}</div>
                   </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <div class="d-label">{{ $t("description_en") }}</div>
+                    <div v-html="event.description"></div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="2">
+                    <div class="d-label">{{ $t("image_preview_en") }}</div>
+                    <div>
+                      <img
+                        v-bind:style="
+                          isHovering == true ? 'filter: blur(1px);' : ''
+                        "
+                        v-if="event.image_path != null"
+                        :src="envImagePath + event.image_path"
+                        width="100"
+                        height="65
+                          "
+                        alt
+                      />
+                      <img
+                        v-bind:style="
+                          isHovering == true ? 'filter: blur(1px);' : ''
+                        "
+                        v-else
+                        src="@/assets/images/no_image.png"
+                        width="100"
+                      />
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("meta_title_en") }}</div>
+                    <div>{{ event.meta_title }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("meta_title_en") }}</div>
+                    <div>{{ event.meta_description }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("start_date_en") }}</div>
+                    <div>{{ formatDate(event.start_date) }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("end_date_en") }}</div>
+                    <div>{{ formatDate(event.end_date) }}</div>
+                  </v-col>
                   <!-- <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("parent_event_en") }}</div>
                     <div v-if="event.parent_event">
@@ -129,22 +173,55 @@
             >
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="12" sm="6" md="3">
+                  <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("title_ar") }}</div>
                     <div>{{ event.title }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <div class="d-label">{{ $t("description_ar") }}</div>
+                    <div v-html="event.description"></div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="2">
+                    <div class="d-label">{{ $t("image_preview_ar") }}</div>
+                    <div>
+                      <img
+                        v-bind:style="
+                          isHovering == true ? 'filter: blur(1px);' : ''
+                        "
+                        v-if="event.image_path != null"
+                        :src="envImagePath + event.image_path"
+                        width="100"
+                        height="65
+                          "
+                        alt
+                      />
+                      <img
+                        v-bind:style="
+                          isHovering == true ? 'filter: blur(1px);' : ''
+                        "
+                        v-else
+                        src="@/assets/images/no_image.png"
+                        width="100"
+                      />
+                    </div>
                   </v-col>
                   <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("meta_title_ar") }}</div>
                     <div>{{ event.meta_title }}</div>
                   </v-col>
-                  <v-col cols="12" sm="12" md="3">
-                    <div class="d-label">{{ $t("description_ar") }}</div>
-                    <div v-html="event.description"></div>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="3">
+                  <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("meta_description_ar") }}</div>
                     <div>{{ event.meta_description }}</div>
                   </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("start_date_ar") }}</div>
+                    <div>{{ formatDate(event.start_date) }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("end_date_ar") }}</div>
+                    <div>{{ formatDate(event.end_date) }}</div>
+                  </v-col>
+
                   <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("approval_status_ar") }}</div>
                     <div>
@@ -298,6 +375,18 @@ export default {
           this.user_role = JSON.parse(
             localStorage.getItem("user_data")
           ).rolename;
+        }
+      },
+    },
+    "$route.query.s_tab": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.s_tab) {
+          if (this.$route.query.s_tab == 1) {
+            this.tabs = 1;
+          } else {
+            this.tabs = 2;
+          }
         }
       },
     },

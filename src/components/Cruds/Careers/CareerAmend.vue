@@ -577,6 +577,7 @@ export default {
             this.stores_ar = this.stores_data_ar;
           }
         } else {
+        
           this.careers[0].stor_type = stor_type;
           if (stor_type == "MallAdmin" && this.user.rolename == "MallAdmin") {
             console.log("asdasd", this.stores_en);
