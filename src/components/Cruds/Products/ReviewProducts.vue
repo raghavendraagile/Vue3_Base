@@ -39,39 +39,9 @@
                     <div class="d-label">{{ $t("title_en") }}</div>
                     <div>{{ product.title }}</div>
                   </v-col>
-                  <v-col cols="12" sm="12" md="6">
-                    <div class="d-label">{{ $t("description_en") }}</div>
-                    <div v-html="product.description"></div>
-                  </v-col>
-                     <v-col cols="12" sm="6" md="2" class="image-preview">
-                    <div class="d-label">{{ $t("image_preview_en") }}</div>
-                    <img
-                      v-bind:style="
-                        isHovering == true ? 'filter: blur(1px);' : ''
-                      "
-                      v-if="product.image_path == null"
-                      src="@/assets/images/no_image.png"
-                      width="100"
-                    />
-                    <img
-                      v-bind:style="
-                        isHovering == true ? 'filter: blur(1px);' : ''
-                      "
-                      v-else
-                      :src="envImagePath + product.image_path"
-                      width="100"
-                      height="65
-                          "
-                      alt
-                    />
-                  </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("meta_title_en") }}</div>
                     <div>{{ product.meta_title }}</div>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="6">
-                    <div class="d-label">{{ $t("meta_description_en") }}</div>
-                    <div>{{ product.meta_description }}</div>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("approval_status_en") }}</div>
@@ -97,7 +67,7 @@
                       {{ product.review_by }}
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
-                  </v-col>             
+                  </v-col>
                   <v-col
                     cols="12"
                     sm="12"
@@ -112,11 +82,53 @@
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
+                  <v-col cols="12" sm="12" md="12">
+                    <div class="d-label">{{ $t("description_en") }}</div>
+                    <div v-html="product.description"></div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="12">
+                    <div class="d-label">{{ $t("meta_description_en") }}</div>
+                    <div>{{ product.meta_description }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="12" class="image-preview">
+                    <div class="d-label">{{ $t("image_preview_en") }}</div>
+                    <div class="d-flex">
+                      <div v-if="product.image_path.length == 0">
+                        <img
+                          v-bind:style="
+                            isHovering == true ? 'filter: blur(1px);' : ''
+                          "
+                          src="@/assets/images/no_image.png"
+                          width="100"
+                        />
+                      </div>
+                      <div
+                        class="mr-5 m-2"
+                        v-for="(img_en, img_index) in product.image_path"
+                        :key="img_index"
+                      >
+                        <div class="image-container">
+                          <img
+                            v-bind:style="
+                              isHovering == true ? 'filter: blur(1px);' : ''
+                            "
+                            :src="envImagePath + img_en"
+                            width="100"
+                            height="65"
+                            alt
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </v-col>
                 </v-row>
               </v-layout>
               <div
                 class="d-flex justify-content-end"
-                v-if="product.approval_status == 'In Review' && user_role != 'StoreAdmin' "
+                v-if="
+                  product.approval_status == 'In Review' &&
+                  user_role != 'StoreAdmin'
+                "
               >
                 <v-chip
                   @click="statusOnChange('Approved', product.header_id)"
@@ -149,44 +161,9 @@
             >
               <v-layout>
                 <v-row class="px-6 mt-2">
-                   <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("title_ar") }}</div>
                     <div>{{ product.title }}</div>
-                  </v-col>
-                       <v-col cols="12" sm="12" md="6">
-                    <div class="d-label">{{ $t("description_ar") }}</div>
-                    <div v-html="product.description"></div>
-                  </v-col>
-                     <v-col cols="12" sm="6" md="2" class="image-preview">
-                    <div class="d-label">{{ $t("image_preview_ar") }}</div>
-                    <img
-                      v-bind:style="
-                        isHovering == true ? 'filter: blur(1px);' : ''
-                      "
-                      v-if="product.image_path == null"
-                      src="@/assets/images/no_image.png"
-                      width="100"
-                    />
-                    <img
-                      v-bind:style="
-                        isHovering == true ? 'filter: blur(1px);' : ''
-                      "
-                      v-else
-                      :src="envImagePath + product.image_path"
-                      width="100"
-                      height="65
-                          "
-                      alt
-                    />
-                  </v-col>
-                       <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("meta_title_ar") }}</div>
-                    <div>{{ product.meta_title }}</div>
-                  </v-col>
-             
-                  <v-col cols="12" sm="12" md="6">
-                    <div class="d-label">{{ $t("meta_description_ar") }}</div>
-                    <div>{{ product.meta_description }}</div>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("approval_status_ar") }}</div>
@@ -213,9 +190,6 @@
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
-                 
-
-             
                   <v-col
                     cols="12"
                     sm="12"
@@ -230,11 +204,60 @@
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
+
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("meta_title_ar") }}</div>
+                    <div>{{ product.meta_title }}</div>
+                  </v-col>
+
+                  <v-col cols="12" sm="12" md="12">
+                    <div class="d-label">{{ $t("description_ar") }}</div>
+                    <div v-html="product.description"></div>
+                  </v-col>
+
+                  <v-col cols="12" sm="12" md="12">
+                    <div class="d-label">{{ $t("meta_description_ar") }}</div>
+                    <div>{{ product.meta_description }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="12" class="image-preview">
+                    <div class="d-label">{{ $t("image_preview_ar") }}</div>
+                    <div class="d-flex">
+                      <div v-if="product.image_path.length == 0">
+                        <img
+                          v-bind:style="
+                            isHovering == true ? 'filter: blur(1px);' : ''
+                          "
+                          src="@/assets/images/no_image.png"
+                          width="100"
+                        />
+                      </div>
+                      <div
+                        class="mr-5 m-2"
+                        v-for="(img_en, img_index) in product.image_path"
+                        :key="img_index"
+                      >
+                        <div class="image-container">
+                          <img
+                            v-bind:style="
+                              isHovering == true ? 'filter: blur(1px);' : ''
+                            "
+                            :src="envImagePath + img_en"
+                            width="100"
+                            height="65"
+                            alt
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </v-col>
                 </v-row>
               </v-layout>
               <div
                 class="d-flex justify-content-end"
-                v-if="product.approval_status == 'In Review' &&  user_role != 'StoreAdmin'"
+                v-if="
+                  product.approval_status == 'In Review' &&
+                  user_role != 'StoreAdmin'
+                "
               >
                 <v-chip
                   @click="statusOnChange('Approved', product.header_id)"
@@ -313,7 +336,7 @@ export default {
     isBtnLoading: false,
     isDisabled: false,
     loader: false,
-    user_role:"",
+    user_role: "",
     tabs: 1,
     product_en: [],
     product_ar: [],
@@ -332,8 +355,9 @@ export default {
       handler() {
         if (this.$route.query.slug) {
           this.fetchProductDetails();
-          this.user_role = JSON.parse(localStorage.getItem("user_data")).rolename;
-
+          this.user_role = JSON.parse(
+            localStorage.getItem("user_data")
+          ).rolename;
         }
       },
     },

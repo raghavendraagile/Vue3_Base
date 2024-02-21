@@ -192,18 +192,6 @@
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                          v-if="products[0].image_path != null"
-                          :src="envImagePath + products[0].image_path"
-                          width="100"
-                          height="65
-                          "
-                          alt
-                        />
-                        <img
-                          v-bind:style="
-                            isHovering == true ? 'filter: blur(1px);' : ''
-                          "
-                          v-else
                           src="@/assets/images/upload_image_default.png"
                           width="100"
                         />
@@ -213,25 +201,6 @@
                       </div>
                     </v-hover>
                   </div>
-                  <a
-                    class="text-center pointer"
-                    @click="downloadImage(products[0].image_path)"
-                  >
-                    <span
-                      v-if="products[0].image_path"
-                      class="download_btn_color"
-                      >{{ $t("download") }}</span
-                    >
-                  </a>
-                  <span>
-                    <v-icon
-                      small
-                      v-if="products[0].image_path"
-                      class="mr-2 edit_btn icon_size delete_icon"
-                      @click="removeImage(0)"
-                      >mdi mdi-trash-can-outline</v-icon
-                    >
-                  </span>
                 </div>
                 <br />
                 <Imageupload
@@ -243,6 +212,52 @@
                 />
               </v-col>
             </v-row>
+            <div class="mx-auto d-flex" max-width="344">
+              <div
+                class="mr-10 m-2"
+                v-for="(img_en, img_index) in products[0].image_path"
+                :key="img_index"
+              >
+                <div class="image-container">
+                  <img
+                    v-bind:style="
+                      isHovering == true ? 'filter: blur(1px);' : ''
+                    "
+                    :src="envImagePath + img_en"
+                    width="100"
+                    height="65"
+                    alt
+                  />
+                </div>
+                <v-tooltip :text="this.$t('download_en')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <a class="text-center pointer download_icon">
+                      <span
+                        ><v-icon
+                          v-bind="props"
+                          class="mr-2"
+                          @click="downloadImage(img_en)"
+                          >mdi mdi-download</v-icon
+                        ></span
+                      >
+                    </a>
+                  </template>
+                </v-tooltip>
+                <v-tooltip :text="this.$t('delete_en')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <span>
+                      <v-icon
+                        small
+                        v-bind="props"
+                        class="mr-2 edit_btn icon_size delete_icon"
+                        @click="removeImage(img_index)"
+                        >mdi mdi-trash-can-outline</v-icon
+                      >
+                    </span>
+                  </template>
+                </v-tooltip>
+              </div>
+            </div>
           </v-form>
         </v-window-item>
         <!-- ENGLISH TAB STOPS -->
@@ -425,18 +440,6 @@
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                          v-if="products[1].image_path != null"
-                          :src="envImagePath + products[1].image_path"
-                          width="100"
-                          height="65
-                          "
-                          alt
-                        />
-                        <img
-                          v-bind:style="
-                            isHovering == true ? 'filter: blur(1px);' : ''
-                          "
-                          v-else
                           src="@/assets/images/upload_image_default.png"
                           width="100"
                         />
@@ -445,27 +448,6 @@
                         </div>
                       </div>
                     </v-hover>
-                  </div>
-                  <div class="text-right">
-                    <a
-                      class="text-center pointer"
-                      @click="downloadImage(products[1].image_path)"
-                    >
-                      <span
-                        v-if="products[1].image_path"
-                        class="download_btn_color"
-                        >{{ $t("download") }}</span
-                      >
-                    </a>
-                    <span>
-                      <v-icon
-                        small
-                        v-if="products[1].image_path"
-                        class="mr-2 edit_btn icon_size delete_icon_ar"
-                        @click="removeImage(1)"
-                        >mdi mdi-trash-can-outline</v-icon
-                      >
-                    </span>
                   </div>
                 </div>
                 <br />
@@ -478,6 +460,52 @@
                 />
               </v-col>
             </v-row>
+            <div class="mx-auto d-flex" max-width="344">
+              <div
+                class="mr-10 m-2"
+                v-for="(img_ar, ar_img_index) in products[1].image_path"
+                :key="ar_img_index"
+              >
+                <div class="image-container">
+                  <img
+                    v-bind:style="
+                      isHovering == true ? 'filter: blur(1px);' : ''
+                    "
+                    :src="envImagePath + img_ar"
+                    width="100"
+                    height="65"
+                    alt
+                  />
+                </div>
+                <v-tooltip :text="this.$t('download_ar')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <a class="text-center pointer download_icon_ar">
+                      <span
+                        ><v-icon
+                          v-bind="props"
+                          class="mr-2"
+                          @click="downloadImage(img_ar)"
+                          >mdi mdi-download</v-icon
+                        ></span
+                      >
+                    </a>
+                  </template>
+                </v-tooltip>
+                <v-tooltip :text="this.$t('delete_ar')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <span>
+                      <v-icon
+                        small
+                        v-bind="props"
+                        class="mr-2 edit_btn icon_size delete_icon_ar"
+                        @click="removeImage(ar_img_index)"
+                        >mdi mdi-trash-can-outline</v-icon
+                      >
+                    </span>
+                  </template>
+                </v-tooltip>
+              </div>
+            </div>
           </v-form>
         </v-window-item>
       </v-window>
@@ -564,7 +592,7 @@ export default {
         description: "",
         start_date: "",
         end_date: "",
-        image_path: null,
+        image_path: [],
         meta_title: "",
         meta_description: "",
         lang: "en",
@@ -578,7 +606,7 @@ export default {
         description: "",
         start_date: "",
         end_date: "",
-        image_path: null,
+        image_path: [],
         meta_title: "",
         meta_description: "",
         lang: "ar",
@@ -586,6 +614,8 @@ export default {
         stor_type: "",
       },
     ],
+    images_en: [],
+    images_ar: [],
     stores_en: [],
     stores_ar: [],
     types_en: [],
@@ -670,10 +700,10 @@ export default {
 
   methods: {
     removeImage(index) {
-      if (index == 1) {
-        this.products[1].image_path = null;
+      if (this.tabs == 1) {
+        this.products[0].image_path.splice(index, 1);
       } else {
-        this.products[0].image_path = null;
+        this.products[1].image_path.splice(index, 1);
       }
     },
     changeRoleName(role_name) {
@@ -870,12 +900,12 @@ export default {
         });
     },
     uploaded_image(img_src) {
-      //alert('uploaded image');
-      //alert(img_src);
       if (this.tabs == 1) {
-        this.products[0].image_path = img_src;
+        this.products[0].image_path.push(img_src);
+        // this.products[0].image_path = img_src;
       } else {
-        this.products[1].image_path = img_src;
+        this.products[1].image_path.push(img_src);
+        // this.products[1].image_path = img_src;
       }
     },
 
@@ -1005,7 +1035,24 @@ input.larger {
 }
 .delete_icon {
   position: relative;
-  left: 45px;
+  left: 80px;
   bottom: 90px;
+}
+.download_icon {
+  position: relative;
+  left: 112px;
+  bottom: 52px;
+}
+.download_icon_ar {
+  position: relative;
+  bottom: 45px;
+  right: 67px;
+}
+.d-flex {
+  display: flex !important;
+  align-items: center;
+  /* justify-content: space-between !important; */
+  flex-wrap: wrap;
+  background: #fff;
 }
 </style>
