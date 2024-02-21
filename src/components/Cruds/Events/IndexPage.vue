@@ -11,7 +11,6 @@
         :heading="$t('events')"
         :google_icon="google_icon"
       ></page-title>
-
       <div class="col-md-4">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
@@ -34,7 +33,7 @@
       <div class="add_new_button">
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
-            <router-link :to="{ name: 'events_amend' }" style="color: white">
+            <router-link :to="{ name: 'events_amend', query:{ 's_tab': tabs } }"  style="color: white">
               <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
                 $t("add_new")
               }}</v-btn>
@@ -147,7 +146,8 @@
                 <router-link
                   :to="{
                     name: 'events_amend',
-                    query: { slug: props.item.selectable.slug },
+                    query: { slug: props.item.selectable.slug,
+                    's_tab': tabs  },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -281,7 +281,7 @@
                 <router-link
                   :to="{
                     name: 'events_amend',
-                    query: { slug: props.item.selectable.slug },
+                    query: { slug: props.item.selectable.slug,'s_tab': tabs  },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -603,29 +603,6 @@ export default {
       this.status_id = id;
       this.showStatusDialog = true;
     },
-    routereditusers(slug, empno, role) {
-      if (role) {
-        return;
-      }
-      if (empno != null) {
-        this.$router.push({
-          name: "users.view",
-          query: {
-            slug: slug,
-            view: "userview",
-          },
-        });
-      } else {
-        this.$router.push({
-          name: "employee_creation",
-          query: {
-            slug: slug,
-            pathname: "userview",
-          },
-        });
-      }
-    },
-
     statusUpdate() {
       this.$axios
         .post(process.env.VUE_APP_API_URL_ADMIN + "update_events_status", {
@@ -657,7 +634,8 @@ export default {
     viewEvents(slug) {
       this.$router.push({
         name: "events-review",
-        query: { slug: slug },
+        query: { slug: slug ,
+        's_tab': this.tabs },
       });
     },
   },
