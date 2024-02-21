@@ -85,7 +85,7 @@
                   </v-tooltip>
                 </span>
                 <span v-else>
-                  <v-icon color="grey" small>mdi-trash-can-outline</v-icon>
+                  <v-icon color="grey" class="disabledmditrash" small>mdi-trash-can-outline</v-icon>
                 </span>
               </td>
               <td>
@@ -143,7 +143,7 @@
                   </v-tooltip>
                 </span>
                 <span v-else>
-                  <v-icon color="grey" small>mdi-trash-can-outline</v-icon>
+                  <v-icon color="grey"  class="disabledmditrash" small>mdi-trash-can-outline</v-icon>
                 </span>
               </td>
               <td>
@@ -458,5 +458,8 @@ export default {
 <style scoped>
 .list_item {
   cursor: pointer;
+}
+.disabledmditrash:hover{
+  animation: none;
 }
 </style>
