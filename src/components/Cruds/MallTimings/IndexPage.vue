@@ -161,20 +161,20 @@
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td>
-                <span v-if="props.item.selectable.child_category">{{
-                  props.item.selectable.child_category.name
+                <span v-if="props.item.selectable.child_category_ar">{{
+                  props.item.selectable.child_category_ar[0].name
                 }}</span>
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td>{{ props.item.selectable.from_day }}</td>
-              <td>{{ props.item.selectable.to_day }}</td>
+              <td>{{ changeArWeekday(props.item.selectable.from_day) }}</td>
+              <td>{{ changeArWeekday(props.item.selectable.to_day) }}</td>
               <td>
                 {{ props.item.selectable.from_time }}
-                {{ props.item.selectable.from_meridiem }}
+                {{ changeArMeridian(props.item.selectable.from_meridiem) }}
               </td>
               <td>
                 {{ props.item.selectable.to_time }}
-                {{ props.item.selectable.to_meridiem }}
+                {{ changeArMeridian(props.item.selectable.to_meridiem) }}
               </td>
               <td>
                 <v-btn
@@ -369,6 +369,36 @@ export default {
   },
 
   methods: {
+    changeArWeekday(day) {
+      switch (day) {
+        case "Monday":
+          return this.$t("monday_ar");
+        case "Tuesday":
+          return this.$t("tuesday_ar");
+        case "Wednesday":
+          return this.$t("wednesday_ar");
+        case "Thursday":
+          return this.$t("thursday_ar");
+        case "Friday":
+          return this.$t("friday_ar");
+        case "Saturday":
+          return this.$t("saturday_ar");
+        case "Sunday":
+          return this.$t("sunday_ar");
+        default:
+          return "";
+      }
+    },
+    changeArMeridian(data) {
+      switch (data) {
+        case "AM":
+          return this.$t("am_ar");
+        case "PM":
+          return this.$t("pm_ar");
+        default:
+          return "";
+      }
+    },
     cancel() {
       this.showConfirmDialog = false;
     },
