@@ -36,7 +36,7 @@
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link
-              :to="{ name: 'categories-amend' }"
+              :to="{ name: 'categories-amend', query: { s_tab: tabs } } "
               style="color: white"
             >
               <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
