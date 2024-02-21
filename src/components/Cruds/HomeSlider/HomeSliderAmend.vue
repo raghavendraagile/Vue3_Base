@@ -32,14 +32,42 @@
             <v-form ref="form" v-model="valid">
               <v-layout>
                 <v-row class="px-6 mt-2">
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="4"
+                    v-if="user.rolename != 'StoreAdmin'"
+                  >
+                    <v-tooltip :text="labelText" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="home_slider[0].store_id"
+                          v-bind:label="$t('mall_en')"
+                          @update:modelValue="(value) => updateStore(value)"
+                          variant="outlined"
+                          density="compact"
+                          :disabled="user.rolename == 'MallAdmin'"
+                          :loading="store_loader"
+                          :items="stores_en"
+                          item-title="name"
+                          item-value="header_id"
+                          class="required_field"
+                          :rules="fieldRules"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-layout>
+              <v-layout>
+                <v-row class="px-6 mt-2">
                   <v-col cols="12" sm="12" md="4">
                     <v-tooltip :text="$t('title_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
                           v-model="home_slider[0].title"
-                          :rules="fieldRules"
-                          class="required_field"
                           maxlength="100"
                           v-bind:label="$t('title_en')"
                           required
@@ -213,6 +241,36 @@
           <v-window-item :value="2" style="direction: rtl">
             <v-form ref="form" v-model="valid">
               <v-layout>
+                <v-row class="px-6 mt-2">
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="4"
+                    v-if="user.rolename != 'StoreAdmin'"
+                  >
+                    <v-tooltip :text="labelText" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="home_slider[1].store_id"
+                          v-bind:label="$t('mall_ar')"
+                          @update:modelValue="(value) => updateStore(value)"
+                          variant="outlined"
+                          density="compact"
+                          :disabled="user.rolename == 'MallAdmin'"
+                          :loading="store_loader"
+                          :items="stores_ar"
+                          item-title="name"
+                          item-value="header_id"
+                          class="required_field"
+                          :rules="fieldRules"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-layout>
+              <v-layout>
                 <v-row class="px-6 mt-2 arabdirection">
                   <v-col cols="12" sm="12" md="4">
                     <v-tooltip :text="$t('title_ar')" location="bottom">
@@ -220,8 +278,7 @@
                         <v-text-field
                           v-bind="props"
                           v-model="home_slider[1].title"
-                          :rules="fieldRulesAR"
-                          class="required_field rtl"
+                          class="rtl"
                           maxlength="100"
                           v-bind:label="$t('title_ar')"
                           required
@@ -489,6 +546,11 @@ export default {
     tabs: 1,
     uploadfile: false,
     uploadfilear: false,
+    user: "",
+    store_loader: false,
+    mall_id: null,
+    stores_en: [],
+    stores_ar: [],
     home_slider: [
       {
         id: 0,
@@ -563,8 +625,12 @@ export default {
     },
   },
 
-  created() {},
-  mounted() {},
+  created() {
+    this.user = JSON.parse(localStorage.getItem("user_data"));
+  },
+  mounted() {
+    this.fetchMall();
+  },
 
   watch: {
     "$route.query.slug": {
@@ -600,7 +666,7 @@ export default {
         }
       },
     },
-       "$route.query.s_tab": {
+    "$route.query.s_tab": {
       immediate: true,
       handler() {
         if (this.$route.query.s_tab) {
@@ -695,7 +761,7 @@ export default {
         // Form is valid, process
         this.$axios
           .post(
-            process.env.VUE_APP_API_URL_ADMIN + "save-home_slider",
+            process.env.VUE_APP_API_URL_ADMIN + "save-home-slider",
             this.home_slider
           )
           .then((res) => {
@@ -768,6 +834,37 @@ export default {
     },
     downloadImage(image_url) {
       window.open(this.envImagePath + image_url, "_blank");
+    },
+    updateStore(store) {
+      if (this.tabs == 1) {
+        this.home_slider[1].store_id = store;
+      } else {
+        this.home_slider[0].store_id = store;
+      }
+    },
+    fetchMall() {
+      this.initval = true;
+      this.store_loader = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-malls")
+        .then((response) => {
+          console.log(response);
+          this.stores_en = response.data.malls_en;
+          this.stores_ar = response.data.malls_ar;
+          if (this.user.rolename == "MallAdmin" && !this.$route.query.slug) {
+            this.stores_en.filter((ele) => {
+              if (ele.header_id === this.user.store_id) {
+                this.home_slider[0].store_id = ele.header_id;
+                this.home_slider[1].store_id = ele.header_id;
+                this.mall_id = ele.header_id;
+              }
+            });
+            this.store_loader = false;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
