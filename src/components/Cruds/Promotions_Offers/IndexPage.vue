@@ -4,7 +4,7 @@
       flat
       color="white"
       class="row py-5 pl-5 align-items-center component_app_bar position-relative"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
     >
       <page-title
         class="col-md-3"
@@ -35,7 +35,7 @@
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link
-              :to="{ name: 'promotions_amend' }"
+              :to="{ name: 'promotions_amend', query: { s_tab: tabs } }"
               style="color: white"
             >
               <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
@@ -60,7 +60,7 @@
         <v-data-table
           :headers="headers_en"
           :items="promotions_en"
-          :search="search"    
+          :search="search"
           :loading="initval"
           :no-data-text="$t('no_data_available_en')"
           :items-per-page-text="$t('rows_per_page_en')"
@@ -167,7 +167,7 @@
                 <router-link
                   :to="{
                     name: 'promotions_amend',
-                    query: { slug: props.item.selectable.slug },
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -220,7 +220,7 @@
           :items="promotions_ar"
           :search="search"
           :loading="initval"
-           class="rtl-direction"
+          class="rtl-direction"
           :no-data-text="$t('no_data_available_ar')"
           :items-per-page-text="$t('rows_per_page_ar')"
         >
@@ -439,16 +439,17 @@ export default {
     message: "",
     user: "",
     showStatusDialog: false,
-    role : "",
+    role: "",
   }),
-  watch:{
-     '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+  watch: {
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
   mounted() {
     this.role = JSON.parse(localStorage.getItem("user_data")).rolename;
@@ -498,19 +499,24 @@ export default {
           key: "",
           align: "left",
         },
-        { 
+        {
           title: "  ",
           align: "center",
         },
       ];
 
       if (this.role === "SuperUser") {
-        headers.splice(1, 0, { title: this.$t("store_type_en"), key: "store_name.stor_type" });
-        headers.splice(2, 0, { title: this.$t("mall/store_en"), key: "stor_type.name" });
+        headers.splice(1, 0, {
+          title: this.$t("store_type_en"),
+          key: "store_name.stor_type",
+        });
+        headers.splice(2, 0, {
+          title: this.$t("mall/store_en"),
+          key: "stor_type.name",
+        });
       }
 
       return headers;
-      
     },
     headers_ar() {
       let headers = [
@@ -552,15 +558,21 @@ export default {
           key: "",
           align: "left",
         },
-        { 
+        {
           title: "  ",
           align: "center",
         },
       ];
-      
+
       if (this.role === "SuperUser") {
-        headers.splice(1, 0, { title: this.$t("store_type_ar"), key: "store_name.stor_type" });
-        headers.splice(2, 0, { title: this.$t("mall/store_ar"), key: "stor_type.name" });
+        headers.splice(1, 0, {
+          title: this.$t("store_type_ar"),
+          key: "store_name.stor_type",
+        });
+        headers.splice(2, 0, {
+          title: this.$t("mall/store_ar"),
+          key: "stor_type.name",
+        });
       }
 
       return headers;
@@ -605,7 +617,7 @@ export default {
     viewPromotions(slug) {
       this.$router.push({
         name: "promotions-review",
-        query: { slug: slug },
+        query: { slug: slug, s_tab: this.tabs },
       });
     },
     deleteConfirm(id) {

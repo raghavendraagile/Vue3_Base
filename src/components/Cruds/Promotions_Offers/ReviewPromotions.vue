@@ -337,6 +337,16 @@ export default {
   }),
 
   watch: {
+    "$route.query.s_tab": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.s_tab == 1) {
+          this.tabs = 1;
+        } else {
+          this.tabs = 2;
+        }
+      },
+    },
     "$route.query.slug": {
       immediate: true,
       handler() {

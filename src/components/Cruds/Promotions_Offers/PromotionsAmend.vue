@@ -853,6 +853,16 @@ export default {
     this.user = JSON.parse(localStorage.getItem("user_data"));
   },
   watch: {
+    "$route.query.s_tab": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.s_tab == 1) {
+          this.tabs = 1;
+        } else {
+          this.tabs = 2;
+        }
+      },
+    },
     "$route.query.slug": {
       immediate: true,
       handler() {
@@ -1127,14 +1137,14 @@ export default {
     formatted_start_date(formatted_date) {
       this.promotions[0].start_date = formatted_date;
       this.promotions[1].start_date = formatted_date;
-      if(this.promotions[0].end_date < formatted_date){
+      if (this.promotions[0].end_date < formatted_date) {
         this.promotions[0].end_date = "";
       }
     },
     formatted_start_date_ar(formatted_date) {
       this.promotions[1].start_date = formatted_date;
       this.promotions[0].start_date = formatted_date;
-      if(this.promotions[1].end_date < formatted_date){
+      if (this.promotions[1].end_date < formatted_date) {
         this.promotions[1].end_date = "";
       }
     },
