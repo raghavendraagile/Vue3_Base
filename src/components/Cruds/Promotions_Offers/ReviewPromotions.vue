@@ -48,7 +48,7 @@
                       </v-chip>
                     </div>
                   </v-col>
-                
+
                   <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("title_en") }}</div>
                     <div>{{ promotion.title }}</div>
@@ -58,10 +58,17 @@
                     <div>{{ promotion.stor_type }}</div>
                   </v-col>
                   <v-col cols="12" sm="6" md="3">
-                    <div class="d-label">{{ $t("name_en") }}</div>
-                    <div>{{ promotion.store_name.name }}</div>
+                    <div class="d-label">
+                      {{ $t("name_en") }}
+                    </div>
+                    <div v-if="promotion.store_name">
+                      <div>{{ promotion.store_name.name }}</div>
+                    </div>
+                    <div v-else>
+                      {{ $t("not_appllicable") }}
+                    </div>
                   </v-col>
-                 
+
                   <v-col cols="12" sm="6" md="3">
                     <div
                       class="d-label"
@@ -172,10 +179,16 @@
                     <div>{{ promotion.stor_type }}</div>
                   </v-col>
                   <v-col cols="12" sm="6" md="3">
-                    <div class="d-label">{{ $t("name_ar") }}</div>
-                    <div>{{ promotion.store_name.name }}</div>
+                    <div class="d-label">
+                      {{ $t("name_ar") }}
+                    </div>
+                    <div v-if="promotion.store_name">
+                      <div>{{ promotion.store_name.name }}</div>
+                    </div>
+                    <div v-else>
+                      {{ $t("not_appllicable") }}
+                    </div>
                   </v-col>
-                  
 
                   <v-col cols="12" sm="6" md="3">
                     <div

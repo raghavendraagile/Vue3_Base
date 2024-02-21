@@ -1,7 +1,14 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']">
-      <page-title class="col-md-4 ml-2" :heading="$t('create_career')" :google_icon="google_icon"></page-title>
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
+      <page-title
+        class="col-md-4 ml-2"
+        :heading="$t('create_career')"
+        :google_icon="google_icon"
+      ></page-title>
     </div>
     <div class="card-body">
       <content-loader v-if="loader"></content-loader>
@@ -22,10 +29,20 @@
               <v-row class="px-6 mt-2">
                 <v-col xs="12" md="12" lg="12">
                   <!-- :disabled="$route.query.slug" -->
-                  <v-radio-group v-model="careers[0].stor_type" inline class="radio_item"
-                    @change="updateType(careers[0].stor_type)">
-                    <v-radio v-for="(role_data, rindex) in role_array" :key="rindex" :disabled="this.$route.query.slug"
-                      :label="changeRoleName(role_data.rolename)" :value="role_data.rolename" class="text--primary">
+                  <v-radio-group
+                    v-model="careers[0].stor_type"
+                    inline
+                    class="radio_item"
+                    @change="updateType(careers[0].stor_type)"
+                  >
+                    <v-radio
+                      v-for="(role_data, rindex) in role_array"
+                      :key="rindex"
+                      :disabled="this.$route.query.slug"
+                      :label="changeRoleName(role_data.rolename)"
+                      :value="role_data.rolename"
+                      class="text--primary"
+                    >
                     </v-radio>
                     <!-- <v-radio :label="$t('mall')" value="Mall"></v-radio>
                     <v-radio value="Store" :label="$t('store')"></v-radio> -->
@@ -34,33 +51,69 @@
               </v-row>
             </v-layout>
             <v-row class="mx-auto mt-2" max-width="344">
-              <v-col cols="4" sm="12" md="4" v-if="user.rolename != 'StoreAdmin'">
+              <v-col
+                cols="4"
+                sm="12"
+                md="4"
+                v-if="user.rolename != 'StoreAdmin'"
+              >
                 <v-tooltip :text="labelText" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-autocomplete v-bind="props" v-model="careers[0].store_id" :rules="fieldRules"
-                      class="required_field" :label="labelText" variant="outlined" :disabled="user.rolename == 'MallAdmin' &&
+                    <v-autocomplete
+                      v-bind="props"
+                      v-model="careers[0].store_id"
+                      :rules="fieldRules"
+                      class="required_field"
+                      :label="labelText"
+                      variant="outlined"
+                      :disabled="
+                        user.rolename == 'MallAdmin' &&
                         careers[0].stor_type == 'MallAdmin'
-                        " :loading="store_loader" density="compact" :items="stores_en" item-title="name" item-value="id"
-                      @update:model-value="updateStore(careers[0].store_id)"></v-autocomplete>
+                      "
+                      :loading="store_loader"
+                      density="compact"
+                      :items="stores_en"
+                      item-title="name"
+                      item-value="header_id"
+                      @update:model-value="updateStore(careers[0].store_id)"
+                    ></v-autocomplete>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('title')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-text-field v-on="on" v-model="careers[0].title" :rules="fieldRules" v-bind:label="$t('title')"
-                      v-bind="props" required class="required_field" variant="outlined" density="compact"
-                      maxlength="100"></v-text-field>
+                    <v-text-field
+                      v-on="on"
+                      v-model="careers[0].title"
+                      :rules="fieldRules"
+                      v-bind:label="$t('title')"
+                      v-bind="props"
+                      required
+                      class="required_field"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="100"
+                    ></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
                 <v-tooltip :text="this.$t('vacancy')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-text-field v-on="on" v-model="careers[0].vacancy" :rules="[...fieldRules, ...vacancyRules]"
-                      @update:modelValue="(value) => updateVac(value, 1)
-                        " v-bind:label="$t('vacancy')" v-bind="props" required class="required_field"
-                      variant="outlined" density="compact" maxlength="500"></v-text-field>
+                    <v-text-field
+                      v-on="on"
+                      v-model="careers[0].vacancy"
+                      :rules="[...fieldRules, ...vacancyRules]"
+                      @update:modelValue="(value) => updateVac(value, 1)"
+                      v-bind:label="$t('vacancy')"
+                      v-bind="props"
+                      required
+                      class="required_field"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="500"
+                    ></v-text-field>
                   </template>
                   <span>{{ $t("vacancy") }}</span>
                 </v-tooltip>
@@ -68,18 +121,40 @@
               <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('meta_title')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-text-field v-on="on" v-model="careers[0].meta_title" :rules="fieldRules"
-                      v-bind:label="$t('meta_title')" v-bind="props" required class="required_field" variant="outlined"
-                      density="compact" maxlength="100"></v-text-field>
+                    <v-text-field
+                      v-on="on"
+                      v-model="careers[0].meta_title"
+                      :rules="fieldRules"
+                      v-bind:label="$t('meta_title')"
+                      v-bind="props"
+                      required
+                      class="required_field"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="100"
+                    ></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col :md="user.rolename === 'StoreAdmin' ? 12 : 8">
-                <v-tooltip :text="this.$t('meta_description')" location="bottom">
+                <v-tooltip
+                  :text="this.$t('meta_description')"
+                  location="bottom"
+                >
                   <template v-slot:activator="{ props }">
-                    <v-textarea v-on="on" rows="2" v-model="careers[0].meta_description" :rules="fieldRules"
-                      maxlength="160" v-bind="props" v-bind:label="$t('meta_description')" required class="required_field"
-                      variant="outlined" counter="true"></v-textarea>
+                    <v-textarea
+                      v-on="on"
+                      rows="2"
+                      v-model="careers[0].meta_description"
+                      :rules="fieldRules"
+                      maxlength="160"
+                      v-bind="props"
+                      v-bind:label="$t('meta_description')"
+                      required
+                      class="required_field"
+                      variant="outlined"
+                      counter="true"
+                    ></v-textarea>
                   </template>
                   <span>{{ $t("vacancy") }}</span>
                 </v-tooltip>
@@ -87,9 +162,19 @@
               <v-col md="12">
                 <v-tooltip :text="this.$t('description')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-textarea v-on="on" rows="2" v-model="careers[0].description" :rules="fieldRules" maxlength="2000"
-                      v-bind="props" v-bind:label="$t('description')" required class="required_field" variant="outlined"
-                      counter="true"></v-textarea>
+                    <v-textarea
+                      v-on="on"
+                      rows="2"
+                      v-model="careers[0].description"
+                      :rules="fieldRules"
+                      maxlength="2000"
+                      v-bind="props"
+                      v-bind:label="$t('description')"
+                      required
+                      class="required_field"
+                      variant="outlined"
+                      counter="true"
+                    ></v-textarea>
                   </template>
                 </v-tooltip>
               </v-col>
@@ -99,16 +184,29 @@
         <!-- ENGLISH TAB STOPS -->
         <!-- ARABIC TAB STARTS -->
         <v-window-item :value="2">
-          <v-form ref="form" v-model="valid" style="direction: rtl; text-align: end">
+          <v-form
+            ref="form"
+            v-model="valid"
+            style="direction: rtl; text-align: end"
+          >
             <v-layout v-if="user.rolename != 'StoreAdmin'">
               <!-- :disabled="$route.query.slug" -->
               <v-row class="px-6 mt-2 arabdirection">
                 <v-col xs="12" md="12" lg="12">
-                  <v-radio-group v-model="careers[1].stor_type" inline class="radio_item"
-                    @change="updateType(careers[1].stor_type)">
-                    <v-radio v-for="(role_data, rindex) in role_array" :key="rindex"
-                      :label="changeStatusAr(role_data.rolename)" :disabled="this.$route.query.slug"
-                      :value="role_data.rolename" class="text--primary">
+                  <v-radio-group
+                    v-model="careers[1].stor_type"
+                    inline
+                    class="radio_item"
+                    @change="updateType(careers[1].stor_type)"
+                  >
+                    <v-radio
+                      v-for="(role_data, rindex) in role_array"
+                      :key="rindex"
+                      :label="changeStatusAr(role_data.rolename)"
+                      :disabled="this.$route.query.slug"
+                      :value="role_data.rolename"
+                      class="text--primary"
+                    >
                     </v-radio>
                     <!-- <v-radio :label="$t('mall')" value="Mall"></v-radio>
                     <v-radio value="Store" :label="$t('store')"></v-radio> -->
@@ -117,36 +215,69 @@
               </v-row>
             </v-layout>
             <v-row class="mx-auto mt-2 arabdirection" max-width="344">
-              <v-col cols="4" sm="12" md="4" v-if="user.rolename != 'StoreAdmin'">
+              <v-col
+                cols="4"
+                sm="12"
+                md="4"
+                v-if="user.rolename != 'StoreAdmin'"
+              >
                 <v-tooltip :text="label_text_ar" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-autocomplete v-bind="props" v-model="careers[1].store_id" :label="label_text_ar" variant="outlined"
-                      density="compact" :disabled="user.rolename == 'MallAdmin' &&
+                    <v-autocomplete
+                      v-bind="props"
+                      v-model="careers[1].store_id"
+                      :label="label_text_ar"
+                      variant="outlined"
+                      density="compact"
+                      :disabled="
+                        user.rolename == 'MallAdmin' &&
                         careers[1].stor_type == 'MallAdmin'
-                        " :loading="store_loader" :rules="fieldRulesAR" class="required_field rtl" :items="stores_en"
-                      item-title="name" item-value="id"
-                      @update:model-value="updateStore(careers[1].store_id)"></v-autocomplete>
+                      "
+                      :loading="store_loader"
+                      :rules="fieldRulesAR"
+                      class="required_field rtl"
+                      :items="stores_ar"
+                      item-title="name"
+                      item-value="header_id"
+                      @update:model-value="updateStore(careers[1].store_id)"
+                    ></v-autocomplete>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('title_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-text-field v-on="on" v-model="careers[1].title" :rules="fieldRulesAR" v-bind:label="$t('title_ar')"
-                      v-bind="props" required class="required_field rtl" variant="outlined" density="compact"
-                      maxlength="100"></v-text-field>
+                    <v-text-field
+                      v-on="on"
+                      v-model="careers[1].title"
+                      :rules="fieldRulesAR"
+                      v-bind:label="$t('title_ar')"
+                      v-bind="props"
+                      required
+                      class="required_field rtl"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="100"
+                    ></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
               <v-col md="4">
                 <v-tooltip :text="this.$t('vacancy_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-text-field v-on="on" v-model="careers[1].vacancy" :rules="[...fieldRulesAR, ...vacancyRulesAR]"
-                    @update:modelValue="
-                            (value) => updateVac(value, 0)
-                          "
-                      v-bind:label="$t('vacancy_ar')" v-bind="props" required class="required_field rtl"
-                      variant="outlined" density="compact" maxlength="500"></v-text-field>
+                    <v-text-field
+                      v-on="on"
+                      v-model="careers[1].vacancy"
+                      :rules="[...fieldRulesAR, ...vacancyRulesAR]"
+                      @update:modelValue="(value) => updateVac(value, 0)"
+                      v-bind:label="$t('vacancy_ar')"
+                      v-bind="props"
+                      required
+                      class="required_field rtl"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="500"
+                    ></v-text-field>
                   </template>
                   <span>{{ $t("vacancy_ar") }}</span>
                 </v-tooltip>
@@ -154,19 +285,41 @@
               <v-col cols="4" sm="12" md="4">
                 <v-tooltip :text="this.$t('meta_title_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-text-field v-on="on" v-model="careers[1].meta_title" :rules="fieldRulesAR"
-                      v-bind:label="$t('meta_title_ar')" v-bind="props" required class="required_field rtl"
-                      variant="outlined" density="compact" maxlength="100"></v-text-field>
+                    <v-text-field
+                      v-on="on"
+                      v-model="careers[1].meta_title"
+                      :rules="fieldRulesAR"
+                      v-bind:label="$t('meta_title_ar')"
+                      v-bind="props"
+                      required
+                      class="required_field rtl"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="100"
+                    ></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
 
               <v-col :md="user.rolename === 'StoreAdmin' ? 12 : 8">
-                <v-tooltip :text="this.$t('meta_description_ar')" location="bottom">
+                <v-tooltip
+                  :text="this.$t('meta_description_ar')"
+                  location="bottom"
+                >
                   <template v-slot:activator="{ props }">
-                    <v-textarea v-on="on" rows="2" v-model="careers[1].meta_description" :rules="fieldRulesAR"
-                      maxlength="160" v-bind="props" v-bind:label="$t('meta_description_ar')" required
-                      class="required_field rtl" variant="outlined" counter="true"></v-textarea>
+                    <v-textarea
+                      v-on="on"
+                      rows="2"
+                      v-model="careers[1].meta_description"
+                      :rules="fieldRulesAR"
+                      maxlength="160"
+                      v-bind="props"
+                      v-bind:label="$t('meta_description_ar')"
+                      required
+                      class="required_field rtl"
+                      variant="outlined"
+                      counter="true"
+                    ></v-textarea>
                   </template>
                   <span>{{ $t("meta_description_ar") }}</span>
                 </v-tooltip>
@@ -174,9 +327,19 @@
               <v-col md="12">
                 <v-tooltip :text="this.$t('description_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-textarea v-on="on" rows="2" v-model="careers[1].description" :rules="fieldRulesAR" maxlength="2000"
-                      v-bind="props" v-bind:label="$t('description_ar')" required class="required_field rtl"
-                      variant="outlined" counter="true"></v-textarea>
+                    <v-textarea
+                      v-on="on"
+                      rows="2"
+                      v-model="careers[1].description"
+                      :rules="fieldRulesAR"
+                      maxlength="2000"
+                      v-bind="props"
+                      v-bind:label="$t('description_ar')"
+                      required
+                      class="required_field rtl"
+                      variant="outlined"
+                      counter="true"
+                    ></v-textarea>
                   </template>
                 </v-tooltip>
               </v-col>
@@ -189,18 +352,37 @@
       <v-tooltip :text="this.$t('cancel')" location="bottom">
         <template v-slot:activator="{ props }">
           <div v-bind="props" class="d-inline-block mr-2">
-            <v-btn v-bind="props" size="small" @click="cancel" :disabled="loading" class="ma-1 rtl" color="cancel">{{
-              $t("cancel") }}</v-btn>
+            <v-btn
+              v-bind="props"
+              size="small"
+              @click="cancel"
+              :disabled="loading"
+              class="ma-1 rtl"
+              color="cancel"
+              >{{ $t("cancel") }}</v-btn
+            >
           </div>
         </template>
       </v-tooltip>
       <v-tooltip :text="this.$t('submit')" location="bottom">
         <template v-slot:activator="{ props }">
           <div v-bind="props" class="d-inline-block">
-            <v-btn :disabled="isDisabled" @click="submit" size="small" class="mr-2" color="success">
+            <v-btn
+              :disabled="isDisabled"
+              @click="submit"
+              size="small"
+              class="mr-2"
+              color="success"
+            >
               {{ $t("submit") }}
-              <v-progress-circular v-if="isBtnLoading" indeterminate width="1" color="cancel" size="x-small"
-                class="ml-2"></v-progress-circular>
+              <v-progress-circular
+                v-if="isBtnLoading"
+                indeterminate
+                width="1"
+                color="cancel"
+                size="x-small"
+                class="ml-2"
+              ></v-progress-circular>
             </v-btn>
           </div>
         </template>
@@ -310,8 +492,8 @@ export default {
           this.$axios
             .get(
               process.env.VUE_APP_API_URL_ADMIN +
-              "edit_careers/" +
-              this.$route.query.slug
+                "edit_careers/" +
+                this.$route.query.slug
             )
             .then((res) => {
               console.log("CALLED IN ROUTE");
