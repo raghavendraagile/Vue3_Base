@@ -71,13 +71,13 @@
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td v-if="this.role === 'SuperUser'">
-                <span v-if="props.item.selectable.store_name.stor_type">
+                <span v-if="props.item.selectable.store_name">
                   {{ props.item.selectable.store_name.stor_type }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td v-if="this.role === 'SuperUser'">
-                <span v-if="props.item.selectable.store_name.name">
+                <span v-if="props.item.selectable.store_name">
                   {{ props.item.selectable.store_name.name }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
@@ -207,13 +207,13 @@
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td v-if="this.role === 'SuperUser'">
-                <span v-if="props.item.selectable.store_name.stor_type">
+                <span v-if="props.item.selectable.store_name">
                   {{ props.item.selectable.store_name.stor_type }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td v-if="this.role === 'SuperUser'">
-                <span v-if="props.item.selectable.store_name.name">
+                <span v-if="props.item.selectable.store_name">
                   {{ props.item.selectable.store_name.name }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
