@@ -34,7 +34,9 @@
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link
-              :to="{ name: 'mall-timings-amend' }"
+              :to="{ name: 'mall-timings-amend',query:{
+                's_tab': tabs
+              } }"
               style="color: white"
             >
               <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
@@ -114,7 +116,7 @@
                   small
                   :to="{
                     name: 'mall-timings-amend',
-                    query: { slug: props.item.selectable.slug },
+                    query: { slug: props.item.selectable.slug,'s_tab': tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="top">
@@ -201,7 +203,7 @@
                   small
                   :to="{
                     name: 'mall-timings-amend',
-                    query: { slug: props.item.selectable.slug },
+                    query: { slug: props.item.selectable.slug,'s_tab': tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="top">

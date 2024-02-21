@@ -1,6 +1,11 @@
 <template>
   <div class="main-20 position-relative">
-    <div flat color="white" class="row py-5 pl-5 align-items-center component_app_bar"  v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      flat
+      color="white"
+      class="row py-5 pl-5 align-items-center component_app_bar"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-3"
         :heading="$t('home_sliders')"
@@ -31,7 +36,12 @@
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link
-              :to="{ name: 'home-slider-amend' }"
+              :to="{
+                name: 'home-slider-amend',
+                query: {
+                  s_tab: tabs,
+                },
+              }"
               style="color: white"
             >
               <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
@@ -105,7 +115,7 @@
                   small
                   :to="{
                     name: 'home-slider-amend',
-                    query: { slug: props.item.selectable.slug },
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="top">
@@ -198,7 +208,7 @@
                   small
                   :to="{
                     name: 'home-slider-amend',
-                    query: { slug: props.item.selectable.slug },
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="top">
@@ -303,13 +313,14 @@ export default {
     dialog(val) {
       val || this.close();
     },
-     '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
 
   created() {},
@@ -353,7 +364,7 @@ export default {
           key: "actions",
         },
         {
-          title:" ",
+          title: " ",
           align: "center",
         },
       ];
@@ -391,7 +402,7 @@ export default {
           key: "actions",
         },
         {
-          title:" ",
+          title: " ",
           align: "center",
         },
       ];
@@ -448,7 +459,7 @@ export default {
     viewSlider(slug) {
       this.$router.push({
         name: "home-slider-review",
-        query: { slug: slug },
+        query: { slug: slug, 's_tab': this.tabs },
       });
     },
     deleteItem(store_id) {
