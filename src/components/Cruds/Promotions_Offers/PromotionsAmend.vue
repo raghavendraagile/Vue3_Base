@@ -314,24 +314,34 @@
                       </div>
                     </v-hover>
                   </div>
-                  <a
-                    class="text-center image_cursor"
-                    @click="downloadImage(promotions[0].image_path)"
-                  >
-                    <span
-                      v-if="promotions[0].image_path"
-                      class="download_btn_color"
-                      >{{ $t("download_en") }}</span
-                    >
-                  </a>
+                  <v-tooltip :text="this.$t('download_en')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <a class="text-center pointer download_icon">
+                        <span
+                          ><v-icon
+                            v-if="promotions[0].image_path"
+                            v-bind="props"
+                            class="mr-2"
+                            @click="downloadImage(promotions[0].image_path)"
+                            >mdi mdi-download</v-icon
+                          ></span
+                        >
+                      </a>
+                    </template>
+                  </v-tooltip>
                   <span>
-                    <v-icon
-                      small
-                      v-if="promotions[0].image_path"
-                      class="mr-2 edit_btn icon_size delete_icon"
-                      @click="removeImage(0)"
-                      >mdi mdi-trash-can-outline</v-icon
-                    >
+                    <v-tooltip :text="this.$t('delete_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-icon
+                          small
+                          v-bind="props"
+                          v-if="promotions[0].image_path"
+                          class="mr-2 edit_btn icon_size delete_icon"
+                          @click="removeImage(0)"
+                          >mdi mdi-trash-can-outline</v-icon
+                        >
+                      </template>
+                    </v-tooltip>
                   </span>
                 </div>
 
@@ -642,24 +652,34 @@
                     </v-hover>
                   </div>
                   <div class="text-right">
-                    <a
-                      class="text-center image_cursor"
-                      @click="downloadImage(promotions[1].image_path)"
-                    >
-                      <span
-                        v-if="promotions[1].image_path"
-                        class="download_btn_color"
-                        >{{ $t("download_ar") }}</span
-                      >
-                    </a>
+                    <v-tooltip :text="this.$t('download_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <a class="text-center pointer download_icon_ar">
+                          <span
+                            ><v-icon
+                              v-if="promotions[1].image_path"
+                              v-bind="props"
+                              class="mr-2"
+                              @click="downloadImage(promotions[1].image_path)"
+                              >mdi mdi-download</v-icon
+                            ></span
+                          >
+                        </a>
+                      </template>
+                    </v-tooltip>
                     <span>
-                      <v-icon
-                        small
-                        v-if="promotions[1].image_path"
-                        class="mr-2 edit_btn icon_size delete_icon_ar"
-                        @click="removeImage(1)"
-                        >mdi mdi-trash-can-outline</v-icon
-                      >
+                      <v-tooltip :text="this.$t('delete_ar')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <v-icon
+                            small
+                            v-bind="props"
+                            v-if="promotions[1].image_path"
+                            class="mr-2 edit_btn icon_size delete_icon_ar"
+                            @click="removeImage(1)"
+                            >mdi mdi-trash-can-outline</v-icon
+                          >
+                        </template>
+                      </v-tooltip>
                     </span>
                   </div>
                 </div>
@@ -685,10 +705,12 @@
             <v-btn
               v-bind="props"
               size="small"
-              @click="  $router.push({
-                    name: 'promotions_offers',
-                    query: { 's_tab': this.$route.query.s_tab },
-                  })"
+              @click="
+                $router.push({
+                  name: 'promotions_offers',
+                  query: { s_tab: this.$route.query.s_tab },
+                })
+              "
               :disabled="loading"
               class="ma-1"
               color="cancel"
@@ -1192,7 +1214,7 @@ export default {
               this.message = res.data.message;
               this.$router.push({
                 name: "promotions_offers",
-                query: { 's_tab': this.$route.query.s_tab },
+                query: { s_tab: this.$route.query.s_tab },
               });
             } else if (res.data.status == "E") {
               this.$toast.error(this.array_data);
@@ -1258,13 +1280,23 @@ input.larger {
 }
 .delete_icon_ar {
   position: relative;
-  right: 65px;
+  right: 79px;
   bottom: 90px;
 }
 .delete_icon {
   position: relative;
-  left: 45px;
+  left: 82px;
   bottom: 90px;
+}
+.download_icon {
+  position: relative;
+  left: 116px;
+  bottom: 52px;
+}
+.download_icon_ar {
+  position: relative;
+  bottom: 45px;
+  right: 110px;
 }
 /* .arabdirection /deep/ .v-input {
   direction: rtl !important;
