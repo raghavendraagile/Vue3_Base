@@ -253,23 +253,23 @@ import { apptheme } from "./store/apptheme.js";
 
 <script>
 import localStorageWrapper from "./localStorageWrapper.js";
-import { getMessaging, onMessage } from "firebase/messaging";
-import { initializeApp } from "firebase/app";
-if (window.location.protocol === "https:") {
-  const firebaseConfig = {
-    apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
-    authDomain: process.env.VUE_APP_FIREBASE_AUTHDOMAIN,
-    projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.VUE_APP_FIREBASE_APP_ID,
-    measurementId: process.env.VUE_APP_FIREBASE_MEASUREMENT_ID,
-  };
+// import { getMessaging, onMessage } from "firebase/messaging";
+// import { initializeApp } from "firebase/app";
+// if (window.location.protocol === "https:") {
+//   const firebaseConfig = {
+//     apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
+//     authDomain: process.env.VUE_APP_FIREBASE_AUTHDOMAIN,
+//     projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
+//     storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
+//     messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
+//     appId: process.env.VUE_APP_FIREBASE_APP_ID,
+//     measurementId: process.env.VUE_APP_FIREBASE_MEASUREMENT_ID,
+//   };
 
-  const app = initializeApp(firebaseConfig);
-  console.log(app);
-  var messaging = getMessaging();
-}
+//   const app = initializeApp(firebaseConfig);
+//   console.log(app);
+//   var messaging = getMessaging();
+// }
 
 const default_layout = "default";
 import NavigationDrawer from "./Layout/NavigationDrawer.vue";
@@ -324,19 +324,19 @@ export default {
     this.getAppImage();
   },
   watch: {
-    messaging: {
-      immediate: true,
-      handler() {
-        if (window.location.protocol === "https:") {
-          onMessage(messaging, (payload) => {
-            console.log("Message received. ", payload.notification);
-            if (this.user_id > 0) {
-              // this.fetchNotification();
-            }
-          });
-        }
-      },
-    },
+    // messaging: {
+    //   immediate: true,
+    //   handler() {
+    //     if (window.location.protocol === "https:") {
+    //       onMessage(messaging, (payload) => {
+    //         console.log("Message received. ", payload.notification);
+    //         if (this.user_id > 0) {
+    //           // this.fetchNotification();
+    //         }
+    //       });
+    //     }
+    //   },
+    // },
     "$route.params.lang"(newLang) {
       if (newLang == "en" || newLang == "ar") {
         this.$i18n.locale = newLang;

@@ -167,7 +167,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import localStorageWrapper from "../../localStorageWrapper.js";
-import { getToken, getMessaging } from "firebase/messaging";
+// import { getToken, getMessaging } from "firebase/messaging";
 
 export default {
   name: "LoginPage",
@@ -177,7 +177,7 @@ export default {
       password: "",
       token_id: "",
     },
-    firebase_vapid: process.env.VUE_APP_FIREBASE_VAPID_KEY,
+    // firebase_vapid: process.env.VUE_APP_FIREBASE_VAPID_KEY,
     valid: false,
     show1: false,
     user: "",
@@ -217,23 +217,23 @@ export default {
   },
 
   created() {
-    if (window.location.protocol === "https:") {
-      const messaging = getMessaging();
-      getToken(messaging, { vapidKey: this.firebase_vapid })
-        .then((currentToken) => {
-          if (currentToken) {
-            console.log("token id", currentToken);
-            this.userdata.token_id = currentToken;
-          } else {
-            console.log(
-              "No registration token available. Request permission to generate one."
-            );
-          }
-        })
-        .catch((err) => {
-          console.log("An error occurred while retrieving token. ", err);
-        });
-    }
+    // if (window.location.protocol === "https:") {
+    //   const messaging = getMessaging();
+    //   getToken(messaging, { vapidKey: this.firebase_vapid })
+    //     .then((currentToken) => {
+    //       if (currentToken) {
+    //         console.log("token id", currentToken);
+    //         this.userdata.token_id = currentToken;
+    //       } else {
+    //         console.log(
+    //           "No registration token available. Request permission to generate one."
+    //         );
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log("An error occurred while retrieving token. ", err);
+    //     });
+    // }
   },
 
   methods: {
