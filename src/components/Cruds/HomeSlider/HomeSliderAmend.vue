@@ -146,7 +146,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="mt-2 px-6" max-width="344">
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="4" md="2">
                     <v-tooltip :text="$t('sequence_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -164,7 +164,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" sm="6" md="3">
+                  <v-col cols="6" sm="4" md="3">
                     <div>
                       <span>{{ $t("w_image_en") }}</span>
                       <div
@@ -247,7 +247,7 @@
                       :upload_profile="uploadfile"
                     />
                   </v-col>
-                  <v-col cols="12" sm="6" md="3">
+                  <v-col cols="6" sm="4" md="3">
                     <div>
                       <span>{{ $t("m_image_en") }}</span>
                       <div
@@ -456,7 +456,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="mt-2 px-6 arabdirection" max-width="344">
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="4" md="2">
                     <v-tooltip :text="$t('sequence_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -474,7 +474,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" sm="6" md="3">
+                  <v-col cols="6" sm="4" md="3">
                     <div>
                       <span>{{ $t("w_image_ar") }}</span>
                       <div
@@ -559,7 +559,7 @@
                       :upload_profile="upload_file_ar"
                     />
                   </v-col>
-                  <v-col cols="12" sm="6" md="3">
+                  <v-col cols="6" sm="4" md="3">
                     <div>
                       <span>{{ $t("m_image_ar") }}</span>
                       <div
