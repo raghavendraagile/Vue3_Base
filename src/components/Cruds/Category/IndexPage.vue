@@ -1,33 +1,14 @@
 <template>
   <div class="main-20">
-    <div
-      flat
-      color="white"
-      class="row py-5 pl-5 align-items-center component_app_bar position-relative"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
-    >
-      <page-title
-        class="col-md-3"
-        :heading="$t('category')"
-        :google_icon="google_icon"
-      ></page-title>
+    <div flat color="white" class="row py-5 pl-5 align-items-center component_app_bar position-relative"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']">
+      <page-title class="col-md-3" :heading="$t('category')" :google_icon="google_icon"></page-title>
 
       <div class="col-md-4">
         <v-tooltip :text="this.$t('search')" location="top">
           <template v-slot:activator="{ props }">
-            <v-text-field
-              dense
-              density="compact"
-              v-on="on"
-              variant="outlined"
-              v-model="search"
-              append-icon="search"
-              v-bind:label="$t('search')"
-              class="srch_bar"
-              small
-              hide-details
-              v-bind="props"
-            ></v-text-field>
+            <v-text-field dense density="compact" v-on="on" variant="outlined" v-model="search" append-icon="search"
+              v-bind:label="$t('search')" class="srch_bar" small hide-details v-bind="props"></v-text-field>
           </template>
         </v-tooltip>
       </div>
@@ -35,10 +16,7 @@
       <div class="add_new_button">
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
-            <router-link
-              :to="{ name: 'categories-amend', query: { s_tab: tabs } }"
-              style="color: white"
-            >
+            <router-link :to="{ name: 'categories-amend', query: { s_tab: tabs } }" style="color: white">
               <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
                 $t("add_new")
               }}</v-btn>
@@ -60,97 +38,63 @@
     <v-window v-model="tabs">
       <!-- ENGLISH TAB STARTS -->
       <v-window-item :value="1">
-        <v-data-table
-          :headers="headers_en"
-          :items="category_en"
-          :search="search"
-          :loading="initval"
-          :no-data-text="$t('no_data_available_en')"
-          :items-per-page-text="$t('rows_per_page_en')"
-        >
+        <v-data-table :headers="headers_en" :items="category_en" :search="search" :loading="initval"
+          :no-data-text="$t('no_data_available_en')" :items-per-page-text="$t('rows_per_page_en')">
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td>{{ props.item.selectable.name }}</td>
-              <td v-if="props.item.selectable.subcategories.length>0">
+              <td v-if="props.item.selectable.subcategories.length > 0">
                 {{ props.item.selectable.subcategories[0].name }}
               </td>
               <td v-else>{{ $t("not_appllicable") }}</td>
               <td v-if="role == 'SuperUser'">
-                <span v-if="props.item.selectable.store_name.length>0"> {{ props.item.selectable.store_name[0].name }}</span>
+                <span v-if="props.item.selectable.store_name.length > 0"> {{ props.item.selectable.store_name[0].name
+                }}</span>
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td>{{ props.item.selectable.title }}</td>
               <td>
-                <v-btn
-                  class="hover_shine btn mr-2"
-                  :disabled="isDisabled"
-                  @click="updateStatus(props.item.selectable.header_id)"
-                  size="small"
-                  v-bind:color="[
+                <v-btn class="hover_shine btn mr-2" :disabled="isDisabled"
+                  @click="updateStatus(props.item.selectable.header_id)" size="small" v-bind:color="[
                     props.item.selectable.status == 1 ? 'success' : 'warning',
-                  ]"
-                >
-                  <span
-                    v-if="props.item.selectable.status == 1"
-                    class="spanactivesize"
-                    >{{ $t("active_en") }}</span
-                  >
-                  <span
-                    v-if="props.item.selectable.status == 0"
-                    class="spanactivesize"
-                    >{{ $t("inactive_en") }}</span
-                  >
+                  ]">
+                  <span v-if="props.item.selectable.status == 1" class="spanactivesize">{{ $t("active_en") }}</span>
+                  <span v-if="props.item.selectable.status == 0" class="spanactivesize">{{ $t("inactive_en") }}</span>
                 </v-btn>
               </td>
 
               <td>
-                <v-chip
-                  :color="getStatusColor(props.item.selectable.approval_status)"
-                  variant="outlined"
-                >
+                <v-chip :color="getStatusColor(props.item.selectable.approval_status)" variant="outlined">
                   {{ props.item.selectable.approval_status }}
                 </v-chip>
               </td>
               <td class="text-center">
-                <router-link
-                  small
-                  :to="{
-                    name: 'categories-amend',
-                    query: { slug: props.item.selectable.slug, s_tab: tabs },
-                  }"
-                >
+                <router-link small :to="{
+                  name: 'categories-amend',
+                  query: { slug: props.item.selectable.slug, s_tab: tabs },
+                }">
                   <v-tooltip :text="this.$t('edit')" location="top">
                     <template v-slot:activator="{ props }">
-                      <v-icon
-                        v-bind="props"
-                        small
-                        class="mr-2 edit_btn icon_size"
-                        >mdi-pencil-outline</v-icon
-                      >
+                      <v-icon v-bind="props" small class="mr-2 edit_btn icon_size">mdi-pencil-outline</v-icon>
                     </template>
                     <span>{{ $t("edit") }}</span>
                   </v-tooltip>
                 </router-link>
-                <span @click="deleteItem(props.item.selectable.header_id)">
+                <span @click="deleteItem(props.item.selectable.header_id)" v-if="!props.item.selectable.have_child">
                   <v-tooltip :text="this.$t('delete')" location="top">
                     <template v-slot:activator="{ props }">
-                      <v-icon color="error" type="button" v-bind="props" small
-                        >mdi-trash-can-outline</v-icon
-                      >
+                      <v-icon color="error" type="button" v-bind="props" small>mdi-trash-can-outline</v-icon>
                     </template>
                     <span>{{ $t("delete") }}</span>
                   </v-tooltip>
                 </span>
+                <span v-else>
+                  <v-icon color="grey" class="disabledmditrash" small>mdi-trash-can-outline</v-icon>
+                </span>
               </td>
               <td>
-                <v-btn
-                  size="small"
-                  @click="viewCategory(props.item.selectable.slug)"
-                  :disabled="loading"
-                  class="ma-1"
-                  color="blue"
-                  >{{ $t("view_en") }}</v-btn
-                >
+                <v-btn size="small" @click="viewCategory(props.item.selectable.slug)" :disabled="loading" class="ma-1"
+                  color="blue">{{ $t("view_en") }}</v-btn>
               </td>
             </tr>
           </template>
@@ -159,97 +103,62 @@
       <!-- ENGLISH TAB END -->
       <!-- ARABIC TAB STARTS -->
       <v-window-item :value="2">
-        <v-data-table
-          :headers="headers_ar"
-          :items="category_ar"
-          :search="search"
-          class="rtl-direction"
-          :loading="initval"
-          :no-data-text="$t('no_data_available_ar')"
-          :items-per-page-text="$t('rows_per_page_ar')"
-        >
+        <v-data-table :headers="headers_ar" :items="category_ar" :search="search" class="rtl-direction" :loading="initval"
+          :no-data-text="$t('no_data_available_ar')" :items-per-page-text="$t('rows_per_page_ar')">
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td>{{ props.item.selectable.name }}</td>
-              <td v-if="props.item.selectable.subcategories.length>0">
+              <td v-if="props.item.selectable.subcategories.length > 0">
                 {{ props.item.selectable.subcategories[0].name }}
               </td>
               <td v-else>{{ $t("not_appllicable") }}</td>
               <td v-if="role == 'SuperUser'">
-                <span v-if="props.item.selectable.store_name.length>0"> {{ props.item.selectable.store_name[0].name }}</span>
+                <span v-if="props.item.selectable.store_name.length > 0"> {{ props.item.selectable.store_name[0].name
+                }}</span>
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td>{{ props.item.selectable.title }}</td>
               <td>
-                <v-btn
-                  class="hover_shine btn mr-2"
-                  :disabled="isDisabled"
-                  @click="updateStatus(props.item.selectable.header_id)"
-                  size="small"
-                  v-bind:color="[
+                <v-btn class="hover_shine btn mr-2" :disabled="isDisabled"
+                  @click="updateStatus(props.item.selectable.header_id)" size="small" v-bind:color="[
                     props.item.selectable.status == 1 ? 'success' : 'warning',
-                  ]"
-                >
-                  <span
-                    v-if="props.item.selectable.status == 1"
-                    class="spanactivesize"
-                    >{{ $t("active_ar") }}</span
-                  >
-                  <span
-                    v-if="props.item.selectable.status == 0"
-                    class="spanactivesize"
-                    >{{ $t("inactive_ar") }}</span
-                  >
+                  ]">
+                  <span v-if="props.item.selectable.status == 1" class="spanactivesize">{{ $t("active_ar") }}</span>
+                  <span v-if="props.item.selectable.status == 0" class="spanactivesize">{{ $t("inactive_ar") }}</span>
                 </v-btn>
               </td>
               <td>
-                <v-chip
-                  :color="getStatusColor(props.item.selectable.approval_status)"
-                  variant="outlined"
-                >
+                <v-chip :color="getStatusColor(props.item.selectable.approval_status)" variant="outlined">
                   {{ changeStatusAr(props.item.selectable.approval_status) }}
                 </v-chip>
               </td>
               <td class="text-center">
-                <router-link
-                  small
-                  :to="{
-                    name: 'categories-amend',
-                    query: { slug: props.item.selectable.slug },
-                  }"
-                >
+                <router-link small :to="{
+                  name: 'categories-amend',
+                  query: { slug: props.item.selectable.slug },
+                }">
                   <v-tooltip :text="this.$t('edit')" location="top">
                     <template v-slot:activator="{ props }">
-                      <v-icon
-                        v-bind="props"
-                        small
-                        class="mr-2 edit_btn icon_size"
-                        >mdi-pencil-outline</v-icon
-                      >
+                      <v-icon v-bind="props" small class="mr-2 edit_btn icon_size">mdi-pencil-outline</v-icon>
                     </template>
                     <span>{{ $t("edit") }}</span>
                   </v-tooltip>
                 </router-link>
-                <span @click="deleteItem(props.item.selectable.header_id)">
+                <span @click="deleteItem(props.item.selectable.header_id)" v-if="!props.item.selectable.have_child">
                   <v-tooltip :text="this.$t('delete')" location="top">
                     <template v-slot:activator="{ props }">
-                      <v-icon color="error" type="button" v-bind="props" small
-                        >mdi-trash-can-outline</v-icon
-                      >
+                      <v-icon color="error" type="button" v-bind="props" small>mdi-trash-can-outline</v-icon>
                     </template>
                     <span>{{ $t("delete") }}</span>
                   </v-tooltip>
                 </span>
+                <span v-else>
+                  <v-icon color="grey" class="disabledmditrash" small>mdi-trash-can-outline</v-icon>
+                </span>
               </td>
               <td>
-                <v-btn
-                  size="small"
-                  @click="viewCategory(props.item.selectable.slug)"
-                  :disabled="loading"
-                  class="ma-1"
-                  color="blue"
-                  >{{ $t("view_ar") }}</v-btn
-                >
+                <v-btn size="small" @click="viewCategory(props.item.selectable.slug)" :disabled="loading" class="ma-1"
+                  color="blue">{{ $t("view_ar") }}</v-btn>
               </td>
             </tr>
           </template>
@@ -257,21 +166,10 @@
       </v-window-item>
       <!-- ARABIC TAB END -->
     </v-window>
-    <ConfirmDialog
-      :show="showConfirmDialog"
-      :cancel="cancel"
-      :confirm="confirm"
-      :id="delete_id"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('delete_confirmation')"
-    />
-    <ConfirmDialog
-      :show="showStatusDialog"
-      :cancel="cancelStatus"
-      :confirm="confirmStatus"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('status_change')"
-    />
+    <ConfirmDialog :show="showConfirmDialog" :cancel="cancel" :confirm="confirm" :id="delete_id"
+      v-bind:title="$t('confirm')" v-bind:description="$t('delete_confirmation')" />
+    <ConfirmDialog :show="showStatusDialog" :cancel="cancelStatus" :confirm="confirmStatus" v-bind:title="$t('confirm')"
+      v-bind:description="$t('status_change')" />
   </div>
 </template>
 
@@ -373,7 +271,7 @@ export default {
     },
   },
 
-  created() {},
+  created() { },
   mounted() {
     this.role = JSON.parse(localStorage.getItem("user_data")).rolename;
     this.fetchCategory();
@@ -407,7 +305,7 @@ export default {
     viewCategory(slug) {
       this.$router.push({
         name: "categories-review",
-        query: { slug: slug, s_tab: this.tabs},
+        query: { slug: slug, s_tab: this.tabs },
       });
     },
 
@@ -520,5 +418,9 @@ export default {
 <style scoped>
 .list_item {
   cursor: pointer;
+}
+
+.disabledmditrash:hover {
+  animation: none;
 }
 </style>
