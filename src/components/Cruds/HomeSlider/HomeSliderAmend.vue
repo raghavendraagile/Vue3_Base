@@ -146,7 +146,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="mt-2 px-6" max-width="344">
-                  <v-col cols="12" sm="2" md="2">
+                  <v-col cols="12" sm="6" md="4">
                     <v-tooltip :text="$t('sequence_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -164,8 +164,9 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" sm="2" md="2">
+                  <v-col cols="12" sm="6" md="3">
                     <div>
+                      <span>{{ $t("w_image_en") }}</span>
                       <div
                         class="image-container"
                         v-bind:class="[have_noimage ? 'errorborder' : '']"
@@ -195,30 +196,45 @@
                               alt
                             />
                             <div v-show="isHovering" class="camera-icon">
-                              <v-icon @click="uploadFile">mdi-camera</v-icon>
+                              <v-icon @click="uploadFile('website')"
+                                >mdi-camera</v-icon
+                              >
                             </div>
                           </div>
                         </v-hover>
                       </div>
-                      <a
-                        class="text-center pointer"
-                        @click="downloadImage(home_slider[0].image)"
+                      <v-tooltip
+                        :text="this.$t('download_en')"
+                        location="bottom"
                       >
-                        <span
-                          v-if="home_slider[0].image"
-                          class="download_btn_color"
-                          >{{ $t("download") }}</span
-                        >
-                      </a>
-                      <span>
-                        <v-icon
-                          small
-                          v-if="home_slider[0].image"
-                          class="mr-2 edit_btn icon_size delete_icon"
-                          @click="removeImage(0)"
-                          >mdi mdi-trash-can-outline</v-icon
-                        >
-                      </span>
+                        <template v-slot:activator="{ props }">
+                          <a class="text-center pointer download_icon">
+                            <span
+                              ><v-icon
+                                v-bind="props"
+                                v-if="home_slider[0].image"
+                                class="mr-2"
+                                @click="downloadImage(home_slider[0].image)"
+                                >mdi mdi-download</v-icon
+                              ></span
+                            >
+                          </a>
+                        </template>
+                      </v-tooltip>
+                      <v-tooltip :text="this.$t('delete_en')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <span>
+                            <v-icon
+                              small
+                              v-bind="props"
+                              v-if="home_slider[0].image"
+                              class="mr-2 edit_btn icon_size delete_icon"
+                              @click="removeImage(0, 'website')"
+                              >mdi mdi-trash-can-outline</v-icon
+                            >
+                          </span>
+                        </template>
+                      </v-tooltip>
                     </div>
                     <br />
                     <Imageupload
@@ -229,6 +245,89 @@
                       :no_image="have_noimage"
                       @uploaded_image="uploaded_image"
                       :upload_profile="uploadfile"
+                    />
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div>
+                      <span>{{ $t("m_image_en") }}</span>
+                      <div
+                        class="image-container"
+                        v-bind:class="[have_noimage ? 'errorborder' : '']"
+                      >
+                        <v-hover v-slot="{ isHovering, props }">
+                          <div style="position: relative" v-bind="props">
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-if="
+                                home_slider[0].m_image == '' ||
+                                home_slider[0].m_image == null
+                              "
+                              src="@/assets/images/upload_image_default.png"
+                              width="100"
+                            />
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-else
+                              :src="envImagePath + home_slider[0].m_image"
+                              width="100"
+                              height="65
+                          "
+                              alt
+                            />
+                            <div v-show="isHovering" class="camera-icon">
+                              <v-icon @click="uploadFile('mobile')"
+                                >mdi-camera</v-icon
+                              >
+                            </div>
+                          </div>
+                        </v-hover>
+                      </div>
+                      <v-tooltip
+                        :text="this.$t('download_en')"
+                        location="bottom"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <a class="text-center pointer download_icon">
+                            <span
+                              ><v-icon
+                                v-bind="props"
+                                v-if="home_slider[0].m_image"
+                                class="mr-2"
+                                @click="downloadImage(home_slider[0].m_image)"
+                                >mdi mdi-download</v-icon
+                              ></span
+                            >
+                          </a>
+                        </template>
+                      </v-tooltip>
+                      <v-tooltip :text="this.$t('delete_en')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <span>
+                            <v-icon
+                              small
+                              v-bind="props"
+                              v-if="home_slider[0].m_image"
+                              class="mr-2 edit_btn icon_size delete_icon"
+                              @click="removeImage(0, 'mobile')"
+                              >mdi mdi-trash-can-outline</v-icon
+                            >
+                          </span>
+                        </template>
+                      </v-tooltip>
+                    </div>
+                    <br />
+                    <Imageupload
+                      :folder="'home_slider'"
+                      :resizewidth="'2000px'"
+                      :resizeheight="'400px'"
+                      :no_image_trans="'en'"
+                      :no_image="have_noimage"
+                      @uploaded_image="uploaded_image"
+                      :upload_profile="upload_mob_file"
                     />
                   </v-col>
                 </v-row>
@@ -357,7 +456,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="mt-2 px-6 arabdirection" max-width="344">
-                  <v-col cols="12" sm="2" md="2">
+                  <v-col cols="12" sm="6" md="4">
                     <v-tooltip :text="$t('sequence_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -375,8 +474,9 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="6" sm="6" md="6">
+                  <v-col cols="12" sm="6" md="3">
                     <div>
+                      <span>{{ $t("w_image_ar") }}</span>
                       <div
                         class="image-container"
                         v-bind:class="[have_noimage ? 'errorborder' : '']"
@@ -406,30 +506,46 @@
                               alt
                             />
                             <div v-show="isHovering" class="camera-icon">
-                              <v-icon @click="uploadFile">mdi-camera</v-icon>
+                              <v-icon @click="uploadFile('website')"
+                                >mdi-camera</v-icon
+                              >
                             </div>
                           </div>
                         </v-hover>
                       </div>
-                      <a
-                        class="text-center pointer"
-                        @click="downloadImage(home_slider[1].image)"
+
+                      <v-tooltip
+                        :text="this.$t('download_ar')"
+                        location="bottom"
                       >
-                        <span
-                          v-if="home_slider[1].image"
-                          class="download_btn_color"
-                          >{{ $t("download") }}</span
-                        >
-                      </a>
-                      <span>
-                        <v-icon
-                          small
-                          v-if="home_slider[1].image"
-                          class="mr-2 edit_btn icon_size delete_icon_ar"
-                          @click="removeImage(1)"
-                          >mdi mdi-trash-can-outline</v-icon
-                        >
-                      </span>
+                        <template v-slot:activator="{ props }">
+                          <a class="text-center pointer download_icon_ar">
+                            <span
+                              ><v-icon
+                                v-if="home_slider[1].image"
+                                v-bind="props"
+                                class="mr-2"
+                                @@click="downloadImage(home_slider[1].image)"
+                                >mdi mdi-download</v-icon
+                              ></span
+                            >
+                          </a>
+                        </template>
+                      </v-tooltip>
+                      <v-tooltip :text="this.$t('delete_ar')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <span>
+                            <v-icon
+                              small
+                              v-bind="props"
+                              v-if="home_slider[1].image"
+                              class="mr-2 edit_btn icon_size delete_icon_ar"
+                              @click="removeImage(1, 'website')"
+                              >mdi mdi-trash-can-outline</v-icon
+                            >
+                          </span>
+                        </template>
+                      </v-tooltip>
                     </div>
                     <br />
                     <Imageupload
@@ -440,7 +556,90 @@
                       :no_image="have_noimage"
                       :viewmodeslider="3"
                       @uploaded_image="uploaded_image"
-                      :upload_profile="uploadfilear"
+                      :upload_profile="upload_file_ar"
+                    />
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div>
+                      <span>{{ $t("m_image_ar") }}</span>
+                      <div
+                        class="image-container"
+                        v-bind:class="[have_noimage ? 'errorborder' : '']"
+                      >
+                        <v-hover v-slot="{ isHovering, props }">
+                          <div style="position: relative" v-bind="props">
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-if="
+                                home_slider[1].m_image == '' ||
+                                home_slider[1].m_image == null
+                              "
+                              src="@/assets/images/upload_image_default.png"
+                              width="100"
+                            />
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-else
+                              :src="envImagePath + home_slider[1].m_image"
+                              width="100"
+                              height="65
+                          "
+                              alt
+                            />
+                            <div v-show="isHovering" class="camera-icon">
+                              <v-icon @click="uploadFile('mobile')"
+                                >mdi-camera</v-icon
+                              >
+                            </div>
+                          </div>
+                        </v-hover>
+                      </div>
+                      <v-tooltip
+                        :text="this.$t('download_ar')"
+                        location="bottom"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <a class="text-center pointer download_icon_ar">
+                            <span
+                              ><v-icon
+                                v-if="home_slider[1].m_image"
+                                v-bind="props"
+                                class="mr-2"
+                                @@click="downloadImage(home_slider[1].m_image)"
+                                >mdi mdi-download</v-icon
+                              ></span
+                            >
+                          </a>
+                        </template>
+                      </v-tooltip>
+                      <v-tooltip :text="this.$t('delete_ar')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <span>
+                            <v-icon
+                              small
+                              v-bind="props"
+                              v-if="home_slider[1].m_image"
+                              class="mr-2 edit_btn icon_size delete_icon_ar"
+                              @click="removeImage(1, 'mobile')"
+                              >mdi mdi-trash-can-outline</v-icon
+                            >
+                          </span>
+                        </template>
+                      </v-tooltip>
+                    </div>
+                    <br />
+                    <Imageupload
+                      :folder="'home_slider'"
+                      :resizewidth="'2000px'"
+                      :resizeheight="'400px'"
+                      :no_image_trans="'ar'"
+                      :no_image="have_noimage"
+                      @uploaded_image="uploaded_image"
+                      :upload_profile="upload_file_mob_ar"
                     />
                   </v-col>
                 </v-row>
@@ -543,8 +742,11 @@ export default {
     loader: false,
     tabs: 1,
     uploadfile: false,
-    uploadfilear: false,
+    upload_mob_file: false,
+    upload_file_ar: false,
+    upload_file_mob_ar: false,
     user: "",
+    image_upload_from: "",
     mall_id: null,
     stores_en: [],
     stores_ar: [],
@@ -554,6 +756,7 @@ export default {
         title: "",
         description: "",
         image: "",
+        m_image: "",
         action: "",
         target: "",
         header_id: 0,
@@ -565,6 +768,7 @@ export default {
         title: "",
         description: "",
         image: "",
+        m_image: "",
         action: "",
         blank: "",
         header_id: 0,
@@ -686,11 +890,19 @@ export default {
   },
 
   methods: {
-    removeImage(index) {
+    removeImage(index, type) {
       if (index == 1) {
-        this.home_slider[1].image = null;
+        if (type == "website") {
+          this.home_slider[1].image = null;
+        } else {
+          this.home_slider[1].m_image = null;
+        }
       } else {
-        this.home_slider[0].image = null;
+        if (type == "website") {
+          this.home_slider[0].image = null;
+        } else {
+          this.home_slider[0].m_image = null;
+        }
       }
     },
     NumbersOnly(evt) {
@@ -708,24 +920,51 @@ export default {
     },
     uploaded_image(img_src) {
       if (this.tabs == 1) {
-        this.home_slider[0].image = img_src;
-        this.have_noimage = false;
-      } else {
-        this.home_slider[1].image = img_src;
-      }
-    },
-    uploadFile() {
-      if (this.tabs == 1) {
-        if (this.uploadfile == false) {
-          this.uploadfile = true;
+        if (this.image_upload_from == "website") {
+          this.home_slider[0].image = img_src;
+          this.have_noimage = false;
         } else {
-          this.uploadfile = false;
+          this.home_slider[0].m_image = img_src;
+          this.have_noimage = false;
         }
       } else {
-        if (this.uploadfilear == false) {
-          this.uploadfilear = true;
+        if (this.image_upload_from == "website") {
+          this.home_slider[1].image = img_src;
         } else {
-          this.uploadfilear = false;
+          this.home_slider[1].m_image = img_src;
+        }
+      }
+    },
+    uploadFile(img_type) {
+      if (this.tabs == 1) {
+        this.image_upload_from = img_type;
+        if (img_type == "website") {
+          if (this.uploadfile == false) {
+            this.uploadfile = true;
+          } else {
+            this.uploadfile = false;
+          }
+        } else {
+          if (this.upload_mob_file == false) {
+            this.upload_mob_file = true;
+          } else {
+            this.upload_mob_file = false;
+          }
+        }
+      } else {
+        this.image_upload_from = img_type;
+        if (img_type == "website") {
+          if (this.upload_file_ar == false) {
+            this.upload_file_ar = true;
+          } else {
+            this.upload_file_ar = false;
+          }
+        } else {
+          if (this.upload_file_mob_ar == false) {
+            this.upload_file_mob_ar = true;
+          } else {
+            this.upload_file_mob_ar = false;
+          }
         }
       }
     },
@@ -924,12 +1163,22 @@ input.larger {
 }
 .delete_icon_ar {
   position: relative;
-  right: 35px;
+  right: 78px;
   bottom: 90px;
 }
 .delete_icon {
   position: relative;
-  left: 45px;
+  left: 80px;
   bottom: 90px;
+}
+.download_icon {
+  position: relative;
+  left: 112px;
+  bottom: 52px;
+}
+.download_icon_ar {
+  position: relative;
+  bottom: 45px;
+  right: 110px;
 }
 </style>
