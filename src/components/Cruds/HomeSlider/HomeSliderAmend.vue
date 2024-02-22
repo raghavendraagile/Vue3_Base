@@ -146,7 +146,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="mt-2 px-6" max-width="344">
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="4" md="2">
                     <v-tooltip :text="$t('sequence_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -164,7 +164,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" sm="6" md="3">
+                  <v-col cols="6" sm="4" md="3">
                     <div>
                       <span>{{ $t("w_image_en") }}</span>
                       <div
@@ -239,15 +239,15 @@
                     <br />
                     <Imageupload
                       :folder="'home_slider'"
-                      :resizewidth="'2000px'"
-                      :resizeheight="'400px'"
+                      :resizewidth="resizewidth"
+                      :resizeheight="resizeheight"
                       :no_image_trans="'en'"
                       :no_image="have_noimage"
                       @uploaded_image="uploaded_image"
                       :upload_profile="uploadfile"
                     />
                   </v-col>
-                  <v-col cols="12" sm="6" md="3">
+                  <v-col cols="6" sm="4" md="3">
                     <div>
                       <span>{{ $t("m_image_en") }}</span>
                       <div
@@ -322,8 +322,8 @@
                     <br />
                     <Imageupload
                       :folder="'home_slider'"
-                      :resizewidth="'2000px'"
-                      :resizeheight="'400px'"
+                      :resizewidth="resizewidth"
+                      :resizeheight="resizeheight"
                       :no_image_trans="'en'"
                       :no_image="have_noimage"
                       @uploaded_image="uploaded_image"
@@ -456,7 +456,7 @@
               </v-layout>
               <v-layout>
                 <v-row class="mt-2 px-6 arabdirection" max-width="344">
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="4" md="2">
                     <v-tooltip :text="$t('sequence_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
@@ -474,7 +474,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" sm="6" md="3">
+                  <v-col cols="6" sm="4" md="3">
                     <div>
                       <span>{{ $t("w_image_ar") }}</span>
                       <div
@@ -525,7 +525,7 @@
                                 v-if="home_slider[1].image"
                                 v-bind="props"
                                 class="mr-2"
-                                @@click="downloadImage(home_slider[1].image)"
+                                @click="downloadImage(home_slider[1].image)"
                                 >mdi mdi-download</v-icon
                               ></span
                             >
@@ -550,8 +550,8 @@
                     <br />
                     <Imageupload
                       :folder="'home_slider'"
-                      :resizewidth="'2000px'"
-                      :resizeheight="'400px'"
+                      :resizewidth="resizewidth"
+                      :resizeheight="resizeheight"
                       :no_image_trans="'ar'"
                       :no_image="have_noimage"
                       :viewmodeslider="3"
@@ -559,7 +559,7 @@
                       :upload_profile="upload_file_ar"
                     />
                   </v-col>
-                  <v-col cols="12" sm="6" md="3">
+                  <v-col cols="6" sm="4" md="3">
                     <div>
                       <span>{{ $t("m_image_ar") }}</span>
                       <div
@@ -609,7 +609,7 @@
                                 v-if="home_slider[1].m_image"
                                 v-bind="props"
                                 class="mr-2"
-                                @@click="downloadImage(home_slider[1].m_image)"
+                                @click="downloadImage(home_slider[1].m_image)"
                                 >mdi mdi-download</v-icon
                               ></span
                             >
@@ -634,8 +634,8 @@
                     <br />
                     <Imageupload
                       :folder="'home_slider'"
-                      :resizewidth="'2000px'"
-                      :resizeheight="'400px'"
+                      :resizewidth="resizewidth"
+                      :resizeheight="resizeheight"
                       :no_image_trans="'ar'"
                       :no_image="have_noimage"
                       @uploaded_image="uploaded_image"
@@ -696,7 +696,7 @@
 </template>
 
 <script>
-import Imageupload from "../../CustomComponents/ImageUploadSlider.vue";
+import Imageupload from "../../CustomComponents/ImageUpload.vue";
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 import { quillEditor } from "vue3-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
@@ -746,6 +746,8 @@ export default {
     upload_file_ar: false,
     upload_file_mob_ar: false,
     user: "",
+    resizewidth: "",
+    resizeheight: "",
     image_upload_from: "",
     mall_id: null,
     stores_en: [],
@@ -939,12 +941,16 @@ export default {
       if (this.tabs == 1) {
         this.image_upload_from = img_type;
         if (img_type == "website") {
+          this.resizewidth = 600;
+          this.resizeheight = 300;
           if (this.uploadfile == false) {
             this.uploadfile = true;
           } else {
             this.uploadfile = false;
           }
         } else {
+          this.resizewidth = 500;
+          this.resizeheight = 300;
           if (this.upload_mob_file == false) {
             this.upload_mob_file = true;
           } else {
@@ -954,12 +960,16 @@ export default {
       } else {
         this.image_upload_from = img_type;
         if (img_type == "website") {
+          this.resizewidth = 600;
+          this.resizeheight = 300;
           if (this.upload_file_ar == false) {
             this.upload_file_ar = true;
           } else {
             this.upload_file_ar = false;
           }
         } else {
+          this.resizewidth = 500;
+          this.resizeheight = 300;
           if (this.upload_file_mob_ar == false) {
             this.upload_file_mob_ar = true;
           } else {

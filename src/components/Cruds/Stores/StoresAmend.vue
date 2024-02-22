@@ -473,24 +473,40 @@
                         </v-hover>
                       </div>
                       <span>
-                        <v-icon
-                          small
-                          v-if="stores[0].icon"
-                          class="mr-2 edit_btn icon_size delete_icon"
-                          @click="removeImage(0)"
-                          >mdi mdi-trash-can-outline</v-icon
+                        <v-tooltip
+                          :text="this.$t('delete_en')"
+                          location="bottom"
                         >
+                          <template v-slot:activator="{ props }">
+                            <v-icon
+                              small
+                              v-bind="props"
+                              v-if="stores[0].icon"
+                              class="mr-2 edit_btn icon_size delete_icon"
+                              @click="removeImage(0)"
+                              >mdi mdi-trash-can-outline</v-icon
+                            >
+                          </template>
+                        </v-tooltip>
                       </span>
-                      <a
-                        class="text-center pointer"
-                        @click="downloadImage(stores[0].icon)"
+                      <v-tooltip
+                        :text="this.$t('download_en')"
+                        location="bottom"
                       >
-                        <span
-                          v-if="stores[0].icon"
-                          class="download_btn_color"
-                          >{{ $t("download") }}</span
-                        >
-                      </a>
+                        <template v-slot:activator="{ props }">
+                          <a class="text-center pointer download_icon">
+                            <span
+                              ><v-icon
+                                v-if="stores[0].icon"
+                                v-bind="props"
+                                class="mr-2"
+                                @click="downloadImage(stores[0].icon)"
+                                >mdi mdi-download</v-icon
+                              ></span
+                            >
+                          </a>
+                        </template>
+                      </v-tooltip>
                     </div>
                     <br />
                     <Imageupload
@@ -1003,24 +1019,41 @@
                         </v-hover>
                       </div>
                       <span>
-                        <v-icon
-                          small
-                          v-if="stores[1].icon"
-                          class="mr-2 edit_btn icon_size delete_icon_ar"
-                          @click="removeImage(1)"
-                          >mdi mdi-trash-can-outline</v-icon
+                        <v-tooltip
+                          :text="this.$t('delete_ar')"
+                          location="bottom"
                         >
+                          <template v-slot:activator="{ props }">
+                            <v-icon
+                              v-bind="props"
+                              small
+                              v-if="stores[1].icon"
+                              class="mr-2 edit_btn icon_size delete_icon_ar"
+                              @click="removeImage(1)"
+                              >mdi mdi-trash-can-outline</v-icon
+                            >
+                          </template>
+                        </v-tooltip>
                       </span>
-                      <a
-                        class="text-center pointer"
-                        @click="downloadImage(stores[1].icon)"
+
+                      <v-tooltip
+                        :text="this.$t('download_ar')"
+                        location="bottom"
                       >
-                        <span
-                          v-if="stores[1].icon"
-                          class="download_btn_color"
-                          >{{ $t("download_ar") }}</span
-                        >
-                      </a>
+                        <template v-slot:activator="{ props }">
+                          <a class="text-center pointer download_icon_ar">
+                            <span
+                              ><v-icon
+                                v-if="stores[1].icon"
+                                v-bind="props"
+                                class="mr-2"
+                                @click="downloadImage(stores[1].icon)"
+                                >mdi mdi-download</v-icon
+                              ></span
+                            >
+                          </a>
+                        </template>
+                      </v-tooltip>
                     </div>
                     <br />
                     <Imageupload
@@ -1448,12 +1481,12 @@ export default {
       if (this.user.rolename == "StoreAdmin") {
         this.$router.push({
           name: "my_stores",
-          query: { 's_tab': this.$route.query.s_tab },
+          query: { s_tab: this.$route.query.s_tab },
         });
       } else {
         this.$router.push({
           name: "stores",
-          query: { 's_tab': this.$route.query.s_tab },
+          query: { s_tab: this.$route.query.s_tab },
         });
       }
     },
@@ -1696,13 +1729,12 @@ export default {
               if (this.user.rolename == "StoreAdmin") {
                 this.$router.push({
                   name: "my_stores",
-                  query: { 's_tab': this.$route.query.s_tab },
+                  query: { s_tab: this.$route.query.s_tab },
                 });
               } else {
                 this.$router.push({
                   name: "stores",
-                  query: { 's_tab': this.$route.query.s_tab },
-
+                  query: { s_tab: this.$route.query.s_tab },
                 });
               }
             } else {
@@ -1787,12 +1819,22 @@ input.larger {
 }
 .delete_icon {
   position: relative;
-  left: 112px;
+  left: 122px;
   bottom: 90px;
 }
 .delete_icon_ar {
   position: relative;
-  right: 110px;
+  right: 120px;
   bottom: 90px;
+}
+.download_icon {
+  position: relative;
+  left: 90px;
+  bottom: 52px;
+}
+.download_icon_ar {
+  position: relative;
+  bottom: 45px;
+  right: 88px;
 }
 </style>

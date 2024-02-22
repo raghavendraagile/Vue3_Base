@@ -104,20 +104,25 @@
                     </div>
                   </v-hover>
                 </div>
-                <a
-                  class="text-center pointer"
-                  @click="downloadImage(system_params.parameter_value)"
-                >
-                  <span
-                    v-if="
-                      system_params.parameter_value &&
-                      system_params.parameter_name == 'APP_LOGO' &&
-                      system_params.is_file_upload == true
-                    "
-                    class="download_btn_color"
-                    >{{ $t("download") }}</span
-                  >
-                </a>
+                <v-tooltip :text="this.$t('download')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <a class="text-center pointer download_icon">
+                      <span
+                        ><v-icon
+                          v-if="
+                            system_params.parameter_value &&
+                            system_params.parameter_name == 'APP_LOGO' &&
+                            system_params.is_file_upload == true
+                          "
+                          v-bind="props"
+                          class="mr-2"
+                          @click="downloadImage(system_params.parameter_value)"
+                          >mdi mdi-download</v-icon
+                        ></span
+                      >
+                    </a>
+                  </template>
+                </v-tooltip>
                 <span
                   v-if="
                     system_params.parameter_value &&
@@ -125,13 +130,18 @@
                     system_params.is_file_upload == true
                   "
                 >
-                  <v-icon
-                    v-on="on"
-                    small
-                    class="mr-2 edit_btn icon_size delete_icon"
-                    @click="removeImage"
-                    >mdi mdi-trash-can-outline</v-icon
-                  ></span
+                  <v-tooltip :text="this.$t('delete')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-icon
+                        v-on="on"
+                        v-bind="props"
+                        small
+                        class="mr-2 edit_btn icon_size delete_icon"
+                        @click="removeImage"
+                        >mdi mdi-trash-can-outline</v-icon
+                      >
+                    </template>
+                  </v-tooltip></span
                 >
               </div>
               <br />
@@ -413,7 +423,12 @@ input.larger {
 }
 .delete_icon {
   position: relative;
-  left: 40px;
+  left: 83px;
   bottom: 90px;
+}
+.download_icon {
+  position: relative;
+  left: 116px;
+  bottom: 52px;
 }
 </style>

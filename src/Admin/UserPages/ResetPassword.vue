@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-2 mt-3 p-0">
+  <div class="mx-2 mt-3 p-0" v-bind:class="[is_arabic ? 'arabicclass' : '']">
     <div class="container my-3 p-0">
       <page-title
         class="col-md-4 ml-2"
@@ -7,11 +7,17 @@
         :google_icon="google_icon"
       ></page-title>
     </div>
-    <div class="card-body">
-      <v-form autocomplete="off" ref="form" v-model="valid" v-bind:class="[is_arabic ? 'arabicclass' : '']">
+
+    <v-card elevation="7" width="700" class="mx-6">
+      <v-form
+        autocomplete="off"
+        ref="form"
+        v-model="valid"
+        v-bind:class="[is_arabic ? 'arabicclass' : '']"
+      >
         <v-container>
           <v-row class="mx-auto mt-2" max-width="344">
-            <v-col md="6" class="emailclass">
+            <v-col md="12" class="emailclass">
               <strong>{{ $t("email") }}:</strong>
               &nbsp;&nbsp;
               {{ userprofile.email }}
@@ -19,7 +25,7 @@
           </v-row>
           <br />
           <v-row class="mx-auto mt-2" max-width="344">
-            <v-col md="6">
+            <v-col md="12">
               <v-tooltip :text="this.$t('current_password')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
@@ -40,7 +46,7 @@
             </v-col>
           </v-row>
           <v-row class="mx-auto mt-2" max-width="344">
-            <v-col md="6">
+            <v-col md="12">
               <v-tooltip :text="this.$t('new_password')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
@@ -60,7 +66,7 @@
               </v-tooltip>
             </v-col> </v-row
           ><v-row class="mx-auto mt-2" max-width="344">
-            <v-col md="6">
+            <v-col md="12">
               <v-tooltip :text="this.$t('confirm_password')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
@@ -86,47 +92,50 @@
           </v-row>
         </v-container>
       </v-form>
-    </div>
-    <div class="d-block mr-4 mt-3 pb-3 text-right">
-      <v-tooltip :text="this.$t('cancel')" location="bottom">
-        <template v-slot:activator="{ props }">
-          <div v-bind="props" class="d-inline-block mr-2">
-            <v-btn
-              v-bind="props"
-              size="small"
-              @click="cancel"
-              :disabled="isBtnLoading"
-              class="ma-1"
-              color="cancel"
-              >{{ $t("cancel") }}</v-btn
-            >
-          </div>
-        </template>
-      </v-tooltip>
-      <v-tooltip :text="this.$t('submit')" location="bottom">
-        <template v-slot:activator="{ props }">
-          <div v-bind="props" class="d-inline-block">
-            <v-btn
-              :disabled="isDisabled"
-              @click="submit"
-              size="small"
-              class="mr-2"
-              color="success"
-            >
-              {{ $t("submit") }}
-              <v-progress-circular
-                v-if="isBtnLoading"
-                indeterminate
-                width="1"
+      <div
+        class="d-block mx-4 mt-3 pb-3"
+        v-bind:class="[is_arabic ? ' text-left' : ' text-right']"
+      >
+        <v-tooltip :text="this.$t('cancel')" location="bottom">
+          <template v-slot:activator="{ props }">
+            <div v-bind="props" class="d-inline-block mr-2">
+              <v-btn
+                v-bind="props"
+                size="small"
+                @click="cancel"
+                :disabled="isBtnLoading"
+                class="ma-1"
                 color="cancel"
-                size="x-small"
-                class="ml-2"
-              ></v-progress-circular>
-            </v-btn>
-          </div>
-        </template>
-      </v-tooltip>
-    </div>
+                >{{ $t("cancel") }}</v-btn
+              >
+            </div>
+          </template>
+        </v-tooltip>
+        <v-tooltip :text="this.$t('submit')" location="bottom">
+          <template v-slot:activator="{ props }">
+            <div v-bind="props" class="d-inline-block">
+              <v-btn
+                :disabled="isDisabled"
+                @click="submit"
+                size="small"
+                class="mr-2"
+                color="success"
+              >
+                {{ $t("submit") }}
+                <v-progress-circular
+                  v-if="isBtnLoading"
+                  indeterminate
+                  width="1"
+                  color="cancel"
+                  size="x-small"
+                  class="ml-2"
+                ></v-progress-circular>
+              </v-btn>
+            </div>
+          </template>
+        </v-tooltip>
+      </div>
+    </v-card>
   </div>
 </template>
 
@@ -173,8 +182,8 @@ export default {
   },
   created() {},
   watch: {
-    '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
         this.is_arabic = true;
       } else {
         this.is_arabic = false;
@@ -185,9 +194,8 @@ export default {
     this.userprofile = JSON.parse(localStorage.getItem("user_data"));
   },
   methods: {
-
     submit() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.form.validate() && this.valid == true) {
         if (this.fieldItem.newpassword != this.fieldItem.confirmpassword) {
           this.message = "Confirm password is not matching with new password";
           this.$toast.error(this.message);
@@ -257,10 +265,16 @@ export default {
 };
 </script>
 <style scoped>
-.arabicclass /deep/ .v-field-label{
+.arabicclass /deep/ .v-field {
   direction: rtl;
 }
-.arabicclass .emailclass{
+.arabicclass .emailclass {
+  direction: rtl;
+}
+.arabicclass /deep/ .v-messages__message {
+  direction: rtl;
+}
+.arabicclass {
   direction: rtl;
 }
 </style>

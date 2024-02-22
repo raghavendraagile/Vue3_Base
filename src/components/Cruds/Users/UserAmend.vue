@@ -372,31 +372,42 @@
                       </div>
                     </v-hover>
                   </div>
-                  <a
-                    class="text-center pointer"
-                    @click="downloadImage(profile_details.image_url)"
-                  >
-                    <span
-                      v-if="profile_details.image_url"
-                      class="download_btn_color"
-                      >{{ $t("download") }}</span
-                    >
-                  </a>
-                  <span
-                    v-if="
-                      profile_details.image_url == '' ||
-                      profile_details.image_url == null
-                    "
-                  >
-                  </span>
-                  <span v-else>
-                    <v-icon
-                      small
-                      class="mr-2 edit_btn icon_size delete_icon"
-                      @click="removeImage"
-                      >mdi mdi-trash-can-outline</v-icon
-                    >
-                  </span>
+                  <v-tooltip :text="this.$t('download')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <a class="text-center pointer download_icon">
+                        <span
+                          ><v-icon
+                            v-if="profile_details.image_url"
+                            v-bind="props"
+                            class="mr-2"
+                            @click="downloadImage(profile_details.image_url)"
+                            >mdi mdi-download</v-icon
+                          ></span
+                        >
+                      </a>
+                    </template>
+                  </v-tooltip>
+                  <v-tooltip :text="this.$t('delete')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <span
+                        v-bind="props"
+                        v-if="
+                          profile_details.image_url == '' ||
+                          profile_details.image_url == null
+                        "
+                      >
+                      </span>
+                      <span v-else>
+                        <v-icon
+                          v-bind="props"
+                          small
+                          class="mr-2 edit_btn icon_size delete_icon"
+                          @click="removeImage"
+                          >mdi mdi-trash-can-outline</v-icon
+                        >
+                      </span>
+                    </template>
+                  </v-tooltip>
                 </div>
                 <br />
                 <Imageupload
@@ -800,7 +811,7 @@ export default {
 }
 .delete_icon {
   position: relative;
-  left: 40px;
+  left: 70px;
   bottom: 120px;
 }
 .download_btn_color {
@@ -808,6 +819,11 @@ export default {
 }
 .pointer {
   cursor: pointer;
+}
+.download_icon {
+  position: relative;
+  left: 103px;
+  bottom: 70px;
 }
 </style>
   

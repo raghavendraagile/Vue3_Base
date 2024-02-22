@@ -1,6 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('create_lookup')"
@@ -90,7 +93,7 @@
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                          v-if="lookup[0].icon != ''"
+                          v-if="lookup[0].icon != '' && lookup[0].icon != null"
                           :src="envImagePath + lookup[0].icon"
                           width="100"
                           height="65
@@ -111,14 +114,35 @@
                       </div>
                     </v-hover>
                   </div>
-                  <a
-                    class="text-center pointer"
-                    @click="downloadImage(lookup[0].icon)"
-                  >
-                    <span v-if="lookup[0].icon" class="download_btn_color">{{
-                      $t("download")
-                    }}</span>
-                  </a>
+                  <v-tooltip :text="this.$t('download_en')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <a class="text-center pointer download_icon">
+                        <span
+                          ><v-icon
+                            v-if="lookup[0].icon"
+                            v-bind="props"
+                            class="mr-2"
+                            @click="downloadImage(lookup[0].icon)"
+                            >mdi mdi-download</v-icon
+                          ></span
+                        >
+                      </a>
+                    </template>
+                  </v-tooltip>
+                  <v-tooltip :text="this.$t('delete_en')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <span>
+                        <v-icon
+                          small
+                          v-if="lookup[0].icon"
+                          v-bind="props"
+                          class="mr-2 edit_btn icon_size delete_icon"
+                          @click="removeImage(0)"
+                          >mdi mdi-trash-can-outline</v-icon
+                        >
+                      </span>
+                    </template>
+                  </v-tooltip>
                 </div>
                 <br />
                 <Imageupload
@@ -227,14 +251,35 @@
                       </div>
                     </v-hover>
                   </div>
-                  <a
-                    class="text-center pointer"
-                    @click="downloadImage(lookup[1].icon)"
-                  >
-                    <span v-if="lookup[1].icon" class="download_btn_color">{{
-                      $t("download")
-                    }}</span>
-                  </a>
+                  <v-tooltip :text="this.$t('download_ar')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <a class="text-center pointer download_icon">
+                        <span
+                          ><v-icon
+                            v-if="lookup[1].icon"
+                            v-bind="props"
+                            class="mr-2"
+                            @click="downloadImage(lookup[1].icon)"
+                            >mdi mdi-download</v-icon
+                          ></span
+                        >
+                      </a>
+                    </template>
+                  </v-tooltip>
+                  <v-tooltip :text="this.$t('delete_ar')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <span>
+                        <v-icon
+                          small
+                          v-if="lookup[1].icon"
+                          v-bind="props"
+                          class="mr-2 edit_btn icon_size delete_icon_ar"
+                          @click="removeImage(1)"
+                          >mdi mdi-trash-can-outline</v-icon
+                        >
+                      </span>
+                    </template>
+                  </v-tooltip>
                 </div>
                 <br />
                 <Imageupload
@@ -346,7 +391,7 @@ export default {
     uploadfile_ar: false,
     parent_en: "",
     parent_ar: "",
-    sel_lang:""
+    sel_lang: "",
   }),
 
   computed: {
@@ -399,13 +444,14 @@ export default {
         }
       },
     },
-    '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
   methods: {
     checkUploadImage() {
@@ -508,6 +554,13 @@ export default {
     clear() {
       this.$refs.form.reset();
     },
+    removeImage(index) {
+      if (index == 1) {
+        this.lookup[1].icon = null;
+      } else {
+        this.lookup[0].icon = null;
+      }
+    },
   },
 };
 </script>
@@ -528,5 +581,25 @@ input.larger {
 .image-width {
   border: 2px solid black;
   padding: 1px;
+}
+.delete_icon {
+  position: relative;
+  left: 85px;
+  bottom: 90px;
+}
+.delete_icon_ar {
+  position: relative;
+  left: 85px;
+  bottom: 90px;
+}
+.download_icon {
+  position: relative;
+  left: 116px;
+  bottom: 52px;
+}
+.download_icon_ar {
+  position: relative;
+  bottom: 45px;
+  right: 110px;
 }
 </style>
