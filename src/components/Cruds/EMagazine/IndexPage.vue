@@ -35,9 +35,12 @@
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link
-              :to="{ name: 'e-magazine-amend',query:{
-                 's_tab': tabs
-              } }"
+              :to="{
+                name: 'e-magazine-amend',
+                query: {
+                  s_tab: tabs,
+                },
+              }"
               style="color: white"
             >
               <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
@@ -122,7 +125,7 @@
                   small
                   :to="{
                     name: 'e-magazine-amend',
-                    query: { slug: props.item.selectable.slug, 's_tab': tabs },
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="top">
@@ -179,7 +182,9 @@
               <td>{{ props.item.selectable.title }}</td>
               <td v-if="this.role === 'SuperUser'">
                 <span v-if="props.item.selectable.store_name">
-                  {{ changeName(props.item.selectable.store_name.stor_type) }}</span
+                  {{
+                    changeName(props.item.selectable.store_name.stor_type)
+                  }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
@@ -221,12 +226,12 @@
                 </v-chip>
               </td>
               <td class="text-center">
-                {{props.item.selectable.slug}}
+                {{ props.item.selectable.slug }}
                 <router-link
                   small
                   :to="{
                     name: 'e-magazine-amend',
-                    query: { slug: props.item.selectable.slug,'s_tab': tabs},
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="top">
@@ -344,8 +349,14 @@ export default {
         },
       ];
       if (this.role === "SuperUser") {
-        headers.splice(1, 0, { title: this.$t("store_type_en"), key: "store_name.stor_type" });
-        headers.splice(2, 0, { title: this.$t("mall/store_en"), key: "stor_type.name" });
+        headers.splice(1, 0, {
+          title: this.$t("store_type_en"),
+          key: "store_name.stor_type",
+        });
+        headers.splice(2, 0, {
+          title: this.$t("mall/store_en"),
+          key: "stor_type.name",
+        });
       }
 
       return headers;
@@ -379,8 +390,14 @@ export default {
         },
       ];
       if (this.role === "SuperUser") {
-        headers.splice(1, 0, { title: this.$t("store_type_ar"), key: "store_name.stor_type" });
-        headers.splice(2, 0, { title: this.$t("mall/store_ar"), key: "stor_type.name" });
+        headers.splice(1, 0, {
+          title: this.$t("store_type_ar"),
+          key: "store_name.stor_type",
+        });
+        headers.splice(2, 0, {
+          title: this.$t("mall/store_ar"),
+          key: "stor_type.name",
+        });
       }
 
       return headers;
@@ -404,17 +421,20 @@ export default {
   created() {},
   mounted() {
     this.role = JSON.parse(localStorage.getItem("user_data")).rolename;
+    if (this.$route.query.s_tab) {
+      this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
+    }
     this.fetchEMagazine();
   },
 
   methods: {
-    changeName(store){
- switch (store) {
+    changeName(store) {
+      switch (store) {
         case "Mall":
           return this.$t("mall_ar");
         case "Store":
           return this.$t("store_ar");
-    }
+      }
     },
     changeStatusAr(status) {
       switch (status) {
@@ -431,7 +451,7 @@ export default {
     viewEMagzine(slug) {
       this.$router.push({
         name: "e-magazine-review",
-        query: { slug: slug, 's_tab': this.tabs },
+        query: { slug: slug, s_tab: this.tabs },
       });
     },
     getStatusColor(status) {

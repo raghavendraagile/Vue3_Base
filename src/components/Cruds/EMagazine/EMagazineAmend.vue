@@ -612,7 +612,12 @@
               <v-btn
                 v-bind="props"
                 size="small"
-                @click="$router.go(-1)"
+                @click="
+                  $router.push({
+                    name: 'e-magazine',
+                    query: { 's_tab': this.$route.query.s_tab },
+                  })
+                "
                 :disabled="loading"
                 class="ma-1"
                 color="cancel"
@@ -788,10 +793,8 @@ export default {
                 this.$route.query.slug
             )
             .then((res) => {
-           
-                this.e_magazine = res.data.e_magazine;
-                this.assignType(this.e_magazine[0].stor_type);
-           
+              this.e_magazine = res.data.e_magazine;
+              this.assignType(this.e_magazine[0].stor_type);
             });
         }
       },
@@ -1121,6 +1124,7 @@ export default {
               this.message = res.data.message;
               this.$router.push({
                 name: "e-magazine",
+                query: { 's_tab': this.$route.query.s_tab },
               });
             } else {
               this.$toast.error(this.array_data);
