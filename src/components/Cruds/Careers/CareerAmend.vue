@@ -727,6 +727,8 @@ export default {
     cancel() {
       this.$router.push({
         name: "careers",
+        query: { 's_tab': this.$route.query.s_tab },
+
       });
     },
     onFileChanged(e) {
@@ -762,6 +764,8 @@ export default {
               this.message = res.data.message;
               this.$router.push({
                 name: "careers",
+                query: { 's_tab': this.$route.query.s_tab },
+
               });
             } else if (res.data.status == "E") {
               this.$toast.error(this.array_data);
