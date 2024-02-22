@@ -28,6 +28,7 @@
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-on="on"
+                      :readonly="lookup[0].id>0"
                       v-model="lookup[0].shortname"
                       :rules="fieldRules"
                       v-bind:label="$t('shortname_en')"
@@ -157,6 +158,7 @@
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-on="on"
+                      :readonly="lookup[1].id>0"
                       v-model="lookup[1].shortname"
                       :rules="fieldRules"
                       v-bind:label="$t('shortname_ar')"
