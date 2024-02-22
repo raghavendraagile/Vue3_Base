@@ -515,6 +515,7 @@ export default {
     cancel() {
       this.$router.push({
         name: "events",
+        query: { 's_tab': this.$route.query.s_tab },
       });
     },
     closeReviewComment() {

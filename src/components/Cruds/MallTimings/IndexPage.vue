@@ -365,6 +365,9 @@ export default {
 
   created() {},
   mounted() {
+    if (this.$route.query.s_tab) {
+    this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
+  }
     this.fetchMallTimings();
   },
 

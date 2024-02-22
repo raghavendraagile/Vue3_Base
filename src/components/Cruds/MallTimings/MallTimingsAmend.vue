@@ -410,7 +410,10 @@
               <v-btn
                 v-bind="props"
                 size="small"
-                @click="$router.go(-1)"
+                @click="  $router.push({
+                    name: 'mall-timings',
+                    query: { 's_tab': this.$route.query.s_tab },
+                  })"
                 :disabled="loading"
                 class="ma-1"
                 color="cancel"
@@ -636,6 +639,7 @@ export default {
               this.message = res.data.message;
               this.$router.push({
                 name: "mall-timings",
+                query: { 's_tab': this.$route.query.s_tab },
               });
             } else {
               this.$toast.error(this.array_data);
