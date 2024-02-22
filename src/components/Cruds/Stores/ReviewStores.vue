@@ -612,10 +612,12 @@ export default {
       if (this.user.rolename == "StoreAdmin") {
         this.$router.push({
           name: "my_stores",
+          query: { 's_tab': this.$route.query.s_tab },
         });
       } else {
         this.$router.push({
           name: "stores",
+          query: { 's_tab': this.$route.query.s_tab },
         });
       }
     },
