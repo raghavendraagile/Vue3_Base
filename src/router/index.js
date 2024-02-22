@@ -36,37 +36,44 @@ const routes = [
   {
     path: "/:lang?/users",
     name: "users",
+    beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Users/IndexPage.vue"),
   },
   {
     path: "/:lang?/user_creation",
     name: "user_creation",
+    beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Users/UserAmend.vue"),
   },
   {
     path: "/:lang?/menus",
     name: "menus",
+    beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Menus/IndexPage.vue"),
   },
   {
     path: "/:lang?/menu_amend",
     name: "menu_amend",
+    beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/Menus/MenuAmend.vue"),
   },
   {
     path: "/:lang?/roles",
     name: "roles",
+    beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Roles/IndexPage.vue"),
   },
   {
     path: "/:lang?/roles_amend/:slug?",
     name: "roles_amend",
+    beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Roles/RolesAmend.vue"),
   },
   {
     path: "/:lang?/roles_menu",
     name: "roles_menu",
+    beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Roles/RolesMenu.vue"),
   },
 
@@ -132,6 +139,7 @@ const routes = [
   {
     path: "/:lang?/navigate_invite",
     name: "navigate_invite",
+    beforeEnter: guardMyroute,
     meta: { layout: "userpages" },
     component: () => import("../Admin/UserPages/NavigateInvitation.vue"),
   },
@@ -252,6 +260,7 @@ const routes = [
   {
     path: "/:lang?/careers-review",
     name: "careers-review",
+    beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Careers/ReviewCareer.vue"),
   },
   {
@@ -278,6 +287,7 @@ const routes = [
   {
     path: "/:lang?/events-review",
     name: "events-review",
+    beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Events/ReviewEvents.vue"),
   },
   {
@@ -304,18 +314,21 @@ const routes = [
   {
     path: "/:lang?/promotions-review",
     name: "promotions-review",
+    beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Promotions_Offers/ReviewPromotions.vue"),
   },
   //Mall Timings
   {
     path: "/:lang?/mall-timings",
     name: "mall-timings",
+    beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/MallTimings/IndexPage.vue"),
   },
   {
     path: "/:lang?/mall-timings-amend",
     name: "mall-timings-amend",
+    beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () =>
       import("../components/Cruds/MallTimings/MallTimingsAmend.vue"),
@@ -324,18 +337,21 @@ const routes = [
   {
     path: "/:lang?/e-magazine",
     name: "e-magazine",
+    beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/EMagazine/IndexPage.vue"),
   },
   {
     path: "/:lang?/e-magazine-amend",
     name: "e-magazine-amend",
+    beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/EMagazine/EMagazineAmend.vue"),
   },
   {
     path: "/:lang?/e-magazine-review",
     name: "e-magazine-review",
+    beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/EMagazine/ReviewEMagazine.vue"),
   },
@@ -343,6 +359,7 @@ const routes = [
   {
     path: "/:lang?/reviews-testimonials",
     name: "reviews-testimonials",
+    beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/Testimonials/IndexPage.vue"),
   },
@@ -350,74 +367,87 @@ const routes = [
   {
     path: "/:lang?/stores",
     name: "stores",
+    beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/Stores/IndexPage.vue"),
   },
   {
     path: "/:lang?/stores-amend",
     name: "stores-amend",
+    beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/Stores/StoresAmend.vue"),
   },
   {
     path: "/:lang?/stores-review",
     name: "stores-review",
+    beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Stores/ReviewStores.vue"),
   },
   //categories
   {
     path: "/:lang?/categories",
     name: "categories",
+    beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/Category/IndexPage.vue"),
   },
   {
     path: "/:lang?/categories-amend",
     name: "categories-amend",
+    beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/Category/CategoryAmend.vue"),
   },
   {
     path: "/:lang?/home-sliders",
     name: "home-sliders",
+    beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/HomeSlider/IndexPage.vue"),
   },
   {
     path: "/:lang?/home-slider-amend",
     name: "home-slider-amend",
+    beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/HomeSlider/HomeSliderAmend.vue"),
   },
   {
     path: "/:lang?/home-slider-review",
     name: "home-slider-review",
+    beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/HomeSlider/ReviewSlider.vue"),
   },
   {
     path: "/:lang?/categories-review",
     name: "categories-review",
+    beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Category/ReviewCategory.vue"),
   },
   {
     path: "/:lang?/store-timings",
     name: "store-timings",
+    beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/StoreTimings/IndexPage.vue"),
   },
   {
     path: "/:lang?/store-timing-amend",
     name: "store-timing-amend",
+    beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/StoreTimings/StoreTimingAmend.vue"),
   },
   {
     path: "/:lang?/store-timing-review",
     name: "store-timing-review",
+    beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/StoreTimings/ReviewStoreTiming.vue"),
   },
   {
     path: "/:lang?/products-review",
     name: "products-review",
+    beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Products/ReviewProducts.vue"),
   },
 
@@ -425,6 +455,7 @@ const routes = [
   {
     path: "/:lang?/customer-newsletter",
     name: "customer-newsletter",
+    beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/CustomerNewsletter/IndexPage.vue"),
   },
@@ -434,6 +465,7 @@ const routes = [
     {
       path: "/:lang?/my_stores",
       name: "my_stores",
+      beforeEnter: guardMyroute,
       // meta: { layout: "userpages" },
       component: () => import("../components/Cruds/MyStores/IndexPage.vue"),
     },
