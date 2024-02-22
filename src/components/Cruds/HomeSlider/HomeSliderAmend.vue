@@ -525,7 +525,7 @@
                                 v-if="home_slider[1].image"
                                 v-bind="props"
                                 class="mr-2"
-                                @@click="downloadImage(home_slider[1].image)"
+                                @click="downloadImage(home_slider[1].image)"
                                 >mdi mdi-download</v-icon
                               ></span
                             >
@@ -609,7 +609,7 @@
                                 v-if="home_slider[1].m_image"
                                 v-bind="props"
                                 class="mr-2"
-                                @@click="downloadImage(home_slider[1].m_image)"
+                                @click="downloadImage(home_slider[1].m_image)"
                                 >mdi mdi-download</v-icon
                               ></span
                             >
