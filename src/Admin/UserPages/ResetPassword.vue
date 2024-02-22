@@ -12,7 +12,7 @@
       <v-form autocomplete="off" ref="form" v-model="valid" v-bind:class="[is_arabic ? 'arabicclass' : '']">
         <v-container>
           <v-row class="mx-auto mt-2" max-width="344">
-            <v-col  md="10" class="emailclass">
+            <v-col    md="11" class="emailclass">
               <strong>{{ $t("email") }}:</strong>
               &nbsp;&nbsp;
               {{ userprofile.email }}
@@ -20,7 +20,7 @@
           </v-row>
           <br />
           <v-row class="mx-auto mt-2" max-width="344">
-            <v-col  md="10">
+            <v-col    md="11">
               <v-tooltip :text="this.$t('current_password')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
@@ -41,7 +41,7 @@
             </v-col>
           </v-row>
           <v-row class="mx-auto mt-2" max-width="344">
-            <v-col  md="10">
+            <v-col    md="11">
               <v-tooltip :text="this.$t('new_password')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
@@ -61,7 +61,7 @@
               </v-tooltip>
             </v-col> </v-row
           ><v-row class="mx-auto mt-2" max-width="344">
-            <v-col  md="10">
+            <v-col    md="11">
               <v-tooltip :text="this.$t('confirm_password')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
