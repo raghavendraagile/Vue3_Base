@@ -1542,6 +1542,8 @@ export default {
       this.stores[1].country = header_id;
       this.stores[0].state = null;
       this.stores[1].state = null;
+      this.stores[0].city = null;
+      this.stores[1].city = null;
       this.fetchStates(this.stores[0].country);
     },
     cancel() {

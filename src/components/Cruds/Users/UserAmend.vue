@@ -629,6 +629,7 @@ export default {
       this.profile_details.country = header_id;
       this.fetchStates(this.profile_details.country);
       this.profile_details.state = null;
+      this.profile_details.city = null;
     },
     get_stores() {
       this.initval = true;
