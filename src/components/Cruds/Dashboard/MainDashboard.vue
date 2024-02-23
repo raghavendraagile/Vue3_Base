@@ -6,14 +6,14 @@
       <div class="dash-parent" v-bind:class="[is_arabic ? 'arabic_row' : '']">
         <v-row>
           <v-col md="3" class="direction_col" v-for="(dashboard, i) in dashboard_count" :key="i">
-            <v-card density="comfortable" elevation="8" class="routecard" 
+            <div density="comfortable" elevation="8" class="routecard" 
               @click="route_to_page(dashboard.name)">
               <v-row>
                 <v-col md="12">
                   <div class="d-flex2">
                     <v-card-title class="d-flex2">
                       {{ changeNameTranslation(dashboard.name) }}
-                      <v-btn class="ma-2" style="opacity:.7" :color="dashboard.color" size="small" :icon="dashboard.icon"></v-btn>
+                      <v-btn class="ma-2"  size="small" :icon="dashboard.icon"></v-btn>
                     </v-card-title>
                   </div>
                   <div class="pb-6 pt-4 d-flex1">
@@ -27,7 +27,7 @@
                   </div>
                 </v-col>
               </v-row>
-            </v-card>
+            </div>
           </v-col>
         </v-row>
       </div>
@@ -240,6 +240,10 @@ export default {
 
 .routecard {
   cursor: pointer;
+  cursor: pointer;
+  border: 1px solid #d2d2d2;
+  box-shadow: 1px 0px -1px 2px #dedede;
+  border-radius: 3px;
 }
 
 .arabic_row .direction_col {
@@ -260,11 +264,11 @@ export default {
   align-items: baseline;
 }
 
-.routecard:hover {
+/* .routecard:hover {
   height: 100.1%;
   width: 100.1%;
   box-shadow: 0 18px 26px rgba(21, 1, 1, 0.2);
-}
+} */
 
 .v-chip.v-chip--size-small {
   width: 86px;
