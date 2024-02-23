@@ -222,7 +222,6 @@
                     </template>
                   </v-tooltip>
                 </v-col>
-
                 <v-col cols="12" md="4" lg="4" sm="4" px-2>
                   <v-tooltip :text="$t('phone_number')" location="bottom">
                     <template v-slot:activator="{ props }">
@@ -232,7 +231,7 @@
                         v-bind="props"
                         variant="outlined"
                         density="compact"
-                        maxlength="12"
+                        :maxlength="phonelength"
                         v-model="profile_details.phone"
                         @keypress="isNumber($event)"
                         required
@@ -500,7 +499,6 @@ export default {
       icon: "material-symbols-outlined",
     },
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
-
     valid: false,
     valid_error: false,
     message: "",
@@ -531,12 +529,13 @@ export default {
       description: "",
       role_id: null,
       phone: "",
-      mobile_code: "",
+      mobile_code: null,
       store_id: null,
     },
     role_array_view_profile: [],
     uploadfile: false,
     user: "",
+    phonelength: "10",
     role_array: [],
     salutation_array_en: [],
     gender_array_en: [],
@@ -628,6 +627,8 @@ export default {
   methods: {
     changeCountry(header_id) {
       this.profile_details.country = header_id;
+      this.fetchStates(this.profile_details.country);
+      this.profile_details.state = null;
     },
     get_stores() {
       this.initval = true;
@@ -684,7 +685,7 @@ export default {
         });
     },
     fetchStates(country_id) {
-      this.profile_details.mobile_code == country_id;
+      this.profile_details.mobile_code = country_id;
       this.initval = true;
       this.$axios
         .get(

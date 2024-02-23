@@ -183,7 +183,7 @@
                           item-title="mobile_code"
                           v-model="stores[0].mobile_code"
                           @update:modelValue="
-                            (value) => updateMobileCode(value, 0)
+                            (value) => updateMobileCode(value)
                           "
                           :items="country_array_en"
                         ></v-autocomplete>
@@ -756,7 +756,7 @@
                           item-title="mobile_code"
                           v-model="stores[1].mobile_code"
                           @update:modelValue="
-                            (value) => updateMobileCode(value, 1)
+                            (value) => updateMobileCode(value)
                           "
                           :items="country_array_ar"
                         ></v-autocomplete>
@@ -1313,7 +1313,7 @@ export default {
         background_image: "",
         store_code: "",
         website: "",
-        mobile_code: "",
+        mobile_code: null,
         seq: null,
       },
       {
@@ -1322,7 +1322,7 @@ export default {
         stor_type: "Mall",
         categories: [],
         store_code: "",
-        mobile_code: "",
+        mobile_code: null,
         mall_name: "",
         icon: null,
         background_image: "",
@@ -1532,12 +1532,17 @@ export default {
     updateMallSCode(value, index) {
       this.stores[index].store_code = value;
     },
-    updateMobileCode(mobile_code) {
+    updateMobileCode(header_id) {
       if (this.tabs == 1) {
-        this.stores[1].mobile_code = mobile_code;
+        this.stores[1].mobile_code = header_id;
       } else {
-        this.stores[0].mobile_code = mobile_code;
+        this.stores[0].mobile_code = header_id;
       }
+      this.stores[0].country = header_id;
+      this.stores[1].country = header_id;
+      this.stores[0].state = null;
+      this.stores[1].state = null;
+      this.fetchStates(this.stores[0].country);
     },
     cancel() {
       if (this.user.rolename == "StoreAdmin") {
@@ -1686,6 +1691,8 @@ export default {
         });
     },
     fetchStates(country_id) {
+      this.stores[1].mobile_code = country_id;
+      this.stores[0].mobile_code = country_id;
       this.initval = true;
       this.$axios
         .get(
