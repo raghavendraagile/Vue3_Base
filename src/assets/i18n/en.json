@@ -439,6 +439,9 @@
   "download_en": "Download",
   "mall/store_en": "Mall/Store",
   "mobile_code_en": "Mobile Code",
+  "media_type_en" : "Media Type",
+  "video_url_en" : "Video URL",
+  "enter_a_valid_url_en" : "Enter a valid URL",
   "start_arabic_translation": "---------------Arabic translation start---------------------------",
   "arabic": "عربي",
   "enter_the_content_here_ar": "أدخل المحتوى هنا",
@@ -543,6 +546,9 @@
   "w_image_ar": "صورة الويب",
   "m_image_ar": "صورة الجوال",
   "remove_file_ar": "إزالة الملف",
-  "mobile_code_ar": "كود الجوال"
+  "mobile_code_ar": "كود الجوال",
+  "media_type_ar" : "نوع الوسائط",
+  "video_url_ar" : "رابط الفيديو",
+  "enter_a_valid_url_ar" : "أدخل عنوان عنوان صالحًا"
 
 }

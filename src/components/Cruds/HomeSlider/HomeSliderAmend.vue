@@ -1,23 +1,12 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div
-      class="my-3 p-0"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
-    >
-      <page-title
-        class="col-md-4 ml-2"
-        :heading="$t('create_amend_home_slider')"
-        :google_icon="google_icon"
-      ></page-title>
+    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']">
+      <page-title class="col-md-4 ml-2" :heading="$t('create_amend_home_slider')" :google_icon="google_icon"></page-title>
     </div>
     <div class="mb-3 mx-auto">
       <div class="card-body">
         <content-loader v-if="loader"></content-loader>
-        <v-tabs
-          v-model="tabs"
-          color="blue"
-          @update:modelValue="have_noimage = false"
-        >
+        <v-tabs v-model="tabs" color="blue" @update:modelValue="have_noimage = false">
           <v-tab :value="1">
             <span>{{ $t("english") }}</span>
           </v-tab>
@@ -32,28 +21,13 @@
             <v-form ref="form" v-model="valid">
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col
-                    cols="12"
-                    sm="12"
-                    md="4"
-                    v-if="user.rolename != 'StoreAdmin'"
-                  >
+                  <v-col cols="12" sm="12" md="4" v-if="user.rolename != 'StoreAdmin'">
                     <v-tooltip :text="labelText" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-autocomplete
-                          v-bind="props"
-                          v-model="home_slider[0].store_id"
-                          v-bind:label="$t('mall_en')"
-                          @update:modelValue="(value) => updateStore(value)"
-                          variant="outlined"
-                          density="compact"
-                          :disabled="user.rolename == 'MallAdmin'"
-                          :items="stores_en"
-                          item-title="name"
-                          item-value="header_id"
-                          class="required_field"
-                          :rules="fieldRules"
-                        ></v-autocomplete>
+                        <v-autocomplete v-bind="props" v-model="home_slider[0].store_id" v-bind:label="$t('mall_en')"
+                          @update:modelValue="(value) => updateStore(value)" variant="outlined" density="compact"
+                          :disabled="user.rolename == 'MallAdmin'" :items="stores_en" item-title="name"
+                          item-value="header_id" class="required_field" :rules="fieldRules"></v-autocomplete>
                       </template>
                     </v-tooltip>
                   </v-col>
@@ -64,48 +38,26 @@
                   <v-col cols="12" sm="12" md="4">
                     <v-tooltip :text="$t('title_en')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-text-field
-                          v-bind="props"
-                          v-model="home_slider[0].title"
-                          maxlength="100"
-                          v-bind:label="$t('title_en')"
-                          required
-                          variant="outlined"
-                          density="compact"
-                        ></v-text-field>
+                        <v-text-field v-bind="props" v-model="home_slider[0].title" maxlength="100"
+                          v-bind:label="$t('title_en')" required variant="outlined" density="compact"></v-text-field>
                       </template>
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" sm="12" md="4">
                     <v-tooltip :text="$t('action_en')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-text-field
-                          v-bind="props"
-                          v-model="home_slider[0].action"
-                          maxlength="100"
-                          v-bind:label="$t('action_en')"
-                          variant="outlined"
-                          density="compact"
-                        ></v-text-field>
+                        <v-text-field v-bind="props" v-model="home_slider[0].action" maxlength="100"
+                          v-bind:label="$t('action_en')" variant="outlined" density="compact"></v-text-field>
                       </template>
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" sm="12" md="4">
                     <v-tooltip :text="$t('target_en')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-autocomplete
-                          v-bind="props"
-                          v-if="home_slider[0].action != ''"
-                          v-model="home_slider[0].target"
-                          v-bind:label="$t('target_en')"
-                          variant="outlined"
-                          density="compact"
-                          :items="targets_en"
-                          :rules="fieldRules"
-                          class="required_field"
-                          item-title="shortname"
-                          item-value="shortname"
-                        ></v-autocomplete>
+                        <v-autocomplete v-bind="props" v-if="home_slider[0].action != ''" v-model="home_slider[0].target"
+                          v-bind:label="$t('target_en')" variant="outlined" density="compact" :items="targets_en"
+                          :rules="fieldRules" class="required_field" item-title="shortname"
+                          item-value="shortname"></v-autocomplete>
                       </template>
                     </v-tooltip>
                   </v-col>
@@ -120,24 +72,13 @@
                     <v-tooltip :text="$t('description_en')" location="top">
                       <template v-slot:activator="{ props }">
                         <div v-bind="props">
-                          <quill-editor
-                            class="hide_quill_input"
-                            v-bind:id="
-                              quill_item == true
-                                ? 'quill_item'
-                                : 'quill_item_border'
-                            "
-                            v-model:value="home_slider[0].description"
-                            @blur="onEditorBlur($event)"
-                            @focus="onEditorFocus($event)"
-                            @ready="onEditorReady($event)"
-                            @change="onEditorChange($event)"
-                          />
-                          <small
-                            v-if="quill_item"
-                            class="text-danger ml-5 required_item shake"
-                            >Field Required</small
-                          >
+                          <quill-editor class="hide_quill_input" v-bind:id="quill_item == true
+                            ? 'quill_item'
+                            : 'quill_item_border'
+                            " v-model:value="home_slider[0].description" @blur="onEditorBlur($event)"
+                            @focus="onEditorFocus($event)" @ready="onEditorReady($event)"
+                            @change="onEditorChange($event)" />
+                          <small v-if="quill_item" class="text-danger ml-5 required_item shake">Field Required</small>
                         </div>
                       </template>
                     </v-tooltip>
@@ -149,186 +90,117 @@
                   <v-col cols="12" sm="4" md="2">
                     <v-tooltip :text="$t('sequence_en')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-text-field
-                          v-bind="props"
-                          v-model="home_slider[0].seq"
-                          maxlength="100"
-                          v-bind:label="$t('sequence_en')"
-                          class="required_field rtl"
-                          required
-                          :rules="[...fieldRules, ...seqRules]"
-                          variant="outlined"
-                          density="compact"
-                          v-on:keypress="NumbersOnly"
-                        ></v-text-field>
+                        <v-text-field v-bind="props" v-model="home_slider[0].seq" maxlength="100"
+                          v-bind:label="$t('sequence_en')" class="required_field rtl" required
+                          :rules="[...fieldRules, ...seqRules]" variant="outlined" density="compact"
+                          v-on:keypress="NumbersOnly"></v-text-field>
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="6" sm="4" md="3">
-                    <div>
-                      <span>{{ $t("w_image_en") }}</span>
-                      <div
-                        class="image-container"
-                        v-bind:class="[have_noimage ? 'errorborder' : '']"
-                      >
-                        <v-hover v-slot="{ isHovering, props }">
-                          <div style="position: relative" v-bind="props">
-                            <img
-                              v-bind:style="
-                                isHovering == true ? 'filter: blur(1px);' : ''
-                              "
-                              v-if="
-                                home_slider[0].image == '' ||
-                                home_slider[0].image == null
-                              "
-                              src="@/assets/images/upload_image_default.png"
-                              width="100"
-                            />
-                            <img
-                              v-bind:style="
-                                isHovering == true ? 'filter: blur(1px);' : ''
-                              "
-                              v-else
-                              :src="envImagePath + home_slider[0].image"
-                              width="100"
-                              height="65
-                          "
-                              alt
-                            />
-                            <div v-show="isHovering" class="camera-icon">
-                              <v-icon @click="uploadFile('website')"
-                                >mdi-camera</v-icon
-                              >
-                            </div>
-                          </div>
-                        </v-hover>
-                      </div>
-                      <v-tooltip
-                        :text="this.$t('download_en')"
-                        location="bottom"
-                      >
-                        <template v-slot:activator="{ props }">
-                          <a class="text-center pointer download_icon">
-                            <span
-                              ><v-icon
-                                v-bind="props"
-                                v-if="home_slider[0].image"
-                                class="mr-2"
-                                @click="downloadImage(home_slider[0].image)"
-                                >mdi mdi-download</v-icon
-                              ></span
-                            >
-                          </a>
-                        </template>
-                      </v-tooltip>
-                      <v-tooltip :text="this.$t('delete_en')" location="bottom">
-                        <template v-slot:activator="{ props }">
-                          <span>
-                            <v-icon
-                              small
-                              v-bind="props"
-                              v-if="home_slider[0].image"
-                              class="mr-2 edit_btn icon_size delete_icon"
-                              @click="removeImage(0, 'website')"
-                              >mdi mdi-trash-can-outline</v-icon
-                            >
-                          </span>
-                        </template>
-                      </v-tooltip>
-                    </div>
-                    <br />
-                    <Imageupload
-                      :folder="'home_slider'"
-                      :resizewidth="resizewidth"
-                      :resizeheight="resizeheight"
-                      :no_image_trans="'en'"
-                      :no_image="have_noimage"
-                      @uploaded_image="uploaded_image"
-                      :upload_profile="uploadfile"
-                    />
+                  <v-col cols="12" sm="4" md="4">
+                    <v-tooltip :text="$t('media_type_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete v-bind="props" v-model="home_slider[0].media_type"
+                          @update:modelValue="clearimage_n_video(0)" v-bind:label="$t('media_type_en')" variant="outlined"
+                          density="compact" :items="mediatype_en" :rules="fieldRules" class="required_field"
+                          item-title="longname" item-value="shortname"></v-autocomplete>
+                      </template>
+                    </v-tooltip>
                   </v-col>
-                  <v-col cols="6" sm="4" md="3">
-                    <div>
-                      <span>{{ $t("m_image_en") }}</span>
-                      <div
-                        class="image-container"
-                        v-bind:class="[have_noimage ? 'errorborder' : '']"
-                      >
+                  <v-col cols="12" sm="4" md="3" v-if="home_slider[0].media_type == 'Image'">
+                    <div style="text-align: -webkit-center;">
+                      <span>{{ $t("w_image_en") }}</span>
+                      <div class="image-container" v-bind:class="[have_noimage ? 'errorborder' : '']">
                         <v-hover v-slot="{ isHovering, props }">
                           <div style="position: relative" v-bind="props">
-                            <img
-                              v-bind:style="
-                                isHovering == true ? 'filter: blur(1px);' : ''
-                              "
-                              v-if="
-                                home_slider[0].m_image == '' ||
-                                home_slider[0].m_image == null
-                              "
-                              src="@/assets/images/upload_image_default.png"
-                              width="100"
-                            />
-                            <img
-                              v-bind:style="
-                                isHovering == true ? 'filter: blur(1px);' : ''
-                              "
-                              v-else
-                              :src="envImagePath + home_slider[0].m_image"
-                              width="100"
-                              height="65
-                          "
-                              alt
-                            />
+                            <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                              " v-if="home_slider[0].image == '' || home_slider[0].image == null"
+                              src="@/assets/images/upload_image_default.png" width="100" />
+                            <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                              " v-else :src="envImagePath + home_slider[0].image" width="100" height="65
+                          " alt />
                             <div v-show="isHovering" class="camera-icon">
-                              <v-icon @click="uploadFile('mobile')"
-                                >mdi-camera</v-icon
-                              >
+                              <v-icon @click="uploadFile('website')">mdi-camera</v-icon>
                             </div>
                           </div>
                         </v-hover>
                       </div>
-                      <v-tooltip
-                        :text="this.$t('download_en')"
-                        location="bottom"
-                      >
+                      <v-tooltip :text="this.$t('download_en')" location="bottom">
                         <template v-slot:activator="{ props }">
                           <a class="text-center pointer download_icon">
-                            <span
-                              ><v-icon
-                                v-bind="props"
-                                v-if="home_slider[0].m_image"
-                                class="mr-2"
-                                @click="downloadImage(home_slider[0].m_image)"
-                                >mdi mdi-download</v-icon
-                              ></span
-                            >
+                            <span><v-icon v-bind="props" v-if="home_slider[0].image" class="mr-2"
+                                @click="downloadImage(home_slider[0].image)">mdi mdi-download</v-icon></span>
                           </a>
                         </template>
                       </v-tooltip>
                       <v-tooltip :text="this.$t('delete_en')" location="bottom">
                         <template v-slot:activator="{ props }">
                           <span>
-                            <v-icon
-                              small
-                              v-bind="props"
-                              v-if="home_slider[0].m_image"
-                              class="mr-2 edit_btn icon_size delete_icon"
-                              @click="removeImage(0, 'mobile')"
-                              >mdi mdi-trash-can-outline</v-icon
-                            >
+                            <v-icon small v-bind="props" v-if="home_slider[0].image"
+                              class="mr-2 edit_btn icon_size delete_icon" @click="removeImage(0, 'website')">mdi
+                              mdi-trash-can-outline</v-icon>
                           </span>
                         </template>
                       </v-tooltip>
                     </div>
                     <br />
-                    <Imageupload
-                      :folder="'home_slider'"
-                      :resizewidth="resizewidth"
-                      :resizeheight="resizeheight"
-                      :no_image_trans="'en'"
-                      :no_image="have_noimage"
-                      @uploaded_image="uploaded_image"
-                      :upload_profile="upload_mob_file"
-                    />
+                    <Imageupload :folder="'home_slider'" :resizewidth="resizewidth" :resizeheight="resizeheight"
+                      :no_image_trans="'en'" :no_image="have_noimage" @uploaded_image="uploaded_image"
+                      :upload_profile="uploadfile" />
+                  </v-col>
+                  <v-col cols="12" sm="4" md="3" v-if="home_slider[0].media_type == 'Image'">
+                    <div style="text-align: -webkit-center;">
+                      <span>{{ $t("m_image_en") }}</span>
+                      <div class="image-container" v-bind:class="[have_noimage ? 'errorborder' : '']">
+                        <v-hover v-slot="{ isHovering, props }">
+                          <div style="position: relative" v-bind="props">
+                            <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                              " v-if="home_slider[0].m_image == '' || home_slider[0].m_image == null"
+                              src="@/assets/images/upload_image_default.png" width="100" />
+                            <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                              " v-else :src="envImagePath + home_slider[0].m_image" width="100" height="65
+                          " alt />
+                            <div v-show="isHovering" class="camera-icon">
+                              <v-icon @click="uploadFile('mobile')">mdi-camera</v-icon>
+                            </div>
+                          </div>
+                        </v-hover>
+                      </div>
+                      <v-tooltip :text="this.$t('download_en')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <a class="text-center pointer download_icon">
+                            <span><v-icon v-bind="props" v-if="home_slider[0].m_image" class="mr-2"
+                                @click="downloadImage(home_slider[0].m_image)">mdi mdi-download</v-icon></span>
+                          </a>
+                        </template>
+                      </v-tooltip>
+                      <v-tooltip :text="this.$t('delete_en')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <span>
+                            <v-icon small v-bind="props" v-if="home_slider[0].m_image"
+                              class="mr-2 edit_btn icon_size delete_icon" @click="removeImage(0, 'mobile')">mdi
+                              mdi-trash-can-outline</v-icon>
+                          </span>
+                        </template>
+                      </v-tooltip>
+                    </div>
+                    <br />
+                    <Imageupload :folder="'home_slider'" :resizewidth="resizewidth" :resizeheight="resizeheight"
+                      :no_image_trans="'en'" :no_image="have_noimage" @uploaded_image="uploaded_image"
+                      :upload_profile="upload_mob_file" />
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6" v-if="home_slider[0].media_type == 'Video'"
+                  v-bind:class="[showurl ? 'videourlclass' : '',]"> 
+                    <v-tooltip :text="$t('video_url_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field v-bind="props" v-model="home_slider[0].video" maxlength="500"
+                        :append-inner-icon="showurl ? 'mdi-eye' : ''"
+                         @click:appendInner="gotourl(home_slider[0].video)"
+                          v-bind:label="$t('video_url_en')" required variant="outlined" density="compact"
+                          class="required_field"
+                          :rules="[...fieldRules, ...URLRules]"></v-text-field>
+                      </template>
+                    </v-tooltip>
                   </v-col>
                 </v-row>
               </v-layout>
@@ -340,28 +212,13 @@
             <v-form ref="form" v-model="valid">
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col
-                    cols="12"
-                    sm="12"
-                    md="4"
-                    v-if="user.rolename != 'StoreAdmin'"
-                  >
+                  <v-col cols="12" sm="12" md="4" v-if="user.rolename != 'StoreAdmin'">
                     <v-tooltip :text="labelText" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-autocomplete
-                          v-bind="props"
-                          v-model="home_slider[1].store_id"
-                          v-bind:label="$t('mall_ar')"
-                          @update:modelValue="(value) => updateStore(value)"
-                          variant="outlined"
-                          density="compact"
-                          :disabled="user.rolename == 'MallAdmin'"
-                          :items="stores_ar"
-                          item-title="name"
-                          item-value="header_id"
-                          class="required_field"
-                          :rules="fieldRules"
-                        ></v-autocomplete>
+                        <v-autocomplete v-bind="props" v-model="home_slider[1].store_id" v-bind:label="$t('mall_ar')"
+                          @update:modelValue="(value) => updateStore(value)" variant="outlined" density="compact"
+                          :disabled="user.rolename == 'MallAdmin'" :items="stores_ar" item-title="name"
+                          item-value="header_id" class="required_field" :rules="fieldRules"></v-autocomplete>
                       </template>
                     </v-tooltip>
                   </v-col>
@@ -372,50 +229,26 @@
                   <v-col cols="12" sm="12" md="4">
                     <v-tooltip :text="$t('title_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-text-field
-                          v-bind="props"
-                          v-model="home_slider[1].title"
-                          class="rtl"
-                          maxlength="100"
-                          v-bind:label="$t('title_ar')"
-                          required
-                          variant="outlined"
-                          density="compact"
-                        ></v-text-field>
+                        <v-text-field v-bind="props" v-model="home_slider[1].title" class="rtl" maxlength="100"
+                          v-bind:label="$t('title_ar')" required variant="outlined" density="compact"></v-text-field>
                       </template>
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" sm="12" md="4">
                     <v-tooltip :text="$t('action_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-text-field
-                          v-bind="props"
-                          v-model="home_slider[1].action"
-                          maxlength="100"
-                          class="rtl"
-                          v-bind:label="$t('action_ar')"
-                          variant="outlined"
-                          density="compact"
-                        ></v-text-field>
+                        <v-text-field v-bind="props" v-model="home_slider[1].action" maxlength="100" class="rtl"
+                          v-bind:label="$t('action_ar')" variant="outlined" density="compact"></v-text-field>
                       </template>
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" sm="12" md="4">
                     <v-tooltip :text="$t('target_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-autocomplete
-                          v-bind="props"
-                          v-if="home_slider[1].action != ''"
-                          v-model="home_slider[1].target"
-                          v-bind:label="$t('target_ar')"
-                          variant="outlined"
-                          density="compact"
-                          :rules="fieldRulesAR"
-                          class="required_field rtl"
-                          :items="targets_ar"
-                          item-title="shortname"
-                          item-value="shortname"
-                        ></v-autocomplete>
+                        <v-autocomplete v-bind="props" v-if="home_slider[1].action != ''" v-model="home_slider[1].target"
+                          v-bind:label="$t('target_ar')" variant="outlined" density="compact" :rules="fieldRulesAR"
+                          class="required_field rtl" :items="targets_ar" item-title="shortname"
+                          item-value="shortname"></v-autocomplete>
                       </template>
                     </v-tooltip>
                   </v-col>
@@ -430,220 +263,139 @@
                     <v-tooltip :text="$t('description_ar')" location="top">
                       <template v-slot:activator="{ props }">
                         <div v-bind="props">
-                          <quill-editor
-                            class="hide_quill_input"
-                            v-bind:id="
-                              quill_item == true
-                                ? 'quill_item'
-                                : 'quill_item_border'
-                            "
-                            v-model:value="home_slider[1].description"
-                            @blur="onEditorBlurAR($event)"
-                            @focus="onEditorFocusAR($event)"
-                            @ready="onEditorReadyAR($event)"
-                            @change="onEditorChangeAR($event)"
-                          />
-                          <small
-                            v-if="quill_item"
-                            class="text-danger ml-5 required_item shake"
-                            >Field Required</small
-                          >
+                          <quill-editor class="hide_quill_input" v-bind:id="quill_item == true
+                            ? 'quill_item'
+                            : 'quill_item_border'
+                            " v-model:value="home_slider[1].description" @blur="onEditorBlurAR($event)"
+                            @focus="onEditorFocusAR($event)" @ready="onEditorReadyAR($event)"
+                            @change="onEditorChangeAR($event)" />
+                          <small v-if="quill_item" class="text-danger ml-5 required_item shake">Field Required</small>
                         </div>
                       </template>
                     </v-tooltip>
                   </v-col>
                 </v-row>
               </v-layout>
+
               <v-layout>
                 <v-row class="mt-2 px-6 arabdirection" max-width="344">
                   <v-col cols="12" sm="4" md="2">
                     <v-tooltip :text="$t('sequence_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-text-field
-                          v-bind="props"
-                          v-model="home_slider[1].seq"
-                          maxlength="100"
-                          v-bind:label="$t('sequence_ar')"
-                          required
-                          class="required_field rtl"
-                          :rules="[...fieldRulesAR, ...seqRulesAR]"
-                          variant="outlined"
-                          density="compact"
-                          v-on:keypress="NumbersOnly"
-                        ></v-text-field>
+                        <v-text-field v-bind="props" v-model="home_slider[1].seq" maxlength="100"
+                          v-bind:label="$t('sequence_ar')" required class="required_field rtl"
+                          :rules="[...fieldRulesAR, ...seqRulesAR]" variant="outlined" density="compact"
+                          v-on:keypress="NumbersOnly"></v-text-field>
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="6" sm="4" md="3">
-                    <div>
+                  <v-col cols="12" sm="4" md="4">
+                    <v-tooltip :text="$t('media_type_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete v-bind="props" v-model="home_slider[1].media_type"
+                          @update:modelValue="clearimage_n_video(1)" v-bind:label="$t('media_type_ar')" variant="outlined"
+                          density="compact" :items="mediatype_ar" :rules="fieldRulesAR" class="required_field"
+                          item-title="longname" item-value="shortname"></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" sm="4" md="3" v-if="home_slider[1].media_type == 'صورة'">
+                    <div style="text-align: -webkit-center;">
                       <span>{{ $t("w_image_ar") }}</span>
-                      <div
-                        class="image-container"
-                        v-bind:class="[have_noimage ? 'errorborder' : '']"
-                      >
+                      <div class="image-container" v-bind:class="[have_noimage ? 'errorborder' : '']">
                         <v-hover v-slot="{ isHovering, props }">
                           <div style="position: relative" v-bind="props">
-                            <img
-                              v-bind:style="
-                                isHovering == true ? 'filter: blur(1px);' : ''
-                              "
-                              v-if="
-                                home_slider[1].image == '' ||
-                                home_slider[1].image == null
-                              "
-                              src="@/assets/images/upload_image_default.png"
-                              width="100"
-                            />
-                            <img
-                              v-bind:style="
-                                isHovering == true ? 'filter: blur(1px);' : ''
-                              "
-                              v-else
-                              :src="envImagePath + home_slider[1].image"
-                              width="100"
-                              height="65
-                          "
-                              alt
-                            />
+                            <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                              " v-if="home_slider[1].image == '' || home_slider[1].image == null" src="@/assets/images/upload_image_default.png" width="100" />
+                            <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                              " v-else :src="envImagePath + home_slider[1].image" width="100" height="65" alt />
                             <div v-show="isHovering" class="camera-icon">
-                              <v-icon @click="uploadFile('website')"
-                                >mdi-camera</v-icon
-                              >
+                              <v-icon @click="uploadFile('website')">mdi-camera</v-icon>
                             </div>
                           </div>
                         </v-hover>
                       </div>
 
-                      <v-tooltip
-                        :text="this.$t('download_ar')"
-                        location="bottom"
-                      >
+                      <v-tooltip :text="this.$t('download_ar')" location="bottom">
                         <template v-slot:activator="{ props }">
                           <a class="text-center pointer download_icon_ar">
-                            <span
-                              ><v-icon
-                                v-if="home_slider[1].image"
-                                v-bind="props"
-                                class="mr-2"
-                                @click="downloadImage(home_slider[1].image)"
-                                >mdi mdi-download</v-icon
-                              ></span
-                            >
+                            <span><v-icon v-if="home_slider[1].image" v-bind="props" class="mr-2"
+                                @click="downloadImage(home_slider[1].image)">mdi mdi-download</v-icon></span>
                           </a>
                         </template>
                       </v-tooltip>
                       <v-tooltip :text="this.$t('delete_ar')" location="bottom">
                         <template v-slot:activator="{ props }">
                           <span>
-                            <v-icon
-                              small
-                              v-bind="props"
-                              v-if="home_slider[1].image"
-                              class="mr-2 edit_btn icon_size delete_icon_ar"
-                              @click="removeImage(1, 'website')"
-                              >mdi mdi-trash-can-outline</v-icon
-                            >
+                            <v-icon small v-bind="props" v-if="home_slider[1].image"
+                              class="mr-2 edit_btn icon_size delete_icon_ar" @click="removeImage(1, 'website')">mdi
+                              mdi-trash-can-outline</v-icon>
                           </span>
                         </template>
                       </v-tooltip>
                     </div>
                     <br />
-                    <Imageupload
-                      :folder="'home_slider'"
-                      :resizewidth="resizewidth"
-                      :resizeheight="resizeheight"
-                      :no_image_trans="'ar'"
-                      :no_image="have_noimage"
-                      :viewmodeslider="3"
-                      @uploaded_image="uploaded_image"
-                      :upload_profile="upload_file_ar"
-                    />
+                    <Imageupload :folder="'home_slider'" :resizewidth="resizewidth" :resizeheight="resizeheight"
+                      :no_image_trans="'ar'" :no_image="have_noimage" :viewmodeslider="3" @uploaded_image="uploaded_image"
+                      :upload_profile="upload_file_ar" />
                   </v-col>
-                  <v-col cols="6" sm="4" md="3">
-                    <div>
+                  <v-col cols="12" sm="4" md="3" v-if="home_slider[1].media_type == 'صورة'">
+                    <div style="text-align: -webkit-center;">
                       <span>{{ $t("m_image_ar") }}</span>
-                      <div
-                        class="image-container"
-                        v-bind:class="[have_noimage ? 'errorborder' : '']"
-                      >
+                      <div class="image-container" v-bind:class="[have_noimage ? 'errorborder' : '']">
                         <v-hover v-slot="{ isHovering, props }">
                           <div style="position: relative" v-bind="props">
-                            <img
-                              v-bind:style="
-                                isHovering == true ? 'filter: blur(1px);' : ''
-                              "
-                              v-if="
-                                home_slider[1].m_image == '' ||
-                                home_slider[1].m_image == null
-                              "
-                              src="@/assets/images/upload_image_default.png"
-                              width="100"
-                            />
-                            <img
-                              v-bind:style="
-                                isHovering == true ? 'filter: blur(1px);' : ''
-                              "
-                              v-else
-                              :src="envImagePath + home_slider[1].m_image"
-                              width="100"
-                              height="65
-                          "
-                              alt
-                            />
+                            <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                              " v-if="home_slider[1].m_image == '' || home_slider[1].m_image == null" src="@/assets/images/upload_image_default.png" width="100" />
+                            <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                              " v-else :src="envImagePath + home_slider[1].m_image" width="100" height="65
+                          " alt />
                             <div v-show="isHovering" class="camera-icon">
-                              <v-icon @click="uploadFile('mobile')"
-                                >mdi-camera</v-icon
-                              >
+                              <v-icon @click="uploadFile('mobile')">mdi-camera</v-icon>
                             </div>
                           </div>
                         </v-hover>
                       </div>
-                      <v-tooltip
-                        :text="this.$t('download_ar')"
-                        location="bottom"
-                      >
+                      <v-tooltip :text="this.$t('download_ar')" location="bottom">
                         <template v-slot:activator="{ props }">
                           <a class="text-center pointer download_icon_ar">
-                            <span
-                              ><v-icon
-                                v-if="home_slider[1].m_image"
-                                v-bind="props"
-                                class="mr-2"
-                                @click="downloadImage(home_slider[1].m_image)"
-                                >mdi mdi-download</v-icon
-                              ></span
-                            >
+                            <span><v-icon v-if="home_slider[1].m_image" v-bind="props" class="mr-2"
+                                @click="downloadImage(home_slider[1].m_image)">mdi mdi-download</v-icon></span>
                           </a>
                         </template>
                       </v-tooltip>
                       <v-tooltip :text="this.$t('delete_ar')" location="bottom">
                         <template v-slot:activator="{ props }">
                           <span>
-                            <v-icon
-                              small
-                              v-bind="props"
-                              v-if="home_slider[1].m_image"
-                              class="mr-2 edit_btn icon_size delete_icon_ar"
-                              @click="removeImage(1, 'mobile')"
-                              >mdi mdi-trash-can-outline</v-icon
-                            >
+                            <v-icon small v-bind="props" v-if="home_slider[1].m_image"
+                              class="mr-2 edit_btn icon_size delete_icon_ar" @click="removeImage(1, 'mobile')">mdi
+                              mdi-trash-can-outline</v-icon>
                           </span>
                         </template>
                       </v-tooltip>
                     </div>
                     <br />
-                    <Imageupload
-                      :folder="'home_slider'"
-                      :resizewidth="resizewidth"
-                      :resizeheight="resizeheight"
-                      :no_image_trans="'ar'"
-                      :no_image="have_noimage"
-                      @uploaded_image="uploaded_image"
-                      :upload_profile="upload_file_mob_ar"
-                    />
+                    <Imageupload :folder="'home_slider'" :resizewidth="resizewidth" :resizeheight="resizeheight"
+                      :no_image_trans="'ar'" :no_image="have_noimage" @uploaded_image="uploaded_image"
+                      :upload_profile="upload_file_mob_ar" />
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6" v-if="home_slider[1].media_type == 'فيديو'"
+                  v-bind:class="[showurlAR ? 'videourlclass' : '',]">
+                    <v-tooltip :text="$t('video_url_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field v-bind="props" v-model="home_slider[1].video" maxlength="500"
+                        :append-inner-icon="showurlAR ? 'mdi-eye' : ''"
+                         @click:appendInner="gotourl(home_slider[1].video)"
+                          v-bind:label="$t('video_url_ar')" required variant="outlined" density="compact"
+                          class="required_field"                       
+                          :rules="[...fieldRulesAR, ...URLRulesAR]"></v-text-field>
+                      </template>
+                    </v-tooltip>
                   </v-col>
                 </v-row>
               </v-layout>
+
+           
             </v-form>
           </v-window-item>
           <!-- ARABIC TAB END -->
@@ -654,15 +406,8 @@
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="d-inline-block mr-2">
               <router-link :to="{ name: 'categories' }">
-                <v-btn
-                  v-bind="props"
-                  size="small"
-                  @click="$router.go(-1)"
-                  :disabled="loading"
-                  class="ma-1"
-                  color="cancel"
-                  >{{ $t("cancel") }}</v-btn
-                >
+                <v-btn v-bind="props" size="small" @click="$router.go(-1)" :disabled="loading" class="ma-1"
+                  color="cancel">{{ $t("cancel") }}</v-btn>
               </router-link>
             </div>
           </template>
@@ -670,22 +415,10 @@
         <v-tooltip :text="this.$t('submit')" location="bottom">
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="d-inline-block">
-              <v-btn
-                :disabled="isDisabled"
-                @click="submit"
-                size="small"
-                class="mr-2"
-                color="success"
-              >
+              <v-btn :disabled="isDisabled" @click="submit" size="small" class="mr-2" color="success">
                 {{ $t("submit") }}
-                <v-progress-circular
-                  v-if="isBtnLoading"
-                  indeterminate
-                  width="1"
-                  color="cancel"
-                  size="x-small"
-                  class="ml-2"
-                ></v-progress-circular>
+                <v-progress-circular v-if="isBtnLoading" indeterminate width="1" color="cancel" size="x-small"
+                  class="ml-2"></v-progress-circular>
               </v-btn>
             </div>
           </template>
@@ -732,6 +465,8 @@ export default {
     valid: true,
     successmessage: "",
     message: "",
+    showurlAR: false,
+    showurl: false,
     have_noimage: false,
     valid_error: false,
     file: "",
@@ -752,6 +487,8 @@ export default {
     mall_id: null,
     stores_en: [],
     stores_ar: [],
+    mediatype_en: [],
+    mediatype_ar: [],
     home_slider: [
       {
         id: 0,
@@ -761,6 +498,8 @@ export default {
         m_image: "",
         action: "",
         target: "",
+        media_type: "",
+        video: "",
         header_id: 0,
         lang: "en",
         seq: null,
@@ -774,6 +513,8 @@ export default {
         action: "",
         blank: "",
         header_id: 0,
+        media_type: "",
+        video: "",
         lang: "ar",
         seq: null,
       },
@@ -811,6 +552,12 @@ export default {
     fieldRulesAR() {
       return [(v) => !!v || this.$t("field_required_ar")];
     },
+    URLRules() {
+      return [(v) => this.validateUrl(v) || this.$t("enter_a_valid_url_en")];
+    },
+    URLRulesAR() {
+      return [(v) => this.validateUrlAR(v) || this.$t("enter_a_valid_url_ar")];
+    },
     descriptionRules() {
       return [(v) => !!v || this.$t("description_required")];
     },
@@ -830,6 +577,7 @@ export default {
 
   created() {
     this.user = JSON.parse(localStorage.getItem("user_data"));
+    this.fetchLookup();
   },
   mounted() {
     this.fetchMall();
@@ -844,8 +592,8 @@ export default {
           this.$axios
             .get(
               process.env.VUE_APP_API_URL_ADMIN +
-                "edit-home-sliders/" +
-                this.$route.query.slug
+              "edit-home-sliders/" +
+              this.$route.query.slug
             )
             .then((res) => {
               if (Array.isArray(res.data.message)) {
@@ -892,6 +640,41 @@ export default {
   },
 
   methods: {
+    validateUrl(url) {
+      const urlPattern = new RegExp('^(https?://)?'+ // Protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // Domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR IP (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // Port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?'+ // Query string
+        '(\\#[-a-z\\d_]*)?$','i'); // Fragment locator  
+       if('validation',urlPattern.test(url)){
+        this.showurl = true;
+       }
+       else{
+        this.showurl = false;
+       }
+        return urlPattern.test(url);
+    },
+    validateUrlAR(url) {
+      const urlPattern = new RegExp('^(https?://)?'+ // Protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // Domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR IP (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // Port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?'+ // Query string
+        '(\\#[-a-z\\d_]*)?$','i'); // Fragment locator  
+       if('validation',urlPattern.test(url)){
+        this.showurlAR = true;
+       }
+       else{
+        this.showurlAR = false;
+       }
+        return urlPattern.test(url);
+    },
+    clearimage_n_video(index) {
+      this.home_slider[index].video = "";
+      this.home_slider[index].m_image = "";
+      this.home_slider[index].image = "";
+    },
     removeImage(index, type) {
       if (index == 1) {
         if (type == "website") {
@@ -1049,6 +832,9 @@ export default {
         }
       }
     },
+    gotourl(url){
+      window.open(url, '_blank');
+    },
     onEditorChange(event) {
       if (event.text.length == 1) {
         this.quill_item = true;
@@ -1087,6 +873,22 @@ export default {
       } else {
         this.home_slider[0].store_id = store;
       }
+    },
+    fetchLookup() {
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_lang_lookup", {
+          params: {
+            lookup_type: "MEDIA_TYPE",
+          },
+        })
+        .then((response) => {
+          this.mediatype_en = response.data.lookup_en;
+          this.mediatype_ar = response.data.lookup_ar;
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+        });
     },
     fetchMall() {
       this.initval = true;
@@ -1165,30 +967,39 @@ input.larger {
   border: solid red 2px;
   text-align: center;
 }
+
 .arabdirection /deep/ .v-messages__message {
   text-align: right !important;
 }
+
 .arabdirection /deep/ .v-field {
   direction: rtl !important;
 }
+
 .delete_icon_ar {
   position: relative;
   right: 78px;
   bottom: 90px;
 }
+
 .delete_icon {
   position: relative;
   left: 80px;
   bottom: 90px;
 }
+
 .download_icon {
   position: relative;
   left: 112px;
   bottom: 52px;
 }
+
 .download_icon_ar {
   position: relative;
   bottom: 45px;
   right: 110px;
+}
+.videourlclass /deep/ .v-field__input{
+  color: blue !important;
 }
 </style>

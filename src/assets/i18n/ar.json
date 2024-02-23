@@ -434,6 +434,9 @@
   "create_products_services": "إنشاء/تعديل المنتجات والخدمات",
   "remove_file_ar": "إزالة الملف",
   "mobile_code_ar": "كود الجوال",
+  "media_type_ar" : "نوع الوسائط",
+  "video_url_ar" : "رابط الفيديو",
+  "enter_a_valid_url_ar" : "أدخل عنوان عنوان صالحًا",
   "--------start_english_translation----------": "--------start_english_translation----------",
   "remove_file_en": "Remove File",
   "name_en": "Name",
@@ -494,7 +497,10 @@
   "floor_en": "Floor",
   "mall/store_en": "Mall/Store",
   "delete_en": "Delete",
+  "mobile_code_en": "Mobile Code",
   "w_image_en": "Web Image",
   "m_image_en": "Mobile Image",
-  "mobile_code_en": "Mobile Code"
+  "media_type_en" : "Media Type",
+  "video_url_en" : "Video URL",
+  "enter_a_valid_url_en" : "Enter a valid URL"
 }
