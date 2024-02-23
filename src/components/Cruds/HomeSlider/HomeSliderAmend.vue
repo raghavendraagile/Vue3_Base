@@ -276,7 +276,6 @@
                   </v-col>
                 </v-row>
               </v-layout>
-
               <v-layout>
                 <v-row class="mt-2 px-6 arabdirection" max-width="344">
                   <v-col cols="12" sm="4" md="2">
@@ -404,8 +403,8 @@
         <v-tooltip :text="this.$t('cancel')" location="bottom">
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="d-inline-block mr-2">
-              <router-link :to="{ name: 'categories' }">
-                <v-btn v-bind="props" size="small" @click="$router.go(-1)" :disabled="loading" class="ma-1"
+              <router-link :to="{ name: 'home-sliders' }">
+                <v-btn v-bind="props" size="small" :disabled="loading" class="ma-1"
                   color="cancel">{{ $t("cancel") }}</v-btn>
               </router-link>
             </div>

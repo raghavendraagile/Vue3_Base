@@ -288,6 +288,7 @@ export default {
           this.btnloading = true;
           const lang = localStorage.getItem("pref_lang");
           this.$i18n.locale = lang;
+          localStorage.setItem("active_menu", 'Dashboard');
           let newRoute = {
             name: "dashboard",
             params: { lang: lang },
