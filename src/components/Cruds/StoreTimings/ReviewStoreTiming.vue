@@ -39,7 +39,7 @@
                   <v-row class="px-6 mt-2">
                     <v-col cols="6" xs="12" sm="12" md="4">
                       <div class="d-label">{{ $t("store_en") }}</div>
-                      <div>{{ data_array[0].store_detail.name }}</div>
+                      <div>{{ store[0].name }}</div>
                     </v-col>
                     <v-col cols="12" sm="12" md="4">
                       <div class="d-label">{{ $t("approval_status_en") }}</div>
@@ -172,7 +172,7 @@
                   <v-row class="px-6 mt-2">
                     <v-col cols="12" sm="4" md="4">
                       <div class="d-label">{{ $t("store_ar") }}</div>
-                      <div>{{ data_array[0].store_detail.name }}</div>
+                      <div>{{ store[1].name }}</div>
                     </v-col>
                     <v-col cols="12" sm="4" md="4">
                       <div class="d-label">{{ $t("approval_status_ar") }}</div>
@@ -350,6 +350,7 @@ export default {
     loader: false,
     tabs: 1,
     user: "",
+    store:[],
     all_data_array: [],
     showApprovalDialog: false,
     selected: {
@@ -438,6 +439,7 @@ export default {
             this.array_data = res.data.message;
           }
           if (res.data.status == "S") {
+            this.store = res.data.store;
             var ar1 = [];
             var ar2 = [];
             var ar3 = [];
