@@ -74,24 +74,22 @@
                     </v-col>
                   </v-row>
                 </v-col>
-                <v-col cols="12" sm="12" md="3">
-                  <v-row>
-                    <v-col cols="12" sm="12" md="12" class="image-preview">
-                      <div class="d-label">{{ $t("image_preview_en") }}</div>
-                      <div class="d-flex">
-                        <div v-if="product.image_path.length == 0">
-                          <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
-                            " src="@/assets/images/no_image.png" width="100" />
-                        </div>
-                        <div class="mr-5 m-2" v-for="(img_en, img_index) in product.image_path" :key="img_index">
-                          <div class="image-container">
-                            <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
-                              " :src="envImagePath + img_en" width="100" height="65" alt />
-                          </div>
-                        </div>
+              </v-row>
+              <v-row class="px-6 mt-1">
+                <v-col cols="12" sm="12" md="12" class="image-preview">
+                  <div class="d-label">{{ $t("image_preview_en") }}</div>
+                  <div class="d-flex">
+                    <div v-if="product.image_path.length == 0">
+                      <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                        " src="@/assets/images/no_image.png" width="100" />
+                    </div>
+                    <div class="mr-5 m-2" v-for="(img_en, img_index) in product.image_path" :key="img_index">
+                      <div class="image-container">
+                        <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                          " :src="envImagePath + img_en" width="100" height="65" alt />
                       </div>
-                    </v-col>
-                  </v-row>
+                    </div>
+                  </div>
                 </v-col>
               </v-row>
 
@@ -112,8 +110,8 @@
           <v-window-item :value="2" class="p-3">
             <v-card variant="elevated" class="p-3 my-3 card-border rtl-direction" v-for="(product, index) in product_ar"
               :key="index" :style="'border-color:' + getStatusColor(product.approval_status)">
-              
-                <v-row class="px-6 mt-2">
+
+              <v-row class="px-6 mt-2">
                 <v-col cols="12" sm="6" md="3">
                   <div class="d-label">{{ $t("title_ar") }}</div>
                   <div>{{ product.title }}</div>
@@ -165,9 +163,9 @@
                     </v-col>
                   </v-row>
                 </v-col>
-                <v-col cols="12" sm="12" md="3">
-                  <v-row>
-                    <v-col cols="12" sm="12" md="12" class="image-preview">
+              </v-row>
+              <v-row class="px-6 mt-1">
+                <v-col cols="12" sm="12" md="12" class="image-preview">
                       <div class="d-label">{{ $t("image_preview_ar") }}</div>
                       <div class="d-flex">
                         <div v-if="product.image_path.length == 0">
@@ -182,9 +180,7 @@
                         </div>
                       </div>
                     </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
+                </v-row>
 
               <div class="d-flex justify-content-end" v-if="product.approval_status == 'In Review' &&
                 user_role != 'StoreAdmin'
