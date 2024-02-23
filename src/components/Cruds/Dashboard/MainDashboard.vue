@@ -6,19 +6,19 @@
       <div class="dash-parent" v-bind:class="[is_arabic ? 'arabic_row' : '']">
         <v-row>
           <v-col md="3" class="direction_col" v-for="(dashboard, i) in dashboard_count" :key="i">
-            <v-card density="comfortable" elevation="8" class="routecard" :class="dashboard.color"
+            <v-card density="comfortable" elevation="8" class="routecard" 
               @click="route_to_page(dashboard.name)">
               <v-row>
                 <v-col md="12">
                   <div class="d-flex2">
                     <v-card-title class="d-flex2">
                       {{ changeNameTranslation(dashboard.name) }}
-                      <v-btn class="ma-2" :color="dashboard.color" size="small" :icon="dashboard.icon"></v-btn>
+                      <v-btn class="ma-2" style="opacity:.7" :color="dashboard.color" size="small" :icon="dashboard.icon"></v-btn>
                     </v-card-title>
                   </div>
                   <div class="pb-6 pt-4 d-flex1">
                     <v-row class="px-5">
-                      <div v-for="(status, k) in dashboard.status" :key="k">
+                      <div v-for="(status, k) in dashboard.status.filter((v) => v.status_name!== 'Rejected')" :key="k">
                         <v-chip class="mr-1" :color="status.color" size="small">
                           <b class="mx-1">{{ status.count }}</b> {{ changeStatusTranslation(status.status_name) }}
                         </v-chip>
@@ -101,8 +101,8 @@ export default {
           return this.$t("in_review");
         case "Approved":
           return this.$t("approved");
-        case "Rejected":
-          return this.$t("rejected");
+        // case "Rejected":
+        //   return this.$t("rejected");
         case "Active":
           return this.$t("active");
         case "Inactive":
