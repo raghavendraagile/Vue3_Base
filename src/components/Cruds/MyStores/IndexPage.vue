@@ -92,17 +92,16 @@
                     props.item.selectable.status == 1 ? 'success' : 'warning',
                   ]"
                 > -->
-                  <span
-                  
-                    v-if="props.item.selectable.status == 1"
-                    class="spanactivesize active_color"
-                    >{{ $t("active") }}</span
-                  >
-                  <span
-                    v-if="props.item.selectable.status == 0"
-                    class="spanactivesize in_active_color"
-                    >{{ $t("inactive") }}</span
-                  >
+                <span
+                  v-if="props.item.selectable.status == 1"
+                  class="spanactivesize active_color"
+                  >{{ $t("active") }}</span
+                >
+                <span
+                  v-if="props.item.selectable.status == 0"
+                  class="spanactivesize in_active_color"
+                  >{{ $t("inactive") }}</span
+                >
                 <!-- </v-btn> -->
               </td>
               <td class="text-center">
@@ -110,7 +109,10 @@
                   small
                   :to="{
                     name: 'stores-amend',
-                    query: { slug: props.item.selectable.slug },
+                    query: {
+                      slug: props.item.selectable.slug,
+                      s_tab: this.tabs,
+                    },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="top">
@@ -188,16 +190,16 @@
                     props.item.selectable.status == 1 ? 'success' : 'warning',
                   ]"
                 > -->
-                  <span
-                    v-if="props.item.selectable.status == 1"
-                    class="spanactivesize active_color"
-                    >{{ $t("active_ar") }}</span
-                  >
-                  <span
-                    v-if="props.item.selectable.status == 0"
-                    class="spanactivesize in_active_color"
-                    >{{ $t("inactive_ar") }}</span
-                  >
+                <span
+                  v-if="props.item.selectable.status == 1"
+                  class="spanactivesize active_color"
+                  >{{ $t("active_ar") }}</span
+                >
+                <span
+                  v-if="props.item.selectable.status == 0"
+                  class="spanactivesize in_active_color"
+                  >{{ $t("inactive_ar") }}</span
+                >
                 <!-- </v-btn> -->
               </td>
               <td class="text-center">
@@ -205,7 +207,10 @@
                   small
                   :to="{
                     name: 'stores-amend',
-                    query: { slug: props.item.selectable.slug },
+                    query: {
+                      slug: props.item.selectable.slug,
+                      s_tab: this.tabs,
+                    },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="top">
@@ -419,6 +424,9 @@ export default {
   created() {},
   mounted() {
     this.fetchStores();
+    if (this.$route.query.s_tab) {
+      this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
+    }
   },
 
   methods: {
@@ -459,7 +467,7 @@ export default {
     viewStores(slug) {
       this.$router.push({
         name: "stores-review",
-        query: { slug: slug },
+        query: { slug: slug, s_tab: this.tabs },
       });
     },
     cancel() {
@@ -572,16 +580,16 @@ export default {
   display: flex !important;
   justify-content: flex-start !important;
 }
-.active_color{
-      background: green;
-    padding: 8px;
-    border-radius: 7px 7px 7px 7px;
-    color: white;
+.active_color {
+  background: green;
+  padding: 8px;
+  border-radius: 7px 7px 7px 7px;
+  color: white;
 }
-.in_active_color{
-      background: red;
-    padding: 8px;
-    border-radius: 7px 7px 7px 7px;
-    color: white;
+.in_active_color {
+  background: red;
+  padding: 8px;
+  border-radius: 7px 7px 7px 7px;
+  color: white;
 }
 </style>

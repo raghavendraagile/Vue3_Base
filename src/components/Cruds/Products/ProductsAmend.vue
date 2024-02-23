@@ -700,8 +700,8 @@ export default {
       immediate: true,
       handler() {
         if (this.$route.query.s_tab == 1) {
-         this.tabs = 1;
-        }else{
+          this.tabs = 1;
+        } else {
           this.tabs = 2;
         }
       },
@@ -880,6 +880,7 @@ export default {
     cancel() {
       this.$router.push({
         name: "products",
+        query: { 's_tab': this.$route.query.s_tab },
       });
     },
     get_stores() {
@@ -980,6 +981,7 @@ export default {
               this.message = res.data.message;
               this.$router.push({
                 name: "products",
+                query: { s_tab: this.$route.query.s_tab },
               });
             } else if (res.data.status == "E") {
               this.$toast.error(this.array_data);

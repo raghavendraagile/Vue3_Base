@@ -72,13 +72,13 @@
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td v-if="this.role === 'SuperUser'">
-                <span v-if="props.item.selectable.store_name.length>0">
+                <span v-if="props.item.selectable.store_name.length > 0">
                   {{ props.item.selectable.store_name[0].stor_type }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td v-if="this.role === 'SuperUser'">
-                <span v-if="props.item.selectable.store_name.length>0">
+                <span v-if="props.item.selectable.store_name.length > 0">
                   {{ props.item.selectable.store_name[0].name }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
@@ -135,7 +135,10 @@
                 <router-link
                   :to="{
                     name: 'products_amend',
-                    query: { slug: props.item.selectable.slug, s_tab: 'tabs' },
+                    query: {
+                      slug: props.item.selectable.slug,
+                      s_tab: tabs,
+                    },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -201,13 +204,19 @@
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td v-if="this.role === 'SuperUser'">
-                <span v-if="props.item.selectable.store_name.length>0">
-                  {{ changeStoreType(props.item.selectable.store_name[0].stor_type) }}</span>
+                <span v-if="props.item.selectable.store_name.length > 0">
+                  {{
+                    changeStoreType(
+                      props.item.selectable.store_name[0].stor_type
+                    )
+                  }}</span
+                >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td v-if="this.role === 'SuperUser'">
-                <span v-if="props.item.selectable.store_name.length>0">
-                  {{ props.item.selectable.store_name[0].name }}</span>
+                <span v-if="props.item.selectable.store_name.length > 0">
+                  {{ props.item.selectable.store_name[0].name }}</span
+                >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td>
@@ -262,7 +271,7 @@
                 <router-link
                   :to="{
                     name: 'products_amend',
-                    query: { slug: props.item.selectable.slug },
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -362,6 +371,9 @@ export default {
   mounted() {
     this.role = JSON.parse(localStorage.getItem("user_data")).rolename;
     this.user = JSON.parse(localStorage.getItem("user"));
+    if (this.$route.query.s_tab) {
+      this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
+    }
     this.fetchproducts();
   },
   watch: {

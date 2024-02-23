@@ -29,7 +29,7 @@
           </template>
         </v-tooltip>
       </div>
-      <div class="add_new_button">
+      <div class="add_new_button" v-if="user.rolename != 'StoreAdmin'">
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link
@@ -252,6 +252,7 @@ export default {
     expanded: [],
     singleExpand: false,
     isExpanded: false,
+    user: "",
     google_icon: {
       icon_name: "punch_clock",
       color: "google_icon_gradient",
@@ -274,7 +275,6 @@ export default {
         this.fetchStoreTimings();
       }
     },
-    
   },
   computed: {
     formTitle() {
@@ -340,6 +340,8 @@ export default {
   },
   mounted() {
     this.sel_lang = this.$i18n.locale;
+    this.user = JSON.parse(localStorage.getItem("user_data"));
+
     this.fetchStoreTimings();
   },
   methods: {
@@ -425,7 +427,7 @@ export default {
         .then((res) => {
           this.initval = false;
           let store_timing = [];
-          console.log("timings array",res.data.store_timings)
+          console.log("timings array", res.data.store_timings);
           if (res.data.store_timings) {
             // alert("alert")
             res.data.store_timings.map((timings) => {
