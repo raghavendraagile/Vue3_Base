@@ -35,7 +35,7 @@
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link
-              :to="{ name: 'career_amend', query: { 's_tab': tabs } }"
+              :to="{ name: 'career_amend', query: { s_tab: tabs } }"
               style="color: white"
             >
               <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
@@ -144,7 +144,7 @@
                 <router-link
                   :to="{
                     name: 'career_amend',
-                    query: { slug: props.item.selectable.slug, 's_tab': tabs },
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -284,7 +284,7 @@
                 <router-link
                   :to="{
                     name: 'career_amend',
-                    query: { slug: props.item.selectable.slug, 's_tab': tabs },
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -451,6 +451,10 @@ export default {
           align: "center",
           key: "action",
         },
+        {
+          title: " ",
+          align: "center",
+        },
       ];
       if (this.role === "SuperUser") {
         headers.splice(1, 0, {
@@ -496,6 +500,10 @@ export default {
           align: "center",
           key: "action",
         },
+        {
+          title: " ",
+          align: "center",
+        },
       ];
       if (this.role === "SuperUser") {
         headers.splice(1, 0, {
@@ -537,7 +545,7 @@ export default {
     viewEvents(slug) {
       this.$router.push({
         name: "careers-review",
-        query: { slug: slug, 's_tab': this.tabs },
+        query: { slug: slug, s_tab: this.tabs },
       });
     },
     getStatusColor(status) {

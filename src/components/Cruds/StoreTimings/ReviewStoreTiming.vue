@@ -126,7 +126,10 @@
                 </v-layout>
                 <div
                   class="d-flex justify-content-end mt-5"
-                  v-if="data_array[index].approval_status == 'In Review'"
+                  v-if="
+                    data_array[index].approval_status == 'In Review' &&
+                    user.rolename != 'StoreAdmin'
+                  "
                 >
                   <v-chip
                     @click="
@@ -258,7 +261,10 @@
                 </v-layout>
                 <div
                   class="d-flex justify-content-end mt-5"
-                  v-if="data_array[index].approval_status == 'In Review'"
+                  v-if="
+                    data_array[index].approval_status == 'In Review' &&
+                    user.rolename != 'StoreAdmin'
+                  "
                 >
                   <v-chip
                     @click="
@@ -343,6 +349,7 @@ export default {
     isDisabled: false,
     loader: false,
     tabs: 1,
+    user: "",
     all_data_array: [],
     showApprovalDialog: false,
     selected: {
@@ -359,6 +366,7 @@ export default {
       handler() {
         if (this.$route.query.slug) {
           this.fetchStoreTimeDetails();
+          this.user = JSON.parse(localStorage.getItem("user_data"));
         }
       },
     },
