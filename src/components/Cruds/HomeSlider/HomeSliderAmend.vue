@@ -100,7 +100,7 @@
                   <v-col cols="12" sm="4" md="4">
                     <v-tooltip :text="$t('media_type_en')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-autocomplete v-bind="props" v-model="home_slider[0].media_type" v-if="mediatype_en.length>0"
+                        <v-autocomplete v-bind="props" v-model="home_slider[0].media_type" v-if="mediatype_en"
                         @update:modelValue="(value) => clearimage_n_video(0 , value)" v-bind:label="$t('media_type_en')" variant="outlined"
                           density="compact" :items="mediatype_en" :rules="fieldRules" class="required_field"
                           item-title="longname" item-value="shortname"></v-autocomplete>
@@ -292,7 +292,7 @@
                   <v-col cols="12" sm="4" md="4">
                     <v-tooltip :text="$t('media_type_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-autocomplete v-bind="props" v-model="home_slider[1].media_type" v-if="mediatype_ar.length>0"
+                        <v-autocomplete v-bind="props" v-model="home_slider[1].media_type" v-if="mediatype_ar"
                         @update:modelValue="(value) => clearimage_n_video(1 , value)"
                           v-bind:label="$t('media_type_ar')" variant="outlined"
                           density="compact" :items="mediatype_ar" :rules="fieldRulesAR" class="required_field"
