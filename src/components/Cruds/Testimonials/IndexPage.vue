@@ -64,30 +64,7 @@
                 {{ $t("not_appllicable") }}
               </td>
               <td>{{ props.item.selectable.testimonial_details }}</td>
-              <td>
-                <v-btn
-                  class="hover_shine btn mr-2"
-                  :disabled="isDisabled"
-                  @click="updateIsPublishStatus(props.item.selectable.id)"
-                  size="small"
-                  v-bind:color="[
-                    props.item.selectable.is_published == 1
-                      ? 'success'
-                      : 'warning',
-                  ]"
-                >
-                  <span
-                    v-if="props.item.selectable.is_published == 1"
-                    class="spanactivesize"
-                    >{{ $t("yes") }}</span
-                  >
-                  <span
-                    v-if="props.item.selectable.is_published == 0"
-                    class="spanactivesize"
-                    >{{ $t("no") }}</span
-                  >
-                </v-btn>
-              </td>
+              
               <td>
                 <v-btn
                   class="hover_shine btn mr-2"
@@ -112,6 +89,30 @@
                     v-if="props.item.selectable.status == 0"
                     class="spanactivesize"
                     >{{ $t("reject") }}</span
+                  >
+                </v-btn>
+              </td>
+              <td>
+                <v-btn
+                  class="hover_shine btn mr-2"
+                  :disabled="isDisabled"
+                  @click="updateIsPublishStatus(props.item.selectable.id)"
+                  size="small"
+                  v-bind:color="[
+                    props.item.selectable.is_published == 1
+                      ? 'success'
+                      : 'warning',
+                  ]"
+                >
+                  <span
+                    v-if="props.item.selectable.is_published == 1"
+                    class="spanactivesize"
+                    >{{ $t("yes") }}</span
+                  >
+                  <span
+                    v-if="props.item.selectable.is_published == 0"
+                    class="spanactivesize"
+                    >{{ $t("no") }}</span
                   >
                 </v-btn>
               </td>
@@ -157,30 +158,7 @@
                 {{ $t("not_appllicable") }}
               </td>
               <td>{{ props.item.selectable.testimonial_details }}</td>
-              <td>
-                <v-btn
-                  class="hover_shine btn mr-2"
-                  :disabled="isDisabled"
-                  @click="updateIsPublishStatus(props.item.selectable.id)"
-                  size="small"
-                  v-bind:color="[
-                    props.item.selectable.is_published == 1
-                      ? 'success'
-                      : 'warning',
-                  ]"
-                >
-                  <span
-                    v-if="props.item.selectable.is_published == 1"
-                    class="spanactivesize"
-                    >{{ $t("yes") }}</span
-                  >
-                  <span
-                    v-if="props.item.selectable.is_published == 0"
-                    class="spanactivesize"
-                    >{{ $t("no") }}</span
-                  >
-                </v-btn>
-              </td>
+              
               <td>
                 <v-btn
                   class="hover_shine btn mr-2"
@@ -205,6 +183,30 @@
                     v-if="props.item.selectable.status == 0"
                     class="spanactivesize"
                     >{{ $t("reject") }}</span
+                  >
+                </v-btn>
+              </td>
+              <td>
+                <v-btn
+                  class="hover_shine btn mr-2"
+                  :disabled="isDisabled"
+                  @click="updateIsPublishStatus(props.item.selectable.id)"
+                  size="small"
+                  v-bind:color="[
+                    props.item.selectable.is_published == 1
+                      ? 'success'
+                      : 'warning',
+                  ]"
+                >
+                  <span
+                    v-if="props.item.selectable.is_published == 1"
+                    class="spanactivesize"
+                    >{{ $t("yes") }}</span
+                  >
+                  <span
+                    v-if="props.item.selectable.is_published == 0"
+                    class="spanactivesize"
+                    >{{ $t("no") }}</span
                   >
                 </v-btn>
               </td>
@@ -281,29 +283,24 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
-    headers() {
+     headers() {
       return [
         {
           title: this.$t("customer"),
           key: "customer",
         },
         {
-          title: this.$t("testimonial_details"),
+          title: this.$t("comments"),
           key: "testimonial_details",
+        },
+        {
+          title: this.$t("accept/reject"),
+          key: "status",
         },
         {
           title: this.$t("is_published"),
           key: "is_published",
         },
-        {
-          title: this.$t("status"),
-          key: "status",
-        },
-        // {
-        //   title: this.$t("action"),
-        //   align: "center",
-        //   key: "email",
-        // },
       ];
     },
   },
