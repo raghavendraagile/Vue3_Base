@@ -550,6 +550,9 @@
   "mobile_code_ar": "كود الجوال",
   "media_type_ar" : "نوع الوسائط",
   "video_url_ar" : "رابط الفيديو",
-  "enter_a_valid_url_ar" : "أدخل عنوان عنوان صالحًا"
+  "enter_a_valid_url_ar" : "أدخل عنوان عنوان صالحًا",
+  "promotions_offers":"Promotions/Offers",
+  "comments":"Comments",
+  "accept/reject":"Accept/Reject"
 
 }

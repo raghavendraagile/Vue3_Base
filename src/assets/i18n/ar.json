@@ -503,5 +503,8 @@
   "m_image_en": "Mobile Image",
   "media_type_en" : "Media Type",
   "video_url_en" : "Video URL",
-  "enter_a_valid_url_en" : "Enter a valid URL"
+  "enter_a_valid_url_en" : "Enter a valid URL",
+  "promotions_offers":"الترقيات/العروض",
+  "comments":"تعليقات",
+  "accept/reject":"اقبل ارفض"
 }
