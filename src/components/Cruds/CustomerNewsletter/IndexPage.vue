@@ -3,7 +3,7 @@
     <div flat color="white" class="row py-5 pl-5 align-items-center" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
       <page-title
         class="col-md-3"
-        :heading="$t('customer_newsletter')"
+        :heading="$t('newsletter_subscriptions')"
         :google_icon="google_icon"
       ></page-title>
 
