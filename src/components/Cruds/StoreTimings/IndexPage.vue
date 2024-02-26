@@ -11,7 +11,7 @@
         :heading="$t('store_timings')"
         :google_icon="google_icon"
       ></page-title>
-      <div class="col-md-4">
+      <div class="col-md-4" v-if="user.rolename != 'StoreAdmin'">
         <v-tooltip :text="this.$t('search')" location="bottom">
           <template v-slot:activator="{ props }">
             <v-text-field
