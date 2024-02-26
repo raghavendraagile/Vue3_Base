@@ -158,30 +158,7 @@
                 {{ $t("not_appllicable") }}
               </td>
               <td>{{ props.item.selectable.testimonial_details }}</td>
-              <td>
-                <v-btn
-                  class="hover_shine btn mr-2"
-                  :disabled="isDisabled"
-                  @click="updateIsPublishStatus(props.item.selectable.id)"
-                  size="small"
-                  v-bind:color="[
-                    props.item.selectable.is_published == 1
-                      ? 'success'
-                      : 'warning',
-                  ]"
-                >
-                  <span
-                    v-if="props.item.selectable.is_published == 1"
-                    class="spanactivesize"
-                    >{{ $t("yes") }}</span
-                  >
-                  <span
-                    v-if="props.item.selectable.is_published == 0"
-                    class="spanactivesize"
-                    >{{ $t("no") }}</span
-                  >
-                </v-btn>
-              </td>
+              
               <td>
                 <v-btn
                   class="hover_shine btn mr-2"
@@ -206,6 +183,30 @@
                     v-if="props.item.selectable.status == 0"
                     class="spanactivesize"
                     >{{ $t("reject") }}</span
+                  >
+                </v-btn>
+              </td>
+              <td>
+                <v-btn
+                  class="hover_shine btn mr-2"
+                  :disabled="isDisabled"
+                  @click="updateIsPublishStatus(props.item.selectable.id)"
+                  size="small"
+                  v-bind:color="[
+                    props.item.selectable.is_published == 1
+                      ? 'success'
+                      : 'warning',
+                  ]"
+                >
+                  <span
+                    v-if="props.item.selectable.is_published == 1"
+                    class="spanactivesize"
+                    >{{ $t("yes") }}</span
+                  >
+                  <span
+                    v-if="props.item.selectable.is_published == 0"
+                    class="spanactivesize"
+                    >{{ $t("no") }}</span
                   >
                 </v-btn>
               </td>
