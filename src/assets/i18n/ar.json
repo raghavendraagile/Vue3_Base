@@ -438,6 +438,8 @@
   "video_url_ar" : "رابط الفيديو",
   "enter_a_valid_url_ar" : "أدخل عنوان عنوان صالحًا",
   "mobile_code": "كود الجوال",
+  "background_image_ar": "الصورة الخلفية",
+  "org_email_ar": "البريد الإلكتروني للمنظمة",
   "--------start_english_translation----------": "--------start_english_translation----------",
   "remove_file_en": "Remove File",
   "name_en": "Name",
@@ -511,5 +513,7 @@
   "please_fill_required_fields_en" : "Please fill all the required fields",
   "please_fill_required_fields_ar" : "يرجى ملء كافة الحقول المطلوبة",
   "validation_error_en" : "Validation error",
-  "validation_error_ar" : "خطئ في التحقق"
+  "validation_error_ar" : "خطئ في التحقق",
+  "background_image_en": "Background Image",
+  "org_email_en": "Organisation E-mail"
 }

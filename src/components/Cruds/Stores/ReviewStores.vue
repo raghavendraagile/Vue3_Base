@@ -54,28 +54,6 @@
                     <div class="d-label">{{ $t("phone_en") }}</div>
                     <div>{{ store.email }}</div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="2" class="image-preview">
-                    <div class="d-label">{{ $t("image_preview_en") }}</div>
-                    <img
-                      v-bind:style="
-                        isHovering == true ? 'filter: blur(1px);' : ''
-                      "
-                      v-if="store.icon == null"
-                      src="@/assets/images/no_image.png"
-                      width="100"
-                    />
-                    <img
-                      v-bind:style="
-                        isHovering == true ? 'filter: blur(1px);' : ''
-                      "
-                      v-else
-                      :src="envImagePath + store.icon"
-                      width="100"
-                      height="65
-                          "
-                      alt
-                    />
-                  </v-col>
                   <v-col
                     cols="12"
                     sm="6"
@@ -143,6 +121,50 @@
                     <div>
                       {{ store.meta_title }}
                     </div>
+                  </v-col>
+                  <v-col cols="6" sm="6" md="4" class="image-preview">
+                    <div class="d-label">{{ $t("image_preview_en") }}</div>
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-if="store.icon == null"
+                      src="@/assets/images/no_image.png"
+                      width="100"
+                    />
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-else
+                      :src="envImagePath + store.icon"
+                      width="100"
+                      height="65
+                          "
+                      alt
+                    />
+                  </v-col>
+                  <v-col cols="6" sm="6" md="4" class="image-preview">
+                    <div class="d-label">{{ $t("background_image_en") }}</div>
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-if="store.background_image == null"
+                      src="@/assets/images/no_image.png"
+                      width="100"
+                    />
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-else
+                      :src="envImagePath + store.background_image"
+                      width="100"
+                      height="65
+                          "
+                      alt
+                    />
                   </v-col>
                   <v-col cols="12" sm="12" md="12">
                     <div class="d-label">{{ $t("description_en") }}</div>
@@ -224,28 +246,6 @@
                     <div class="d-label">{{ $t("phone_ar") }}</div>
                     <div>{{ store.email }}</div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="2" class="image-preview">
-                    <div class="d-label">{{ $t("image_preview_ar") }}</div>
-                    <img
-                      v-bind:style="
-                        isHovering == true ? 'filter: blur(1px);' : ''
-                      "
-                      v-if="store.icon == null"
-                      src="@/assets/images/no_image.png"
-                      width="100"
-                    />
-                    <img
-                      v-bind:style="
-                        isHovering == true ? 'filter: blur(1px);' : ''
-                      "
-                      v-else
-                      :src="envImagePath + store.icon"
-                      width="100"
-                      height="65
-                          "
-                      alt
-                    />
-                  </v-col>
                   <v-col
                     cols="12"
                     sm="6"
@@ -320,6 +320,50 @@
                     <div>
                       {{ store.meta_title }}
                     </div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4" class="image-preview">
+                    <div class="d-label">{{ $t("image_preview_ar") }}</div>
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-if="store.icon == null"
+                      src="@/assets/images/no_image.png"
+                      width="100"
+                    />
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-else
+                      :src="envImagePath + store.icon"
+                      width="100"
+                      height="65
+                          "
+                      alt
+                    />
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4" class="image-preview">
+                    <div class="d-label">{{ $t("background_image_ar") }}</div>
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-if="store.background_image == null"
+                      src="@/assets/images/no_image.png"
+                      width="100"
+                    />
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-else
+                      :src="envImagePath + store.background_image"
+                      width="100"
+                      height="65
+                          "
+                      alt
+                    />
                   </v-col>
                   <v-col cols="12" sm="12" md="12">
                     <div class="d-label">{{ $t("description_ar") }}</div>
@@ -612,12 +656,12 @@ export default {
       if (this.user.rolename == "StoreAdmin") {
         this.$router.push({
           name: "my_stores",
-          query: { 's_tab': this.$route.query.s_tab },
+          query: { s_tab: this.$route.query.s_tab },
         });
       } else {
         this.$router.push({
           name: "stores",
-          query: { 's_tab': this.$route.query.s_tab },
+          query: { s_tab: this.$route.query.s_tab },
         });
       }
     },

@@ -147,7 +147,7 @@
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" xs="12" sm="6" md="3">
-                    <v-tooltip :text="$t('email_en')" location="bottom">
+                    <v-tooltip :text="$t('org_email_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
@@ -157,7 +157,7 @@
                           v-model="stores[0].email"
                           :rules="[...fieldRules, ...emailRules]"
                           maxlength="100"
-                          v-bind:label="$t('email_en')"
+                          v-bind:label="$t('org_email_en')"
                           class="required_field"
                           required
                           variant="outlined"
@@ -491,7 +491,9 @@
                               width="100"
                             />
                             <div v-show="isHovering" class="camera-icon">
-                              <v-icon @click="uploadFile">mdi-camera</v-icon>
+                              <v-icon @click="uploadFile('icon')"
+                                >mdi-camera</v-icon
+                              >
                             </div>
                           </div>
                         </v-hover>
@@ -507,7 +509,7 @@
                               v-bind="props"
                               v-if="stores[0].icon"
                               class="mr-2 edit_btn icon_size delete_icon"
-                              @click="removeImage(0)"
+                              @click="removeImage(0, 'icon')"
                               >mdi mdi-trash-can-outline</v-icon
                             >
                           </template>
@@ -535,15 +537,15 @@
                     <br />
                     <Imageupload
                       :folder="'stores'"
-                      :resizewidth="250"
-                      :resizeheight="250"
+                      :resizewidth="resizewidth"
+                      :resizeheight="resizeheight"
                       @uploaded_image="uploaded_image"
                       :upload_profile="uploadfile"
                     />
                   </v-col>
-                  <!-- <v-col cols="3" sm="3" md="3">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <div>
-                      <span class="mb-5">{{ $t("background_image") }}</span>
+                      <span class="mb-5">{{ $t("background_image_en") }}</span>
                       <div class="image-container">
                         <v-hover v-slot="{ isHovering, props }">
                           <div style="position: relative" v-bind="props">
@@ -551,7 +553,7 @@
                               v-bind:style="
                                 isHovering == true ? 'filter: blur(1px);' : ''
                               "
-                              v-if="stores[0].background_image != ''"
+                              v-if="stores[0].background_image != null"
                               :src="envImagePath + stores[0].background_image"
                               width="100"
                               height="65
@@ -567,31 +569,60 @@
                               width="100"
                             />
                             <div v-show="isHovering" class="camera-icon">
-                              <v-icon @click="uploadBIFile">mdi-camera</v-icon>
+                              <v-icon @click="uploadFile('b_image')"
+                                >mdi-camera</v-icon
+                              >
                             </div>
                           </div>
                         </v-hover>
                       </div>
-                      <a
-                        class="text-center pointer"
-                        @click="downloadImage(stores[0].background_image)"
-                      >
-                        <span
-                          v-if="stores[0].background_image"
-                          class="download_btn_color"
-                          >{{ $t("download") }}</span
+                      <span>
+                        <v-tooltip
+                          :text="this.$t('delete_en')"
+                          location="bottom"
                         >
-                      </a>
+                          <template v-slot:activator="{ props }">
+                            <v-icon
+                              small
+                              v-bind="props"
+                              v-if="stores[0].background_image"
+                              class="mr-2 edit_btn icon_size delete_icon"
+                              @click="removeImage(0, 'b_image')"
+                              >mdi mdi-trash-can-outline</v-icon
+                            >
+                          </template>
+                        </v-tooltip>
+                      </span>
+                      <v-tooltip
+                        :text="this.$t('download_en')"
+                        location="bottom"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <a class="text-center pointer download_icon">
+                            <span
+                              ><v-icon
+                                v-if="stores[0].background_image"
+                                v-bind="props"
+                                class="mr-2"
+                                @click="
+                                  downloadImage(stores[0].background_image)
+                                "
+                                >mdi mdi-download</v-icon
+                              ></span
+                            >
+                          </a>
+                        </template>
+                      </v-tooltip>
                     </div>
                     <br />
                     <Imageupload
-                      :folder="'backgroundimg'"
-                      :resizewidth="0.4"
-                      :resizeheight="0.1"
+                      :folder="'stores'"
+                      :resizewidth="resizewidth"
+                      :resizeheight="resizeheight"
                       @uploaded_image="uploaded_image"
-                      :upload_profile="uploadbifile"
+                      :upload_profile="upload_bi_file"
                     />
-                  </v-col> -->
+                  </v-col>
                 </v-row>
               </v-layout>
             </v-form>
@@ -720,7 +751,7 @@
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" xs="12" sm="12" md="3">
-                    <v-tooltip :text="$t('email_ar')" location="bottom">
+                    <v-tooltip :text="$t('org_email_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           @update:modelValue="
@@ -730,7 +761,7 @@
                           v-model="stores[1].email"
                           :rules="[...fieldRulesAr, ...emailRulesAr]"
                           maxlength="100"
-                          v-bind:label="$t('email_ar')"
+                          v-bind:label="$t('org_email_ar')"
                           required
                           variant="outlined"
                           density="compact"
@@ -1066,7 +1097,9 @@
                               width="100"
                             />
                             <div v-show="isHovering" class="camera-icon">
-                              <v-icon @click="uploadFile">mdi-camera</v-icon>
+                              <v-icon @click="uploadFile('icon')"
+                                >mdi-camera</v-icon
+                              >
                             </div>
                           </div>
                         </v-hover>
@@ -1082,7 +1115,7 @@
                               small
                               v-if="stores[1].icon"
                               class="mr-2 edit_btn icon_size delete_icon_ar"
-                              @click="removeImage(1)"
+                              @click="removeImage(1, 'icon')"
                               >mdi mdi-trash-can-outline</v-icon
                             >
                           </template>
@@ -1111,13 +1144,13 @@
                     <br />
                     <Imageupload
                       :folder="'stores'"
-                      :resizewidth="250"
-                      :resizeheight="250"
+                      :resizewidth="resizewidth"
+                      :resizeheight="resizeheight"
                       @uploaded_image="uploaded_image"
                       :upload_profile="uploadfilear"
                     />
                   </v-col>
-                  <!-- <v-col cols="3" sm="3" md="3">
+                  <v-col cols="12" xs="12" sm="12" md="4">
                     <div>
                       <span class="mb-5">{{ $t("background_image_ar") }}</span>
                       <div class="image-container">
@@ -1143,31 +1176,60 @@
                               width="100"
                             />
                             <div v-show="isHovering" class="camera-icon">
-                              <v-icon @click="uploadBIFile">mdi-camera</v-icon>
+                              <v-icon @click="uploadFile('b_image')"
+                                >mdi-camera</v-icon
+                              >
                             </div>
                           </div>
                         </v-hover>
                       </div>
-                      <a
-                        class="text-center pointer"
-                        @click="downloadImage(stores[1].background_image)"
-                      >
-                        <span
-                          v-if="stores[1].background_image"
-                          class="download_btn_color"
-                          >{{ $t("download_ar") }}</span
+                      <span>
+                        <v-tooltip
+                          :text="this.$t('delete_ar')"
+                          location="bottom"
                         >
-                      </a>
+                          <template v-slot:activator="{ props }">
+                            <v-icon
+                              small
+                              v-bind="props"
+                              v-if="stores[1].background_image"
+                              class="mr-2 edit_btn icon_size delete_icon_ar"
+                              @click="removeImage(1, 'b_image')"
+                              >mdi mdi-trash-can-outline</v-icon
+                            >
+                          </template>
+                        </v-tooltip>
+                      </span>
+                      <v-tooltip
+                        :text="this.$t('download_ar')"
+                        location="bottom"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <a class="text-center pointer download_icon_ar">
+                            <span
+                              ><v-icon
+                                v-if="stores[1].background_image"
+                                v-bind="props"
+                                class="mr-2"
+                                @click="
+                                  downloadImage(stores[1].background_image)
+                                "
+                                >mdi mdi-download</v-icon
+                              ></span
+                            >
+                          </a>
+                        </template>
+                      </v-tooltip>
                     </div>
                     <br />
                     <Imageupload
                       :folder="'stores'"
-                      :resizewidth="0.4"
-                      :resizeheight="0.1"
+                      :resizewidth="resizewidth"
+                      :resizeheight="resizeheight"
                       @uploaded_image="uploaded_image"
-                      :upload_profile="uploadbifile"
+                      :upload_profile="upload_bi_file_ar"
                     />
-                  </v-col> -->
+                  </v-col>
                 </v-row>
               </v-layout>
             </v-form>
@@ -1310,7 +1372,7 @@ export default {
         categories: [],
         mall_name: "",
         icon: null,
-        background_image: "",
+        background_image: null,
         store_code: "",
         website: "",
         mobile_code: null,
@@ -1325,7 +1387,7 @@ export default {
         mobile_code: null,
         mall_name: "",
         icon: null,
-        background_image: "",
+        background_image: null,
         website: "",
         seq: null,
       },
@@ -1337,7 +1399,8 @@ export default {
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
     uploadfile: false,
     uploadfilear: false,
-    uploadbifile: false,
+    upload_bi_file: false,
+    upload_bi_file_ar: false,
     country_array_en: [],
     country_array_ar: [],
     state_array_en: [],
@@ -1349,6 +1412,9 @@ export default {
     shop_codes: [],
     user: "",
     page_type: "add",
+    image_upload_from: "",
+    resizewidth: "",
+    resizeheight: "",
   }),
 
   computed: {
@@ -1745,32 +1811,59 @@ export default {
     // Uploading a image
     uploaded_image(img_src) {
       if (this.tabs == 1) {
-        console.log("img_src path", img_src);
-        this.stores[0].icon = img_src;
+        if (this.image_upload_from == "icon") {
+          console.log("img_src path", img_src);
+          this.stores[0].icon = img_src;
+        } else {
+          this.stores[0].background_image = img_src;
+        }
       } else {
-        this.stores[1].icon = img_src;
+        if (this.image_upload_from == "icon") {
+          this.stores[1].icon = img_src;
+        } else {
+          this.stores[1].background_image = img_src;
+        }
       }
     },
-    uploadFile() {
+    uploadFile(img_type) {
       if (this.tabs == 1) {
-        if (this.uploadfile == false) {
-          this.uploadfile = true;
+        this.image_upload_from = img_type;
+        if (img_type == "icon") {
+          this.resizewidth = 250;
+          this.resizeheight = 250;
+          if (this.uploadfile == false) {
+            this.uploadfile = true;
+          } else {
+            this.uploadfile = false;
+          }
         } else {
-          this.uploadfile = false;
+          this.resizewidth = 500;
+          this.resizeheight = 300;
+          if (this.upload_bi_file == false) {
+            this.upload_bi_file = true;
+          } else {
+            this.upload_bi_file = false;
+          }
         }
       } else {
-        if (this.uploadfilear == false) {
-          this.uploadfilear = true;
+        this.image_upload_from = img_type;
+        if (img_type == "icon") {
+          this.resizewidth = 250;
+          this.resizeheight = 250;
+          if (this.uploadfilear == false) {
+            this.uploadfilear = true;
+          } else {
+            this.uploadfilear = false;
+          }
         } else {
-          this.uploadfilear = false;
+          this.resizewidth = 500;
+          this.resizeheight = 300;
+          if (this.upload_bi_file_ar == false) {
+            this.upload_bi_file_ar = true;
+          } else {
+            this.upload_bi_file_ar = false;
+          }
         }
-      }
-    },
-    uploadBIFile() {
-      if (this.uploadbifile == false) {
-        this.uploadbifile = true;
-      } else {
-        this.uploadbifile = false;
       }
     },
     downloadImage(image_url) {
@@ -1827,11 +1920,19 @@ export default {
     clear() {
       this.$refs.form.reset();
     },
-    removeImage(index) {
+    removeImage(index, type) {
       if (index == 1) {
-        this.stores[1].icon = null;
+        if (type == "icon") {
+          this.stores[1].icon = null;
+        } else {
+          this.stores[1].background_image = null;
+        }
       } else {
-        this.stores[0].icon = null;
+        if (type == "icon") {
+          this.stores[0].icon = null;
+        } else {
+          this.stores[0].background_image = null;
+        }
       }
     },
   },
@@ -1891,7 +1992,7 @@ input.larger {
 .delete_icon {
   position: relative;
   left: 122px;
-  bottom: 90px;
+  bottom: 77px;
 }
 .delete_icon_ar {
   position: relative;
@@ -1901,7 +2002,7 @@ input.larger {
 .download_icon {
   position: relative;
   left: 90px;
-  bottom: 52px;
+  bottom: 40px;
 }
 .download_icon_ar {
   position: relative;
