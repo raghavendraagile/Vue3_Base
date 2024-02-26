@@ -12,7 +12,7 @@
         :google_icon="google_icon"
       ></page-title>
 
-      <div class="col-md-4">
+      <!-- <div class="col-md-4">
         <v-tooltip :text="this.$t('search')" location="top">
           <template v-slot:activator="{ props }">
             <v-text-field
@@ -30,7 +30,7 @@
             ></v-text-field>
           </template>
         </v-tooltip>
-      </div>
+      </div> -->
 
       <!-- <div class="add_new_button">
         <v-tooltip :text="this.$t('add_new')" location="bottom">
