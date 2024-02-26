@@ -273,13 +273,13 @@
                     <v-tooltip :text="$t('description_ar')" location="top">
                       <template v-slot:activator="{ props }">
                         <div v-bind="props">
-                          <quill-editor class="hide_quill_input" v-bind:id="quill_item == true
+                          <quill-editor class="hide_quill_input" v-bind:id="quill_item_ar == true
                             ? 'quill_item'
                             : 'quill_item_border'
                             " v-model:value="home_slider[1].description" @blur="onEditorBlurAR($event)"
                             @focus="onEditorFocusAR($event)" @ready="onEditorReadyAR($event)"
                             @change="onEditorChangeAR($event)" />
-                          <small v-if="quill_item" class="text-danger ml-5 required_item shake">Field Required</small>
+                          <small v-if="quill_item_ar" class="text-danger ml-5 required_item shake">{{$t('field_required_ar')}}</small>
                         </div>
                       </template>
                     </v-tooltip>
@@ -1160,9 +1160,9 @@ export default {
     },
     onEditorChangeAR(event) {
       if (event.text.length == 1) {
-        this.quill_item = true;
+        this.quill_item_ar = true;
       } else {
-        this.quill_item = false;
+        this.quill_item_ar = false;
       }
     },
     onEditorBlur() {
