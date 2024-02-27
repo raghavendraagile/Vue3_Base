@@ -130,10 +130,11 @@
                       $t("description_en")
                     }}</v-card-title>
                     <v-tooltip :text="$t('description_en')" location="top">
+                      <!-- :options="editorOptions_en" -->
                       <template v-slot:activator="{ props }">
                         <div v-bind="props">
                           <quill-editor
-                            :options="editorOptions_en"
+                            style="direction: ltr"
                             class="hide_quill_input"
                             v-bind:id="
                               quill_item == true
