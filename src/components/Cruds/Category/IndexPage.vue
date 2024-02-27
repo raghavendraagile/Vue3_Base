@@ -73,19 +73,19 @@
                   name: 'categories-amend',
                   query: { slug: props.item.selectable.slug, s_tab: tabs },
                 }">
-                  <v-tooltip :text="this.$t('edit')" location="top">
+                  <v-tooltip :text="this.$t('edit_en')" location="top">
                     <template v-slot:activator="{ props }">
                       <v-icon v-bind="props" small class="mr-2 edit_btn icon_size">mdi-pencil-outline</v-icon>
                     </template>
-                    <span>{{ $t("edit") }}</span>
+                    <span>{{ $t("edit_en") }}</span>
                   </v-tooltip>
                 </router-link>
                 <span @click="deleteItem(props.item.selectable.header_id)" v-if="!props.item.selectable.have_child">
-                  <v-tooltip :text="this.$t('delete')" location="top">
+                  <v-tooltip :text="this.$t('delete_en')" location="top">
                     <template v-slot:activator="{ props }">
                       <v-icon color="error" type="button" v-bind="props" small>mdi-trash-can-outline</v-icon>
                     </template>
-                    <span>{{ $t("delete") }}</span>
+                    <span>{{ $t("delete_en") }}</span>
                   </v-tooltip>
                 </span>
                 <span v-else>
@@ -137,19 +137,19 @@
                   name: 'categories-amend',
                   query: { slug: props.item.selectable.slug },
                 }">
-                  <v-tooltip :text="this.$t('edit')" location="top">
+                  <v-tooltip :text="this.$t('edit_ar')" location="top">
                     <template v-slot:activator="{ props }">
                       <v-icon v-bind="props" small class="mr-2 edit_btn icon_size">mdi-pencil-outline</v-icon>
                     </template>
-                    <span>{{ $t("edit") }}</span>
+                    <span>{{ $t("edit_ar") }}</span>
                   </v-tooltip>
                 </router-link>
                 <span @click="deleteItem(props.item.selectable.header_id)" v-if="!props.item.selectable.have_child">
-                  <v-tooltip :text="this.$t('delete')" location="top">
+                  <v-tooltip :text="this.$t('delete_ar')" location="top">
                     <template v-slot:activator="{ props }">
                       <v-icon color="error" type="button" v-bind="props" small>mdi-trash-can-outline</v-icon>
                     </template>
-                    <span>{{ $t("delete") }}</span>
+                    <span>{{ $t("delete_ar") }}</span>
                   </v-tooltip>
                 </span>
                 <span v-else>
