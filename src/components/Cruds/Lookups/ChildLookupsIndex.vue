@@ -37,6 +37,7 @@
                 name: 'child_lookups_amend',
                 query: {
                   parentslug: $route.query.slug,
+                  s_tab: tabs,
                 },
               }"
               style="color: white"
@@ -52,6 +53,7 @@
             <router-link
               :to="{
                 name: 'lookups',
+                query: { s_tab: this.tabs },
               }"
               style="color: white"
             >
@@ -136,7 +138,7 @@
                   small
                   :to="{
                     name: 'child_lookups_amend',
-                    query: { slug: props.item.selectable.slug },
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit_en')" location="bottom">
@@ -230,7 +232,7 @@
                   small
                   :to="{
                     name: 'child_lookups_amend',
-                    query: { slug: props.item.selectable.slug },
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit_ar')" location="bottom">
@@ -390,6 +392,18 @@ export default {
         ("");
         this.sel_lang = "en";
       }
+    },
+    "$route.query.s_tab": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.s_tab) {
+          if (this.$route.query.s_tab == 1) {
+            this.tabs = 1;
+          } else {
+            this.tabs = 2;
+          }
+        }
+      },
     },
   },
 

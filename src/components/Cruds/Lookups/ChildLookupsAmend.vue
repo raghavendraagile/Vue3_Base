@@ -309,7 +309,7 @@
             <v-btn
               v-bind="props"
               size="small"
-              @click="$router.go(-1)"
+              @click="cancel()"
               :disabled="loading"
               class="ma-1"
               color="cancel"
@@ -458,6 +458,18 @@ export default {
         this.sel_lang = "en";
       }
     },
+    "$route.query.s_tab": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.s_tab) {
+          if (this.$route.query.s_tab == 1) {
+            this.tabs = 1;
+          } else {
+            this.tabs = 2;
+          }
+        }
+      },
+    },
   },
   methods: {
     checkUploadImage() {
@@ -522,6 +534,7 @@ export default {
                 name: "child_lookup",
                 query: {
                   slug: this.parentslug,
+                  s_tab: this.tabs,
                   // parentname: this.parent_en,
                 },
               });
@@ -566,6 +579,15 @@ export default {
       } else {
         this.lookup[0].icon = null;
       }
+    },
+    cancel() {
+      this.$router.push({
+        name: "child_lookup",
+        query: {
+          slug: this.parentslug,
+          s_tab: this.tabs,
+        },
+      });
     },
   },
 };
