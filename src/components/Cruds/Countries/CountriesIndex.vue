@@ -31,7 +31,10 @@
       <div class="add_new_button">
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
-            <router-link :to="{ name: 'countries_amend' }" style="color: white">
+            <router-link
+              :to="{ name: 'countries_amend', query: { s_tab: tabs } }"
+              style="color: white"
+            >
               <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
                 $t("add_new")
               }}</v-btn>
@@ -73,7 +76,7 @@
                 <router-link
                   :to="{
                     name: 'countries_amend',
-                    query: { slug: props.item.selectable.slug },
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit_en')" location="bottom">
@@ -95,6 +98,7 @@
                     name: 'states',
                     query: {
                       countryslug: props.item.selectable.slug,
+                      s_tab: tabs,
                     },
                   }"
                 >
@@ -155,7 +159,7 @@
                 <router-link
                   :to="{
                     name: 'countries_amend',
-                    query: { slug: props.item.selectable.slug },
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit_ar')" location="bottom">
@@ -177,6 +181,7 @@
                     name: 'states',
                     query: {
                       countryslug: props.item.selectable.slug,
+                      s_tab: tabs,
                     },
                   }"
                 >
@@ -260,6 +265,9 @@ export default {
   }),
   mounted() {
     this.fetchcountries();
+    if (this.$route.query.s_tab) {
+      this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
+    }
   },
   computed: {
     fieldRules() {

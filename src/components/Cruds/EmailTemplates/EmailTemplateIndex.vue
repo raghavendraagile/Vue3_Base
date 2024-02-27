@@ -35,7 +35,7 @@
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link
-              :to="{ name: 'email_template_amend' }"
+              :to="{ name: 'email_template_amend', query: { s_tab: tabs } }"
               style="color: white"
             >
               <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
@@ -75,7 +75,7 @@
                   small
                   :to="{
                     name: 'email_template_amend',
-                    query: { slug: props.item.selectable.slug },
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit_en')" location="top">
@@ -127,7 +127,7 @@
                   small
                   :to="{
                     name: 'email_template_amend',
-                    query: { slug: props.item.selectable.slug },
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit_ar')" location="top">
@@ -135,7 +135,7 @@
                       <v-icon
                         v-bind="props"
                         small
-                        class="mr-2 edit_btn icon_size"
+                        class="ml-2 edit_btn icon_size"
                         >mdi-pencil-outline</v-icon
                       >
                     </template>
@@ -271,6 +271,9 @@ export default {
   created() {},
   mounted() {
     this.fetchEmailTemplates();
+    if (this.$route.query.s_tab) {
+      this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
+    }
   },
 
   methods: {

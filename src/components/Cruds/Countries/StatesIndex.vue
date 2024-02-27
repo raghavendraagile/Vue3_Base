@@ -37,6 +37,7 @@
                 name: 'states_amend',
                 query: {
                   countryslug: countryslug,
+                  s_tab: tabs,
                 },
               }"
               style="color: white"
@@ -52,6 +53,7 @@
             <router-link
               :to="{
                 name: 'countries',
+                query: { s_tab: tabs },
               }"
               style="color: white"
             >
@@ -95,6 +97,7 @@
                     name: 'states_amend',
                     query: {
                       slug: props.item.selectable.slug,
+                      s_tab: tabs,
                     },
                   }"
                 >
@@ -117,6 +120,7 @@
                     name: 'cities',
                     query: {
                       countryslug: countryslug,
+                      s_tab: tabs,
                       stateslug: props.item.selectable.slug,
                     },
                   }"
@@ -179,6 +183,7 @@
                     name: 'states_amend',
                     query: {
                       slug: props.item.selectable.slug,
+                      s_tab: tabs,
                     },
                   }"
                 >
@@ -201,6 +206,7 @@
                     name: 'cities',
                     query: {
                       countryslug: countryslug,
+                      s_tab: tabs,
                       stateslug: props.item.selectable.slug,
                     },
                   }"
@@ -339,8 +345,24 @@ export default {
         this.sel_lang = "en";
       }
     },
+    "$route.query.s_tab": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.s_tab) {
+          if (this.$route.query.s_tab == 1) {
+            this.tabs = 1;
+          } else {
+            this.tabs = 2;
+          }
+        }
+      },
+    },
   },
-  mounted() {},
+  mounted() {
+    if (this.$route.query.s_tab) {
+      this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
+    }
+  },
   methods: {
     cancel() {
       this.showdeleteDialog = false;

@@ -39,6 +39,7 @@
                 query: {
                   countryslug: countryname,
                   statesslug: statename,
+                  s_tab: tabs,
                 },
               }"
               style="color: white"
@@ -56,6 +57,7 @@
                 name: 'states',
                 query: {
                   countryslug: countryname,
+                  s_tab: tabs,
                 },
               }"
               style="color: white"
@@ -100,6 +102,7 @@
                     name: 'cities_amend',
                     query: {
                       slug: props.item.selectable.slug,
+                      s_tab: tabs,
                     },
                   }"
                 >
@@ -161,6 +164,7 @@
                     name: 'cities_amend',
                     query: {
                       slug: props.item.selectable.slug,
+                      s_tab: tabs,
                     },
                   }"
                 >
@@ -307,9 +311,24 @@ export default {
         this.sel_lang = "en";
       }
     },
+    "$route.query.s_tab": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.s_tab) {
+          if (this.$route.query.s_tab == 1) {
+            this.tabs = 1;
+          } else {
+            this.tabs = 2;
+          }
+        }
+      },
+    },
   },
   mounted() {
     this.fetchcities();
+    if (this.$route.query.s_tab) {
+      this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
+    }
   },
   methods: {
     cancel() {
