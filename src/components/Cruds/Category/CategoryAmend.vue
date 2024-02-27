@@ -651,7 +651,7 @@
             <div v-bind="props" class="d-inline-block">
               <v-btn
                 :disabled="isDisabled"
-                @click="presubmitvalidation()"
+                @click="presubmitvalidation"
                 size="small"
                 class="mr-2"
                 color="success"
@@ -1028,9 +1028,7 @@ export default {
       }
     },
     submit() {
-      if (
-        this.$refs.form.validate() &&
-        this.valid == true &&
+      if (this.valid == true &&
         this.quill_item == false &&
         this.validAR == true &&
         this.quill_item_ar == false
