@@ -571,5 +571,7 @@
   "states_ar": "تنص على",
   "city_en_ar": "تنص على",
   "send_otp":"Send OTP",
-  "confirm_email":"Confirm Your Email"
+  "confirm_email":"Confirm Your Email",
+  "video_en": "Video",
+  "video_ar": "فيديو"
 }

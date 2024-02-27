@@ -1,11 +1,7 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0"  v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
-      <page-title
-        class="col-md-4 ml-2"
-        :heading="$t('home_sliders')"
-        :google_icon="google_icon"
-      ></page-title>
+    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+      <page-title class="col-md-4 ml-2" :heading="$t('home_sliders')" :google_icon="google_icon"></page-title>
     </div>
     <div class="mb-3 mx-auto">
       <div class="card-body">
@@ -22,18 +18,44 @@
         <v-window v-model="tabs">
           <!-- ENGLISH TAB STARTS -->
           <v-window-item :value="1" class="p-3">
-            <v-card
-              variant="elevated"
-              class="p-3 my-3 card-border"
-              v-for="(event, index) in events_en"
-              :key="index"
-              :style="'border-color:' + getStatusColor(event.approval_status)"
-            >
+            <v-card variant="elevated" class="p-3 my-3 card-border" v-for="(event, index) in events_en" :key="index"
+              :style="'border-color:' + getStatusColor(event.approval_status)">
               <v-layout>
                 <v-row class="px-6 mt-2">
                   <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("title_en") }}</div>
                     <div>{{ event.title }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("media_type_en") }}</div>
+                    <div>{{ event.media_type }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("approval_status_en") }}</div>
+                    <div>
+                      <v-chip class="ma-2" :color="getStatusColor(event.approval_status)" variant="outlined">
+                        {{ event.approval_status }}
+                      </v-chip>
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label" v-if="event.approval_status == 'Rejected'">
+                      {{ $t("rejected_by_en") }}
+                    </div>
+                    <div class="d-label" v-else>{{ $t("approved_by_en") }}</div>
+                    <div v-if="event.review_by">
+                      {{ event.review_by }}
+                    </div>
+                    <div v-else>{{ $t("not_applicable") }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="12" v-if="event.approval_status == 'Rejected'">
+                    <div class="d-label">
+                      {{ $t("reason_for_rejection_en") }}
+                    </div>
+                    <div v-if="event.review_comment">
+                      {{ event.review_comment }}
+                    </div>
+                    <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
                   <!-- <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("parent_event_en") }}</div>
@@ -46,99 +68,57 @@
                     <div class="d-label">{{ $t("meta_title_en") }}</div>
                     <div>{{ event.meta_title }}</div>
                   </v-col> -->
-                  <v-col cols="12" sm="12" md="3">
+                  <v-col cols="12" sm="12" md="6">
                     <div class="d-label">{{ $t("description_en") }}</div>
                     <div v-html="event.description"></div>
                   </v-col>
+
+                  <v-col cols="12" sm="12" md="6" v-if="event.media_type == 'Video'">
+                    <div class="d-label">{{ $t("video_en") }}</div>
+                    <iframe v-if="enurl != null" width="400" height="250" :src="getVideoIdFromUrlEn(event.video)"
+                      frameborder="1"></iframe>
+
+                    <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''" v-else
+                      src="@/assets/images/563118-200.png" width="100" />
+
+                  </v-col>
+
+
                   <!-- <v-col cols="12" sm="12" md="3">
                     <div class="d-label">{{ $t("meta_description_en") }}</div>
                     <div>{{ event.meta_description }}</div>
                   </v-col> -->
-                  <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("image_preview_en") }}</div>
-                    <img
-                              v-bind:style="
-                                isHovering == true ? 'filter: blur(1px);' : ''
-                              "
-                              v-if="event.image == '' || event.image == null"
-                              src="@/assets/images/upload_image_default.png"
-                              width="100"
-                            />
-                             <img
-                              v-bind:style="
-                                isHovering == true ? 'filter: blur(1px);' : ''
-                              "
-                              v-else
-                              
-                              :src="envImagePath + event.image"
-                              width="100"
-                              height="65
-                          "
-                              alt
-                            />
+                  <v-col cols="12" sm="6" md="3" v-if="event.media_type == 'Image'">
+                    <div class="d-label">{{ $t("w_image_en") }}</div>
+                    <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                      " v-if="event.image == '' || event.image == null" src="@/assets/images/upload_image_default.png"
+                      width="100" />
+                    <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                      " v-else :src="envImagePath + event.image" width="100" height="65
+                          " alt />
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3" v-if="event.media_type == 'Image'">
+                    <div class="d-label">{{ $t("m_image_en") }}</div>
+                    <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                      " v-if="event.m_image == '' || event.m_image == null"
+                      src="@/assets/images/upload_image_default.png" width="100" />
+                    <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                      " v-else :src="envImagePath + event.m_image" width="100" height="65
+                          " alt />
                   </v-col>
 
-                  <v-col cols="12" sm="6" md="3">
-                    <div
-                      class="d-label"
-                      v-if="event.approval_status == 'Rejected'"
-                    >
-                      {{ $t("rejected_by_en") }}
-                    </div>
-                    <div class="d-label" v-else>{{ $t("approved_by_en") }}</div>
-                    <div v-if="event.review_by">
-                      {{ event.review_by }}
-                    </div>
-                    <div v-else>{{ $t("not_applicable") }}</div>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <div class="d-label">{{ $t("approval_status_en") }}</div>
-                    <div>
-                      <v-chip
-                        class="ma-2"
-                        :color="getStatusColor(event.approval_status)"
-                        variant="outlined"
-                      >
-                        {{ event.approval_status }}
-                      </v-chip>
-                    </div>
-                  </v-col>
-                  
-                  
-                  <v-col
-                    cols="12"
-                    sm="12"
-                    md="4"
-                    v-if="event.approval_status == 'Rejected'"
-                  >
-                    <div class="d-label">
-                      {{ $t("reason_for_rejection_en") }}
-                    </div>
-                    <div v-if="event.review_comment">
-                      {{ event.review_comment }}
-                    </div>
-                    <div v-else>{{ $t("not_applicable") }}</div>
-                  </v-col>
+
+
+
+
+
                 </v-row>
               </v-layout>
-              <div
-                class="d-flex justify-content-end"
-                v-if="event.approval_status == 'In Review'"
-              >
-                <v-chip
-                  @click="statusOnChange('Approved', event.header_id)"
-                  variant="flat"
-                  color="green"
-                  class="mx-1"
-                >
+              <div class="d-flex justify-content-end" v-if="event.approval_status == 'In Review'">
+                <v-chip @click="statusOnChange('Approved', event.header_id)" variant="flat" color="green" class="mx-1">
                   {{ $t("approve_en") }}
                 </v-chip>
-                <v-chip
-                  @click="statusOnChange('Rejected', event.header_id)"
-                  variant="flat"
-                  color="red"
-                  class="mx-1"
-                >
+                <v-chip @click="statusOnChange('Rejected', event.header_id)" variant="flat" color="red" class="mx-1">
                   {{ $t("reject_en") }}
                 </v-chip>
               </div>
@@ -147,74 +127,28 @@
           <!-- ENGLISH TAB END -->
           <!-- ARABIC TAB STARTS -->
           <v-window-item :value="2" class="p-3">
-            <v-card
-              variant="elevated"
-              class="p-3 my-3 card-border rtl-direction"
-              v-for="(event, index) in events_ar"
-              :key="index"
-              :style="'border-color:' + getStatusColor(event.approval_status)"
-            >
+            <v-card variant="elevated" class="p-3 my-3 card-border rtl-direction" v-for="(event, index) in events_ar"
+              :key="index" :style="'border-color:' + getStatusColor(event.approval_status)">
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  
-
                   <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("title_ar") }}</div>
                     <div>{{ event.title }}</div>
                   </v-col>
-                   <!-- <v-col cols="12" sm="6" md="3">
-                    <div class="d-label">{{ $t("meta_title_ar") }}</div>
-                    <div>{{ event.meta_title }}</div>
-                  </v-col> -->
-                  <v-col cols="12" sm="12" md="3">
-                    <div class="d-label">{{ $t("description_ar") }}</div>
-                    <div v-html="event.description"></div>
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("media_type_ar") }}</div>
+                    <div>{{ event.media_type }}</div>
                   </v-col>
-                   <v-col cols="12" sm="6" md="3">
-                    <div class="d-label">{{ $t("image_preview_ar") }}</div>
-                    <img
-                              v-bind:style="
-                                isHovering == true ? 'filter: blur(1px);' : ''
-                              "
-                              v-if="event.image == '' || event.image == null"
-                              src="@/assets/images/upload_image_default.png"
-                              width="100"
-                            />
-                             <img
-                              v-bind:style="
-                                isHovering == true ? 'filter: blur(1px);' : ''
-                              "
-                              v-else
-                              
-                              :src="envImagePath + event.image"
-                              width="100"
-                              height="65
-                          "
-                              alt
-                            />
-                  </v-col>
-                  <!-- <v-col cols="12" sm="12" md="3">
-                    <div class="d-label">{{ $t("meta_description_ar") }}</div>
-                    <div>{{ event.meta_description }}</div>
-                  </v-col> -->
-                  
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="3">
                     <div class="d-label">{{ $t("approval_status_ar") }}</div>
                     <div>
-                      <v-chip
-                        class="ma-2"
-                        :color="getStatusColor(event.approval_status)"
-                        variant="outlined"
-                      >
-                        {{ changeStatusAr(event.approval_status) }}
+                      <v-chip class="ma-2" :color="getStatusColor(event.approval_status)" variant="outlined">
+                        {{ event.approval_status }}
                       </v-chip>
                     </div>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <div
-                      class="d-label"
-                      v-if="event.approval_status == 'Rejected'"
-                    >
+                  <v-col cols="12" sm="6" md="3">
+                    <div class="d-label" v-if="event.approval_status == 'Rejected'">
                       {{ $t("rejected_by_ar") }}
                     </div>
                     <div class="d-label" v-else>{{ $t("approved_by_ar") }}</div>
@@ -223,13 +157,7 @@
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
-                 
-                  <v-col
-                    cols="12"
-                    sm="12"
-                    md="12"
-                    v-if="event.approval_status == 'Rejected'"
-                  >
+                  <v-col cols="12" sm="12" md="12" v-if="event.approval_status == 'Rejected'">
                     <div class="d-label">
                       {{ $t("reason_for_rejection_ar") }}
                     </div>
@@ -238,26 +166,66 @@
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
+                  <!-- <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("parent_event_en") }}</div>
+                    <div v-if="event.parent_event">
+                      {{ event.parent_event }}
+                    </div>
+                    <div v-else>{{ $t("not_applicable") }}</div>
+                  </v-col> -->
+                  <!-- <v-col cols="12" sm="6" md="3">
+                    <div class="d-label">{{ $t("meta_title_en") }}</div>
+                    <div>{{ event.meta_title }}</div>
+                  </v-col> -->
+                  <v-col cols="12" sm="12" md="6">
+                    <div class="d-label">{{ $t("description_ar") }}</div>
+                    <div v-html="event.description"></div>
+                  </v-col>
+
+                  <v-col cols="12" sm="12" md="6" v-if="event.media_type == 'فيديو'">
+                    <div class="d-label">{{ $t("video_ar") }} </div>
+                    <iframe v-if="arurl != null" width="400" height="250" :src="getVideoIdFromUrlAr(event.video)"
+                      frameborder="1"></iframe>
+                    <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''" v-else
+                      src="@/assets/images/563118-200.png" width="100" />
+                  </v-col>
+
+
+                  <!-- <v-col cols="12" sm="12" md="3">
+                    <div class="d-label">{{ $t("meta_description_en") }}</div>
+                    <div>{{ event.meta_description }}</div>
+                  </v-col> -->
+                  <v-col cols="12" sm="6" md="3" v-if="event.media_type == 'صورة'">
+                    <div class="d-label">{{ $t("w_image_ar") }}</div>
+                    <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                      " v-if="event.image == '' || event.image == null" src="@/assets/images/upload_image_default.png"
+                      width="100" />
+                    <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                      " v-else :src="envImagePath + event.image" width="100" height="65
+                          " alt />
+                  </v-col>
+                  <v-col cols="12" sm="6" md="3" v-if="event.media_type == 'صورة'">
+                    <div class="d-label">{{ $t("m_image_ar") }}</div>
+                    <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                      " v-if="event.m_image == '' || event.m_image == null"
+                      src="@/assets/images/upload_image_default.png" width="100" />
+                    <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
+                      " v-else :src="envImagePath + event.m_image" width="100" height="65
+                          " alt />
+                  </v-col>
+
+
+
+
+
+
                 </v-row>
               </v-layout>
-              <div
-                class="d-flex justify-content-end"
-                v-if="event.approval_status == 'In Review'"
-              >
-                <v-chip
-                  @click="statusOnChange('Approved', event.header_id)"
-                  variant="flat"
-                  color="green"
-                  class="mx-1"
-                >
+              <div class="d-flex justify-content-end" v-if="event.approval_status == 'In Review'">
+                <v-chip @click="statusOnChange('Approved', event.header_id)" variant="flat" color="green" class="mx-1">
                   {{ $t("approve_ar") }}
                 </v-chip>
-                <v-chip
-                  @click="statusOnChange('Rejected', event.header_id)"
-                  variant="flat"
-                  color="red"
-                  class="mx-1"
-                >
+                <v-chip @click="statusOnChange('Rejected', event.header_id)" variant="flat" color="red" class="mx-1">
                   {{ $t("reject_ar") }}
                 </v-chip>
               </div>
@@ -268,33 +236,17 @@
       </div>
 
       <div class="d-block mr-4 mt-3 pb-3 text-right">
-        <v-btn
-          size="small"
-          @click="cancel()"
-          :disabled="loading"
-          class="ma-1"
-          color="cancel"
-          >{{ $t("cancel") }}</v-btn
-        >
+        <v-btn size="small" @click="cancel()" :disabled="loading" class="ma-1" color="cancel">{{ $t("cancel") }}</v-btn>
       </div>
     </div>
-    <ConfirmDialog
-      :show="showApprovalDialog"
-      :cancel="cancelApproval"
-      :confirm="confirmApproval"
-      v-bind:title="$t('confirm')"
-      v-bind:description="approval_msg"
-    />
-    <ReviewComments
-      v-if="enable_review_comment"
-      @close-dialog="closeReviewComment()"
-      @submit-data="submitReview"
-    >
+    <ConfirmDialog :show="showApprovalDialog" :cancel="cancelApproval" :confirm="confirmApproval"
+      v-bind:title="$t('confirm')" v-bind:description="approval_msg" />
+    <ReviewComments v-if="enable_review_comment" @close-dialog="closeReviewComment()" @submit-data="submitReview">
     </ReviewComments>
   </div>
 </template>
     
-  <script>
+<script>
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
 import ReviewComments from "../../CustomComponents/ReviewComments.vue";
@@ -315,6 +267,8 @@ export default {
     successmessage: "",
     message: "",
     valid_error: false,
+    arurl: "",
+    enurl: "",
     file: "",
     sel_lang: "",
     loading: false,
@@ -332,7 +286,9 @@ export default {
     approval_msg: "",
     enable_review_comment: false,
   }),
+  computed: {
 
+  },
   watch: {
     "$route.query.slug": {
       immediate: true,
@@ -342,7 +298,7 @@ export default {
         }
       },
     },
-       "$route.query.s_tab": {
+    "$route.query.s_tab": {
       immediate: true,
       handler() {
         if (this.$route.query.s_tab) {
@@ -354,16 +310,39 @@ export default {
         }
       },
     },
-     '$i18n.locale'(newLocale) {
+    '$i18n.locale'(newLocale) {
       if (newLocale === 'ar') {
         this.sel_lang = 'ar';
-      } else {''
+      } else {
+        ''
         this.sel_lang = 'en';
       }
     }
   },
 
   methods: {
+    getVideoIdFromUrlEn(url) {
+      const regExp = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+      const match = url.match(regExp);
+      if (match && match[1]) {
+        this.enurl = `https://www.youtube.com/embed/${match[1]}`;
+        return `https://www.youtube.com/embed/${match[1]}`;
+      } else {
+        this.enurl = null;
+        return null;
+      }
+    },
+    getVideoIdFromUrlAr(url) {
+      const regExp = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+      const match = url.match(regExp);
+      if (match && match[1]) {
+        this.arurl = `https://www.youtube.com/embed/${match[1]}`;
+        return `https://www.youtube.com/embed/${match[1]}`;
+      } else {
+        this.arurl = null;
+        return null;
+      }
+    },
     changeStatusAr(status) {
       switch (status) {
         case "Approved":
@@ -408,6 +387,7 @@ export default {
           this.loader = false;
         });
     },
+
     statusOnChange(value, id) {
       this.selected.approval_status = value;
       this.selected.header_id = id;
@@ -492,6 +472,7 @@ export default {
 .d-label {
   font-weight: bold;
 }
+
 .card-border {
   border-style: solid;
   border-width: 1px;
