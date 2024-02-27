@@ -83,12 +83,7 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td>
-                <span v-if="props.item.selectable.description">
-                  {{ props.item.selectable.description }}</span
-                >
-                <span v-else>{{ $t("not_appllicable") }}</span>
-              </td>
+             
               <td>
                 <span v-if="props.item.selectable.meta_title">
                   {{ props.item.selectable.meta_title }}</span
@@ -219,12 +214,7 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td>
-                <span v-if="props.item.selectable.description">
-                  {{ props.item.selectable.description }}</span
-                >
-                <span v-else>{{ $t("not_appllicable") }}</span>
-              </td>
+             
               <td>
                 <span v-if="props.item.selectable.meta_title">
                   {{ props.item.selectable.meta_title }}</span
@@ -395,10 +385,6 @@ export default {
           key: "title",
         },
         {
-          title: this.$t("description_en"),
-          key: "description",
-        },
-        {
           title: this.$t("meta_title_en"),
           key: "meta_title",
         },
@@ -449,10 +435,7 @@ export default {
           align: "left",
           key: "title",
         },
-        {
-          title: this.$t("description_ar"),
-          key: "description",
-        },
+       
         {
           title: this.$t("meta_title_ar"),
           key: "meta_title",
