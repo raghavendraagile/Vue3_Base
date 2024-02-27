@@ -15,6 +15,12 @@ const routes = [
     component: () => import("../Admin/UserPages/ForgotPassword.vue"),
   },
   {
+    path: "/:lang?/set_password",
+    name: "set_password",
+    meta: { layout: "userpages" },
+    component: () => import("../Admin/UserPages/SetPassword.vue"),
+  },
+  {
     path: "/:lang?/reset_password_form/:email?&:name?",
     name: "reset_password_form",
     component: () => import("../Admin/UserPages/ResetPasswordForm.vue"),

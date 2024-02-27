@@ -123,7 +123,7 @@
                   </v-row>
 
                   <div class="divider" />
-                  <div class="d-flex align-items-center mt-5">
+                  <!-- <div class="d-flex align-items-center mt-5">
                     <div>
                       <h6 class="mb-0">
                         {{ $t("no_account") }}
@@ -136,7 +136,7 @@
                         </router-link>
                       </h6>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="divider" />
                   <div class="d-flex">
                     <div
