@@ -33,6 +33,20 @@
       </div>
 
       <div class="add_new_button">
+        <!-- <v-tooltip :text="this.$t('preview')" location="bottom">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              @click="previewPage()"
+              v-if="home_sliders_en.length > 0"
+              size="small"
+              class="mb-2 preview-btn mx-2"
+              v-bind="props"
+              ><v-icon size="large" class="mr-2"
+                >mdi mdi-eye-circle-outline</v-icon
+              >{{ $t("preview") }}</v-btn
+            >
+          </template>
+        </v-tooltip> -->
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link
@@ -76,13 +90,21 @@
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
-              <td v-if="props.item.selectable.title">{{ props.item.selectable.title }}</td>
+              <td v-if="props.item.selectable.title">
+                {{ props.item.selectable.title }}
+              </td>
               <td v-else>{{ $t("not_applicable") }}</td>
-              <td v-if="props.item.selectable.action">{{ props.item.selectable.action }}</td>
+              <td v-if="props.item.selectable.action">
+                {{ props.item.selectable.action }}
+              </td>
               <td v-else>{{ $t("not_applicable") }}</td>
-              <td v-if="props.item.selectable.target">{{ props.item.selectable.target }}</td>
+              <td v-if="props.item.selectable.target">
+                {{ props.item.selectable.target }}
+              </td>
               <td v-else>{{ $t("not_applicable") }}</td>
-              <td v-if="props.item.selectable.seq">{{ props.item.selectable.seq }}</td>
+              <td v-if="props.item.selectable.seq">
+                {{ props.item.selectable.seq }}
+              </td>
               <td v-else>{{ $t("not_applicable") }}</td>
               <td>
                 <v-btn
@@ -173,13 +195,21 @@
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
-             <td v-if="props.item.selectable.title">{{ props.item.selectable.title }}</td>
+              <td v-if="props.item.selectable.title">
+                {{ props.item.selectable.title }}
+              </td>
               <td v-else>{{ $t("not_applicable") }}</td>
-              <td v-if="props.item.selectable.action">{{ props.item.selectable.action }}</td>
+              <td v-if="props.item.selectable.action">
+                {{ props.item.selectable.action }}
+              </td>
               <td v-else>{{ $t("not_applicable") }}</td>
-              <td v-if="props.item.selectable.target">{{ props.item.selectable.target }}</td>
+              <td v-if="props.item.selectable.target">
+                {{ props.item.selectable.target }}
+              </td>
               <td v-else>{{ $t("not_applicable") }}</td>
-              <td v-if="props.item.selectable.seq">{{ props.item.selectable.seq }}</td>
+              <td v-if="props.item.selectable.seq">
+                {{ props.item.selectable.seq }}
+              </td>
               <td v-else>{{ $t("not_applicable") }}</td>
               <td>
                 <v-btn
@@ -417,6 +447,18 @@ export default {
     },
   },
   methods: {
+    previewPage() {
+      var lang = this.tabs === 1 ? "en" : "ar";
+
+      const route = this.$router.resolve({
+        name: "preview_webapp",
+        params: {
+          lang: lang,
+          page: "",
+        },
+      });
+      window.open(route.href, "_blank");
+    },
     changeStatusAr(status) {
       switch (status) {
         case "Approved":
@@ -467,7 +509,7 @@ export default {
     viewSlider(slug) {
       this.$router.push({
         name: "home-slider-review",
-        query: { slug: slug, 's_tab': this.tabs },
+        query: { slug: slug, s_tab: this.tabs },
       });
     },
     deleteItem(store_id) {

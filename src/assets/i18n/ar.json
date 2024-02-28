@@ -527,6 +527,7 @@
   "send_otp":"أرسل كلمة مرور لمرة واحدة",
   "confirm_email":"قم بتأكيد بريدك الإلكتروني",
   "video_en": "Video",
-  "video_ar": "فيديو"
+  "video_ar": "فيديو",
+  "preview":"معاينة"
 
 }

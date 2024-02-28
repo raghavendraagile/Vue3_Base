@@ -383,6 +383,8 @@
                     <v-tooltip :text="$t('video_url_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
+                          hint="https://www.youtube.com/embed/FhX_e0_cCdg"
+                          persistent-hint
                           v-bind="props"
                           v-model="home_slider[0].video"
                           maxlength="500"
@@ -743,6 +745,8 @@
                     <v-tooltip :text="$t('video_url_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
+                          hint="https://www.youtube.com/embed/FhX_e0_cCdg"
+                          persistent-hint
                           v-bind="props"
                           v-model="home_slider[1].video"
                           maxlength="500"

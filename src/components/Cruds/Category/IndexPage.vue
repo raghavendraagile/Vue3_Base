@@ -33,6 +33,20 @@
       </div>
 
       <div class="add_new_button">
+        <!-- <v-tooltip :text="this.$t('preview')" location="bottom">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              @click="previewPage()"
+              v-if="category_en.length > 0"
+              size="small"
+              class="mb-2 preview-btn mx-2"
+              v-bind="props"
+              ><v-icon size="large" class="mr-2"
+                >mdi mdi-eye-circle-outline</v-icon
+              >{{ $t("preview") }}</v-btn
+            >
+          </template>
+        </v-tooltip> -->
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link
@@ -403,6 +417,18 @@ export default {
   },
 
   methods: {
+    previewPage() {
+      var lang = this.tabs === 1 ? "en" : "ar";
+
+      const route = this.$router.resolve({
+        name: "preview_webapp",
+        params: {
+          lang: lang,
+          page: "",
+        },
+      });
+      window.open(route.href, "_blank");
+    },
     changeStatusAr(status) {
       switch (status) {
         case "Approved":

@@ -573,5 +573,6 @@
   "send_otp":"Send OTP",
   "confirm_email":"Confirm Your Email",
   "video_en": "Video",
-  "video_ar": "فيديو"
+  "video_ar": "فيديو",
+  "preview":"Preview"
 }

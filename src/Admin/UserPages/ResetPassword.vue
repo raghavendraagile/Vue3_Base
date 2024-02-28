@@ -1,139 +1,146 @@
 <template>
   <div class="mx-2 mt-3 p-0" v-bind:class="[is_arabic ? 'arabicclass' : '']">
-    <div class="container my-3 p-0">
+    <div class="my-3 p-0">
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('reset_password')"
         :google_icon="google_icon"
       ></page-title>
     </div>
-
-    <v-card elevation="7" width="700" class="mx-6">
-      <v-form
-        autocomplete="off"
-        ref="form"
-        v-model="valid"
-        v-bind:class="[is_arabic ? 'arabicclass' : '']"
-      >
-        <v-container>
-          <v-row class="mx-auto mt-2" max-width="344">
-            <v-col md="12" class="emailclass">
-              <strong>{{ $t("email") }}:</strong>
-              &nbsp;&nbsp;
-              {{ userprofile.email }}
-            </v-col>
-          </v-row>
-          <br />
-          <v-row class="mx-auto mt-2" max-width="344">
-            <v-col md="12">
-              <v-tooltip :text="this.$t('current_password')" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-text-field
-                    v-model="fieldItem.currentpassword"
-                    v-bind:label="$t('current_password')"
-                    required
-                    v-bind="props"
-                    :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :type="show1 ? 'text' : 'password'"
-                    :rules="fieldRules"
-                    class="required_field"
-                    variant="outlined"
-                    density="compact"
-                    @click:append-inner="show1 = !show1"
-                  ></v-text-field>
-                </template>
-              </v-tooltip>
-            </v-col>
-          </v-row>
-          <v-row class="mx-auto mt-2" max-width="344">
-            <v-col md="12">
-              <v-tooltip :text="this.$t('new_password')" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-text-field
-                    v-model="fieldItem.newpassword"
-                    v-bind:label="$t('new_password')"
-                    :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :type="show2 ? 'text' : 'password'"
-                    v-bind="props"
-                    required
-                    :rules="fieldRules"
-                    class="required_field"
-                    variant="outlined"
-                    density="compact"
-                    @click:append-inner="show2 = !show2"
-                  ></v-text-field>
-                </template>
-              </v-tooltip>
-            </v-col> </v-row
-          ><v-row class="mx-auto mt-2" max-width="344">
-            <v-col md="12">
-              <v-tooltip :text="this.$t('confirm_password')" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-text-field
-                    v-model="fieldItem.confirmpassword"
-                    v-bind:label="$t('confirm_password')"
-                    :append-inner-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :type="show3 ? 'text' : 'password'"
-                    v-bind="props"
-                    required
-                    :rules="[
-                      !!fieldItem.confirmpassword || $t('password_confirm'),
-                      fieldItem.newpassword === fieldItem.confirmpassword ||
-                        $t('confirm_password_match'),
-                    ]"
-                    class="required_field"
-                    variant="outlined"
-                    density="compact"
-                    @click:append-inner="show3 = !show3"
-                  ></v-text-field>
-                </template>
-              </v-tooltip>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-form>
-      <div
-        class="d-block mx-4 mt-3 pb-3"
-        v-bind:class="[is_arabic ? ' text-left' : ' text-right']"
-      >
-        <v-tooltip :text="this.$t('cancel')" location="bottom">
-          <template v-slot:activator="{ props }">
-            <div v-bind="props" class="d-inline-block mr-2">
-              <v-btn
-                v-bind="props"
-                size="small"
-                @click="cancel"
-                :disabled="isBtnLoading"
-                class="ma-1"
-                color="cancel"
-                >{{ $t("cancel") }}</v-btn
-              >
-            </div>
-          </template>
-        </v-tooltip>
-        <v-tooltip :text="this.$t('submit')" location="bottom">
-          <template v-slot:activator="{ props }">
-            <div v-bind="props" class="d-inline-block">
-              <v-btn
-                :disabled="isDisabled"
-                @click="submit"
-                size="small"
-                class="mr-2"
-                color="success"
-              >
-                {{ $t("submit") }}
-                <v-progress-circular
-                  v-if="isBtnLoading"
-                  indeterminate
-                  width="1"
+    <v-card elevation="1">
+      <div>
+        <v-form
+          autocomplete="off"
+          ref="form"
+          v-model="valid"
+          v-bind:class="[is_arabic ? 'arabicclass' : '']"
+        >
+          <v-container fluid>
+            <v-row class="mx-auto mt-2" max-width="300">
+              <v-col md="12" class="emailclass">
+                <strong>{{ $t("email") }}:</strong>
+                &nbsp;&nbsp;
+                {{ userprofile.email }}
+              </v-col>
+            </v-row>
+            <br />
+            <v-row class="mx-auto mt-2" max-width="300">
+              <v-col md="4">
+                <v-tooltip
+                  :text="this.$t('current_password')"
+                  location="bottom"
+                >
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-model="fieldItem.currentpassword"
+                      v-bind:label="$t('current_password')"
+                      required
+                      v-bind="props"
+                      :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                      :type="show1 ? 'text' : 'password'"
+                      :rules="fieldRules"
+                      class="required_field"
+                      variant="outlined"
+                      density="compact"
+                      @click:append-inner="show1 = !show1"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+            </v-row>
+            <v-row class="mx-auto mt-2" max-width="344">
+              <v-col md="4">
+                <v-tooltip :text="this.$t('new_password')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-model="fieldItem.newpassword"
+                      v-bind:label="$t('new_password')"
+                      :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                      :type="show2 ? 'text' : 'password'"
+                      v-bind="props"
+                      required
+                      :rules="fieldRules"
+                      class="required_field"
+                      variant="outlined"
+                      density="compact"
+                      @click:append-inner="show2 = !show2"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col> </v-row
+            ><v-row class="mx-auto mt-2" max-width="344">
+              <v-col md="4">
+                <v-tooltip
+                  :text="this.$t('confirm_password')"
+                  location="bottom"
+                >
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-model="fieldItem.confirmpassword"
+                      v-bind:label="$t('confirm_password')"
+                      :append-inner-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
+                      :type="show3 ? 'text' : 'password'"
+                      v-bind="props"
+                      required
+                      :rules="[
+                        !!fieldItem.confirmpassword || $t('password_confirm'),
+                        fieldItem.newpassword === fieldItem.confirmpassword ||
+                          $t('confirm_password_match'),
+                      ]"
+                      class="required_field"
+                      variant="outlined"
+                      density="compact"
+                      @click:append-inner="show3 = !show3"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
+        <div
+          class="d-block mx-4 mt-3 pb-3"
+          v-bind:class="[is_arabic ? ' text-left' : ' text-right']"
+        >
+          <v-tooltip :text="this.$t('cancel')" location="bottom">
+            <template v-slot:activator="{ props }">
+              <div v-bind="props" class="d-inline-block mr-2">
+                <v-btn
+                  v-bind="props"
+                  size="small"
+                  @click="cancel"
+                  :disabled="isBtnLoading"
+                  class="ma-1"
                   color="cancel"
-                  size="x-small"
-                  class="ml-2"
-                ></v-progress-circular>
-              </v-btn>
-            </div>
-          </template>
-        </v-tooltip>
+                  >{{ $t("cancel") }}</v-btn
+                >
+              </div>
+            </template>
+          </v-tooltip>
+          <v-tooltip :text="this.$t('submit')" location="bottom">
+            <template v-slot:activator="{ props }">
+              <div v-bind="props" class="d-inline-block">
+                <v-btn
+                  :disabled="isDisabled"
+                  @click="submit"
+                  size="small"
+                  class="mr-2"
+                  color="success"
+                >
+                  {{ $t("submit") }}
+                  <v-progress-circular
+                    v-if="isBtnLoading"
+                    indeterminate
+                    width="1"
+                    color="cancel"
+                    size="x-small"
+                    class="ml-2"
+                  ></v-progress-circular>
+                </v-btn>
+              </div>
+            </template>
+          </v-tooltip>
+        </div>
       </div>
     </v-card>
   </div>
@@ -144,7 +151,7 @@ export default {
   components: {},
   data: () => ({
     google_icon: {
-      icon_name: "edit_note",
+      icon_name: "lock_reset",
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },

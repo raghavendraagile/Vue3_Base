@@ -342,13 +342,8 @@ input::placeholder {
 .mdi-pencil-outline {
   min-height: 30px;
 }
-.arabdirectionalert {
-  direction: rtl;
-}
+
 .mdi-trash-can-outline:hover {
-  animation: shake 0.4s;
-}
-.img_shake {
   animation: shake 0.4s;
 }
 
@@ -517,4 +512,8 @@ input::placeholder {
   .login-box-custom {
     margin: 0px 20px;
   }
+}
+.preview-btn {
+  background: #444 !important;
+  color: #78ece1 !important;
 }/*# sourceMappingURL=global.css.map */
