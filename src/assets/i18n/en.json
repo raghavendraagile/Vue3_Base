@@ -574,5 +574,11 @@
   "confirm_email":"Confirm Your Email",
   "video_en": "Video",
   "video_ar": "فيديو",
-  "preview":"Preview"
+  "preview":"Preview",
+  "page_builder": "Page Builder",
+  "create_amend_page_builder": "Create/Amend Page Builder",
+  "parent_page_builder_en": "Parent Page Builder",
+  "parent_page_builder_ar": "منشئ الصفحة الأم",
+  "page_type_en": "Page Type",
+  "page_type_ar": "نوع الصفحة"
 }

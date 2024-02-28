@@ -528,6 +528,12 @@
   "confirm_email":"قم بتأكيد بريدك الإلكتروني",
   "video_en": "Video",
   "video_ar": "فيديو",
-  "preview":"معاينة"
+  "preview":"معاينة",
+  "page_builder": "منشئ الصفحة",
+  "parent_page_builder_en": "Parent Page Builder",
+  "parent_page_builder_ar": "منشئ الصفحة الأم",
+  "page_type_en": "Page Type",
+  "page_type_ar": "نوع الصفحة",
+  "create_amend_page_builder": "إنشاء/تعديل منشئ الصفحة"
 
 }

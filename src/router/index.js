@@ -469,7 +469,6 @@ const routes = [
   },
 
   //MyStores
-  // Stores
   {
     path: "/:lang?/my_stores",
     name: "my_stores",
@@ -483,6 +482,28 @@ const routes = [
     name: "preview_webapp",
     meta: { layout: "userpages" },
     component: () => import("../components/CustomComponents/PreviewWebapp.vue"),
+  },
+
+  //Page Builder
+  {
+    path: "/:lang?/page-builder",
+    name: "page-builder",
+    beforeEnter: guardMyroute,
+    // meta: { layout: "userpages" },
+    component: () => import("../components/Cruds/PageBuilder/IndexPage.vue"),
+  },
+  {
+    path: "/:lang?/page-builder-amend",
+    name: "page-builder-amend",
+    beforeEnter: guardMyroute,
+    // meta: { layout: "userpages" },
+    component: () => import("../components/Cruds/PageBuilder/PageBuilderAmend.vue"),
+  },
+  {
+    path: "/:lang?/page-builder-review",
+    name: "page-builder-review",
+    beforeEnter: guardMyroute,
+    component: () => import("../components/Cruds/PageBuilder/ReviewPageBuilder.vue"),
   },
 ];
 
