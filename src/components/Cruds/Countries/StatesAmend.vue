@@ -283,6 +283,18 @@ export default {
         this.sel_lang = "en";
       }
     },
+    "$route.query.s_tab": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.s_tab) {
+          if (this.$route.query.s_tab == 1) {
+            this.tabs = 1;
+          } else {
+            this.tabs = 2;
+          }
+        }
+      },
+    },
   },
   methods: {
     onFileChanged(e) {
@@ -342,6 +354,7 @@ export default {
                 name: "states",
                 query: {
                   countryslug: this.country_slug,
+                  s_tab: this.tabs,
                 },
               });
             } else if (res.data.status == "E") {
@@ -366,6 +379,7 @@ export default {
         name: "states",
         query: {
           countryslug: this.country_slug,
+          s_tab: this.tabs,
         },
       });
     },

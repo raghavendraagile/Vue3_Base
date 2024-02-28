@@ -1,7 +1,14 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']">
-      <page-title class="col-md-4 ml-2" :heading="$t('create_ammend_e_magazine')" :google_icon="google_icon"></page-title>
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
+      <page-title
+        class="col-md-4 ml-2"
+        :heading="$t('create_ammend_e_magazine')"
+        :google_icon="google_icon"
+      ></page-title>
     </div>
     <div class="mb-3 mx-auto">
       <div class="card-body">
@@ -14,13 +21,25 @@
             <span>{{ $t("arabic") }}</span>
           </v-tab>
         </v-tabs>
-        <v-alert closable close-label="Close Alert" density="compact" color="rgb(var(--v-theme-error))" v-if="error_valid"
-          variant="tonal" @click:close="error_valid = false" class="mb-4"
-          v-bind:class="[tabs == 1 ? '' : 'arabdirectionalert']" :title="tabs == 1 ? $t('validation_error_en') : $t('validation_error_ar')
-            " :text="tabs == 1
-      ? $t('please_fill_required_fields_en')
-      : $t('please_fill_required_fields_ar')
-    "></v-alert>
+        <v-alert
+          closable
+          close-label="Close Alert"
+          density="compact"
+          color="rgb(var(--v-theme-error))"
+          v-if="error_valid"
+          variant="tonal"
+          @click:close="error_valid = false"
+          class="mb-4"
+          v-bind:class="[tabs == 1 ? '' : 'arabdirectionalert']"
+          :title="
+            tabs == 1 ? $t('validation_error_en') : $t('validation_error_ar')
+          "
+          :text="
+            tabs == 1
+              ? $t('please_fill_required_fields_en')
+              : $t('please_fill_required_fields_ar')
+          "
+        ></v-alert>
         <v-window v-model="tabs">
           <!-- ENGLISH TAB STARTS -->
           <v-window-item :value="1">
@@ -29,10 +48,20 @@
                 <v-row class="px-6 mt-2">
                   <v-col xs="12" md="12" lg="12">
                     <!-- :disabled="$route.query.slug" -->
-                    <v-radio-group v-model="e_magazine[0].stor_type" inline class="radio_item"
-                      @change="updateType(e_magazine[0].stor_type)">
-                      <v-radio v-for="(role_data, rindex) in role_array" :key="rindex" :disabled="this.$route.query.slug"
-                        :label="changeRoleName(role_data.rolename)" :value="role_data.rolename" class="text--primary">
+                    <v-radio-group
+                      v-model="e_magazine[0].stor_type"
+                      inline
+                      class="radio_item"
+                      @change="updateType(e_magazine[0].stor_type)"
+                    >
+                      <v-radio
+                        v-for="(role_data, rindex) in role_array"
+                        :key="rindex"
+                        :disabled="this.$route.query.slug"
+                        :label="changeRoleName(role_data.rolename)"
+                        :value="role_data.rolename"
+                        class="text--primary"
+                      >
                       </v-radio>
                       <!-- <v-radio :label="$t('mall')" value="Mall"></v-radio>
                     <v-radio value="Store" :label="$t('store')"></v-radio> -->
@@ -42,34 +71,68 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2">
-                  <v-col cols="4" sm="12" md="4" v-if="user.rolename != 'StoreAdmin'">
+                  <v-col
+                    cols="4"
+                    sm="12"
+                    md="4"
+                    v-if="user.rolename != 'StoreAdmin'"
+                  >
                     <v-tooltip :text="labelText" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-autocomplete v-bind="props" v-model="e_magazine[0].store_id" :label="labelText"
-                          variant="outlined" class="required_field" :rules="fieldRules" density="compact" :disabled="user.rolename == 'MallAdmin' &&
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="e_magazine[0].store_id"
+                          :label="labelText"
+                          variant="outlined"
+                          class="required_field"
+                          :rules="fieldRules"
+                          density="compact"
+                          :disabled="
+                            user.rolename == 'MallAdmin' &&
                             e_magazine[0].stor_type == 'MallAdmin'
-                            " :loading="store_loader" :items="stores_en" item-title="name" item-value="header_id"
+                          "
+                          :loading="store_loader"
+                          :items="stores_en"
+                          item-title="name"
+                          item-value="header_id"
                           @update:model-value="
                             updateStore(e_magazine[0].store_id)
-                            "></v-autocomplete>
+                          "
+                        ></v-autocomplete>
                       </template>
                     </v-tooltip>
                   </v-col>
                   <v-col cols="4" sm="4" md="4">
                     <v-tooltip :text="$t('title')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-text-field v-bind="props" v-model="e_magazine[0].title" :rules="fieldRules" maxlength="70"
-                          class="required_field" v-bind:label="$t('title')" required variant="outlined"
-                          density="compact"></v-text-field>
+                        <v-text-field
+                          v-bind="props"
+                          v-model="e_magazine[0].title"
+                          :rules="fieldRules"
+                          maxlength="70"
+                          class="required_field"
+                          v-bind:label="$t('title')"
+                          required
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
                       </template>
                     </v-tooltip>
                   </v-col>
                   <v-col cols="4" sm="4" md="4">
                     <v-tooltip :text="$t('meta_title')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-text-field v-bind="props" v-model="e_magazine[0].meta_title" :rules="fieldRules" maxlength="70"
-                          class="required_field" v-bind:label="$t('meta_title')" required variant="outlined"
-                          density="compact"></v-text-field>
+                        <v-text-field
+                          v-bind="props"
+                          v-model="e_magazine[0].meta_title"
+                          :rules="fieldRules"
+                          maxlength="70"
+                          class="required_field"
+                          v-bind:label="$t('meta_title')"
+                          required
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
                       </template>
                     </v-tooltip>
                   </v-col>
@@ -84,23 +147,45 @@
                     <v-tooltip :text="$t('description_en')" location="top">
                       <template v-slot:activator="{ props }">
                         <div v-bind="props">
-                          <quill-editor class="hide_quill_input" v-bind:id="quill_item == true
-                              ? 'quill_item'
-                              : 'quill_item_border'
-                            " maxlength="2000" v-model:value="e_magazine[0].description"
-                            @focus="onEditorFocus($event)" @ready="onEditorReady($event)"
-                            @change="onEditorChange($event)" />
-                          <small v-if="quill_item" class="text-danger ml-5 required_item shake">Field Required</small>
+                          <quill-editor
+                            class="hide_quill_input"
+                            v-bind:id="
+                              quill_item == true
+                                ? 'quill_item'
+                                : 'quill_item_border'
+                            "
+                            maxlength="2000"
+                            v-model:value="e_magazine[0].description"
+                            @focus="onEditorFocus($event)"
+                            @ready="onEditorReady($event)"
+                            @change="onEditorChange($event)"
+                          />
+                          <small
+                            v-if="quill_item"
+                            class="text-danger ml-5 required_item shake"
+                            >Field Required</small
+                          >
                         </div>
                       </template>
                     </v-tooltip>
                   </v-col>
                   <v-col md="12">
-                    <v-tooltip :text="this.$t('meta_description')" location="bottom">
+                    <v-tooltip
+                      :text="this.$t('meta_description')"
+                      location="bottom"
+                    >
                       <template v-slot:activator="{ props }">
-                        <v-textarea v-on="on" rows="2" v-model="e_magazine[0].meta_description" v-bind="props"
-                          v-bind:label="$t('meta_description')" required variant="outlined" maxlength="160"
-                          counter="true"></v-textarea>
+                        <v-textarea
+                          v-on="on"
+                          rows="2"
+                          v-model="e_magazine[0].meta_description"
+                          v-bind="props"
+                          v-bind:label="$t('meta_description')"
+                          required
+                          variant="outlined"
+                          maxlength="160"
+                          counter="true"
+                        ></v-textarea>
                       </template>
                     </v-tooltip>
                   </v-col>
@@ -109,33 +194,66 @@
               <v-layout>
                 <v-row class="px-6 mt-2">
                   <v-col cols="6" sm="6" md="6" class="d-flex">
-                    <v-tooltip :text="this.$t('remove_file_en')" location="bottom" v-if="e_magazine[0].file_upload">
+                    <v-tooltip
+                      :text="this.$t('remove_file_en')"
+                      location="bottom"
+                      v-if="e_magazine[0].file_upload"
+                    >
                       <template v-slot:activator="{ props }">
                         <div class="col-md-1">
-                          <a :href="envImagePath + e_magazine[0].file_upload" download><v-icon v-bind="props">mdi
-                              mdi-file</v-icon></a>
+                          <a
+                            :href="envImagePath + e_magazine[0].file_upload"
+                            download
+                            ><v-icon v-bind="props">mdi mdi-file</v-icon></a
+                          >
                         </div>
                         <div class="col-md-9">
-                          <a :href="envImagePath + e_magazine[0].file_upload" download>
+                          <a
+                            :href="envImagePath + e_magazine[0].file_upload"
+                            download
+                          >
                             <v-chip size="small" v-bind="props">{{
                               e_magazine[0].file_upload
                             }}</v-chip>
                           </a>
                         </div>
                         <div class="col-md-1">
-                          <a @click="e_magazine[0].file_upload = ''"><v-icon v-bind="props">mdi mdi-delete</v-icon></a>
+                          <a @click="e_magazine[0].file_upload = ''"
+                            ><v-icon v-bind="props">mdi mdi-delete</v-icon></a
+                          >
                         </div>
                       </template>
                     </v-tooltip>
-                    <v-tooltip :text="this.$t('upload_file')" location="bottom" v-else>
+                    <v-tooltip
+                      :text="this.$t('upload_file')"
+                      location="bottom"
+                      v-else
+                    >
                       <template v-slot:activator="{ props }">
-                        <v-file-input :disabled="is_disabled" v-bind="props" show-size :label="$t('file_input')" outlined
-                          :rules="fileRules" :error="errorUpload" :error-messages="errorUploadMessage"
-                          @input="clearUploadErrors" prepend-icon="" append-inner-icon="mdi mdi-file-document-plus"
-                          accept="image/*,.pdf" required class="required_field" variant="outlined" density="compact"
-                          @click="updateFileIndex(index)" @change="onFileChange"><template
-                            v-slot:selection="{ fileNames }">
-                            <template v-for="fileName in fileNames" :key="fileName">
+                        <v-file-input
+                          :disabled="is_disabled"
+                          v-bind="props"
+                          show-size
+                          :label="$t('file_input')"
+                          outlined
+                          :rules="fileRules"
+                          :error="errorUpload"
+                          :error-messages="errorUploadMessage"
+                          @input="clearUploadErrors"
+                          prepend-icon=""
+                          append-inner-icon="mdi mdi-file-document-plus"
+                          accept="image/*,.pdf"
+                          required
+                          class="required_field"
+                          variant="outlined"
+                          density="compact"
+                          @click="updateFileIndex(index)"
+                          @change="onFileChange"
+                          ><template v-slot:selection="{ fileNames }">
+                            <template
+                              v-for="fileName in fileNames"
+                              :key="fileName"
+                            >
                               <v-chip size="small" label class="me-2">
                                 {{ fileName }}
                               </v-chip>
@@ -150,39 +268,75 @@
                       <div class="image-container">
                         <v-hover v-slot="{ isHovering, props }">
                           <div style="position: relative" v-bind="props">
-                            <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
-                              " v-if="e_magazine[0].image_path != null" :src="envImagePath + e_magazine[0].image_path"
-                              width="100" height="65
-                          " alt />
-                            <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
-                              " v-else src="@/assets/images/upload_image_default.png" width="100" />
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-if="e_magazine[0].image_path != null"
+                              :src="envImagePath + e_magazine[0].image_path"
+                              width="100"
+                              height="65
+                          "
+                              alt
+                            />
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-else
+                              src="@/assets/images/upload_image_default.png"
+                              width="100"
+                            />
                             <div v-show="isHovering" class="camera-icon">
                               <v-icon @click="uploadFile">mdi-camera</v-icon>
                             </div>
                           </div>
                         </v-hover>
                       </div>
-                      <v-tooltip :text="this.$t('download_en')" location="bottom">
+                      <v-tooltip
+                        :text="this.$t('download_en')"
+                        location="bottom"
+                      >
                         <template v-slot:activator="{ props }">
                           <a class="text-center pointer download_icon">
-                            <span><v-icon v-if="e_magazine[0].image_path" v-bind="props" class="mr-2"
-                                @click="downloadImage(e_magazine[0].image_path)">mdi mdi-download</v-icon></span>
+                            <span
+                              ><v-icon
+                                v-if="e_magazine[0].image_path"
+                                v-bind="props"
+                                class="mr-2"
+                                @click="downloadImage(e_magazine[0].image_path)"
+                                >mdi mdi-download</v-icon
+                              ></span
+                            >
                           </a>
                         </template>
                       </v-tooltip>
                       <span>
-                        <v-tooltip :text="this.$t('delete_en')" location="bottom">
+                        <v-tooltip
+                          :text="this.$t('delete_en')"
+                          location="bottom"
+                        >
                           <template v-slot:activator="{ props }">
-                            <v-icon small v-bind="props" v-if="e_magazine[0].image_path"
-                              class="mr-2 edit_btn icon_size delete_icon" @click="removeImage(0)">mdi
-                              mdi-trash-can-outline</v-icon>
+                            <v-icon
+                              small
+                              v-bind="props"
+                              v-if="e_magazine[0].image_path"
+                              class="mr-2 edit_btn icon_size delete_icon"
+                              @click="removeImage(0)"
+                              >mdi mdi-trash-can-outline</v-icon
+                            >
                           </template>
                         </v-tooltip>
                       </span>
                     </div>
                     <br />
-                    <Imageupload :folder="'e_magazine'" :resizewidth="200" :resizeheight="200"
-                      @uploaded_image="uploaded_image" :upload_profile="uploadfile" />
+                    <Imageupload
+                      :folder="'e_magazine'"
+                      :resizewidth="200"
+                      :resizeheight="200"
+                      @uploaded_image="uploaded_image"
+                      :upload_profile="uploadfile"
+                    />
                   </v-col>
                 </v-row>
               </v-layout>
@@ -191,15 +345,29 @@
           <!-- ENGLISH TAB END -->
           <!-- ARABIC TAB STARTS -->
           <v-window-item :value="2">
-            <v-form ref="form" v-model="validAR" style="direction: rtl; text-align: end">
+            <v-form
+              ref="form"
+              v-model="validAR"
+              style="direction: rtl; text-align: end"
+            >
               <v-layout v-if="user.rolename != 'StoreAdmin'">
                 <!-- :disabled="$route.query.slug" -->
                 <v-row class="px-6 mt-2 arabdirection">
                   <v-col xs="12" md="12" lg="12">
-                    <v-radio-group v-model="e_magazine[1].stor_type" inline class="radio_item"
-                      @change="updateType(e_magazine[1].stor_type)">
-                      <v-radio v-for="(role_data, rindex) in role_array" :key="rindex" :disabled="this.$route.query.slug"
-                        :label="changeStatusAr(role_data.rolename)" :value="role_data.rolename" class="text--primary">
+                    <v-radio-group
+                      v-model="e_magazine[1].stor_type"
+                      inline
+                      class="radio_item"
+                      @change="updateType(e_magazine[1].stor_type)"
+                    >
+                      <v-radio
+                        v-for="(role_data, rindex) in role_array"
+                        :key="rindex"
+                        :disabled="this.$route.query.slug"
+                        :label="changeStatusAr(role_data.rolename)"
+                        :value="role_data.rolename"
+                        class="text--primary"
+                      >
                       </v-radio>
                       <!-- <v-radio :label="$t('mall')" value="Mall"></v-radio>
                     <v-radio value="Store" :label="$t('store')"></v-radio> -->
@@ -209,35 +377,68 @@
               </v-layout>
               <v-layout>
                 <v-row class="px-6 mt-2 arabdirection">
-                  <v-col cols="4" sm="12" md="4" v-if="user.rolename != 'StoreAdmin'">
+                  <v-col
+                    cols="4"
+                    sm="12"
+                    md="4"
+                    v-if="user.rolename != 'StoreAdmin'"
+                  >
                     <v-tooltip :text="label_text_ar" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-autocomplete v-bind="props" v-model="e_magazine[1].store_id" :label="label_text_ar"
-                          class="required_field rtl" :rules="fieldRulesAR" variant="outlined" :loading="store_loader"
-                          :disabled="user.rolename == 'MallAdmin' &&
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="e_magazine[1].store_id"
+                          :label="label_text_ar"
+                          class="required_field rtl"
+                          :rules="fieldRulesAR"
+                          variant="outlined"
+                          :loading="store_loader"
+                          :disabled="
+                            user.rolename == 'MallAdmin' &&
                             e_magazine[1].stor_type == 'MallAdmin'
-                            " density="compact" :items="stores_ar" item-title="name" item-value="header_id"
+                          "
+                          density="compact"
+                          :items="stores_ar"
+                          item-title="name"
+                          item-value="header_id"
                           @update:model-value="
                             updateStore(e_magazine[1].store_id)
-                            "></v-autocomplete>
+                          "
+                        ></v-autocomplete>
                       </template>
                     </v-tooltip>
                   </v-col>
                   <v-col cols="4" sm="12" md="4">
                     <v-tooltip :text="$t('title_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-text-field v-bind="props" v-model="e_magazine[1].title" :rules="fieldRulesAR" maxlength="70"
-                          v-bind:label="$t('title_ar')" required class="required_field rtl" variant="outlined"
-                          density="compact"></v-text-field>
+                        <v-text-field
+                          v-bind="props"
+                          v-model="e_magazine[1].title"
+                          :rules="fieldRulesAR"
+                          maxlength="70"
+                          v-bind:label="$t('title_ar')"
+                          required
+                          class="required_field rtl"
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
                       </template>
                     </v-tooltip>
                   </v-col>
                   <v-col cols="4" sm="12" md="4">
                     <v-tooltip :text="$t('meta_title_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-text-field v-bind="props" v-model="e_magazine[1].meta_title" :rules="fieldRulesAR"
-                          maxlength="70" v-bind:label="$t('title_ar')" required class="required_field rtl"
-                          variant="outlined" density="compact"></v-text-field>
+                        <v-text-field
+                          v-bind="props"
+                          v-model="e_magazine[1].meta_title"
+                          :rules="fieldRulesAR"
+                          maxlength="70"
+                          v-bind:label="$t('title_ar')"
+                          required
+                          class="required_field rtl"
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
                       </template>
                     </v-tooltip>
                   </v-col>
@@ -252,23 +453,46 @@
                     <v-tooltip :text="$t('description_ar')" location="top">
                       <template v-slot:activator="{ props }">
                         <div v-bind="props">
-                          <quill-editor class="hide_quill_input" v-bind:id="quill_item_ar == true
-                              ? 'quill_item'
-                              : 'quill_item_border'
-                            " maxlength="2000" v-model:value="e_magazine[1].description"
-                            @focus="onEditorFocus($event)" @ready="onEditorReady($event)"
-                            @change="onEditorChangeAR($event)" />
-                          <small v-if="quill_item_ar" class="text-danger ml-5 required_item shake">Field Required</small>
+                          <quill-editor
+                            class="hide_quill_input"
+                            v-bind:id="
+                              quill_item_ar == true
+                                ? 'quill_item'
+                                : 'quill_item_border'
+                            "
+                            maxlength="2000"
+                            v-model:value="e_magazine[1].description"
+                            @focus="onEditorFocus($event)"
+                            @ready="onEditorReady($event)"
+                            @change="onEditorChangeAR($event)"
+                          />
+                          <small
+                            v-if="quill_item_ar"
+                            class="text-danger ml-5 required_item shake"
+                            >Field Required</small
+                          >
                         </div>
                       </template>
                     </v-tooltip>
                   </v-col>
                   <v-col md="12">
-                    <v-tooltip :text="this.$t('meta_description_ar')" location="bottom">
+                    <v-tooltip
+                      :text="this.$t('meta_description_ar')"
+                      location="bottom"
+                    >
                       <template v-slot:activator="{ props }">
-                        <v-textarea v-on="on" rows="2" v-model="e_magazine[1].meta_description" v-bind="props"
-                          v-bind:label="$t('meta_description_ar')" required class="rtl" variant="outlined" maxlength="160"
-                          counter="true"></v-textarea>
+                        <v-textarea
+                          v-on="on"
+                          rows="2"
+                          v-model="e_magazine[1].meta_description"
+                          v-bind="props"
+                          v-bind:label="$t('meta_description_ar')"
+                          required
+                          class="rtl"
+                          variant="outlined"
+                          maxlength="160"
+                          counter="true"
+                        ></v-textarea>
                       </template>
                     </v-tooltip>
                   </v-col>
@@ -277,33 +501,66 @@
               <v-layout>
                 <v-row class="px-6 mt-2 arabdirection">
                   <v-col cols="6" sm="6" md="6" class="d-flex">
-                    <v-tooltip :text="this.$t('remove_file_ar')" location="bottom" v-if="e_magazine[1].file_upload">
+                    <v-tooltip
+                      :text="this.$t('remove_file_ar')"
+                      location="bottom"
+                      v-if="e_magazine[1].file_upload"
+                    >
                       <template v-slot:activator="{ props }">
                         <div class="col-md-1">
-                          <a :href="envImagePath + e_magazine[1].file_upload" download><v-icon v-bind="props">mdi
-                              mdi-file</v-icon></a>
+                          <a
+                            :href="envImagePath + e_magazine[1].file_upload"
+                            download
+                            ><v-icon v-bind="props">mdi mdi-file</v-icon></a
+                          >
                         </div>
                         <div class="col-md-9">
-                          <a :href="envImagePath + e_magazine[1].file_upload" download>
+                          <a
+                            :href="envImagePath + e_magazine[1].file_upload"
+                            download
+                          >
                             <v-chip size="small" v-bind="props">{{
                               e_magazine[1].file_upload
                             }}</v-chip>
                           </a>
                         </div>
                         <div class="col-md-1">
-                          <a @click="e_magazine[1].file_upload = ''"><v-icon v-bind="props">mdi mdi-delete</v-icon></a>
+                          <a @click="e_magazine[1].file_upload = ''"
+                            ><v-icon v-bind="props">mdi mdi-delete</v-icon></a
+                          >
                         </div>
                       </template>
                     </v-tooltip>
-                    <v-tooltip :text="this.$t('file_input_ar')" location="bottom" v-else>
+                    <v-tooltip
+                      :text="this.$t('file_input_ar')"
+                      location="bottom"
+                      v-else
+                    >
                       <template v-slot:activator="{ props }">
-                        <v-file-input :disabled="is_disabled" v-bind="props" show-size :label="$t('file_input_ar')"
-                          outlined :rules="fileRulesAR" :error="errorUpload" :error-messages="errorUploadMessage"
-                          @input="clearUploadErrors" prepend-icon="" append-inner-icon="mdi mdi-file-document-plus"
-                          accept="image/*,.pdf" required class="required_field" variant="outlined" density="compact"
-                          @click="updateFileIndex(index)" @change="onFileChange"><template
-                            v-slot:selection="{ fileNames }">
-                            <template v-for="fileName in fileNames" :key="fileName">
+                        <v-file-input
+                          :disabled="is_disabled"
+                          v-bind="props"
+                          show-size
+                          :label="$t('file_input_ar')"
+                          outlined
+                          :rules="fileRulesAR"
+                          :error="errorUpload"
+                          :error-messages="errorUploadMessage"
+                          @input="clearUploadErrors"
+                          prepend-icon=""
+                          append-inner-icon="mdi mdi-file-document-plus"
+                          accept="image/*,.pdf"
+                          required
+                          class="required_field"
+                          variant="outlined"
+                          density="compact"
+                          @click="updateFileIndex(index)"
+                          @change="onFileChange"
+                          ><template v-slot:selection="{ fileNames }">
+                            <template
+                              v-for="fileName in fileNames"
+                              :key="fileName"
+                            >
                               <v-chip size="small" label class="me-2">
                                 {{ fileName }}
                               </v-chip>
@@ -318,12 +575,25 @@
                       <div class="image-container">
                         <v-hover v-slot="{ isHovering, props }">
                           <div style="position: relative" v-bind="props">
-                            <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
-                              " v-if="e_magazine[1].image_path != null" :src="envImagePath + e_magazine[1].image_path"
-                              width="100" height="65
-                          " alt />
-                            <img v-bind:style="isHovering == true ? 'filter: blur(1px);' : ''
-                              " v-else src="@/assets/images/upload_image_default.png" width="100" />
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-if="e_magazine[1].image_path != null"
+                              :src="envImagePath + e_magazine[1].image_path"
+                              width="100"
+                              height="65
+                          "
+                              alt
+                            />
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-else
+                              src="@/assets/images/upload_image_default.png"
+                              width="100"
+                            />
                             <div v-show="isHovering" class="camera-icon">
                               <v-icon @click="uploadFileAr">mdi-camera</v-icon>
                             </div>
@@ -331,29 +601,53 @@
                         </v-hover>
                       </div>
                       <div class="text-right">
-                        <v-tooltip :text="this.$t('download_ar')" location="bottom">
+                        <v-tooltip
+                          :text="this.$t('download_ar')"
+                          location="bottom"
+                        >
                           <template v-slot:activator="{ props }">
                             <a class="text-center pointer download_icon_ar">
-                              <span><v-icon v-if="e_magazine[1].image_path" v-bind="props" class="mr-2" @click="
-                                downloadImage(e_magazine[1].image_path)
-                                ">mdi mdi-download</v-icon></span>
+                              <span
+                                ><v-icon
+                                  v-if="e_magazine[1].image_path"
+                                  v-bind="props"
+                                  class="mr-2"
+                                  @click="
+                                    downloadImage(e_magazine[1].image_path)
+                                  "
+                                  >mdi mdi-download</v-icon
+                                ></span
+                              >
                             </a>
                           </template>
                         </v-tooltip>
                         <span>
-                          <v-tooltip :text="this.$t('delete_ar')" location="bottom">
+                          <v-tooltip
+                            :text="this.$t('delete_ar')"
+                            location="bottom"
+                          >
                             <template v-slot:activator="{ props }">
-                              <v-icon small v-bind="props" v-if="e_magazine[1].image_path"
-                                class="mr-2 edit_btn icon_size delete_icon_ar" @click="removeImage(1)">mdi
-                                mdi-trash-can-outline</v-icon>
+                              <v-icon
+                                small
+                                v-bind="props"
+                                v-if="e_magazine[1].image_path"
+                                class="mr-2 edit_btn icon_size delete_icon_ar"
+                                @click="removeImage(1)"
+                                >mdi mdi-trash-can-outline</v-icon
+                              >
                             </template>
                           </v-tooltip>
                         </span>
                       </div>
                     </div>
                     <br />
-                    <Imageupload :folder="'e_magazine'" :resizewidth="200" :resizeheight="200"
-                      @uploaded_image="uploaded_image" :upload_profile="uploadfilear" />
+                    <Imageupload
+                      :folder="'e_magazine'"
+                      :resizewidth="200"
+                      :resizeheight="200"
+                      @uploaded_image="uploaded_image"
+                      :upload_profile="uploadfilear"
+                    />
                   </v-col>
                 </v-row>
               </v-layout>
@@ -366,22 +660,42 @@
         <v-tooltip :text="this.$t('cancel')" location="bottom">
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="d-inline-block mr-2">
-              <v-btn v-bind="props" size="small" @click="
-                $router.push({
-                  name: 'e-magazine',
-                  query: { s_tab: this.$route.query.s_tab },
-                })
-                " :disabled="loading" class="ma-1" color="cancel">{{ $t("cancel") }}</v-btn>
+              <v-btn
+                v-bind="props"
+                size="small"
+                @click="
+                  $router.push({
+                    name: 'e-magazine',
+                    query: { s_tab: this.$route.query.s_tab },
+                  })
+                "
+                :disabled="loading"
+                class="ma-1"
+                color="cancel"
+                >{{ $t("cancel") }}</v-btn
+              >
             </div>
           </template>
         </v-tooltip>
         <v-tooltip :text="this.$t('submit')" location="bottom">
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="d-inline-block">
-              <v-btn :disabled="isDisabled" @click="presubmitvalidation" size="small" class="mr-2" color="success">
+              <v-btn
+                :disabled="isDisabled"
+                @click="presubmitvalidation"
+                size="small"
+                class="mr-2"
+                color="success"
+              >
                 {{ $t("submit") }}
-                <v-progress-circular v-if="isBtnLoading" indeterminate width="1" color="cancel" size="x-small"
-                  class="ml-2"></v-progress-circular>
+                <v-progress-circular
+                  v-if="isBtnLoading"
+                  indeterminate
+                  width="1"
+                  color="cancel"
+                  size="x-small"
+                  class="ml-2"
+                ></v-progress-circular>
               </v-btn>
             </div>
           </template>
@@ -532,8 +846,8 @@ export default {
           this.$axios
             .get(
               process.env.VUE_APP_API_URL_ADMIN +
-              "edit-e-magazine/" +
-              this.$route.query.slug
+                "edit-e-magazine/" +
+                this.$route.query.slug
             )
             .then((res) => {
               this.e_magazine = res.data.e_magazine;
@@ -892,10 +1206,12 @@ export default {
     },
     //---submit---
     submit() {
-      if (this.valid == true &&
+      if (
+        this.valid == true &&
         this.quill_item == false &&
         this.validAR == true &&
-        this.quill_item_ar == false) {
+        this.quill_item_ar == false
+      ) {
         this.isDisabled = true;
         this.isBtnLoading = true;
         if (this.user.rolename == "StoreAdmin") {
@@ -951,7 +1267,6 @@ export default {
         this.quill_item_ar = false;
       }
     },
-
 
     clear() {
       this.$refs.form.reset();
@@ -1052,5 +1367,31 @@ input.larger {
 
 #quill_item_border {
   border: 1px solid #d1d5db;
+}
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+.shake {
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  transform: translate3d(0, 0, 0);
 }
 </style>

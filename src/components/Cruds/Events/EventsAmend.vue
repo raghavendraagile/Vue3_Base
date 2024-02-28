@@ -20,6 +20,25 @@
           <span>{{ $t("arabic") }}</span>
         </v-tab>
       </v-tabs>
+      <v-alert
+        closable
+        close-label="Close Alert"
+        density="compact"
+        color="rgb(var(--v-theme-error))"
+        v-if="error_valid"
+        variant="tonal"
+        @click:close="error_valid = false"
+        class="my-3"
+        v-bind:class="[tabs == 1 ? '' : 'arabdirectionalert']"
+        :title="
+          tabs == 1 ? $t('validation_error_en') : $t('validation_error_ar')
+        "
+        :text="
+          tabs == 1
+            ? $t('please_fill_required_fields_en')
+            : $t('please_fill_required_fields_ar')
+        "
+      ></v-alert>
       <v-window v-model="tabs">
         <!-- ENGLISH TAB STARTS -->
         <v-window-item :value="1">
@@ -224,7 +243,7 @@
                     <v-text-field
                       v-bind="props"
                       v-model="events[0].floor"
-                      maxlength="5"
+                      maxlength="10"
                       v-bind:label="$t('floor_en')"
                       variant="outlined"
                       density="compact"
@@ -313,7 +332,7 @@
         <v-window-item :value="2">
           <v-form
             ref="form"
-            v-model="valid"
+            v-model="validAR"
             style="direction: rtl; text-align: end"
           >
             <v-layout v-if="user.rolename != 'StoreAdmin'">
@@ -438,7 +457,7 @@
                         :options="editorOptions"
                         class="hide_quill_input rtl"
                         v-bind:id="
-                          quill_item == true
+                          quill_item_ar == true
                             ? 'quill_item'
                             : 'quill_item_border'
                         "
@@ -449,7 +468,7 @@
                         @change="onEditorChangeAR($event)"
                       />
                       <small
-                        v-if="quill_item"
+                        v-if="quill_item_ar"
                         class="text-danger ml-5 required_item shake"
                         >Field Required</small
                       >
@@ -522,7 +541,7 @@
                     <v-text-field
                       v-bind="props"
                       v-model="events[1].floor"
-                      maxlength="5"
+                      maxlength="10"
                       v-bind:label="$t('floor_ar')"
                       variant="outlined"
                       density="compact"
@@ -620,7 +639,7 @@
               @click="
                 $router.push({
                   name: 'events',
-                  query: { s_tab: this.$route.query.s_tab },
+                  query: { s_tab: this.tabs },
                 })
               "
               :disabled="loading"
@@ -636,7 +655,7 @@
           <div v-bind="props" class="d-inline-block">
             <v-btn
               :disabled="isDisabled"
-              @click="submit"
+              @click="presubmitvalidation"
               size="small"
               class="mr-2"
               color="success"
@@ -697,7 +716,11 @@ export default {
     tabs: 1,
     role_array: [],
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
-    valid: true,
+    valid: false,
+    validAR: false,
+    quill_item: false,
+    quill_item_ar: false,
+    error_valid: false,
     loader: false,
     stores_data_en: [],
     stores_data_ar: [],
@@ -800,6 +823,8 @@ export default {
         // alert('Inside watch');
         // alert(this.$route.query.slug);
         if (this.$route.query.slug) {
+          this.valid = true;
+          this.validAR = true;
           this.loader = true;
           this.$axios
             .get(
@@ -1086,8 +1111,65 @@ export default {
 
       // Do whatever you need with the file, liek reading it with FileReader
     },
+    presubmitvalidation() {
+      if (this.tabs == 1) {
+        if (
+          this.events[0].description == "" ||
+          this.events[0].description == null
+        ) {
+          this.quill_item = true;
+        } else {
+          this.quill_item = false;
+        }
+        if (
+          this.$refs.form.validate() &&
+          this.valid == true &&
+          this.quill_item == false &&
+          this.validAR == true &&
+          this.quill_item_ar == false
+        ) {
+          this.error_valid = false;
+          this.submit();
+        } else {
+          if (this.valid == true && this.quill_item == false) {
+            this.error_valid = true;
+            this.tabs = 2;
+          }
+        }
+      } else {
+        if (
+          this.events[1].description == "" ||
+          this.events[1].description == null
+        ) {
+          this.quill_item_ar = true;
+        } else {
+          this.quill_item_ar = false;
+        }
+        if (
+          this.$refs.form.validate() &&
+          this.validAR == true &&
+          this.quill_item_ar == false &&
+          this.valid == true &&
+          this.quill_item == false
+        ) {
+          this.error_valid = false;
+          this.submit();
+        } else {
+          if (this.validAR == true && this.quill_item_ar == false) {
+            this.error_valid = true;
+            this.valid = false;
+            this.tabs = 1;
+          }
+        }
+      }
+    },
     submit() {
-      if (this.$refs.form.validate()) {
+      if (
+        this.validAR == true &&
+        this.quill_item_ar == false &&
+        this.valid == true &&
+        this.quill_item == false
+      ) {
         this.isDisabled = true;
         this.isBtnLoading = true;
         this.loader = true;
@@ -1113,7 +1195,7 @@ export default {
               this.$router.push({
                 name: "events",
                 query: {
-                  s_tab: this.$route.query.s_tab,
+                  s_tab: this.tabs,
                 },
               });
             } else if (res.data.status == "E") {
@@ -1142,9 +1224,9 @@ export default {
     },
     onEditorChangeAR(event) {
       if (event.text.length == 1) {
-        this.quill_item = true;
+        this.quill_item_ar = true;
       } else {
-        this.quill_item = false;
+        this.quill_item_ar = false;
       }
     },
     onEditorBlur() {
@@ -1156,7 +1238,7 @@ export default {
     onEditorBlurAR(event) {
       console.log(event.options);
       if (this.events.description_ar == "") {
-        this.quill_item = true;
+        this.quill_item_ar = true;
       }
     },
     clear() {
@@ -1168,14 +1250,6 @@ export default {
       } else {
         this.events[0].image_path = null;
       }
-    },
-    cancel() {
-      this.$router.push({
-        name: "categories",
-        query: {
-          s_tab: this.$route.query.s_tab,
-        },
-      });
     },
   },
 };
@@ -1215,24 +1289,36 @@ input.larger {
 .arabdirection /deep/ .v-input {
   direction: rtl !important;
 }
+
 .delete_icon_ar {
   position: relative;
   right: 77px;
   bottom: 90px;
 }
+
 .delete_icon {
   position: relative;
   left: 83px;
   bottom: 90px;
 }
+
 .download_icon {
   position: relative;
   left: 116px;
   bottom: 52px;
 }
+
 .download_icon_ar {
   position: relative;
   bottom: 45px;
   right: 110px;
+}
+
+#quill_item {
+  border: 1px solid #b00020;
+}
+
+#quill_item_border {
+  border: 1px solid #d1d5db;
 }
 </style>

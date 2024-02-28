@@ -416,6 +416,23 @@ export default {
         this.is_arabic = false;
       }
     },
+    "$route.query.s_tab": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.s_tab) {
+          if (this.$route.query.s_tab == 1) {
+            this.fieldItem.lang = "en";
+          } else {
+            this.fieldItem.lang = "ar";
+          }
+        }
+        // if (this.fieldItem.lang == "en") {
+        //   this.tabs = 1;
+        // } else {
+        //   this.tabs = 2;
+        // }
+      },
+    },
     "$route.query.slug": {
       immediate: true,
       handler() {
@@ -590,6 +607,7 @@ export default {
     cancel() {
       this.$router.push({
         name: "email_template",
+        query: { s_tab: this.tabs },
       });
     },
   },

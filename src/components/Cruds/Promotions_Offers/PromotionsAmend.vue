@@ -21,24 +21,24 @@
         </v-tab>
       </v-tabs>
       <v-alert
-          closable
-          close-label="Close Alert"
-          density="compact"
-          color="rgb(var(--v-theme-error))"
-          v-if="error_valid"
-          variant="tonal"
-          @click:close="error_valid = false"
-          class="mb-4"
-          v-bind:class="[tabs == 1 ? '' : 'arabdirectionalert']"
-          :title="
-            tabs == 1 ? $t('validation_error_en') : $t('validation_error_ar')
-          "
-          :text="
-            tabs == 1
-              ? $t('please_fill_required_fields_en')
-              : $t('please_fill_required_fields_ar')
-          "
-        ></v-alert>
+        closable
+        close-label="Close Alert"
+        density="compact"
+        color="rgb(var(--v-theme-error))"
+        v-if="error_valid"
+        variant="tonal"
+        @click:close="error_valid = false"
+        class="mb-4"
+        v-bind:class="[tabs == 1 ? '' : 'arabdirectionalert']"
+        :title="
+          tabs == 1 ? $t('validation_error_en') : $t('validation_error_ar')
+        "
+        :text="
+          tabs == 1
+            ? $t('please_fill_required_fields_en')
+            : $t('please_fill_required_fields_ar')
+        "
+      ></v-alert>
       <v-window v-model="tabs">
         <!-- ENGLISH TAB STARTS -->
         <v-window-item :value="1">
@@ -213,7 +213,8 @@
                       @formatted_date="formatted_start_date"
                       dense
                       :class_required="'RequiredField'"
-                      v-on="on" />
+                      v-on="on"
+                    />
                   </template>
                 </v-tooltip>
               </v-col>
@@ -296,7 +297,7 @@
                     <v-text-field
                       v-bind="props"
                       v-model="promotions[0].floor"
-                      maxlength="5"
+                      maxlength="10"
                       v-bind:label="$t('floor_en')"
                       variant="outlined"
                       density="compact"
@@ -652,7 +653,7 @@
                     <v-text-field
                       v-bind="props"
                       v-model="promotions[1].floor"
-                      maxlength="5"
+                      maxlength="10"
                       v-bind:label="$t('floor_ar')"
                       variant="outlined"
                       density="compact"
@@ -764,7 +765,7 @@
               @click="
                 $router.push({
                   name: 'promotions_offers',
-                  query: { s_tab: this.$route.query.s_tab },
+                  query: { s_tab: this.tabs },
                 })
               "
               :disabled="loading"
@@ -1259,7 +1260,11 @@ export default {
     },
     presubmitvalidation() {
       if (this.tabs == 1) {
-        if (this.$refs.form.validate() && this.valid == true && this.validAR == true) {
+        if (
+          this.$refs.form.validate() &&
+          this.valid == true &&
+          this.validAR == true
+        ) {
           this.error_valid = false;
           this.submit();
         } else {
@@ -1269,7 +1274,11 @@ export default {
           }
         }
       } else {
-        if (this.$refs.form.validate() && this.validAR == true && this.valid == true) {
+        if (
+          this.$refs.form.validate() &&
+          this.validAR == true &&
+          this.valid == true
+        ) {
           this.error_valid = false;
           this.submit();
         } else {
@@ -1309,7 +1318,7 @@ export default {
               this.message = res.data.message;
               this.$router.push({
                 name: "promotions_offers",
-                query: { s_tab: this.$route.query.s_tab },
+                query: { s_tab: this.tabs },
               });
             } else if (res.data.status == "E") {
               this.$toast.error(this.array_data);

@@ -6,7 +6,7 @@
     >
       <page-title
         class="col-md-4 ml-2"
-        :heading="$t('promotions')"
+        :heading="$t('promotions_offers')"
         :google_icon="google_icon"
       ></page-title>
     </div>

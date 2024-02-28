@@ -143,7 +143,7 @@
               <v-btn
                 v-bind="props"
                 size="small"
-                @click="$router.go(-1)"
+                @click="cancel()"
                 :disabled="loading"
                 class="ma-1"
                 color="cancel"
@@ -261,6 +261,18 @@ export default {
         this.sel_lang = "en";
       }
     },
+    "$route.query.s_tab": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.s_tab) {
+          if (this.$route.query.s_tab == 1) {
+            this.tabs = 1;
+          } else {
+            this.tabs = 2;
+          }
+        }
+      },
+    },
   },
   methods: {
     onFileChanged(e) {
@@ -321,6 +333,7 @@ export default {
               this.message = res.data.message;
               this.$router.push({
                 name: "countries",
+                query: { s_tab: this.tabs },
               });
             } else if (res.data.status == "E") {
               this.$toast.error(this.array_data);
@@ -343,6 +356,12 @@ export default {
     },
     clear() {
       this.$refs.form.reset();
+    },
+    cancel() {
+      this.$router.push({
+        name: "countries",
+        query: { s_tab: this.tabs },
+      });
     },
   },
 };
