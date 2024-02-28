@@ -50,13 +50,13 @@
                     <v-tooltip :text="this.$t('mall_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
-                          v-if="user_role == 'SuperUser'"
                           v-bind="props"
                           v-model="page_builder[0].store_id"
                           @update:modelValue="(value) => updateMall(value)"
                           v-bind:label="$t('mall_en')"
                           variant="outlined"
                           density="compact"
+                          :disabled="user_role == 'MallAdmin'"
                           :items="malls_en"
                           item-title="name"
                           item-value="header_id"
@@ -74,7 +74,6 @@
                     >
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
-                          v-if="user_role == 'SuperUser'"
                           v-bind="props"
                           v-model="page_builder[0].page_type"
                           @update:modelValue="(value) => updatePageType(value)"
@@ -342,7 +341,7 @@
                     <v-tooltip :text="this.$t('mall_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
-                          v-if="user_role == 'SuperUser'"
+                          :disabled="user_role == 'MallAdmin'"
                           v-bind="props"
                           v-model="page_builder[1].store_id"
                           @update:modelValue="(value) => updateMall(value)"
@@ -366,7 +365,6 @@
                     >
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
-                          v-if="user_role == 'SuperUser'"
                           v-bind="props"
                           v-model="page_builder[1].page_type"
                           @update:modelValue="(value) => updatePageType(value)"
@@ -946,7 +944,7 @@ export default {
       if (this.page_builder[0].parent_id != null) {
         this.resizewidth = 400;
         this.resizeheight = 400;
-      }else{
+      } else {
         this.resizewidth = 650;
         this.resizeheight = 350;
       }

@@ -70,8 +70,8 @@
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td>{{ props.item.selectable.name }}</td>
-              <td v-if="props.item.selectable.parent_page_builder != null">
-                {{ props.item.selectable.parent_page_builder }}
+              <td v-if="props.item.selectable.sub_page_builder.length > 0">
+                {{ props.item.selectable.sub_page_builder[0].name }}
               </td>
               <td v-else>{{ $t("not_appllicable") }}</td>
               <td v-if="role == 'SuperUser'">
@@ -180,8 +180,8 @@
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td>{{ props.item.selectable.name }}</td>
-              <td v-if="props.item.selectable.parent_page_builder != null">
-                {{ props.item.selectable.parent_page_builder }}
+              <td v-if="props.item.selectable.sub_page_builder.length > 0">
+                {{ props.item.selectable.sub_page_builder[0].name }}
               </td>
               <td v-else>{{ $t("not_appllicable") }}</td>
               <td v-if="role == 'SuperUser'">
@@ -474,7 +474,9 @@ export default {
 
     deleteConfirm(time_id) {
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "delete-page-builder/" + time_id)
+        .post(
+          process.env.VUE_APP_API_URL_ADMIN + "delete-page-builder/" + time_id
+        )
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
