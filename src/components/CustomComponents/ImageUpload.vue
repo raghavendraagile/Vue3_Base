@@ -157,8 +157,10 @@ export default {
       const file = event.target.files[0];
       const filename = event.target.files[0].name;
       if (file) {
-        this.selectedFile = URL.createObjectURL(file);
-        console.log("all files are ", event.target.files[0]);
+        this.resizeImage(file, (resizedImage) => {
+          this.selectedFile = URL.createObjectURL(resizedImage);
+          this.dialogVisible = true;
+        });
         const lastDot = filename.lastIndexOf(".");
         const fileNameWithoutExt = filename.substring(0, lastDot);
         const ext = filename.substring(lastDot + 1);
@@ -166,7 +168,7 @@ export default {
         this.filename = fileNameWithoutExt;
         console.log("Extension => " + ext);
         this.extension = ext;
-        this.dialogVisible = true;
+        // this.dialogVisible = true;
         event.target.value = "";
       } else {
         this.selectedFile = null;
@@ -179,7 +181,27 @@ export default {
         this.upload(this.imagedata);
       }
     },
-
+    resizeImage(file, callback) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          // Set your desired image size
+          canvas.width = 800; // Example width
+          canvas.height = 600; // Example height
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob((blob) => {
+            callback(blob);
+          }, file.type);
+        };
+        img.src = e.target.result;
+        // this.loader = false;
+      };
+      reader.readAsDataURL(file);
+      // this.loader = false;
+    },
     upload(imagedata) {
       this.loader = true;
       if (!imagedata) {
