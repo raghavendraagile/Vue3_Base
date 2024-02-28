@@ -73,8 +73,8 @@
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("parent_category_en") }}</div>
-                    <div v-if="category.parent_category">
-                      {{ category.parent_category }}
+                    <div v-if="category.subcategories.length > 0">
+                      {{ category.subcategories[0].name }}
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
@@ -111,7 +111,9 @@
                       v-bind:style="
                         isHovering == true ? 'filter: blur(1px);' : ''
                       "
-                      v-if="category.image_path == '' || category.image_path == null"
+                      v-if="
+                        category.image_path == '' || category.image_path == null
+                      "
                       src="@/assets/images/no_image.png"
                       width="100"
                     />
@@ -201,8 +203,8 @@
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("parent_category_ar") }}</div>
-                    <div v-if="category.parent_category">
-                      {{ category.parent_category }}
+                    <div v-if="category.subcategories.length > 0">
+                      {{ category.subcategories[0].name }}
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
@@ -239,7 +241,9 @@
                       v-bind:style="
                         isHovering == true ? 'filter: blur(1px);' : ''
                       "
-                      v-if="category.image_path == '' || category.image_path == null"
+                      v-if="
+                        category.image_path == '' || category.image_path == null
+                      "
                       src="@/assets/images/no_image.png"
                       width="100"
                     />
@@ -360,8 +364,8 @@ export default {
       immediate: true,
       handler() {
         if (this.$route.query.s_tab == 1) {
-         this.tabs = 1;
-        }else{
+          this.tabs = 1;
+        } else {
           this.tabs = 2;
         }
       },

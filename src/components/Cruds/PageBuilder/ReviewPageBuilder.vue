@@ -75,8 +75,8 @@
                     <div class="d-label">
                       {{ $t("parent_page_builder_en") }}
                     </div>
-                    <div v-if="pagebuilder.parent_page_builder">
-                      {{ pagebuilder.parent_page_builder }}
+                    <div v-if="pagebuilder.sub_page_builder.length > 0">
+                      {{ pagebuilder.sub_page_builder[0].name }}
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
@@ -208,8 +208,8 @@
                     <div class="d-label">
                       {{ $t("parent_page_builder_ar") }}
                     </div>
-                    <div v-if="pagebuilder.parent_page_builder">
-                      {{ pagebuilder.parent_page_builder }}
+                    <div v-if="pagebuilder.sub_page_builder.length > 0">
+                      {{ pagebuilder.sub_page_builder[0].name }}
                     </div>
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
