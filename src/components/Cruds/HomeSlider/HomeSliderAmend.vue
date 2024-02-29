@@ -778,16 +778,15 @@
         <v-tooltip :text="this.$t('cancel')" location="bottom">
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="d-inline-block mr-2">
-              <router-link :to="{ name: 'home-sliders' }">
-                <v-btn
-                  v-bind="props"
-                  size="small"
-                  :disabled="loading"
-                  class="ma-1"
-                  color="cancel"
-                  >{{ $t("cancel") }}</v-btn
-                >
-              </router-link>
+              <v-btn
+                v-bind="props"
+                size="small"
+                :disabled="loading"
+                @click="cancel()"
+                class="ma-1"
+                color="cancel"
+                >{{ $t("cancel") }}</v-btn
+              >
             </div>
           </template>
         </v-tooltip>
@@ -1472,6 +1471,7 @@ export default {
                 this.message = res.data.message;
                 this.$router.push({
                   name: "home-sliders",
+                  query: { s_tab: this.tabs }
                 });
               } else {
                 this.$toast.error(this.array_data);
@@ -1489,6 +1489,12 @@ export default {
             });
         }
       }
+    },
+    cancel() {
+      this.$router.push({
+        name: "home-sliders",
+        query: { s_tab: this.tabs },
+      });
     },
     // submit() {
     //   if (this.selected_media_type == "Image") {
