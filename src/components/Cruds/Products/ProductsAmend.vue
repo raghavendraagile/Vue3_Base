@@ -891,7 +891,7 @@ export default {
     cancel() {
       this.$router.push({
         name: "products",
-        query: { 's_tab': this.$route.query.s_tab },
+        query: { 's_tab': this.tabs },
       });
     },
     get_stores() {
@@ -1015,7 +1015,7 @@ export default {
               this.message = res.data.message;
               this.$router.push({
                 name: "products",
-                query: { s_tab: this.$route.query.s_tab },
+                query: { s_tab: this.tabs },
               });
             } else if (res.data.status == "E") {
               this.$toast.error(this.array_data);
