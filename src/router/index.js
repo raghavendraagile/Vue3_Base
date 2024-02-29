@@ -1,7 +1,8 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import store from "../store";
 
 const routes = [
+  
   {
     path: "/:lang?/",
     name: "login",
@@ -505,10 +506,16 @@ const routes = [
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/PageBuilder/ReviewPageBuilder.vue"),
   },
+  {
+    name: "not-found",
+    path: "/:lang?/not-found",
+    meta: { layout: "userpages" },
+    component: () => import("../../src/components/PageNotFound.vue"),
+  },
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 });
 
@@ -517,6 +524,12 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const lang = localStorage.getItem("pref_lang") || "en";
   const isAuthenticated = store.getters["auth/authentication"];
+
+  if (to.matched.length === 0) {
+    const notFoundPath = `/${lang}/not-found`;
+    next(notFoundPath);
+    return;
+  }
   if (!to.params.lang) {
     if (isAuthenticated || to.name === "login") {
       if (!to.redirectedFrom) {

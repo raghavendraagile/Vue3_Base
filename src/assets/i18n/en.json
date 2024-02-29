@@ -579,6 +579,9 @@
   "create_amend_page_builder": "Create/Amend Page Builder",
   "parent_page_builder_en": "Parent Page Builder",
   "parent_page_builder_ar": "منشئ الصفحة الأم",
-  "page_type_en": "Page Type",
-  "page_type_ar": "نوع الصفحة"
+  "page_type_en":"Page Type",
+  "page_type_ar":"نوع الصفحة",
+  "not_found_p2":"Looks like you're lost",
+  "not_found_p3":"The page you're looking is'nt available",
+  "take_me_back":"Take Me Back"
 }

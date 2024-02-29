@@ -534,6 +534,9 @@
   "parent_page_builder_ar": "منشئ الصفحة الأم",
   "page_type_en": "Page Type",
   "page_type_ar": "نوع الصفحة",
-  "create_amend_page_builder": "إنشاء/تعديل منشئ الصفحة"
+  "create_amend_page_builder": "إنشاء/تعديل منشئ الصفحة",
+  "not_found_p2":"يبدو أنك ضائع",
+  "not_found_p3":"الصفحة التي تبحث عنها ليست متاحة",
+  "take_me_back":"اعدني"
 
 }
