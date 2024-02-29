@@ -25,7 +25,7 @@ export default {
       handler(newParams) {
         console.log(newParams);
         this.webpath =
-          this.web_url + "/" + newParams.lang + "/" + newParams.page;
+          this.web_url + "/" + newParams.lang + "/" + newParams.page + "preview";
       },
     },
   },
