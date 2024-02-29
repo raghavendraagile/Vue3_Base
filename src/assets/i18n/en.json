@@ -583,5 +583,15 @@
   "page_type_ar":"نوع الصفحة",
   "not_found_p2":"Looks like you're lost",
   "not_found_p3":"The page you're looking is'nt available",
-  "take_me_back":"Take Me Back"
+  "take_me_back":"Take Me Back",
+  "slider_type_en": "Slider Type",
+  "slider_type_ar": "نوع المنزلق",
+  "action_slug_en": "Action Slug",
+  "action_slug_ar": "سبيكة العمل",
+  "link_en": "Link",
+  "link_ar": "وصلة",
+  "events_en": "Events",
+  "events_ar": "الأحداث",
+  "promotions_offers_en": "Promotions/Offers",
+  "promotions_offers_ar": "الترقيات/العروض"
 }

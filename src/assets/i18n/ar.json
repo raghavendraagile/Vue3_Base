@@ -537,6 +537,16 @@
   "create_amend_page_builder": "إنشاء/تعديل منشئ الصفحة",
   "not_found_p2":"يبدو أنك ضائع",
   "not_found_p3":"الصفحة التي تبحث عنها ليست متاحة",
-  "take_me_back":"اعدني"
+  "take_me_back":"اعدني",
+  "link_en": "Link",
+  "link_ar": "وصلة",
+  "events_en": "Events",
+  "events_ar": "الأحداث",
+  "promotions_offers_en": "Promotions/Offers",
+  "promotions_offers_ar": "الترقيات/العروض",
+  "slider_type_en": "Slider Type",
+  "slider_type_ar": "نوع المنزلق",
+  "action_slug_en": "Action Slug",
+  "action_slug_ar": "سبيكة العمل"
 
 }

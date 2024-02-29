@@ -57,7 +57,7 @@
                     md="4"
                     v-if="user.rolename != 'StoreAdmin'"
                   >
-                    <v-tooltip :text="labelText" location="bottom">
+                    <v-tooltip :text="$t('mall_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
@@ -72,6 +72,45 @@
                           item-value="header_id"
                           class="required_field"
                           :rules="fieldRules"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="4">
+                    <v-tooltip :text="$t('slider_type_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="home_slider[0].slider_type"
+                          v-bind:label="$t('slider_type_en')"
+                          @update:modelValue="
+                            (value) => updateSliderType(value)
+                          "
+                          variant="outlined"
+                          density="compact"
+                          :items="slider_type_en"
+                          item-title="name"
+                          item-value="shortname"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="4">
+                    <v-tooltip :text="labelText" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          :label="labelText"
+                          v-model="home_slider[0].action_slug"
+                          v-if="home_slider[0].slider_type != null"
+                          @update:modelValue="
+                            (value) => updateActionSlug(value)
+                          "
+                          variant="outlined"
+                          density="compact"
+                          :items="slug_details_en"
+                          item-title="title"
+                          item-value="header_id"
                         ></v-autocomplete>
                       </template>
                     </v-tooltip>
@@ -95,13 +134,13 @@
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" sm="12" md="4">
-                    <v-tooltip :text="$t('action_en')" location="bottom">
+                    <v-tooltip :text="$t('link_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
                           v-model="home_slider[0].action"
                           maxlength="100"
-                          v-bind:label="$t('action_en')"
+                          v-bind:label="$t('link_en')"
                           variant="outlined"
                           density="compact"
                         ></v-text-field>
@@ -285,7 +324,6 @@
                       @uploaded_image="uploaded_image"
                       :upload_profile="uploadfile"
                     />
-                    <div class="dimension_text">600 : 300</div>
                   </v-col>
                   <v-col
                     cols="12"
@@ -374,7 +412,7 @@
                       @uploaded_image="uploaded_image"
                       :upload_profile="upload_mob_file"
                     />
-                    <div class="dimension_text">500 : 300</div>
+                    <!-- <div class="dimension_text">500 : 300</div> -->
                   </v-col>
                   <v-col
                     cols="12"
@@ -419,7 +457,7 @@
                     md="4"
                     v-if="user.rolename != 'StoreAdmin'"
                   >
-                    <v-tooltip :text="labelText" location="bottom">
+                    <v-tooltip :text="$t('mall_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
@@ -434,6 +472,45 @@
                           item-value="header_id"
                           class="required_field"
                           :rules="fieldRulesAR"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="4">
+                    <v-tooltip :text="$t('slider_type_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="home_slider[1].slider_type"
+                          v-bind:label="$t('slider_type_ar')"
+                          @update:modelValue="
+                            (value) => updateSliderType(value)
+                          "
+                          variant="outlined"
+                          density="compact"
+                          :items="slider_type_ar"
+                          item-title="name"
+                          item-value="shortname"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="4">
+                    <v-tooltip :text="labelTextAr" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-if="home_slider[1].slider_type != null"
+                          v-model="home_slider[1].action_slug"
+                          :label="labelTextAr"
+                          @update:modelValue="
+                            (value) => updateActionSlug(value)
+                          "
+                          variant="outlined"
+                          density="compact"
+                          :items="slug_details_ar"
+                          item-title="title"
+                          item-value="header_id"
                         ></v-autocomplete>
                       </template>
                     </v-tooltip>
@@ -458,14 +535,14 @@
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" sm="12" md="4">
-                    <v-tooltip :text="$t('action_ar')" location="bottom">
+                    <v-tooltip :text="$t('link_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
                           v-model="home_slider[1].action"
                           maxlength="100"
                           class="rtl"
-                          v-bind:label="$t('action_ar')"
+                          v-bind:label="$t('link_ar')"
                           variant="outlined"
                           density="compact"
                         ></v-text-field>
@@ -884,6 +961,10 @@ export default {
     stores_ar: [],
     mediatype_en: [],
     mediatype_ar: [],
+    slug_details_en: [],
+    slug_details_ar: [],
+    labelText: "",
+    labelTextAr: "",
     editorOptions: {
       theme: "snow",
       direction: "rtl",
@@ -907,6 +988,8 @@ export default {
         video: "",
         header_id: 0,
         lang: "en",
+        slider_type: null,
+        action_slug: "",
         seq: null,
       },
       {
@@ -921,6 +1004,8 @@ export default {
         media_type: "",
         video: "",
         lang: "ar",
+        slider_type: null,
+        action_slug: "",
         seq: null,
       },
     ],
@@ -946,6 +1031,34 @@ export default {
         id: 0,
         shortname: "موجود",
         longname: "موجود",
+      },
+    ],
+    slider_type_en: [
+      {
+        id: 0,
+        header_id: 1,
+        shortname: "ev",
+        name: "Events",
+      },
+      {
+        id: 0,
+        header_id: 2,
+        shortname: "po",
+        name: "Promotions/Offers",
+      },
+    ],
+    slider_type_ar: [
+      {
+        id: 0,
+        header_id: 1,
+        shortname: "ev",
+        name: "الأحداث",
+      },
+      {
+        id: 0,
+        header_id: 2,
+        shortname: "po",
+        name: "الترقيات/العروض",
       },
     ],
   }),
@@ -1652,6 +1765,43 @@ export default {
       } else {
         this.home_slider[0].store_id = store;
       }
+    },
+    updateActionSlug(action_id) {
+      if (this.tabs == 1) {
+        this.home_slider[1].action_slug = action_id;
+      } else {
+        this.home_slider[0].action_slug = action_id;
+      }
+    },
+    updateSliderType(type) {
+      if (this.tabs == 1) {
+        this.home_slider[1].slider_type = type;
+      } else {
+        this.home_slider[0].slider_type = type;
+      }
+      this.home_slider[0].action_slug = "";
+      this.home_slider[1].action_slug = "";
+      if (type == "ev") {
+        this.labelText = this.$t("events_en");
+        this.labelTextAr = this.$t("events_ar");
+      } else {
+        this.labelText = this.$t("promotions_offers_en");
+        this.labelTextAr = this.$t("promotions_offers_ar");
+      }
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-action-slug", {
+          params: {
+            slider_type: this.home_slider[0].slider_type,
+          },
+        })
+        .then((response) => {
+          this.slug_details_en = response.data.slug_details_en;
+          this.slug_details_ar = response.data.slug_details_ar;
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+        });
     },
     fetchLookup() {
       this.$axios
