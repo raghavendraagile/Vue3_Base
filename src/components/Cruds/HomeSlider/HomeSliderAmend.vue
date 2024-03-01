@@ -138,6 +138,7 @@
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
+                          v-if="home_slider[0].slider_type == null"
                           v-model="home_slider[0].action"
                           maxlength="100"
                           v-bind:label="$t('link_en')"
@@ -540,6 +541,7 @@
                         <v-text-field
                           v-bind="props"
                           v-model="home_slider[1].action"
+                          v-if="home_slider[1].slider_type == null"
                           maxlength="100"
                           class="rtl"
                           v-bind:label="$t('link_ar')"
@@ -1123,6 +1125,7 @@ export default {
               }
               if (res.data.status == "S") {
                 this.home_slider = res.data.home_slider;
+                this.fetchActionSlug();
                 this.loader = false;
               } else {
                 this.$toast.error(this.$t("something_went_wrong"));
@@ -1788,6 +1791,10 @@ export default {
         this.labelText = this.$t("promotions_offers_en");
         this.labelTextAr = this.$t("promotions_offers_ar");
       }
+      this.fetchActionSlug();
+    },
+
+    fetchActionSlug() {
       this.$axios
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-action-slug", {
           params: {
