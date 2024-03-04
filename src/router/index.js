@@ -1,8 +1,7 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import store from "../store";
 
 const routes = [
-  
   {
     path: "/:lang?/",
     name: "login",
@@ -498,13 +497,15 @@ const routes = [
     name: "page-builder-amend",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
-    component: () => import("../components/Cruds/PageBuilder/PageBuilderAmend.vue"),
+    component: () =>
+      import("../components/Cruds/PageBuilder/PageBuilderAmend.vue"),
   },
   {
     path: "/:lang?/page-builder-review",
     name: "page-builder-review",
     beforeEnter: guardMyroute,
-    component: () => import("../components/Cruds/PageBuilder/ReviewPageBuilder.vue"),
+    component: () =>
+      import("../components/Cruds/PageBuilder/ReviewPageBuilder.vue"),
   },
   {
     name: "not-found",
@@ -515,7 +516,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes,
 });
 
@@ -525,12 +526,13 @@ router.beforeEach((to, from, next) => {
   const lang = localStorage.getItem("pref_lang") || "en";
   const isAuthenticated = store.getters["auth/authentication"];
 
-  // if (to.matched.length === 0) {
-  //   console.log('inside matched route length');
-  //   const notFoundPath = `/${lang}/not-found`;
-  //   next(notFoundPath);
-  //   return;
-  // }
+  if (to.matched.length === 0) {
+    console.log("inside matched route length");
+    const notFoundPath = `/${lang}/not-found`;
+    next(notFoundPath);
+    return;
+  }
+  
   if (!to.params.lang) {
     if (isAuthenticated || to.name === "login") {
       if (!to.redirectedFrom) {
