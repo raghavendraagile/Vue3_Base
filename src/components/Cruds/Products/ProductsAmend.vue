@@ -68,7 +68,7 @@
               </v-row>
             </v-layout>
             <v-row class="mx-auto mt-2" max-width="344">
-              <v-col cols="12" sm="12" md="4">
+              <v-col cols="12" sm="12" md="3">
                 <v-tooltip :text="this.$t('type_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -90,7 +90,7 @@
               <v-col
                 cols="12"
                 sm="12"
-                md="4"
+                md="3"
                 v-if="user.rolename != 'StoreAdmin'"
               >
                 <v-tooltip :text="labelText" location="bottom">
@@ -111,7 +111,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col cols="12" sm="12" md="3">
                 <v-tooltip :text="this.$t('title_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -125,6 +125,75 @@
                       variant="outlined"
                       density="compact"
                       maxlength="70"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col cols="12" sm="12" md="3">
+                <v-tooltip :text="this.$t('meta_title_en')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-on="on"
+                      v-model="products[0].meta_title"
+                      :rules="fieldRules"
+                      v-bind:label="$t('meta_title_en')"
+                      class="required_field"
+                      v-bind="props"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="70"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col cols="12" sm="12" md="3">
+                <v-tooltip :text="this.$t('start_date_en')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <DatePicker
+                      v-bind="props"
+                      :label="$t('start_date_en')"
+                      :min="new Date().toISOString().substr(0, 10)"
+                      :stored_date="products[0].start_date"
+                      @formatted_date="formatted_start_date"
+                      dense
+                      :rules="fieldRules"
+                      :class_required="'RequiredField'"
+                      v-on="on"
+                    />
+                  </template>
+                  <span>{{ $t("start_date_en") }}</span>
+                </v-tooltip>
+              </v-col>
+              <v-col cols="12" sm="12" md="3">
+                <v-tooltip :text="this.$t('end_date_en')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <DatePicker
+                      v-bind="props"
+                      :label="$t('end_date_en')"
+                      :min="products[0].start_date"
+                      :stored_date="products[0].end_date"
+                      @formatted_date="formatted_end_date"
+                      dense
+                      :rules="fieldRules"
+                      :class_required="'RequiredField'"
+                      v-on="on"
+                    />
+                  </template>
+                  <span>{{ $t("end_date_en") }}</span>
+                </v-tooltip>
+              </v-col>
+              <v-col cols="12" sm="12" md="3">
+                <v-tooltip :text="$t('sequence_en')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      v-model="products[0].seq"
+                      maxlength="5"
+                      v-bind:label="$t('sequence_en')"
+                      required
+                      variant="outlined"
+                      density="compact"
+                      v-on:keypress="NumbersOnly"
                     ></v-text-field>
                   </template>
                 </v-tooltip>
@@ -147,40 +216,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
-                <v-tooltip :text="$t('sequence_en')" location="bottom">
-                  <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-bind="props"
-                      v-model="products[0].seq"
-                      maxlength="5"
-                      v-bind:label="$t('sequence_en')"
-                      required
-                      variant="outlined"
-                      density="compact"
-                      v-on:keypress="NumbersOnly"
-                    ></v-text-field>
-                  </template>
-                </v-tooltip>
-              </v-col>
-              <v-col cols="12" sm="12" md="4">
-                <v-tooltip :text="this.$t('meta_title_en')" location="bottom">
-                  <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-on="on"
-                      v-model="products[0].meta_title"
-                      :rules="fieldRules"
-                      v-bind:label="$t('meta_title_en')"
-                      class="required_field"
-                      v-bind="props"
-                      variant="outlined"
-                      density="compact"
-                      maxlength="70"
-                    ></v-text-field>
-                  </template>
-                </v-tooltip>
-              </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col cols="12" sm="12" md="12">
                 <v-tooltip
                   :text="this.$t('meta_description_en')"
                   location="bottom"
@@ -312,7 +348,7 @@
               </v-row>
             </v-layout>
             <v-row class="mx-auto mt-2 arabdirection" max-width="344">
-              <v-col cols="12" sm="12" md="4">
+              <v-col cols="12" sm="12" md="3">
                 <v-tooltip :text="this.$t('type_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -334,7 +370,7 @@
               <v-col
                 cols="12"
                 sm="12"
-                md="4"
+                md="3"
                 v-if="user.rolename != 'StoreAdmin'"
               >
                 <v-tooltip :text="label_text_ar" location="bottom">
@@ -355,7 +391,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col cols="12" sm="12" md="3">
                 <v-tooltip :text="this.$t('title_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -369,6 +405,80 @@
                       variant="outlined"
                       density="compact"
                       maxlength="70"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col cols="12" sm="12" md="3">
+                <v-tooltip :text="this.$t('meta_title_ar')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-on="on"
+                      v-model="products[1].meta_title"
+                      :rules="fieldRulesAR"
+                      v-bind:label="$t('meta_title_ar')"
+                      v-bind="props"
+                      required
+                      class="required_field rtl"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="100"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col cols="12" sm="12" md="3">
+                <v-tooltip :text="this.$t('start_date_ar')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <DatePicker
+                      v-bind="props"
+                      :label="$t('start_date_ar')"
+                      :min="new Date().toISOString().substr(0, 10)"
+                      :stored_date="products[1].start_date"
+                      @formatted_date="formatted_start_date_ar"
+                      dense
+                      :translation="'arabic'"
+                      :class_required="'RequiredField rtl'"
+                      :rules="fieldRulesAR"
+                      v-on="on"
+                    />
+                  </template>
+                  <span>{{ $t("start_date_ar") }}</span>
+                </v-tooltip>
+              </v-col>
+              <v-col cols="12" sm="12" md="3">
+                <v-tooltip :text="this.$t('end_date_ar')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <DatePicker
+                      v-bind="props"
+                      :label="$t('end_date_ar')"
+                      :rules="fieldRulesAR"
+                      :translation="'arabic'"
+                      :min="new Date().toISOString().substr(0, 10)"
+                      :stored_date="products[1].end_date"
+                      @formatted_date="formatted_end_date_ar"
+                      dense
+                      :class_required="'RequiredField rtl'"
+                      required
+                      v-on="on"
+                    />
+                  </template>
+                  <span>{{ $t("end_date_ar") }}</span>
+                </v-tooltip>
+              </v-col>
+              <v-col cols="12" sm="12" md="3">
+                <v-tooltip :text="$t('sequence_ar')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      v-model="products[1].seq"
+                      maxlength="5"
+                      v-bind:label="$t('sequence_ar')"
+                      required
+                      variant="outlined"
+                      class="rtl"
+                      density="compact"
+                      v-on:keypress="NumbersOnly"
                     ></v-text-field>
                   </template>
                 </v-tooltip>
@@ -392,42 +502,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="4">
-                <v-tooltip :text="$t('sequence_ar')" location="bottom">
-                  <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-bind="props"
-                      v-model="products[1].seq"
-                      maxlength="5"
-                      v-bind:label="$t('sequence_ar')"
-                      required
-                      variant="outlined"
-                      class="rtl"
-                      density="compact"
-                      v-on:keypress="NumbersOnly"
-                    ></v-text-field>
-                  </template>
-                </v-tooltip>
-              </v-col>
-              <v-col cols="12" sm="12" md="4">
-                <v-tooltip :text="this.$t('meta_title_ar')" location="bottom">
-                  <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-on="on"
-                      v-model="products[1].meta_title"
-                      :rules="fieldRulesAR"
-                      v-bind:label="$t('meta_title_ar')"
-                      v-bind="props"
-                      required
-                      class="required_field rtl"
-                      variant="outlined"
-                      density="compact"
-                      maxlength="100"
-                    ></v-text-field>
-                  </template>
-                </v-tooltip>
-              </v-col>
-              <v-col cols="12" sm="12" md="4">
+              <v-col cols="12" sm="12" md="12">
                 <v-tooltip
                   :text="this.$t('meta_description_ar')"
                   location="bottom"
@@ -573,10 +648,10 @@
 </template>
 
 <script>
-// import DatePicker from "../../CustomComponents/DatePicker.vue";
+import DatePicker from "../../CustomComponents/DatePicker.vue";
 import Imageupload from "../../CustomComponents/ImageUpload.vue";
 export default {
-  components: { Imageupload },
+  components: { Imageupload, DatePicker },
   data: () => ({
     google_icon: {
       icon_name: "edit_note",
@@ -960,9 +1035,23 @@ export default {
     },
     formatted_start_date(formatted_date) {
       this.products[0].start_date = formatted_date;
+      this.products[1].start_date = formatted_date;
+      if (this.products[0].end_date < formatted_date) {
+        this.products[0].end_date = "";
+      }
+      if (this.products[1].end_date < formatted_date) {
+        this.products[1].end_date = "";
+      }
     },
     formatted_start_date_ar(formatted_date) {
       this.products[1].start_date = formatted_date;
+      this.products[0].start_date = formatted_date;
+      if (this.products[0].end_date < formatted_date) {
+        this.products[0].end_date = "";
+      }
+      if (this.products[1].end_date < formatted_date) {
+        this.products[1].end_date = "";
+      }
     },
     formatted_end_date(formatted_date) {
       this.products[0].end_date = formatted_date;
