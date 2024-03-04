@@ -77,6 +77,24 @@
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" sm="12" md="4">
+                    <v-tooltip :text="$t('title_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          v-model="home_slider[0].title"
+                          maxlength="100"
+                          v-bind:label="$t('title_en')"
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-layout>
+              <v-layout>
+                <v-row class="px-6 mt-2">
+                  <v-col cols="12" sm="12" md="4">
                     <v-tooltip :text="$t('slider_type_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -95,14 +113,18 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" sm="12" md="4">
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="4"
+                    v-if="home_slider[0].slider_type != null"
+                  >
                     <v-tooltip :text="labelText" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
                           :label="labelText"
                           v-model="home_slider[0].action_slug"
-                          v-if="home_slider[0].slider_type != null"
                           @update:modelValue="
                             (value) => updateActionSlug(value)
                           "
@@ -115,30 +137,16 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                </v-row>
-              </v-layout>
-              <v-layout>
-                <v-row class="px-6 mt-2">
-                  <v-col cols="12" sm="12" md="4">
-                    <v-tooltip :text="$t('title_en')" location="bottom">
-                      <template v-slot:activator="{ props }">
-                        <v-text-field
-                          v-bind="props"
-                          v-model="home_slider[0].title"
-                          maxlength="100"
-                          v-bind:label="$t('title_en')"
-                          variant="outlined"
-                          density="compact"
-                        ></v-text-field>
-                      </template>
-                    </v-tooltip>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="4">
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="4"
+                    v-if="home_slider[0].slider_type == null"
+                  >
                     <v-tooltip :text="$t('link_en')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
-                          v-if="home_slider[0].slider_type == null"
                           v-model="home_slider[0].action"
                           maxlength="100"
                           v-bind:label="$t('link_en')"
@@ -149,11 +157,17 @@
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" sm="12" md="4">
-                    <v-tooltip :text="$t('target_en')" location="bottom">
+                    <v-tooltip
+                      :text="$t('target_en')"
+                      location="bottom"
+                      v-if="
+                        home_slider[0].action != '' ||
+                        home_slider[0].slider_type != null
+                      "
+                    >
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
-                          v-if="home_slider[0].action != ''"
                           v-model="home_slider[0].target"
                           v-bind:label="$t('target_en')"
                           variant="outlined"
@@ -478,6 +492,25 @@
                     </v-tooltip>
                   </v-col>
                   <v-col cols="12" sm="12" md="4">
+                    <v-tooltip :text="$t('title_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          v-model="home_slider[1].title"
+                          class="rtl"
+                          maxlength="100"
+                          v-bind:label="$t('title_ar')"
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-layout>
+              <v-layout>
+                <v-row class="px-6 mt-2 arabdirection">
+                  <v-col cols="12" sm="12" md="4">
                     <v-tooltip :text="$t('slider_type_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
@@ -496,12 +529,16 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" sm="12" md="4">
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="4"
+                    v-if="home_slider[1].slider_type != null"
+                  >
                     <v-tooltip :text="labelTextAr" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
-                          v-if="home_slider[1].slider_type != null"
                           v-model="home_slider[1].action_slug"
                           :label="labelTextAr"
                           @update:modelValue="
@@ -516,32 +553,17 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                </v-row>
-              </v-layout>
-              <v-layout>
-                <v-row class="px-6 mt-2 arabdirection">
-                  <v-col cols="12" sm="12" md="4">
-                    <v-tooltip :text="$t('title_ar')" location="bottom">
-                      <template v-slot:activator="{ props }">
-                        <v-text-field
-                          v-bind="props"
-                          v-model="home_slider[1].title"
-                          class="rtl"
-                          maxlength="100"
-                          v-bind:label="$t('title_ar')"
-                          variant="outlined"
-                          density="compact"
-                        ></v-text-field>
-                      </template>
-                    </v-tooltip>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="4">
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="4"
+                    v-if="home_slider[1].slider_type == null"
+                  >
                     <v-tooltip :text="$t('link_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind="props"
                           v-model="home_slider[1].action"
-                          v-if="home_slider[1].slider_type == null"
                           maxlength="100"
                           class="rtl"
                           v-bind:label="$t('link_ar')"
@@ -551,12 +573,19 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="12" sm="12" md="4">
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="4"
+                    v-if="
+                      home_slider[1].action != '' ||
+                      home_slider[1].slider_type != null
+                    "
+                  >
                     <v-tooltip :text="$t('target_ar')" location="bottom">
                       <template v-slot:activator="{ props }">
                         <v-autocomplete
                           v-bind="props"
-                          v-if="home_slider[1].action != ''"
                           v-model="home_slider[1].target"
                           v-bind:label="$t('target_ar')"
                           variant="outlined"
