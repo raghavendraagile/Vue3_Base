@@ -480,6 +480,7 @@ const routes = [
   {
     path: "/:lang?/preview_webapp/:page?",
     name: "preview_webapp",
+    beforeEnter: guardMyroute,
     meta: { layout: "userpages" },
     component: () => import("../components/CustomComponents/PreviewWebapp.vue"),
   },

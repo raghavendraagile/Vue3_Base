@@ -13,4 +13,13 @@ module.exports = defineConfig({
       }),
     ],
   },
+
+  devServer: {
+    client: {
+      overlay: {
+        warnings: false,
+        errors: false,
+      },
+    },
+  },
 });
