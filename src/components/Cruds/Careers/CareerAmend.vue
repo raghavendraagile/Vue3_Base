@@ -197,6 +197,79 @@
                   </template>
                 </v-tooltip>
               </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <div>
+                  <div class="image-container">
+                    <v-hover v-slot="{ isHovering, props }">
+                      <div style="position: relative" v-bind="props">
+                        <img
+                          v-bind:style="
+                            isHovering == true ? 'filter: blur(1px);' : ''
+                          "
+                          v-if="
+                            careers[0].image_path == '' ||
+                            careers[0].image_path == null
+                          "
+                          src="@/assets/images/upload_image_default.png"
+                          width="100"
+                        />
+                        <img
+                          v-bind:style="
+                            isHovering == true ? 'filter: blur(1px);' : ''
+                          "
+                          v-else
+                          :src="envImagePath + careers[0].image_path"
+                          width="100"
+                          height="85
+                          "
+                          alt
+                        />
+                        <div v-show="isHovering" class="camera-icon">
+                          <v-icon @click="uploadFile">mdi-camera</v-icon>
+                        </div>
+                      </div>
+                    </v-hover>
+                  </div>
+                  <v-tooltip :text="this.$t('download_en')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <a class="text-center pointer download_icon">
+                        <span
+                          ><v-icon
+                            v-if="careers[0].image_path"
+                            v-bind="props"
+                            class="mr-2"
+                            @click="downloadImage(careers[0].image_path)"
+                            >mdi mdi-download</v-icon
+                          ></span
+                        >
+                      </a>
+                    </template>
+                  </v-tooltip>
+                  <span>
+                    <v-tooltip :text="this.$t('delete_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-icon
+                          small
+                          v-bind="props"
+                          v-if="careers[0].image_path"
+                          class="mr-2 edit_btn icon_size delete_icon"
+                          @click="removeImage(0)"
+                          >mdi mdi-trash-can-outline</v-icon
+                        >
+                      </template>
+                    </v-tooltip>
+                  </span>
+                </div>
+
+                <br />
+                <Imageupload
+                  :folder="'careers'"
+                  :resizewidth="200"
+                  :resizeheight="200"
+                  @uploaded_image="uploaded_image"
+                  :upload_profile="uploadfile"
+                />
+              </v-col>
             </v-row>
           </v-form>
         </v-window-item>
@@ -362,6 +435,81 @@
                   </template>
                 </v-tooltip>
               </v-col>
+              <v-col cols="12" sm="3" md="3">
+                <div>
+                  <div class="image-container">
+                    <v-hover v-slot="{ isHovering, props }">
+                      <div style="position: relative" v-bind="props">
+                        <img
+                          v-bind:style="
+                            isHovering == true ? 'filter: blur(1px);' : ''
+                          "
+                          v-if="
+                            careers[1].image_path == '' ||
+                            careers[1].image_path == null
+                          "
+                          src="@/assets/images/upload_image_default.png"
+                          width="100"
+                        />
+                        <img
+                          v-bind:style="
+                            isHovering == true ? 'filter: blur(1px);' : ''
+                          "
+                          v-else
+                          :src="envImagePath + careers[1].image_path"
+                          width="100"
+                          height="85
+                          "
+                          alt
+                        />
+                        <div v-show="isHovering" class="camera-icon">
+                          <v-icon @click="uploadFile">mdi-camera</v-icon>
+                        </div>
+                      </div>
+                    </v-hover>
+                  </div>
+                  <div class="text-right">
+                    <v-tooltip :text="this.$t('download_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <a class="text-center pointer download_icon_ar">
+                          <span
+                            ><v-icon
+                              v-if="careers[1].image_path"
+                              v-bind="props"
+                              class="mr-2"
+                              @click="downloadImage(careers[1].image_path)"
+                              >mdi mdi-download</v-icon
+                            ></span
+                          >
+                        </a>
+                      </template>
+                    </v-tooltip>
+                    <span>
+                      <v-tooltip :text="this.$t('delete_ar')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <v-icon
+                            small
+                            v-if="careers[1].image_path"
+                            v-bind="props"
+                            class="mr-2 edit_btn icon_size delete_icon_ar"
+                            @click="removeImage(1)"
+                            >mdi mdi-trash-can-outline</v-icon
+                          >
+                        </template>
+                      </v-tooltip>
+                    </span>
+                  </div>
+                </div>
+
+                <br />
+                <Imageupload
+                  :folder="'careers'"
+                  :resizewidth="1.5"
+                  :resizeheight="2.5"
+                  @uploaded_image="uploaded_image"
+                  :upload_profile="uploadfilear"
+                />
+              </v-col>
             </v-row>
           </v-form>
         </v-window-item>
@@ -411,7 +559,9 @@
 </template>
 
 <script>
+import Imageupload from "../../CustomComponents/ImageUpload.vue";
 export default {
+  components: { Imageupload },
   data: () => ({
     google_icon: {
       icon_name: "edit_note",
@@ -419,7 +569,7 @@ export default {
       icon: "material-symbols-outlined",
     },
     tabs: 1,
-    envPath: process.env.VUE_APP_IMAGE_DOWNLOAD_URL,
+    envImagePath: process.env.VUE_APP_IMAGE_PATH,
     valid: false,
     validAR: false,
     error_valid: false,
@@ -441,6 +591,7 @@ export default {
         title: "",
         description: "",
         vacancy: "",
+        image_path: "",
         seq: "",
         meta_title: "",
         meta_description: "",
@@ -453,6 +604,7 @@ export default {
         title: "",
         description: "",
         vacancy: "",
+        image_path: "",
         seq: "",
         meta_title: "",
         meta_description: "",
@@ -474,6 +626,8 @@ export default {
     stores_data_en: [],
     sel_lang: "",
     user: "",
+    uploadfile: false,
+    uploadfilear: false,
   }),
   mounted() {
     this.get_stores();
@@ -549,6 +703,38 @@ export default {
     },
   },
   methods: {
+    uploadFile() {
+      if (this.tabs == 1) {
+        if (this.uploadfile == false) {
+          this.uploadfile = true;
+        } else {
+          this.uploadfile = false;
+        }
+      } else {
+        if (this.uploadfilear == false) {
+          this.uploadfilear = true;
+        } else {
+          this.uploadfilear = false;
+        }
+      }
+    },
+    uploaded_image(img_src) {
+      if (this.tabs == 1) {
+        this.careers[0].image_path = img_src;
+      } else {
+        this.careers[1].image_path = img_src;
+      }
+    },
+    downloadImage(image_url) {
+      window.open(this.envImagePath + image_url, "_blank");
+    },
+    removeImage(index) {
+      if (index == 1) {
+        this.careers[1].image_path = null;
+      } else {
+        this.careers[0].image_path = null;
+      }
+    },
     updateVac(value, index) {
       this.careers[index].vacancy = value;
     },
@@ -866,5 +1052,28 @@ input.larger {
 
 .arabdirection /deep/ .v-input {
   direction: rtl !important;
+}
+.delete_icon_ar {
+  position: relative;
+  right: 77px;
+  bottom: 90px;
+}
+
+.delete_icon {
+  position: relative;
+  left: 83px;
+  bottom: 90px;
+}
+
+.download_icon {
+  position: relative;
+  left: 116px;
+  bottom: 52px;
+}
+
+.download_icon_ar {
+  position: relative;
+  bottom: 45px;
+  right: 110px;
 }
 </style>
