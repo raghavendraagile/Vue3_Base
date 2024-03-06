@@ -597,5 +597,10 @@
   "path_en": "Path",
   "path_ar": "طريق",
   "get_icons_en":"Get icons here",
-  "get_icons_ar": "احصل على الرموز هنا"
+  "get_icons_ar": "احصل على الرموز هنا",
+  "services_slots_en": "Services Slots",
+  "slots_en": "Slots",
+  "add_slots_en": "Add Slot",
+  "delete_slots_en": "Delete Slot",
+  "add_weekday_en": "Add Weekday"
 }
