@@ -56,6 +56,7 @@
                     <v-radio
                       v-for="(role_data, rindex) in role_array"
                       :key="rindex"
+                      :disabled="$route.query.slug"
                       :label="changeRoleName(role_data.rolename)"
                       :value="role_data.rolename"
                       class="text--primary"
@@ -77,6 +78,7 @@
                       :label="this.$t('type_en')"
                       variant="outlined"
                       density="compact"
+                      :disabled="$route.query.slug"
                       :items="types_en"
                       :rules="fieldRules"
                       item-title="shortname"
@@ -336,6 +338,7 @@
                     <v-radio
                       v-for="(role_data, rindex) in role_array"
                       :key="rindex"
+                      :disabled="$route.query.slug"
                       :label="changeStatusAr(role_data.rolename)"
                       :value="role_data.rolename"
                       class="text--primary"
@@ -354,6 +357,7 @@
                     <v-autocomplete
                       v-bind="props"
                       v-model="products[1].type"
+                      :disabled="$route.query.slug"
                       :label="this.$t('type_ar')"
                       variant="outlined"
                       density="compact"
@@ -602,6 +606,209 @@
             </div>
           </v-form>
         </v-window-item>
+        <v-form
+          ref="form"
+          v-model="slotvalid"
+          v-if="service_type == 'Services'"
+        >
+          <v-layout>
+            <v-row class="headings">
+              <v-col xs="12" md="12" lg="12">
+                <h6 class="m-4">
+                  <b>{{ $t("services_slots_en") }}</b>
+                </h6>
+              </v-col>
+            </v-row>
+          </v-layout>
+          <div
+            v-for="(service, sindex) in service_slots"
+            :key="sindex"
+            class="service-container"
+          >
+            <v-layout>
+              <v-row class="px-6 mt-2 ml-4">
+                <v-col cols="12" sm="12" md="2">
+                  <v-tooltip :text="this.$t('week_day')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-autocomplete
+                        v-bind="props"
+                        v-model="service.weekday"
+                        :label="this.$t('week_day')"
+                        variant="outlined"
+                        density="compact"
+                        :items="weekdays_en"
+                        :rules="fieldRules"
+                        item-title="shortname"
+                        item-value="header_id"
+                        class="required_field"
+                      ></v-autocomplete>
+                    </template>
+                  </v-tooltip>
+                </v-col>
+                <v-col cols="12" sm="12" md="2" class="mt-2">
+                  <v-tooltip
+                    :text="this.$t('add_weekday_en')"
+                    location="bottom"
+                  >
+                    <template v-slot:activator="{ props }">
+                      <v-btn v-bind="props" @click="addWeekday()">
+                        <!-- <v-icon
+                        v-bind="props"
+                        @click="addWeekday()"
+                        color="error"
+                        icon="mdi-plus"
+                        size="x-large"
+                      ></v-icon> -->
+                        {{ $t("add_weekday_en") }}
+                      </v-btn>
+                    </template>
+                  </v-tooltip>
+                </v-col>
+              </v-row>
+            </v-layout>
+            <div v-for="(slot, cindex) in service.slot" :key="cindex">
+              <v-layout>
+                <v-row class="px-6 mt-2">
+                  <div class="mt-5" style="width: 30px">
+                    <v-tooltip
+                      :text="this.$t('add_slots_en')"
+                      location="bottom"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <v-icon
+                          v-if="cindex == 0"
+                          v-bind="props"
+                          @click="addSlots(sindex)"
+                          color="error"
+                          icon="mdi-plus"
+                          size="x-large"
+                        ></v-icon>
+                      </template>
+                    </v-tooltip>
+                  </div>
+
+                  <v-col cols="12" sm="12" md="2">
+                    <v-tooltip
+                      :text="this.$t('from_time_en')"
+                      location="bottom"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="slot.from_time"
+                          :label="this.$t('from_time_en')"
+                          variant="outlined"
+                          density="compact"
+                          :items="service_time"
+                          :rules="fieldRules"
+                          item-title="shortname"
+                          item-value="shortname"
+                          class="required_field"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="2">
+                    <v-tooltip
+                      :text="this.$t('from_meridiem')"
+                      location="bottom"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="slot.from_meridiem"
+                          :label="this.$t('from_meridiem')"
+                          variant="outlined"
+                          density="compact"
+                          :items="meridiem"
+                          :rules="fieldRules"
+                          item-title="shortname"
+                          item-value="shortname"
+                          class="required_field"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="2">
+                    <v-tooltip :text="this.$t('to_time_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="slot.to_time"
+                          :label="this.$t('to_time_en')"
+                          variant="outlined"
+                          density="compact"
+                          :items="service_time"
+                          :rules="fieldRules"
+                          item-title="shortname"
+                          item-value="shortname"
+                          class="required_field"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="2">
+                    <v-tooltip :text="this.$t('to_meridiem')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="slot.to_meridiem"
+                          :label="this.$t('to_meridiem')"
+                          variant="outlined"
+                          density="compact"
+                          :items="meridiem"
+                          :rules="fieldRules"
+                          item-title="shortname"
+                          item-value="shortname"
+                          class="required_field"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="1">
+                    <v-tooltip :text="$t('slots_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          v-model="slot.slots"
+                          maxlength="5"
+                          v-bind:label="$t('slots_en')"
+                          required
+                          variant="outlined"
+                          class="rtl"
+                          density="compact"
+                          v-on:keypress="NumbersOnly"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="1"
+                    class="mt-2"
+                    v-if="cindex != 0"
+                  >
+                    <v-tooltip
+                      :text="this.$t('delete_slots_en')"
+                      location="bottom"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <v-icon
+                          v-bind="props"
+                          @click="deleteSlots(cindex, sindex)"
+                          color="error"
+                          icon="mdi-delete"
+                          size="large"
+                        ></v-icon>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-layout>
+            </div>
+          </div>
+        </v-form>
       </v-window>
     </div>
     <div class="d-block mr-4 mt-3 pb-3 text-right">
@@ -662,6 +869,7 @@ export default {
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
     valid: false,
     validAR: false,
+    slotvalid: false,
     error_valid: false,
     loader: false,
     file: "",
@@ -680,6 +888,21 @@ export default {
     user: "",
     label_text_ar: "مجمع تجاري",
     labelText: "Mall",
+    service_slots: [
+      {
+        weekday: null,
+        slot: [
+          {
+            id: 0,
+            from_time: "",
+            from_meridiem: "AM",
+            to_time: "",
+            to_meridiem: "AM",
+            slots: null,
+          },
+        ],
+      },
+    ],
     products: [
       {
         id: 0,
@@ -717,7 +940,21 @@ export default {
     types_en: [],
     types_ar: [],
     noimagepreview: "",
+    service_type: "",
     items: [],
+    weekdays_en: [],
+    weekdays_ar: [],
+    service_time: [],
+    meridiem: [
+      {
+        id: 0,
+        shortname: "AM",
+      },
+      {
+        id: 0,
+        shortname: "PM",
+      },
+    ],
   }),
 
   computed: {
@@ -756,6 +993,7 @@ export default {
   },
   created() {
     this.fetchRoles();
+    this.get_weekdays();
     this.fetchLookup();
     this.user = JSON.parse(localStorage.getItem("user_data"));
   },
@@ -763,11 +1001,11 @@ export default {
     "$route.query.slug": {
       immediate: true,
       handler() {
-        // alert('Inside watch');
-        // alert(this.$route.query.slug);
         if (this.$route.query.slug) {
+          this.fetchLookup();
           this.valid = true;
           this.validAR = true;
+          this.slotvalid = true;
           this.loader = true;
           this.$axios
             .get(
@@ -779,8 +1017,10 @@ export default {
               console.log("CALLED IN ROUTE");
               console.log(res);
               this.products = res.data.products;
+              this.service_slots = res.data.service_slots;
               this.assignType(this.products[0].stor_type);
-
+              this.get_weekdays();
+              this.updateTypes(this.products[0].type);
               this.loader = false;
             });
         }
@@ -807,12 +1047,58 @@ export default {
   },
 
   methods: {
+    addWeekday() {
+      this.service_slots.push({
+        weekday: null,
+        slot: [
+          {
+            id: 0,
+            from_time: "",
+            from_meridiem: "AM",
+            to_time: "",
+            to_meridiem: "AM",
+            slots: null,
+          },
+        ],
+      });
+    },
+    deleteSlots(cindex, sindex) {
+      this.service_slots[sindex].slot.splice(cindex, 1);
+    },
+    get_weekdays() {
+      this.initval = true;
+      this.loader = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-weekdays")
+        .then((response) => {
+          this.service_time = response.data.store_time_en;
+          this.weekdays_en = response.data.weekdays_en;
+          this.initval = false;
+          if (this.page_type == "add") {
+            this.initializeTimingArray();
+          }
+          this.loader = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     removeImage(index) {
       if (this.tabs == 1) {
         this.products[0].image_path.splice(index, 1);
       } else {
         this.products[1].image_path.splice(index, 1);
       }
+    },
+    addSlots(index) {
+      this.service_slots[index].slot.push({
+        id: 0,
+        from_time: "",
+        from_meridiem: "AM",
+        to_time: "",
+        to_meridiem: "AM",
+        slots: null,
+      });
     },
     changeRoleName(role_name) {
       switch (role_name) {
@@ -851,6 +1137,13 @@ export default {
       } else {
         this.products[0].type = type;
       }
+      console.log("types_en");
+      console.log(this.types_en);
+      this.types_en.map((data) => {
+        if (data.id == type) {
+          this.service_type = data.shortname;
+        }
+      });
     },
     updateType(stor_type) {
       this.products[1].store_id = null;
@@ -867,7 +1160,6 @@ export default {
             this.stores_en = this.mal_data_en;
             this.stores_ar = this.mal_data_ar;
           } else {
-            // alert("asdsad");
             this.labelText = this.$t("store");
             this.label_text_ar = this.$t("store_ar");
             this.stores_en = this.stores_data_en;
@@ -1055,9 +1347,11 @@ export default {
     },
     formatted_end_date(formatted_date) {
       this.products[0].end_date = formatted_date;
+      this.products[1].end_date = formatted_date;
     },
     formatted_end_date_ar(formatted_date) {
       this.products[1].end_date = formatted_date;
+      this.products[0].end_date = formatted_date;
     },
     onFileChanged(e) {
       this.selectedFile = e.target.files[0];
@@ -1069,7 +1363,8 @@ export default {
         if (
           this.$refs.form.validate() &&
           this.valid == true &&
-          this.validAR == true
+          this.validAR == true &&
+          this.slotvalid == true
         ) {
           this.error_valid = false;
           this.submit();
@@ -1083,6 +1378,7 @@ export default {
         if (
           this.$refs.form.validate() &&
           this.validAR == true &&
+          this.slotvalid == true &&
           this.valid == true
         ) {
           this.error_valid = false;
@@ -1096,7 +1392,11 @@ export default {
       }
     },
     submit() {
-      if (this.validAR == true && this.valid == true) {
+      if (
+        this.validAR == true &&
+        this.slotvalid == true &&
+        this.valid == true
+      ) {
         this.isDisabled = true;
         this.isBtnLoading = true;
         if (this.user.rolename == "StoreAdmin") {
@@ -1108,10 +1408,10 @@ export default {
         this.loader = true;
         // Form is valid, process
         this.$axios
-          .post(
-            process.env.VUE_APP_API_URL_ADMIN + "save_products",
-            this.products
-          )
+          .post(process.env.VUE_APP_API_URL_ADMIN + "save_products", {
+            products: this.products,
+            service_slots: this.service_slots,
+          })
           .then((res) => {
             this.btnloading = false;
             if (Array.isArray(res.data.message)) {
@@ -1209,5 +1509,13 @@ input.larger {
   /* justify-content: space-between !important; */
   flex-wrap: wrap;
   background: #fff;
+}
+.headings {
+  color: #2196f3;
+}
+.service-container {
+  margin: 10px 20px;
+  background: #e7e7e78c;
+  border-radius: 6px;
 }
 </style>
