@@ -200,6 +200,29 @@
                   </template>
                 </v-tooltip>
               </v-col>
+              <v-col cols="12" sm="12" md="3">
+                <v-tooltip :text="$t('icon_en')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      v-model="products[0].icon"
+                      maxlength="100"
+                      counter
+                      v-bind:label="$t('icon_en')"
+                      placeholder="Home"
+                      required
+                      variant="outlined"
+                      density="compact"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+                <a
+                  class="get_icons"
+                  target="_blank"
+                  href="https://mui.com/material-ui/material-icons/"
+                  >{{ $t("get_icons_en") }}</a
+                >
+              </v-col>
               <v-col cols="12" sm="12" md="12">
                 <v-tooltip :text="this.$t('description_en')" location="bottom">
                   <template v-slot:activator="{ props }">
@@ -486,6 +509,29 @@
                     ></v-text-field>
                   </template>
                 </v-tooltip>
+              </v-col>
+              <v-col cols="12" sm="12" md="3">
+                <v-tooltip :text="$t('icon_ar')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      v-model="products[1].icon"
+                      maxlength="100"
+                      counter
+                      v-bind:label="$t('icon_ar')"
+                      placeholder="Home"
+                      required
+                      variant="outlined"
+                      density="compact"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+                <a
+                  class="get_icons"
+                  target="_blank"
+                  href="https://mui.com/material-ui/material-icons/"
+                  >{{ $t("get_icons_ar") }}</a
+                >
               </v-col>
               <v-col cols="12" sm="12" md="12">
                 <v-tooltip :text="this.$t('description_ar')" location="bottom">
@@ -916,6 +962,7 @@ export default {
         meta_description: "",
         lang: "en",
         seq: null,
+        icon: "",
         stor_type: "",
       },
       {
@@ -930,6 +977,7 @@ export default {
         meta_description: "",
         lang: "ar",
         seq: null,
+        icon: "",
         stor_type: "",
       },
     ],
@@ -1517,5 +1565,9 @@ input.larger {
   margin: 10px 20px;
   background: #e7e7e78c;
   border-radius: 6px;
+}
+.get_icons {
+  font-size: 12px;
+  padding-left: 5px;
 }
 </style>
