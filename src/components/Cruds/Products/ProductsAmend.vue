@@ -652,209 +652,210 @@
             </div>
           </v-form>
         </v-window-item>
-        <v-form
-          ref="form"
-          v-model="slotvalid"
-          v-if="service_type == 'Services'"
-        >
-          <v-layout>
-            <v-row class="headings">
-              <v-col xs="12" md="12" lg="12">
-                <h6 class="m-4">
-                  <b>{{ $t("services_slots_en") }}</b>
-                </h6>
-              </v-col>
-            </v-row>
-          </v-layout>
-          <div
-            v-for="(service, sindex) in service_slots"
-            :key="sindex"
-            class="service-container"
-          >
+        <div v-if="service_type == 'Services'">
+          <v-form ref="form" v-model="slotvalid">
             <v-layout>
-              <v-row class="px-6 mt-2 ml-4">
-                <v-col cols="12" sm="12" md="2">
-                  <v-tooltip :text="this.$t('week_day')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-autocomplete
-                        v-bind="props"
-                        v-model="service.weekday"
-                        :label="this.$t('week_day')"
-                        variant="outlined"
-                        density="compact"
-                        :items="weekdays_en"
-                        :rules="fieldRules"
-                        item-title="shortname"
-                        item-value="header_id"
-                        class="required_field"
-                      ></v-autocomplete>
-                    </template>
-                  </v-tooltip>
-                </v-col>
-                <v-col cols="12" sm="12" md="2" class="mt-2">
-                  <v-tooltip
-                    :text="this.$t('add_weekday_en')"
-                    location="bottom"
-                  >
-                    <template v-slot:activator="{ props }">
-                      <v-btn v-bind="props" @click="addWeekday()">
-                        <!-- <v-icon
-                        v-bind="props"
-                        @click="addWeekday()"
-                        color="error"
-                        icon="mdi-plus"
-                        size="x-large"
-                      ></v-icon> -->
-                        {{ $t("add_weekday_en") }}
-                      </v-btn>
-                    </template>
-                  </v-tooltip>
+              <v-row class="headings">
+                <v-col xs="12" md="12" lg="12">
+                  <h5 class="m-4">
+                    <b>{{ $t("services_slots_en") }}</b>
+                  </h5>
                 </v-col>
               </v-row>
             </v-layout>
-            <div v-for="(slot, cindex) in service.slot" :key="cindex">
-              <v-layout>
-                <v-row class="px-6 mt-2">
-                  <div class="mt-5" style="width: 30px">
-                    <v-tooltip
-                      :text="this.$t('add_slots_en')"
-                      location="bottom"
-                    >
-                      <template v-slot:activator="{ props }">
-                        <v-icon
-                          v-if="cindex == 0"
-                          v-bind="props"
-                          @click="addSlots(sindex)"
-                          color="error"
-                          icon="mdi-plus"
-                          size="x-large"
-                        ></v-icon>
-                      </template>
-                    </v-tooltip>
-                  </div>
-
-                  <v-col cols="12" sm="12" md="2">
-                    <v-tooltip
-                      :text="this.$t('from_time_en')"
-                      location="bottom"
-                    >
-                      <template v-slot:activator="{ props }">
-                        <v-autocomplete
-                          v-bind="props"
-                          v-model="slot.from_time"
-                          :label="this.$t('from_time_en')"
-                          variant="outlined"
-                          density="compact"
-                          :items="service_time"
-                          :rules="fieldRules"
-                          item-title="shortname"
-                          item-value="shortname"
-                          class="required_field"
-                        ></v-autocomplete>
-                      </template>
-                    </v-tooltip>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="2">
-                    <v-tooltip
-                      :text="this.$t('from_meridiem')"
-                      location="bottom"
-                    >
-                      <template v-slot:activator="{ props }">
-                        <v-autocomplete
-                          v-bind="props"
-                          v-model="slot.from_meridiem"
-                          :label="this.$t('from_meridiem')"
-                          variant="outlined"
-                          density="compact"
-                          :items="meridiem"
-                          :rules="fieldRules"
-                          item-title="shortname"
-                          item-value="shortname"
-                          class="required_field"
-                        ></v-autocomplete>
-                      </template>
-                    </v-tooltip>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="2">
-                    <v-tooltip :text="this.$t('to_time_en')" location="bottom">
-                      <template v-slot:activator="{ props }">
-                        <v-autocomplete
-                          v-bind="props"
-                          v-model="slot.to_time"
-                          :label="this.$t('to_time_en')"
-                          variant="outlined"
-                          density="compact"
-                          :items="service_time"
-                          :rules="fieldRules"
-                          item-title="shortname"
-                          item-value="shortname"
-                          class="required_field"
-                        ></v-autocomplete>
-                      </template>
-                    </v-tooltip>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="2">
-                    <v-tooltip :text="this.$t('to_meridiem')" location="bottom">
-                      <template v-slot:activator="{ props }">
-                        <v-autocomplete
-                          v-bind="props"
-                          v-model="slot.to_meridiem"
-                          :label="this.$t('to_meridiem')"
-                          variant="outlined"
-                          density="compact"
-                          :items="meridiem"
-                          :rules="fieldRules"
-                          item-title="shortname"
-                          item-value="shortname"
-                          class="required_field"
-                        ></v-autocomplete>
-                      </template>
-                    </v-tooltip>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="1">
-                    <v-tooltip :text="$t('slots_en')" location="bottom">
-                      <template v-slot:activator="{ props }">
-                        <v-text-field
-                          v-bind="props"
-                          v-model="slot.slots"
-                          maxlength="5"
-                          v-bind:label="$t('slots_en')"
-                          required
-                          variant="outlined"
-                          class="rtl"
-                          density="compact"
-                          v-on:keypress="NumbersOnly"
-                        ></v-text-field>
-                      </template>
-                    </v-tooltip>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="12"
-                    md="1"
-                    class="mt-2"
-                    v-if="cindex != 0"
+            <div class="mx-5">
+              <v-tooltip :text="this.$t('add_weekday_en')" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    size="small"
+                    elevation="0"
+                    color="blue"
+                    rounded
+                    v-bind="props"
+                    @click="addWeekday()"
                   >
-                    <v-tooltip
-                      :text="this.$t('delete_slots_en')"
-                      location="bottom"
-                    >
+                    {{ $t("add_weekday_en") }}
+                  </v-btn>
+                </template>
+              </v-tooltip>
+            </div>
+            <div
+              v-for="(service, sindex) in service_slots"
+              :key="sindex"
+              class="service-container"
+            >
+              <v-layout>
+                <v-row class="px-6 mt-2 ml-4">
+                  <v-col cols="12" sm="12" md="2">
+                    <v-tooltip :text="this.$t('week_day')" location="bottom">
                       <template v-slot:activator="{ props }">
-                        <v-icon
+                        <v-autocomplete
                           v-bind="props"
-                          @click="deleteSlots(cindex, sindex)"
-                          color="error"
-                          icon="mdi-delete"
-                          size="large"
-                        ></v-icon>
+                          v-model="service.weekday"
+                          :label="this.$t('week_day')"
+                          variant="outlined"
+                          density="compact"
+                          :items="weekdays_en"
+                          :rules="fieldRules"
+                          item-title="shortname"
+                          item-value="header_id"
+                          class="required_field"
+                        ></v-autocomplete>
                       </template>
                     </v-tooltip>
                   </v-col>
                 </v-row>
               </v-layout>
+              <div v-for="(slot, cindex) in service.slot" :key="cindex">
+                <v-layout>
+                  <v-row class="px-6 mt-2">
+                    <div class="mt-5" style="width: 30px">
+                      <v-tooltip
+                        :text="this.$t('add_slots_en')"
+                        location="bottom"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <v-icon
+                            v-if="cindex == 0"
+                            v-bind="props"
+                            @click="addSlots(sindex)"
+                            color="error"
+                            icon="mdi-plus"
+                            size="x-large"
+                          ></v-icon>
+                        </template>
+                      </v-tooltip>
+                    </div>
+
+                    <v-col cols="12" sm="12" md="2">
+                      <v-tooltip
+                        :text="this.$t('from_time_en')"
+                        location="bottom"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <v-autocomplete
+                            v-bind="props"
+                            v-model="slot.from_time"
+                            :label="this.$t('from_time_en')"
+                            variant="outlined"
+                            density="compact"
+                            :items="service_time"
+                            :rules="fieldRules"
+                            item-title="shortname"
+                            item-value="shortname"
+                            class="required_field"
+                          ></v-autocomplete>
+                        </template>
+                      </v-tooltip>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="2">
+                      <v-tooltip
+                        :text="this.$t('from_meridiem')"
+                        location="bottom"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <v-autocomplete
+                            v-bind="props"
+                            v-model="slot.from_meridiem"
+                            :label="this.$t('from_meridiem')"
+                            variant="outlined"
+                            density="compact"
+                            :items="meridiem"
+                            :rules="fieldRules"
+                            item-title="shortname"
+                            item-value="shortname"
+                            class="required_field"
+                          ></v-autocomplete>
+                        </template>
+                      </v-tooltip>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="2">
+                      <v-tooltip
+                        :text="this.$t('to_time_en')"
+                        location="bottom"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <v-autocomplete
+                            v-bind="props"
+                            v-model="slot.to_time"
+                            :label="this.$t('to_time_en')"
+                            variant="outlined"
+                            density="compact"
+                            :items="service_time"
+                            :rules="fieldRules"
+                            item-title="shortname"
+                            item-value="shortname"
+                            class="required_field"
+                          ></v-autocomplete>
+                        </template>
+                      </v-tooltip>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="2">
+                      <v-tooltip
+                        :text="this.$t('to_meridiem')"
+                        location="bottom"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <v-autocomplete
+                            v-bind="props"
+                            v-model="slot.to_meridiem"
+                            :label="this.$t('to_meridiem')"
+                            variant="outlined"
+                            density="compact"
+                            :items="meridiem"
+                            :rules="fieldRules"
+                            item-title="shortname"
+                            item-value="shortname"
+                            class="required_field"
+                          ></v-autocomplete>
+                        </template>
+                      </v-tooltip>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="1">
+                      <v-tooltip :text="$t('slots_en')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <v-text-field
+                            v-bind="props"
+                            v-model="slot.slots"
+                            maxlength="5"
+                            v-bind:label="$t('slots_en')"
+                            required
+                            variant="outlined"
+                            class="rtl"
+                            density="compact"
+                            v-on:keypress="NumbersOnly"
+                          ></v-text-field>
+                        </template>
+                      </v-tooltip>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="12"
+                      md="1"
+                      class="mt-2"
+                      v-if="cindex != 0"
+                    >
+                      <v-tooltip
+                        :text="this.$t('delete_slots_en')"
+                        location="bottom"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <v-icon
+                            v-bind="props"
+                            @click="deleteSlots(cindex, sindex)"
+                            color="error"
+                            icon="mdi-delete"
+                            size="large"
+                          ></v-icon>
+                        </template>
+                      </v-tooltip>
+                    </v-col>
+                  </v-row>
+                </v-layout>
+              </div>
             </div>
-          </div>
-        </v-form>
+          </v-form>
+        </div>
       </v-window>
     </div>
     <div class="d-block mr-4 mt-3 pb-3 text-right">
@@ -1185,13 +1186,16 @@ export default {
       } else {
         this.products[0].type = type;
       }
-      console.log("types_en");
-      console.log(this.types_en);
       this.types_en.map((data) => {
         if (data.id == type) {
           this.service_type = data.shortname;
         }
       });
+      if (this.service_type == 'Products') {
+        this.slotvalid = true;
+      }else{
+        this.slotvalid = false;
+      }
     },
     updateType(stor_type) {
       this.products[1].store_id = null;
