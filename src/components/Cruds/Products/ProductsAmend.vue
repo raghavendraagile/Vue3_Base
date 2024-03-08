@@ -148,7 +148,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="3">
+              <v-col cols="12" sm="12" md="3" v-if="service_type == 'Services'">
                 <v-tooltip :text="this.$t('start_date_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker
@@ -166,7 +166,7 @@
                   <span>{{ $t("start_date_en") }}</span>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="3">
+              <v-col cols="12" sm="12" md="3" v-if="service_type == 'Services'">
                 <v-tooltip :text="this.$t('end_date_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker
@@ -454,7 +454,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="3">
+              <v-col cols="12" sm="12" md="3" v-if="service_type == 'Services'">
                 <v-tooltip :text="this.$t('start_date_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker
@@ -473,7 +473,7 @@
                   <span>{{ $t("start_date_ar") }}</span>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="12" md="3">
+              <v-col cols="12" sm="12" md="3" v-if="service_type == 'Services'">
                 <v-tooltip :text="this.$t('end_date_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker

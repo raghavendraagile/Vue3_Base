@@ -1,5 +1,6 @@
 <template>
   <div>
+    <content-loader v-if="loader"></content-loader>
     <v-dialog v-model="dialogVisible" max-width="750px" persistent>
       <content-loader v-if="loader"></content-loader>
 
@@ -37,29 +38,8 @@
               :img-style="{ width: '800px', height: '500px' }"
               @ready="cropperReady"
             ></VueCropper>
-            <!--  <VueCropper
-             ref="cropper"
-              :dragMode="'none'"
-              :src="selectedFile"
-              :view-mode="2"
-              :cropBoxResizable="false"
-              :cropBoxMovable="true"
-              :minCropBoxWidth="250"
-              :minCropBoxHeight="180"
-              :autoCrop="true"
-              :img-style="{ width: '500px', height: '400px' }"
-              v-bind="$attrs"
-              @crop="handleCrop"
-              @ready="cropperReady"
-            ></VueCropper> -->
           </div>
         </v-card-text>
-
-        <!-- <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="success" @click="cropImage">{{ $t("upload") }}</v-btn>
-          <v-btn color="error" @click="cancelCrop">{{ $t("cancel") }}</v-btn>
-        </v-card-actions> -->
       </v-card>
     </v-dialog>
     <input
@@ -72,10 +52,10 @@
     />
   </div>
 </template>
-
 <script>
 import "cropperjs/dist/cropper.css";
 import VueCropper from "vue-cropperjs";
+import Compressor from "compressorjs";
 
 export default {
   name: "ImageUploadCropper",
@@ -103,9 +83,8 @@ export default {
       message: "",
       dialogVisible: false,
       loader: false,
-      //Below are the options that are there in Cropper
+      originalAspectRatio: 0,
       cropperOptions: {
-        // aspectRatio: 12 / 12,
         viewMode: 1,
         autoCropArea: 1,
         movable: false,
@@ -135,45 +114,94 @@ export default {
       }
     },
     cropperReady() {
-      const fixedWidth = this.resizewidth;
-      const fixedHeight = this.resizeheight;
-
       this.$nextTick(() => {
-        const containerData = this.$refs.cropper.getContainerData();
-        const cropBoxData = {
-          left: Math.max(0, (containerData.width - fixedWidth) / 2),
-          top: Math.max(0, (containerData.height - fixedHeight) / 2),
-          width: Math.min(fixedWidth, containerData.width),
-          height: Math.min(fixedHeight, containerData.height),
-        };
-        this.$refs.cropper.setCropBoxData(cropBoxData);
+        this.adjustCropperCanvas();
+        this.loader = false;
       });
+    },
+    adjustCropperCanvas() {
+      const containerData = this.$refs.cropper.getContainerData();
+      const imageData = this.$refs.cropper.getImageData();
+      const originalAspectRatio =
+        imageData.naturalWidth / imageData.naturalHeight;
+
+      let canvasData = {
+        width: containerData.width,
+        height: containerData.width / originalAspectRatio,
+      };
+
+      if (canvasData.height > containerData.height) {
+        canvasData.height = containerData.height;
+        canvasData.width = containerData.height * originalAspectRatio;
+      }
+
+      canvasData.left = (containerData.width - canvasData.width) / 2;
+      canvasData.top = (containerData.height - canvasData.height) / 2;
+
+      this.$refs.cropper.setCanvasData(canvasData);
+
+      const cropBoxData = {
+        left: (containerData.width - this.resizewidth) / 2,
+        top: (containerData.height - this.resizeheight) / 2,
+        width: this.resizewidth,
+        height: this.resizeheight,
+      };
+
+      this.$refs.cropper.setCropBoxData(cropBoxData);
     },
 
     openFileInput() {
       this.$refs.fileInput.click();
     },
     onFileChange(event) {
+      this.loader = true; // Show loading indicator immediately
       const file = event.target.files[0];
-      const filename = event.target.files[0].name;
-      if (file) {
-        this.resizeImage(file, (resizedImage) => {
-          this.selectedFile = URL.createObjectURL(resizedImage);
-          this.dialogVisible = true;
-        });
-        const lastDot = filename.lastIndexOf(".");
-        const fileNameWithoutExt = filename.substring(0, lastDot);
-        const ext = filename.substring(lastDot + 1);
-        console.log("FileName => " + fileNameWithoutExt);
-        this.filename = fileNameWithoutExt;
-        console.log("Extension => " + ext);
-        this.extension = ext;
-        // this.dialogVisible = true;
-        event.target.value = "";
-      } else {
-        this.selectedFile = null;
-        this.dialogVisible = false;
+      if (!file) {
+        this.loader = false;
+        return;
       }
+      const filename = event.target.files[0].name;
+      const lastDot = filename.lastIndexOf(".");
+      const fileNameWithoutExt = filename.substring(0, lastDot);
+      const ext = filename.substring(lastDot + 1);
+      this.filename = fileNameWithoutExt;
+      this.extension = ext;
+      if (file.size > 6 * 1024 * 1024) {
+        // 5 MB threshold
+      alert("The file size is too large. Please upload an image that is 6MB or less.");
+        this.loader = false;
+      } else if ((file.size == 6 * 1024 * 1024)) {
+        this.compressAndLoadImage(file);
+      } else {
+        this.loadImageDirectly(file);
+      }
+
+      event.target.value = "";
+    },
+    compressAndLoadImage(file) {
+      new Compressor(file, {
+        quality: 0,
+        success: (compressedResult) => {
+          this.prepareImageForCropper(compressedResult);
+        },
+        error: (err) => {
+          console.error("Compression error:", err.message);
+          this.loader = false;
+        },
+      });
+    },
+
+    loadImageDirectly(file) {
+      this.prepareImageForCropper(file);
+    },
+
+    prepareImageForCropper(file) {
+      this.selectedFile = URL.createObjectURL(file);
+
+      this.dialogVisible = true;
+      setTimeout(() => {
+        this.loader = false;
+      }, 1000);
     },
 
     cropImage() {
@@ -181,27 +209,7 @@ export default {
         this.upload(this.imagedata);
       }
     },
-    resizeImage(file, callback) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-          // Set your desired image size
-          canvas.width = 800; // Example width
-          canvas.height = 600; // Example height
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          canvas.toBlob((blob) => {
-            callback(blob);
-          }, file.type);
-        };
-        img.src = e.target.result;
-        // this.loader = false;
-      };
-      reader.readAsDataURL(file);
-      // this.loader = false;
-    },
+
     upload(imagedata) {
       this.loader = true;
       if (!imagedata) {
@@ -251,8 +259,8 @@ export default {
 <style scoped>
 .cropper-container .cropper-view-box,
 .cropper-container .cropper-face {
-  min-width: 200px !important; /* Set your desired minimum width here */
-  min-height: 10px !important; /* Set your desired minimum width here */
+  min-width: 200px !important;
+  min-height: 10px !important;
 }
 .btn_margin {
   margin: 10px 26px 0px 0px;
