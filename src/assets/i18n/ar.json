@@ -561,5 +561,7 @@
   "delete_slots_en": "Delete Slot",
   "delete_slots_ar": "حذف الفتحة",
   "add_weekday_en": "Add Weekday",
-  "add_weekday_ar": "أضف أيام الأسبوع"
+  "add_weekday_ar": "أضف أيام الأسبوع",
+  "weekday_required":"مطلوب أيام الأسبوع.",
+  "weekday_unique":"يجب أن تكون أيام الأسبوع فريدة من نوعها."
 }

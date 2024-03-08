@@ -696,14 +696,35 @@
                           variant="outlined"
                           density="compact"
                           :items="weekdays_en"
-                          :rules="fieldRules"
+                          :rules="getWeekdayRules(sindex)"
                           item-title="shortname"
                           item-value="header_id"
                           class="required_field"
                         ></v-autocomplete>
                       </template>
                     </v-tooltip>
+                   
                   </v-col>
+                  <div
+                    style="position: absolute; right: 20px; top: 16px"
+                    v-if="sindex != 0"
+                  >
+                    <v-tooltip
+                      :text="this.$t('delete_slots_en')"
+                      location="bottom"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <v-btn
+                          v-bind="props"
+                          color="error"
+                          variant="icon"
+                          icon="mdi-delete"
+                          @click="deleteWeekday(sindex)"
+                        >
+                        </v-btn>
+                      </template>
+                    </v-tooltip>
+                  </div>
                 </v-row>
               </v-layout>
               <div v-for="(slot, cindex) in service.slot" :key="cindex">
@@ -840,13 +861,14 @@
                         location="bottom"
                       >
                         <template v-slot:activator="{ props }">
-                          <v-icon
+                          <v-btn
                             v-bind="props"
-                            @click="deleteSlots(cindex, sindex)"
                             color="error"
+                            variant="icon"
                             icon="mdi-delete"
-                            size="large"
-                          ></v-icon>
+                            @click="deleteSlots(cindex, sindex)"
+                          >
+                          </v-btn>
                         </template>
                       </v-tooltip>
                     </v-col>
@@ -1004,6 +1026,8 @@ export default {
         shortname: "PM",
       },
     ],
+    show_er_msg: null,
+    temp_slot: [],
   }),
 
   computed: {
@@ -1096,6 +1120,18 @@ export default {
   },
 
   methods: {
+    getWeekdayRules(sindex) {
+      return [
+        (value) => !!value || this.$t('weekday_required'),
+        (value) => this.isUniqueWeekday(value, sindex),
+      ];
+    },
+    isUniqueWeekday(value, index) {
+      const duplicate = this.service_slots.some(
+        (service, idx) => service.weekday === value && idx !== index
+      );
+      return !duplicate || this.$t('weekday_unique');
+    },
     addWeekday() {
       this.service_slots.push({
         weekday: null,
@@ -1113,6 +1149,9 @@ export default {
     },
     deleteSlots(cindex, sindex) {
       this.service_slots[sindex].slot.splice(cindex, 1);
+    },
+    deleteWeekday(sindex) {
+      this.service_slots.splice(sindex, 1);
     },
     get_weekdays() {
       this.initval = true;
@@ -1191,9 +1230,9 @@ export default {
           this.service_type = data.shortname;
         }
       });
-      if (this.service_type == 'Products') {
+      if (this.service_type == "Products") {
         this.slotvalid = true;
-      }else{
+      } else {
         this.slotvalid = false;
       }
     },
@@ -1573,5 +1612,11 @@ input.larger {
 .get_icons {
   font-size: 12px;
   padding-left: 5px;
+}
+.wd-message {
+  color: #b10525;
+  top: -20px;
+  position: relative;
+  font-size: 14px;
 }
 </style>
