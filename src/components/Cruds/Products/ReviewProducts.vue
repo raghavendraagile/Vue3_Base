@@ -332,7 +332,7 @@
                   <v-row class="px-6 mt-2 ml-4">
                     <v-col cols="12" sm="12" md="2">
                       <div class="d-label">
-                        <h4>{{ service.weekday }}</h4>
+                        <h4>{{ changeArWeekday(service.weekday) }}</h4>
                       </div>
                     </v-col>
                   </v-row>
@@ -354,10 +354,16 @@
                   <v-layout>
                     <v-row class="px-6 mt-2 ml-4 mb-3">
                       <v-col cols="12" sm="12" md="4">
-                        <div>{{ slot.from_time }} {{ slot.from_meridiem }}</div>
+                        <div>
+                          {{ slot.from_time }}
+                          {{ changeArMeridian(slot.from_meridiem) }}
+                        </div>
                       </v-col>
                       <v-col cols="12" sm="12" md="4">
-                        <div>{{ slot.to_time }} {{ slot.to_meridiem }}</div>
+                        <div>
+                          {{ slot.to_time }}
+                          {{ changeArMeridian(slot.to_meridiem) }}
+                        </div>
                       </v-col>
                       <v-col cols="12" sm="12" md="4">
                         <div>{{ slot.slots }}</div>
@@ -506,6 +512,36 @@ export default {
           return this.$t("inreview_ar");
         case "Rejected":
           return this.$t("rejected_ar");
+        default:
+          return "";
+      }
+    },
+    changeArWeekday(day) {
+      switch (day) {
+        case "Monday":
+          return this.$t("monday_ar");
+        case "Tuesday":
+          return this.$t("tuesday_ar");
+        case "Wednesday":
+          return this.$t("wednesday_ar");
+        case "Thursday":
+          return this.$t("thursday_ar");
+        case "Friday":
+          return this.$t("friday_ar");
+        case "Saturday":
+          return this.$t("saturday_ar");
+        case "Sunday":
+          return this.$t("sunday_ar");
+        default:
+          return "";
+      }
+    },
+    changeArMeridian(data) {
+      switch (data) {
+        case "AM":
+          return this.$t("am_ar");
+        case "PM":
+          return this.$t("pm_ar");
         default:
           return "";
       }
