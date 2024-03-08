@@ -685,7 +685,7 @@
               class="service-container"
             >
               <v-layout>
-                <v-row class="px-6 mt-2 ml-4">
+                <v-row class="px-6 mt-2 ml-8">
                   <v-col cols="12" sm="12" md="2">
                     <v-tooltip :text="this.$t('week_day')" location="bottom">
                       <template v-slot:activator="{ props }">
@@ -703,7 +703,6 @@
                         ></v-autocomplete>
                       </template>
                     </v-tooltip>
-                   
                   </v-col>
                   <div
                     style="position: absolute; right: 20px; top: 16px"
@@ -729,25 +728,24 @@
               </v-layout>
               <div v-for="(slot, cindex) in service.slot" :key="cindex">
                 <v-layout>
+                  <div class="mt-7 ml-4" style="width: 30px">
+                    <v-tooltip
+                      :text="this.$t('add_slots_en')"
+                      location="bottom"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <v-icon
+                          v-if="cindex == 0"
+                          v-bind="props"
+                          @click="addSlots(sindex)"
+                          color="error"
+                          icon="mdi-plus"
+                          size="x-large"
+                        ></v-icon>
+                      </template>
+                    </v-tooltip>
+                  </div>
                   <v-row class="px-6 mt-2">
-                    <div class="mt-5" style="width: 30px">
-                      <v-tooltip
-                        :text="this.$t('add_slots_en')"
-                        location="bottom"
-                      >
-                        <template v-slot:activator="{ props }">
-                          <v-icon
-                            v-if="cindex == 0"
-                            v-bind="props"
-                            @click="addSlots(sindex)"
-                            color="error"
-                            icon="mdi-plus"
-                            size="x-large"
-                          ></v-icon>
-                        </template>
-                      </v-tooltip>
-                    </div>
-
                     <v-col cols="12" sm="12" md="2">
                       <v-tooltip
                         :text="this.$t('from_time_en')"
@@ -843,6 +841,25 @@
                             required
                             variant="outlined"
                             class="rtl"
+                            density="compact"
+                            v-on:keypress="NumbersOnly"
+                          ></v-text-field>
+                        </template>
+                      </v-tooltip>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="2">
+                      <v-tooltip
+                        :text="$t('max_reservation_en')"
+                        location="bottom"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <v-text-field
+                            v-bind="props"
+                            v-model="slot.max_reservation"
+                            maxlength="5"
+                            v-bind:label="$t('max_reservation_en')"
+                            required
+                            variant="outlined"
                             density="compact"
                             v-on:keypress="NumbersOnly"
                           ></v-text-field>
@@ -967,6 +984,7 @@ export default {
             from_meridiem: "AM",
             to_time: "",
             to_meridiem: "AM",
+            max_reservation: 1,
             slots: null,
           },
         ],
@@ -1122,7 +1140,7 @@ export default {
   methods: {
     getWeekdayRules(sindex) {
       return [
-        (value) => !!value || this.$t('weekday_required'),
+        (value) => !!value || this.$t("weekday_required"),
         (value) => this.isUniqueWeekday(value, sindex),
       ];
     },
@@ -1130,7 +1148,7 @@ export default {
       const duplicate = this.service_slots.some(
         (service, idx) => service.weekday === value && idx !== index
       );
-      return !duplicate || this.$t('weekday_unique');
+      return !duplicate || this.$t("weekday_unique");
     },
     addWeekday() {
       this.service_slots.push({

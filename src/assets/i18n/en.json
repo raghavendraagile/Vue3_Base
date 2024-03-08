@@ -609,5 +609,7 @@
   "add_weekday_en": "Add Weekday",
   "add_weekday_ar": "أضف أيام الأسبوع",
   "weekday_required":"Weekday is required.",
-  "weekday_unique":"Weekday must be unique."
+  "weekday_unique":"Weekday must be unique.",
+  "max_reservation_en": "Max.Reservation",
+  "max_reservation_ar": "الحد الأقصى للحجز"
 }
