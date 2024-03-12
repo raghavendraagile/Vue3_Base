@@ -1,16 +1,40 @@
 <template>
   <div>
-    <v-menu ref="menu1" v-model="menu1" transition="scale-transition" offset-y max-width="290px" min-width="auto"
-      :close-on-content-click="false" :return-value="show_date">
+    <v-menu
+      ref="menu1"
+      v-model="menu1"
+      transition="scale-transition"
+      offset-y
+      max-width="290px"
+      min-width="auto"
+      :close-on-content-click="false"
+      :return-value="show_date"
+    >
       <template v-slot:activator="{ props }">
-        <v-text-field density="compact" v-model="DateFormatted" :label="label" :rules="fieldRules"
-          append-inner-icon="mdi-calendar" :readonly="true" :disabled="disable_field"
-          v-bind:class="class_required ? 'required_field' : ''" variant="outlined" @blur="date = parseDate(dateFormatted)"
-          v-bind="props"></v-text-field>
+        <v-text-field
+          density="compact"
+          v-model="DateFormatted"
+          :label="label"
+          :rules="fieldRules"
+          append-inner-icon="mdi-calendar"
+          :readonly="true"
+          :disabled="disable_field"
+          v-bind:class="class_required ? 'required_field' : ''"
+          variant="outlined"
+          @blur="date = parseDate(dateFormatted)"
+          v-bind="props"
+        ></v-text-field>
       </template>
-      <datepicker @selected="handleSelectDate" :disabled-dates="disabledDates"
-        :prevent-disable-date-selection="preventDisableDateSelection" v-model="show_date" inline="true"
-        format="dd/MMM/yyyy" @input="selectdatemodel()" class="datepickerpackage">
+      <datepicker
+        @selected="handleSelectDate"
+        :disabled-dates="disabledDates"
+        :prevent-disable-date-selection="preventDisableDateSelection"
+        v-model="show_date"
+        inline="true"
+        format="dd/MMM/yyyy"
+        @input="selectdatemodel()"
+        class="datepickerpackage"
+      >
       </datepicker>
     </v-menu>
   </div>
@@ -30,6 +54,7 @@ export default {
     "disable_field",
     "list_index",
     "array_index",
+    "slot_index",
   ],
   components: {
     Datepicker,
@@ -44,12 +69,12 @@ export default {
     menu1: false,
 
     disabledDates: {
-      to: '',
-      from: '',
-      preventDisableDateSelection: true
-    }
+      to: "",
+      from: "",
+      preventDisableDateSelection: true,
+    },
     // disabledDates: {
-    //   to: '', 
+    //   to: '',
     //   from: new Date(2024, 1, 29), // Disable all dates after specific date
 
     //   preventDisableDateSelection: true
@@ -58,14 +83,12 @@ export default {
 
   computed: {
     fieldRules() {
-      if (this.translation == 'arabic') {
+      if (this.translation == "arabic") {
         return [(v) => !!v || !this.rules || this.$t("field_required_ar")];
-      }
-      else {
+      } else {
         return [(v) => !!v || !this.rules || this.$t("field_required")];
       }
     },
-
 
     DateFormatted() {
       if (this.array_index != null) {
@@ -78,7 +101,11 @@ export default {
           this.$emit("formatted_date_index", this.show_date, this.list_index);
           return this.formatDate(this.show_date);
         } else {
-          this.$emit("formatted_date", this.show_date);
+          if (this.slot_index>=0) {
+            this.$emit("formatted_service_start_date", this.slot_index,this.show_date);
+          } else {
+            this.$emit("formatted_date", this.show_date);
+          }
           return this.formatDate(this.show_date);
         }
       }
@@ -100,10 +127,13 @@ export default {
       immediate: true,
       handler() {
         if (this.min) {
-          this.disabledDates.to = new Date((this.min.split('-')[0]), (this.min.split('-')[1] - 1), (this.min.split('-')[2]));
-        }
-        else {
-          this.disabledDates.to = '';
+          this.disabledDates.to = new Date(
+            this.min.split("-")[0],
+            this.min.split("-")[1] - 1,
+            this.min.split("-")[2]
+          );
+        } else {
+          this.disabledDates.to = "";
         }
       },
     },
@@ -111,12 +141,15 @@ export default {
       immediate: true,
       handler() {
         if (this.max) {
-          const dateObject = new Date((this.max.split('-')[0]), (this.max.split('-')[1] - 1), (this.max.split('-')[2]));
+          const dateObject = new Date(
+            this.max.split("-")[0],
+            this.max.split("-")[1] - 1,
+            this.max.split("-")[2]
+          );
           dateObject.setDate(dateObject.getDate() + 1);
           this.disabledDates.from = dateObject;
-        }
-        else {
-          this.disabledDates.from = '';
+        } else {
+          this.disabledDates.from = "";
         }
       },
     },

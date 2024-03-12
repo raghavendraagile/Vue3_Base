@@ -566,5 +566,8 @@
   "weekday_unique":"يجب أن تكون أيام الأسبوع فريدة من نوعها.",
   "max_reservation_en": "Max.Reservation",
   "max_reservation_ar": "الحد الأقصى للحجز",
-  "week_day_en": "Week Day"
+  "week_day_en": "Week Day",
+  "copy_to_next_date_ar":"نسخ إلى التاريخ التالي",
+  "copy_to_next_date_en":"Copy to Next Date"
+
 }

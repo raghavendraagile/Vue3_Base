@@ -699,6 +699,39 @@
                   class="px-6 mt-2 ml-8"
                   v-bind:class="tabs == 2 ? 'arabclass mr-8' : ''"
                 >
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="3"
+                    v-if="service_type == 'Services'"
+                  >
+                    <v-tooltip
+                      :text="this.$t('start_date_en')"
+                      location="bottom"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <DatePicker
+                          v-bind="props"
+                          :label="$t('start_date_en')"
+                          :min="
+                            min_slot_date[sindex]
+                              ? min_slot_date[sindex]
+                              : products[0].start_date
+                          "
+                          :max="products[0].end_date"
+                          :stored_date="service.slot_date"
+                          @formatted_date="formatted_service_start_date"
+                          dense
+                          :slot_index="sindex"
+                          :rules="fieldRules"
+                          :class_required="'RequiredField'"
+                          v-on="on"
+                        />
+                      </template>
+                      <span>{{ $t("start_date_en") }}</span>
+                    </v-tooltip>
+                  </v-col>
+                  <!-- @change="getDay(sindex)" -->
                   <v-col cols="12" sm="12" md="2">
                     <v-tooltip
                       :text="tabs == 1 ? $t('week_day_en') : $t('week_day_ar')"
@@ -723,6 +756,36 @@
                       </template>
                     </v-tooltip>
                   </v-col>
+                  <div
+                    v-if="sindex === service_slots.length - 1"
+                    v-bind:class="
+                      tabs == 2 ? 'copy_weekday_ar' : 'copy_weekday_en'
+                    "
+                  >
+                    <v-tooltip
+                      :text="
+                        tabs == 1
+                          ? $t('copy_to_next_date_en')
+                          : $t('copy_to_next_date_ar')
+                      "
+                      location="bottom"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <v-btn
+                          v-bind="props"
+                          class="btn-theme-blue"
+                          small
+                          :disabled="!canCopyServiceSlot"
+                          @click="copyNextDate(service, sindex)"
+                        >
+                          <span v-if="tabs == 1">
+                            {{ $t("copy_to_next_date_en") }}
+                          </span>
+                          <span v-else> {{ $t("copy_to_next_date_ar") }}</span>
+                        </v-btn>
+                      </template>
+                    </v-tooltip>
+                  </div>
                   <div
                     v-bind:class="
                       tabs == 2 ? 'delete_weekday_ar' : 'delete_weekday_en'
@@ -1016,6 +1079,7 @@
 <script>
 import DatePicker from "../../CustomComponents/DatePicker.vue";
 import Imageupload from "../../CustomComponents/ImageUpload.vue";
+import moment from "moment";
 export default {
   components: { Imageupload, DatePicker },
   data: () => ({
@@ -1044,12 +1108,14 @@ export default {
     role_array: [],
     stores_data_ar: [],
     stores_data_en: [],
+    min_slot_date: [],
     user: "",
     label_text_ar: "مجمع تجاري",
     labelText: "Mall",
     service_slots: [
       {
         weekday: null,
+        slot_date: "",
         slot: [
           {
             id: 0,
@@ -1102,7 +1168,7 @@ export default {
     types_en: [],
     types_ar: [],
     noimagepreview: "",
-    service_type: "",
+    service_type: "Services",
     items: [],
     weekdays_en: [],
     weekdays_ar: [],
@@ -1122,6 +1188,23 @@ export default {
   }),
 
   computed: {
+    canCopyServiceSlot() {
+      return this.service_slots.every((service) => {
+        if (!service.slot_date) return false;
+
+        return service.slot.every((slot) => {
+          return (
+            slot.id !== null &&
+            slot.from_time &&
+            slot.from_meridiem &&
+            slot.to_time &&
+            slot.to_meridiem &&
+            slot.max_reservation !== null &&
+            slot.slots !== null
+          );
+        });
+      });
+    },
     emailRules() {
       return [
         (v) => !!v || this.$t("email_required"),
@@ -1211,6 +1294,34 @@ export default {
   },
 
   methods: {
+    copyNextDate(service_data, index) {
+      const newServiceData = JSON.parse(JSON.stringify(service_data));
+
+      const nextDay = moment(this.service_slots[index].slot_date, "YYYY-MM-DD")
+        .add(1, "days")
+        .format("YYYY-MM-DD");
+      var formatted_day = moment(nextDay, "dddd");
+      newServiceData.slot_date = nextDay;
+      if (this.tabs == 1) {
+        this.weekdays_en.filter((day) => {
+          if (day.shortname == formatted_day) {
+            return (this.service_slots[index + 1].weekday = day.header_id);
+          }
+        });
+      } else {
+        this.weekdays_ar.filter((day) => {
+          if (day.shortname == formatted_day) {
+            return (this.service_slots[index + 1].weekday = day.header_id);
+          }
+        });
+      }
+      console.log("all service date", newServiceData);
+      this.service_slots.push(newServiceData);
+      // var slot_date = moment(service_data.start_date, "YYYY-MM-DD");
+      // var formatted_day = nextDay.format("dddd");
+
+      // this.min_slot_date[index + 1] = nextDay;
+    },
     getWeekdayRules(sindex) {
       return [
         (value) => !!value || this.$t("weekday_required"),
@@ -1513,11 +1624,45 @@ export default {
     formatted_start_date(formatted_date) {
       this.products[0].start_date = formatted_date;
       this.products[1].start_date = formatted_date;
+      // this.min_slot_date = formatted_date;
       if (this.products[0].end_date < formatted_date) {
         this.products[0].end_date = "";
       }
       if (this.products[1].end_date < formatted_date) {
         this.products[1].end_date = "";
+      }
+    },
+    formatted_service_start_date(formatted_date, index) {
+      if (formatted_date) {
+        var slot_formatted_date = moment(formatted_date, "YYYY-MM-DD");
+
+        // console.log("sadasdasd",);
+        this.service_slots[index].slot_date =
+          slot_formatted_date.format("YYYY-MM-DD");
+        this.service_slots[index].slot_date =
+          slot_formatted_date.format("YYYY-MM-DD");
+
+        var formatted_day = slot_formatted_date.format("dddd");
+        var nextDay = moment(formatted_date)
+          .add(1, "days")
+          .format("YYYY-MM-DD");
+        this.min_slot_date[index + 1] = nextDay;
+        // this.$set(this.min_slot_date, index + 1, nextDay);
+
+        // min_slot_dateindex+1
+        if (this.tabs == 1) {
+          this.weekdays_en.filter((day) => {
+            if (day.shortname == formatted_day) {
+              return (this.service_slots[index].weekday = day.header_id);
+            }
+          });
+        } else {
+          this.weekdays_ar.filter((day) => {
+            if (day.shortname == formatted_day) {
+              return (this.service_slots[index].weekday = day.header_id);
+            }
+          });
+        }
       }
     },
     formatted_start_date_ar(formatted_date) {
@@ -1728,6 +1873,16 @@ input.larger {
 .delete_weekday_en {
   position: absolute;
   right: 20px;
+  top: 16px;
+}
+.copy_weekday_ar {
+  position: absolute;
+  left: 65px;
+  top: 16px;
+}
+.copy_weekday_en {
+  position: absolute;
+  right: 65px;
   top: 16px;
 }
 .arabclassquill .ql-editor {
