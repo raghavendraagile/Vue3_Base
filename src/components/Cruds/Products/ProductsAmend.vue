@@ -720,9 +720,9 @@
                           "
                           :max="products[0].end_date"
                           :stored_date="service.slot_date"
-                          @formatted_date="formatted_service_start_date"
-                          dense
                           :slot_index="sindex"
+                          @formatted_slot_date="formatted_service_start_date"
+                          dense
                           :rules="fieldRules"
                           :class_required="'RequiredField'"
                           v-on="on"
@@ -1298,20 +1298,22 @@ export default {
       const newServiceData = JSON.parse(JSON.stringify(service_data));
 
       const nextDay = moment(this.service_slots[index].slot_date, "YYYY-MM-DD")
-        .add(1, "days")
-        .format("YYYY-MM-DD");
-      var formatted_day = moment(nextDay, "dddd");
+        .add(1, "days");
+         var formatted_next_day=nextDay.format("YYYY-MM-DD");
+      var formatted_day =moment(nextDay).format("dddd");
+;
+      console.log(formatted_next_day);
       newServiceData.slot_date = nextDay;
       if (this.tabs == 1) {
         this.weekdays_en.filter((day) => {
           if (day.shortname == formatted_day) {
-            return (this.service_slots[index + 1].weekday = day.header_id);
+            return (newServiceData.weekday = day.header_id);
           }
         });
       } else {
         this.weekdays_ar.filter((day) => {
           if (day.shortname == formatted_day) {
-            return (this.service_slots[index + 1].weekday = day.header_id);
+            return (newServiceData.weekday = day.header_id);
           }
         });
       }
@@ -1633,6 +1635,7 @@ export default {
       }
     },
     formatted_service_start_date(formatted_date, index) {
+      alert(formatted_date)
       if (formatted_date) {
         var slot_formatted_date = moment(formatted_date, "YYYY-MM-DD");
 
