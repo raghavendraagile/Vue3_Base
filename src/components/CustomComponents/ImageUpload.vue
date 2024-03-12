@@ -108,8 +108,10 @@ export default {
   methods: {
     handleCrop() {
       if (this.selectedFile && this.$refs.cropper) {
-        const croppedCanvas = this.$refs.cropper.getCroppedCanvas();
-        // Use the cropped canvas as needed
+        const croppedCanvas = this.$refs.cropper.getCroppedCanvas({
+          width: this.resizewidth,
+          height: this.resizeheight,
+        }); 
         this.imagedata = croppedCanvas.toDataURL();
       }
     },
@@ -168,9 +170,11 @@ export default {
       this.extension = ext;
       if (file.size > 6 * 1024 * 1024) {
         // 5 MB threshold
-      alert("The file size is too large. Please upload an image that is 6MB or less.");
+        alert(
+          "The file size is too large. Please upload an image that is 6MB or less."
+        );
         this.loader = false;
-      } else if ((file.size == 6 * 1024 * 1024)) {
+      } else if (file.size == 6 * 1024 * 1024) {
         this.compressAndLoadImage(file);
       } else {
         this.loadImageDirectly(file);

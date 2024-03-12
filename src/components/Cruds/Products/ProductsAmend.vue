@@ -721,7 +721,9 @@
                           :max="products[0].end_date"
                           :stored_date="service.slot_date"
                           :slot_index="sindex"
-                          @formatted_slot_date="formatted_service_start_date"
+                          @formatted_service_start_date="
+                            formatted_service_start_date
+                          "
                           dense
                           :rules="fieldRules"
                           :class_required="'RequiredField'"
@@ -745,16 +747,17 @@
                           v-bind:label="
                             tabs == 1 ? $t('week_day_en') : $t('week_day_ar')
                           "
+                          disabled
                           variant="outlined"
                           density="compact"
                           :items="tabs == 1 ? weekdays_en : weekdays_ar"
-                          :rules="getWeekdayRules(sindex)"
                           item-title="shortname"
                           item-value="header_id"
                           class="required_field"
                         ></v-autocomplete>
                       </template>
                     </v-tooltip>
+                    <!-- :rules="getWeekdayRules(sindex)" -->
                   </v-col>
                   <div
                     v-if="sindex === service_slots.length - 1"
@@ -1194,7 +1197,7 @@ export default {
 
         return service.slot.every((slot) => {
           return (
-            slot.id !== null &&
+            // slot.id !== null &&
             slot.from_time &&
             slot.from_meridiem &&
             slot.to_time &&
@@ -1297,13 +1300,15 @@ export default {
     copyNextDate(service_data, index) {
       const newServiceData = JSON.parse(JSON.stringify(service_data));
 
-      const nextDay = moment(this.service_slots[index].slot_date, "YYYY-MM-DD")
-        .add(1, "days");
-         var formatted_next_day=nextDay.format("YYYY-MM-DD");
-      var formatted_day =moment(nextDay).format("dddd");
-;
-      console.log(formatted_next_day);
+      const nextDay = moment(
+        this.service_slots[index].slot_date,
+        "YYYY-MM-DD"
+      ).add(1, "days");
+      var formatted_day = moment(nextDay).format("dddd");
       newServiceData.slot_date = nextDay;
+      if (this.$route.query.slug) {
+      newServiceData.slot[0].id = null;
+      }
       if (this.tabs == 1) {
         this.weekdays_en.filter((day) => {
           if (day.shortname == formatted_day) {
@@ -1634,8 +1639,7 @@ export default {
         this.products[1].end_date = "";
       }
     },
-    formatted_service_start_date(formatted_date, index) {
-      alert(formatted_date)
+    formatted_service_start_date(index, formatted_date) {
       if (formatted_date) {
         var slot_formatted_date = moment(formatted_date, "YYYY-MM-DD");
 
