@@ -98,12 +98,12 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td v-if="props.item.selectable.description">
+              <!-- <td v-if="props.item.selectable.description">
                 <span v-html="props.item.selectable.description"> </span>
               </td>
               <td v-else>
                 <span>{{ $t("not_appllicable") }}</span>
-              </td>
+              </td> -->
               <td>
                 <span v-if="props.item.selectable.start_date">
                   {{ formatDate(props.item.selectable.start_date) }}</span
@@ -178,7 +178,7 @@
                     </template>
                   </v-tooltip>
                 </router-link>
-                <span @click="deleteItem(props.item.selectable.id)">
+                <span @click="deleteItem(props.item.selectable.header_id)">
                   <v-tooltip :text="this.$t('delete')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-icon
@@ -242,12 +242,12 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td v-if="props.item.selectable.description">
+              <!-- <td v-if="props.item.selectable.description">
                 <span v-html="props.item.selectable.description"> </span>
               </td>
               <td v-else>
                 <span>{{ $t("not_appllicable") }}</span>
-              </td>
+              </td> -->
 
               <td>
                 <span v-if="props.item.selectable.start_date">
@@ -314,7 +314,7 @@
                     </template>
                   </v-tooltip>
                 </router-link>
-                <span @click="deleteItem(props.item.selectable.id)">
+                <span @click="deleteItem(props.item.selectable.header_id)">
                   <v-tooltip :text="this.$t('delete')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-icon
@@ -459,10 +459,10 @@ export default {
           align: "left",
           key: "title",
         },
-        {
-          title: this.$t("description_en"),
-          key: "description",
-        },
+        // {
+        //   title: this.$t("description_en"),
+        //   key: "description",
+        // },
         {
           title: this.$t("start_date_en"),
           key: "start_date",
@@ -512,10 +512,10 @@ export default {
           align: "left",
           key: "title",
         },
-        {
-          title: this.$t("description_ar"),
-          key: "description",
-        },
+        // {
+        //   title: this.$t("description_ar"),
+        //   key: "description",
+        // },
         {
           title: this.$t("start_date_ar"),
           key: "start_date",
