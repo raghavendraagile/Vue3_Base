@@ -1171,7 +1171,7 @@ export default {
     types_en: [],
     types_ar: [],
     noimagepreview: "",
-    service_type: "Services",
+    service_type: "",
     items: [],
     weekdays_en: [],
     weekdays_ar: [],
