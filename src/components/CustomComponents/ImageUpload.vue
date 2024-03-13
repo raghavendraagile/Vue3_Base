@@ -1,7 +1,7 @@
 <template>
   <div>
     <content-loader v-if="loader"></content-loader>
-    <v-dialog v-model="dialogVisible" max-width="750px" persistent>
+    <v-dialog v-model="dialogVisible" :max-width="1000" persistent>
       <content-loader v-if="loader"></content-loader>
 
       <v-card>
@@ -106,15 +106,22 @@ export default {
     },
   },
   methods: {
-    handleCrop() {
-      if (this.selectedFile && this.$refs.cropper) {
-        const croppedCanvas = this.$refs.cropper.getCroppedCanvas({
-          width: this.resizewidth,
-          height: this.resizeheight,
-        }); 
-        this.imagedata = croppedCanvas.toDataURL();
-      }
-    },
+      handleCrop() {
+  this.$nextTick(() => {
+    const croppedCanvas = this.$refs.cropper.getCroppedCanvas();
+    if (croppedCanvas) {
+      const canvas = document.createElement("canvas");
+      canvas.width = this.resizewidth; 
+      canvas.height = this.resizeheight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(croppedCanvas, 0, 0, this.resizewidth, this.resizeheight);
+      this.imagedata = canvas.toDataURL(); 
+      console.log("Cropped image data: ", this.imagedata);
+    }
+  });
+},
+
+
     cropperReady() {
       this.$nextTick(() => {
         this.adjustCropperCanvas();
@@ -209,6 +216,7 @@ export default {
     },
 
     cropImage() {
+      console.log(this.imagedata)
       if (this.imagedata) {
         this.upload(this.imagedata);
       }
