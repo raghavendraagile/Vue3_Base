@@ -83,7 +83,32 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-
+              <td>
+                <span v-if="props.item.selectable.module">
+                  {{ props.item.selectable.module }}</span
+                >
+                <span v-else>{{ $t("not_appllicable") }}</span>
+              </td>
+              <td>
+                <span v-if="props.item.selectable.module == 'Services'">
+                  <v-chip
+                    color="cyan-lighten-1"
+                    variant="outlined"
+                    class="counts"
+                  >
+                    {{ props.item.selectable.total_slots }}
+                  </v-chip></span
+                >
+                <span v-else>{{ $t("not_appllicable") }}</span>
+              </td>
+              <td>
+                <span v-if="props.item.selectable.module == 'Services'">
+                  <v-chip color="green" variant="outlined" class="counts">
+                    {{ props.item.selectable.total_claims }}
+                  </v-chip></span
+                >
+                <span v-else>{{ $t("not_appllicable") }}</span>
+              </td>
               <!-- <td>
                 <span v-if="props.item.selectable.meta_title">
                   {{ props.item.selectable.meta_title }}</span
@@ -214,7 +239,32 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-
+              <td>
+                <span v-if="props.item.selectable.module">
+                  {{ props.item.selectable.module }}</span
+                >
+                <span v-else>{{ $t("not_appllicable") }}</span>
+              </td>
+              <td>
+                <span v-if="props.item.selectable.module == 'Services'">
+                  <v-chip
+                    color="cyan-lighten-1"
+                    variant="outlined"
+                    class="counts"
+                  >
+                    {{ props.item.selectable.total_slots }}
+                  </v-chip></span
+                >
+                <span v-else>{{ $t("not_appllicable") }}</span>
+              </td>
+              <td>
+                <span v-if="props.item.selectable.module == 'Services'">
+                  <v-chip color="green" variant="outlined" class="counts">
+                    {{ props.item.selectable.total_claims }}
+                  </v-chip></span
+                >
+                <span v-else>{{ $t("not_appllicable") }}</span>
+              </td>
               <!-- <td>
                 <span v-if="props.item.selectable.meta_title">
                   {{ props.item.selectable.meta_title }}</span
@@ -384,6 +434,21 @@ export default {
           align: "left",
           key: "title",
         },
+        {
+          title: this.$t("type_en"),
+          align: "left",
+          key: "module",
+        },
+        {
+          title: this.$t("total_slots_en"),
+          align: "left",
+          key: "total_slots",
+        },
+        {
+          title: this.$t("total_claims_en"),
+          align: "left",
+          key: "total_claims",
+        },
         // {
         //   title: this.$t("meta_title_en"),
         //   key: "meta_title",
@@ -435,7 +500,21 @@ export default {
           align: "left",
           key: "title",
         },
-
+        {
+          title: this.$t("type_ar"),
+          align: "left",
+          key: "module",
+        },
+        {
+          title: this.$t("total_slots_ar"),
+          align: "left",
+          key: "total_slots",
+        },
+        {
+          title: this.$t("total_claims_ar"),
+          align: "left",
+          key: "total_claims",
+        },
         // {
         //   title: this.$t("meta_title_ar"),
         //   key: "meta_title",
@@ -668,5 +747,11 @@ export default {
 
 .delete_icon_size {
   font-size: 20px !important;
+}
+
+.counts {
+  width: 60px;
+  align-items: center;
+  justify-content: center;
 }
 </style>

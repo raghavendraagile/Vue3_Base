@@ -615,6 +615,14 @@
   "weekday_unique": "Weekday must be unique.",
   "max_reservation_en": "Max.Reservation",
   "max_reservation_ar": "الحد الأقصى للحجز",
-  "copy_to_next_date_en":"Copy to Next Date",
-  "copy_to_next_date_ar":"نسخ إلى التاريخ التالي"
+  "copy_to_next_date_en": "Copy to Next Date",
+  "service_bookings": "Service Bookings",
+  "total_slots_en": "Total Slots",
+  "total_claims_en": "Total Claims",
+  "total_claims_ar": "إجمالي المطالبات",
+  "booked": "Booked",
+  "claims": "Claims",
+  "available": "Available",
+  "total_slots_ar": "إجمالي الفتحات",
+  "copy_to_next_date_ar": "نسخ إلى التاريخ التالي"
 }

@@ -153,29 +153,35 @@
                   </v-row>
                 </v-layout>
                 <v-layout>
-                  <v-row class="px-6 mt-2 ml-4">
-                    <v-col cols="12" sm="12" md="4">
+                  <v-row class="px-6 mt-2 ml-3">
+                    <v-col cols="12" sm="12" md="3">
                       <div class="d-label">{{ $t("from_time_en") }}</div>
                     </v-col>
-                    <v-col cols="12" sm="12" md="4">
+                    <v-col cols="12" sm="12" md="3">
                       <div class="d-label">{{ $t("to_time_en") }}</div>
                     </v-col>
-                    <v-col cols="12" sm="12" md="4">
+                    <v-col cols="12" sm="12" md="3">
                       <div class="d-label">{{ $t("slots_en") }}</div>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="3">
+                      <div class="d-label">{{ $t("total_claims_en") }}</div>
                     </v-col>
                   </v-row>
                 </v-layout>
                 <div v-for="(slot, cindex) in service.slot" :key="cindex">
                   <v-layout>
                     <v-row class="px-6 mt-2 ml-4 mb-3">
-                      <v-col cols="12" sm="12" md="4">
+                      <v-col cols="12" sm="12" md="3">
                         <div>{{ slot.from_time }} {{ slot.from_meridiem }}</div>
                       </v-col>
-                      <v-col cols="12" sm="12" md="4">
+                      <v-col cols="12" sm="12" md="3">
                         <div>{{ slot.to_time }} {{ slot.to_meridiem }}</div>
                       </v-col>
-                      <v-col cols="12" sm="12" md="4">
+                      <v-col cols="12" sm="12" md="3">
                         <div>{{ slot.slots }}</div>
+                      </v-col>
+                      <v-col cols="12" sm="12" md="3">
+                        <div>{{ slot.total_claims }}</div>
                       </v-col>
                     </v-row>
                   </v-layout>
@@ -313,7 +319,6 @@
                   </div>
                 </v-col>
               </v-row>
-
               <v-layout v-if="service_slots.length > 0">
                 <v-row class="headings">
                   <v-col xs="12" md="12" lg="12">
@@ -339,34 +344,40 @@
                 </v-layout>
                 <v-layout>
                   <v-row class="px-6 mt-2 ml-4">
-                    <v-col cols="12" sm="12" md="4">
+                    <v-col cols="12" sm="12" md="3">
                       <div class="d-label">{{ $t("from_time_ar") }}</div>
                     </v-col>
-                    <v-col cols="12" sm="12" md="4">
+                    <v-col cols="12" sm="12" md="3">
                       <div class="d-label">{{ $t("to_time_ar") }}</div>
                     </v-col>
-                    <v-col cols="12" sm="12" md="4">
+                    <v-col cols="12" sm="12" md="3">
                       <div class="d-label">{{ $t("slots_ar") }}</div>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="3">
+                      <div class="d-label">{{ $t("total_claims_ar") }}</div>
                     </v-col>
                   </v-row>
                 </v-layout>
                 <div v-for="(slot, cindex) in service.slot" :key="cindex">
                   <v-layout>
                     <v-row class="px-6 mt-2 ml-4 mb-3">
-                      <v-col cols="12" sm="12" md="4">
+                      <v-col cols="12" sm="12" md="3">
                         <div>
                           {{ slot.from_time }}
                           {{ changeArMeridian(slot.from_meridiem) }}
                         </div>
                       </v-col>
-                      <v-col cols="12" sm="12" md="4">
+                      <v-col cols="12" sm="12" md="3">
                         <div>
                           {{ slot.to_time }}
                           {{ changeArMeridian(slot.to_meridiem) }}
                         </div>
                       </v-col>
-                      <v-col cols="12" sm="12" md="4">
+                      <v-col cols="12" sm="12" md="3">
                         <div>{{ slot.slots }}</div>
+                      </v-col>
+                      <v-col cols="12" sm="12" md="3">
+                        <div>{{ slot.total_claims }}</div>
                       </v-col>
                     </v-row>
                   </v-layout>

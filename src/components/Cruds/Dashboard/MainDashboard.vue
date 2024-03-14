@@ -1,26 +1,49 @@
 <template>
   <div>
-    <page-title v-bind:class="[is_arabic ? 'rtl-page-title' : '']" :heading="$t('dashboard')" :google_icon="google_icon"></page-title>
+    <page-title
+      v-bind:class="[is_arabic ? 'rtl-page-title' : '']"
+      :heading="$t('dashboard')"
+      :google_icon="google_icon"
+    ></page-title>
     <content-loader v-if="loader"></content-loader>
     <div class="container-fluid">
       <div class="dash-parent" v-bind:class="[is_arabic ? 'arabic_row' : '']">
         <v-row>
-          <v-col md="3" class="direction_col" v-for="(dashboard, i) in dashboard_count" :key="i">
-            <div density="comfortable" elevation="8" class="routecard" 
-              @click="route_to_page(dashboard.name)">
+          <v-col
+            md="3"
+            class="direction_col"
+            v-for="(dashboard, i) in dashboard_count"
+            :key="i"
+          >
+            <div
+              density="comfortable"
+              elevation="8"
+              class="routecard"
+              @click="route_to_page(dashboard.name)"
+            >
               <v-row>
                 <v-col md="12">
                   <div class="d-flex2">
                     <v-card-title class="d-flex2">
                       {{ changeNameTranslation(dashboard.name) }}
-                      <v-btn class="ma-2"  size="small" :icon="dashboard.icon"></v-btn>
+                      <v-btn
+                        class="ma-2"
+                        size="small"
+                        :icon="dashboard.icon"
+                      ></v-btn>
                     </v-card-title>
                   </div>
                   <div class="pb-6 pt-4 d-flex1">
                     <v-row class="px-5">
-                      <div v-for="(status, k) in dashboard.status.filter((v) => v.status_name!== 'Rejected')" :key="k">
+                      <div
+                        v-for="(status, k) in dashboard.status.filter(
+                          (v) => v.status_name !== 'Rejected'
+                        )"
+                        :key="k"
+                      >
                         <v-chip class="mr-1" :color="status.color" size="small">
-                          <b class="mx-1">{{ status.count }}</b> {{ changeStatusTranslation(status.status_name) }}
+                          <b class="mx-1">{{ status.count }}</b>
+                          {{ changeStatusTranslation(status.status_name) }}
                         </v-chip>
                       </div>
                     </v-row>
@@ -37,8 +60,7 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  components: {
-  },
+  components: {},
   computed: {
     ...mapGetters("auth", ["loggedin"]),
   },
@@ -56,11 +78,10 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
-
   }),
   watch: {
-    '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
         this.is_arabic = true;
       } else {
         this.is_arabic = false;
@@ -91,6 +112,8 @@ export default {
           return this.$t("stores");
         case "Testimonials":
           return this.$t("testimonials");
+        case "ServiceBookings":
+          return this.$t("service_bookings");
         default:
           return "";
       }
@@ -107,14 +130,23 @@ export default {
           return this.$t("active");
         case "Inactive":
           return this.$t("inactive");
+        case "Claims":
+          return this.$t("claims");
+        case "Available":
+          return this.$t("available");
         default:
           return "";
       }
     },
     fetchDashboard(userId, Role) {
       this.loader = true;
-      if (Role == 'SuperUser') {
-        this.$axios.get(process.env.VUE_APP_API_URL_ADMIN + "fetchDashboardSuperUser/" + userId)
+      if (Role == "SuperUser") {
+        this.$axios
+          .get(
+            process.env.VUE_APP_API_URL_ADMIN +
+              "fetchDashboardSuperUser/" +
+              userId
+          )
           .then((res) => {
             this.dashboard_count = res.data.count_dashboard;
             this.loader = false;
@@ -124,9 +156,13 @@ export default {
             this.initval = false;
             console.log(err);
           });
-      }
-      else if (Role == 'MallAdmin') {
-        this.$axios.get(process.env.VUE_APP_API_URL_ADMIN + "fetchDashboardMallAdmin/" + userId)
+      } else if (Role == "MallAdmin") {
+        this.$axios
+          .get(
+            process.env.VUE_APP_API_URL_ADMIN +
+              "fetchDashboardMallAdmin/" +
+              userId
+          )
           .then((res) => {
             this.dashboard_count = res.data.count_dashboard;
             this.loader = false;
@@ -136,9 +172,13 @@ export default {
             this.initval = false;
             console.log(err);
           });
-      }
-      else {
-        this.$axios.get(process.env.VUE_APP_API_URL_ADMIN + "fetchDashboardStoreAdmin/" + userId)
+      } else {
+        this.$axios
+          .get(
+            process.env.VUE_APP_API_URL_ADMIN +
+              "fetchDashboardStoreAdmin/" +
+              userId
+          )
           .then((res) => {
             this.dashboard_count = res.data.count_dashboard;
             this.loader = false;
@@ -152,32 +192,26 @@ export default {
     },
 
     route_to_page(page) {
-      if (page == 'Users') {
-        this.$router.push({ name: 'users' });
-      }
-      else if (page == 'Events') {
-        this.$router.push({ name: 'events' });
-      }
-      else if (page == 'Promotions') {
-        this.$router.push({ name: 'promotions_offers' });
-      }
-      else if (page == 'Products') {
-        this.$router.push({ name: 'products' });
-      }
-      else if (page == 'Categories') {
-        this.$router.push({ name: 'categories' });
-      }
-      else if (page == 'Careers') {
-        this.$router.push({ name: 'careers' });
-      }
-      else if (page == 'Stores') {
-        this.$router.push({ name: 'stores' });
-      }
-      else if (page == 'Testimonials') {
-        this.$router.push({ name: 'reviews-testimonials' });
-      }
-      else {
-        this.$router.push({ name: 'dashboard' });
+      if (page == "Users") {
+        this.$router.push({ name: "users" });
+      } else if (page == "Events") {
+        this.$router.push({ name: "events" });
+      } else if (page == "Promotions") {
+        this.$router.push({ name: "promotions_offers" });
+      } else if (page == "Products") {
+        this.$router.push({ name: "products" });
+      } else if (page == "Categories") {
+        this.$router.push({ name: "categories" });
+      } else if (page == "Careers") {
+        this.$router.push({ name: "careers" });
+      } else if (page == "Stores") {
+        this.$router.push({ name: "stores" });
+      } else if (page == "Testimonials") {
+        this.$router.push({ name: "reviews-testimonials" });
+      } else if (page == "ServiceBookings") {
+        this.$router.push({ name: "products" });
+      } else {
+        this.$router.push({ name: "dashboard" });
       }
     },
   },
@@ -205,15 +239,15 @@ export default {
 }
 
 .dash-parent .pink {
-  border-bottom: 4px solid #E91E63;
+  border-bottom: 4px solid #e91e63;
 }
 
 .dash-parent .purple {
-  border-bottom: 4px solid #9C27B0;
+  border-bottom: 4px solid #9c27b0;
 }
 
 .dash-parent .lime {
-  border-bottom: 4px solid #CDDC39;
+  border-bottom: 4px solid #cddc39;
 }
 
 .cardlogo {
@@ -272,4 +306,5 @@ export default {
 
 .v-chip.v-chip--size-small {
   width: 86px;
-}</style>
+}
+</style>

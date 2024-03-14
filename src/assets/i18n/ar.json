@@ -562,12 +562,19 @@
   "delete_slots_ar": "حذف الفتحة",
   "add_weekday_en": "Add Weekday",
   "add_weekday_ar": "أضف أيام الأسبوع",
-  "weekday_required":"مطلوب أيام الأسبوع.",
-  "weekday_unique":"يجب أن تكون أيام الأسبوع فريدة من نوعها.",
+  "weekday_required": "مطلوب أيام الأسبوع.",
+  "weekday_unique": "يجب أن تكون أيام الأسبوع فريدة من نوعها.",
   "max_reservation_en": "Max.Reservation",
   "max_reservation_ar": "الحد الأقصى للحجز",
   "week_day_en": "Week Day",
-  "copy_to_next_date_ar":"نسخ إلى التاريخ التالي",
-  "copy_to_next_date_en":"Copy to Next Date"
-
+  "copy_to_next_date_ar": "نسخ إلى التاريخ التالي",
+  "copy_to_next_date_en": "Copy to Next Date",
+  "service_bookings": "حجوزات الخدمة",
+  "total_slots_en": "Total Slots",
+  "total_slots_ar": "إجمالي الفتحات",
+  "total_claims_en": "Total Claims",
+  "total_claims_ar": "إجمالي المطالبات",
+  "booked": "حجز",
+  "claims": "المطالبات",
+  "available": "متاح"
 }
