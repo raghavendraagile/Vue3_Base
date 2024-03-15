@@ -190,6 +190,8 @@
                     <v-text-field
                       v-bind="props"
                       v-model="products[0].seq"
+                      :rules="seqRules"
+                      @update:modelValue="(value) => updateSeq(value, 1)"
                       maxlength="5"
                       v-bind:label="$t('sequence_en')"
                       required
@@ -501,7 +503,9 @@
                       v-bind="props"
                       v-model="products[1].seq"
                       maxlength="5"
+                      :rules="seqRulesAR"
                       v-bind:label="$t('sequence_ar')"
+                      @update:modelValue="(value) => updateSeq(value, 0)"
                       required
                       variant="outlined"
                       class="rtl"
@@ -1216,6 +1220,12 @@ export default {
   }),
 
   computed: {
+    seqRules() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required")];
+    },
+    seqRulesAR() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required_ar")];
+    },
     canCopyServiceSlot() {
       return this.service_slots.every((service) => {
         if (!service.slot_date) return false;
@@ -1233,28 +1243,6 @@ export default {
         });
       });
     },
-    emailRules() {
-      return [
-        (v) => !!v || this.$t("email_required"),
-        (v) =>
-          !v ||
-          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-          this.$t("email_valid"),
-      ];
-    },
-    phoneRules() {
-      return [
-        (v) => (v >= 0 && v <= 999999999999) || this.$t("number_required"),
-      ];
-    },
-    numberRules() {
-      return [(v) => (v >= 0 && v <= 999999999999) || this.$t("entered_value")];
-    },
-
-    postcodeRules() {
-      return [(v) => (v >= 0 && v <= 999999) || this.$t("postcode_valid")];
-    },
-
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
     },
@@ -1407,9 +1395,9 @@ export default {
       var formatted_day = moment(nextDay).format("dddd");
       newServiceData.slot_date = nextDay;
       if (this.$route.query.slug) {
-        newServiceData.slot.forEach(slot => {
-      slot.id = 0; 
-    });
+        newServiceData.slot.forEach((slot) => {
+          slot.id = 0;
+        });
       }
       if (this.tabs == 1) {
         this.weekdays_en.filter((day) => {
@@ -1464,6 +1452,9 @@ export default {
     },
     deleteWeekday(sindex) {
       this.service_slots.splice(sindex, 1);
+    },
+    updateSeq(value, index) {
+      this.products[index].seq = value;
     },
     get_weekdays() {
       this.initval = true;

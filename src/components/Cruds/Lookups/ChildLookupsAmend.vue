@@ -95,6 +95,7 @@
                         maxlength="5"
                         v-bind:label="$t('sequence_en')"
                         required
+                        :rules="seqRules"
                         variant="outlined"
                         density="compact"
                         v-on:keypress="NumbersOnly"
@@ -254,6 +255,7 @@
                         maxlength="5"
                         v-bind:label="$t('sequence_ar')"
                         required
+                        :rules="seqRulesAR"
                         variant="outlined"
                         density="compact"
                         v-on:keypress="NumbersOnly"
@@ -444,9 +446,14 @@ export default {
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
     },
-
     numberRules() {
       return [(v) => !!v || this.$t("number_required")];
+    },
+    seqRules() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required")];
+    },
+    seqRulesAR() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required_ar")];
     },
   },
 

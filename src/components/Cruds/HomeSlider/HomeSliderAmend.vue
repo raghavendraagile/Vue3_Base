@@ -220,6 +220,9 @@
                           v-bind="props"
                           v-model="home_slider[0].seq"
                           maxlength="5"
+                          @update:modelValue="
+                            (value) => updateHomeSliderSequence(value, 1)
+                          "
                           v-bind:label="$t('sequence_en')"
                           required
                           :rules="seqRules"
@@ -640,6 +643,9 @@
                           v-bind="props"
                           v-model="home_slider[1].seq"
                           maxlength="5"
+                          @update:modelValue="
+                            (value) => updateHomeSliderSequence(value, 0)
+                          "
                           v-bind:label="$t('sequence_ar')"
                           class="rtl"
                           :rules="seqRulesAR"
@@ -1070,6 +1076,12 @@ export default {
     slider_type_en: [
       {
         id: 0,
+        header_id: null,
+        shortname: null,
+        name: "--Select--",
+      },
+      {
+        id: 0,
         header_id: 1,
         shortname: "ev",
         name: "Events",
@@ -1082,6 +1094,12 @@ export default {
       },
     ],
     slider_type_ar: [
+      {
+        id: 0,
+        header_id: null,
+        shortname: null,
+        name: "--يختار--",
+      },
       {
         id: 0,
         header_id: 1,
@@ -1807,6 +1825,9 @@ export default {
       } else {
         this.home_slider[0].action_slug = action_id;
       }
+    },
+    updateHomeSliderSequence(value, index) {
+      this.home_slider[index].seq = value;
     },
     updateSliderType(type) {
       if (this.tabs == 1) {

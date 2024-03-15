@@ -237,8 +237,9 @@
                         <v-text-field
                           v-bind="props"
                           v-model="page_builder[0].seq"
+                          @update:modelValue="(value) => updateSeq(value, 1)"
                           maxlength="5"
-                          :rules="phoneRules"
+                          :rules="seqRules"
                           v-bind:label="$t('sequence_en')"
                           required
                           variant="outlined"
@@ -530,8 +531,9 @@
                       <v-text-field
                         v-bind="props"
                         v-model="page_builder[1].seq"
+                        @update:modelValue="(value) => updateSeq(value, 0)"
                         maxlength="5"
-                        :rules="phoneRules"
+                        :rules="seqRulesAR"
                         v-bind:label="$t('sequence_ar')"
                         required
                         variant="outlined"
@@ -784,6 +786,12 @@ export default {
     descriptionRulesAr() {
       return [(v) => !!v || this.$t("description_required_ar")];
     },
+    seqRules() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required")];
+    },
+    seqRulesAR() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required_ar")];
+    },
   },
 
   mounted() {
@@ -857,6 +865,9 @@ export default {
   },
 
   methods: {
+    updateSeq(value, index) {
+      this.page_builder[index].seq = value;
+    },
     removeImage(index) {
       if (index == 1) {
         this.page_builder[1].image_path = null;

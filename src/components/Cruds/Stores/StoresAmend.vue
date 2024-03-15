@@ -427,6 +427,8 @@
                         <v-text-field
                           v-bind="props"
                           v-model="stores[0].seq"
+                          :rules="seqRules"
+                          @update:modelValue="(value) => updateSeq(value, 1)"
                           maxlength="5"
                           v-on:keypress="NumbersOnly"
                           v-bind:label="$t('sequence_en')"
@@ -1032,8 +1034,10 @@
                         <v-text-field
                           v-bind="props"
                           v-model="stores[1].seq"
+                          @update:modelValue="(value) => updateSeq(value, 0)"
                           v-on:keypress="NumbersOnly"
                           maxlength="5"
+                          :rules="seqRulesAR"
                           v-bind:label="$t('sequence_ar')"
                           class="rtl"
                           variant="outlined"
@@ -1443,6 +1447,12 @@ export default {
   }),
 
   computed: {
+    seqRules() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required")];
+    },
+    seqRulesAR() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required_ar")];
+    },
     fieldRulesArray() {
       return [
         (v) => (Array.isArray(v) && v.length > 0) || this.$t("field_required"),
@@ -1685,6 +1695,9 @@ export default {
       } else {
         return true;
       }
+    },
+    updateSeq(value, index) {
+      this.stores[index].seq = value;
     },
     updateType(stor_type) {
       if (this.tabs == 1) {

@@ -208,8 +208,11 @@
                         <v-text-field
                           v-bind="props"
                           v-model="category[0].seq"
+                          @update:modelValue="
+                            (value) => updateCategorySequence(value, 1)
+                          "
                           maxlength="5"
-                          :rules="phoneRules"
+                          :rules="seqRules"
                           v-bind:label="$t('sequence_en')"
                           required
                           variant="outlined"
@@ -494,8 +497,11 @@
                       <v-text-field
                         v-bind="props"
                         v-model="category[1].seq"
+                        @update:modelValue="
+                          (value) => updateCategorySequence(value, 0)
+                        "
                         maxlength="5"
-                        :rules="phoneRules"
+                        :rules="seqRulesAR"
                         v-bind:label="$t('sequence_ar')"
                         required
                         variant="outlined"
@@ -792,6 +798,12 @@ export default {
   }),
 
   computed: {
+    seqRules() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required")];
+    },
+    seqRulesAR() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required_ar")];
+    },
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
     },
@@ -962,6 +974,9 @@ export default {
       } else {
         this.category[1].image_path = img_src;
       }
+    },
+    updateCategorySequence(value, index) {
+      this.category[index].seq = value;
     },
     uploadFile() {
       if (this.tabs == 1) {
