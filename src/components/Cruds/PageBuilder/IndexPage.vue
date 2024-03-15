@@ -44,6 +44,20 @@
             </router-link>
           </template>
         </v-tooltip>
+        <v-tooltip :text="this.$t('preview')" location="bottom">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              @click="previewPage()"
+              v-if="page_builder_en.length > 0"
+              size="small"
+              class="mb-2 preview-btn mx-2"
+              v-bind="props"
+              >{{ $t("preview") }}<v-icon size="large" class="ml-1"
+                >mdi mdi-play-circle-outline</v-icon
+              ></v-btn
+            >
+          </template>
+        </v-tooltip>
       </div>
     </div>
 
@@ -407,6 +421,18 @@ export default {
   },
 
   methods: {
+    previewPage() {
+      var lang = this.tabs === 1 ? "en" : "ar";
+
+      const route = this.$router.resolve({
+        name: "preview_webapp",
+        params: {
+          lang: lang,
+          page: "",
+        },
+      });
+      window.open(route.href, "_blank");
+    },
     changeStatusAr(status) {
       switch (status) {
         case "Approved":
