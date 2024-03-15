@@ -237,8 +237,9 @@
                         <v-text-field
                           v-bind="props"
                           v-model="page_builder[0].seq"
+                          @update:modelValue="(value) => updateSeq(value, 1)"
                           maxlength="5"
-                          :rules="phoneRules"
+                          :rules="seqRules"
                           v-bind:label="$t('sequence_en')"
                           required
                           variant="outlined"
@@ -325,6 +326,9 @@
                       @uploaded_image="uploaded_image"
                       :upload_profile="uploadfile"
                     />
+                    <div class="dimension_text">
+                      {{ resizewidth }} : {{ resizeheight }}
+                    </div>
                   </v-col>
                 </v-row>
               </v-layout>
@@ -527,8 +531,9 @@
                       <v-text-field
                         v-bind="props"
                         v-model="page_builder[1].seq"
+                        @update:modelValue="(value) => updateSeq(value, 0)"
                         maxlength="5"
-                        :rules="phoneRules"
+                        :rules="seqRulesAR"
                         v-bind:label="$t('sequence_ar')"
                         required
                         variant="outlined"
@@ -608,6 +613,9 @@
                     @uploaded_image="uploaded_image"
                     :upload_profile="uploadfilear"
                   />
+                  <div class="dimension_text">
+                    {{ resizewidth }} : {{ resizeheight }}
+                  </div>
                 </v-col>
               </v-row>
             </v-form>
@@ -778,6 +786,12 @@ export default {
     descriptionRulesAr() {
       return [(v) => !!v || this.$t("description_required_ar")];
     },
+    seqRules() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required")];
+    },
+    seqRulesAR() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required_ar")];
+    },
   },
 
   mounted() {
@@ -851,6 +865,9 @@ export default {
   },
 
   methods: {
+    updateSeq(value, index) {
+      this.page_builder[index].seq = value;
+    },
     removeImage(index) {
       if (index == 1) {
         this.page_builder[1].image_path = null;
@@ -961,6 +978,13 @@ export default {
       }
     },
     updateParent(lang, value) {
+      if (this.page_builder[0].parent_id == null) {
+        this.resizewidth = 650;
+        this.resizeheight = 350;
+      } else {
+        this.resizewidth = 400;
+        this.resizeheight = 400;
+      }
       if (lang == "en") {
         this.page_builder[1].parent_id = value;
       } else {
@@ -1216,5 +1240,8 @@ export default {
 .shake {
   animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   transform: translate3d(0, 0, 0);
+}
+.dimension_text {
+  text-align-last: start;
 }
 </style>

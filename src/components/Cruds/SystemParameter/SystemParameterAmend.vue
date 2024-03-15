@@ -152,6 +152,7 @@
                 @uploaded_image="uploaded_image"
                 :upload_profile="uploadfile"
               />
+              <div class="dimension_text">400 : 150</div>
             </v-col>
           </v-row>
           <v-layout class="pt-3">
@@ -430,5 +431,8 @@ input.larger {
   position: relative;
   left: 116px;
   bottom: 52px;
+}
+.dimension_text {
+  text-align-last: start;
 }
 </style>

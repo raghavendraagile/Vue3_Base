@@ -437,6 +437,7 @@
                   @uploaded_image="uploaded_image"
                   :upload_profile="uploadfile"
                 />
+                <div class="dimension_text">200 : 200</div>
               </center>
             </div>
           </div>
@@ -856,5 +857,8 @@ export default {
   position: relative;
   left: 103px;
   bottom: 70px;
+}
+.dimension_text {
+  text-align-last: center;
 }
 </style>

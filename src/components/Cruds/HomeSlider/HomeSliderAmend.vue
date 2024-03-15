@@ -220,6 +220,9 @@
                           v-bind="props"
                           v-model="home_slider[0].seq"
                           maxlength="5"
+                          @update:modelValue="
+                            (value) => updateHomeSliderSequence(value, 1)
+                          "
                           v-bind:label="$t('sequence_en')"
                           required
                           :rules="seqRules"
@@ -339,6 +342,7 @@
                       @uploaded_image="uploaded_image"
                       :upload_profile="uploadfile"
                     />
+                    <div class="dimension_text">1200 : 420</div>
                   </v-col>
                   <v-col
                     cols="12"
@@ -427,7 +431,7 @@
                       @uploaded_image="uploaded_image"
                       :upload_profile="upload_mob_file"
                     />
-                    <!-- <div class="dimension_text">500 : 300</div> -->
+                    <div class="dimension_text">600 : 300</div>
                   </v-col>
                   <v-col
                     cols="12"
@@ -639,6 +643,9 @@
                           v-bind="props"
                           v-model="home_slider[1].seq"
                           maxlength="5"
+                          @update:modelValue="
+                            (value) => updateHomeSliderSequence(value, 0)
+                          "
                           v-bind:label="$t('sequence_ar')"
                           class="rtl"
                           :rules="seqRulesAR"
@@ -759,6 +766,7 @@
                       @uploaded_image="uploaded_image"
                       :upload_profile="upload_file_ar"
                     />
+                    <div class="dimension_text">1200 : 420</div>
                   </v-col>
                   <v-col
                     cols="12"
@@ -847,6 +855,7 @@
                       @uploaded_image="uploaded_image"
                       :upload_profile="upload_file_mob_ar"
                     />
+                    <div class="dimension_text">600 : 300</div>
                   </v-col>
                   <v-col
                     cols="12"
@@ -1067,6 +1076,12 @@ export default {
     slider_type_en: [
       {
         id: 0,
+        header_id: null,
+        shortname: null,
+        name: "--Select--",
+      },
+      {
+        id: 0,
         header_id: 1,
         shortname: "ev",
         name: "Events",
@@ -1079,6 +1094,12 @@ export default {
       },
     ],
     slider_type_ar: [
+      {
+        id: 0,
+        header_id: null,
+        shortname: null,
+        name: "--يختار--",
+      },
       {
         id: 0,
         header_id: 1,
@@ -1321,15 +1342,15 @@ export default {
       } else {
         this.image_upload_from = img_type;
         if (img_type == "website") {
-          this.resizewidth = 600;
-          this.resizeheight = 300;
+          this.resizewidth = 1200;
+          this.resizeheight = 450;
           if (this.upload_file_ar == false) {
             this.upload_file_ar = true;
           } else {
             this.upload_file_ar = false;
           }
         } else {
-          this.resizewidth = 500;
+          this.resizewidth = 600;
           this.resizeheight = 300;
           if (this.upload_file_mob_ar == false) {
             this.upload_file_mob_ar = true;
@@ -1805,6 +1826,9 @@ export default {
         this.home_slider[0].action_slug = action_id;
       }
     },
+    updateHomeSliderSequence(value, index) {
+      this.home_slider[index].seq = value;
+    },
     updateSliderType(type) {
       if (this.tabs == 1) {
         this.home_slider[1].slider_type = type;
@@ -1969,5 +1993,9 @@ input.larger {
 
 .videourlclass /deep/ .v-field__input {
   color: blue !important;
+}
+
+.dimension_text {
+  text-align-last: start;
 }
 </style>

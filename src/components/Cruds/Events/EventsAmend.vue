@@ -229,7 +229,10 @@
                       v-model="events[0].seq"
                       v-on:keypress="NumbersOnly"
                       maxlength="5"
-                      :rules="phoneRules"
+                      :rules="seqRules"
+                      @update:modelValue="
+                        (value) => updateEventsSequence(value, 1)
+                      "
                       v-bind:label="$t('sequence')"
                       variant="outlined"
                       density="compact"
@@ -323,6 +326,7 @@
                   @uploaded_image="uploaded_image"
                   :upload_profile="uploadfile"
                 />
+                <div class="dimension_text">200 : 200</div>
               </v-col>
             </v-row>
           </v-form>
@@ -523,8 +527,11 @@
                     <v-text-field
                       v-bind="props"
                       v-model="events[1].seq"
+                      @update:modelValue="
+                        (value) => updateEventsSequence(value, 0)
+                      "
                       maxlength="5"
-                      :rules="phoneRules"
+                      :rules="seqRulesAR"
                       v-bind:label="$t('sequence_ar')"
                       v-on:keypress="NumbersOnly"
                       required
@@ -618,11 +625,12 @@
                 <br />
                 <Imageupload
                   :folder="'events'"
-                  :resizewidth="1.5"
-                  :resizeheight="2.5"
+                  :resizewidth="200"
+                  :resizeheight="200"
                   @uploaded_image="uploaded_image"
                   :upload_profile="uploadfilear"
                 />
+                <div class="dimension_text">200 : 200</div>
               </v-col>
             </v-row>
           </v-form>
@@ -780,6 +788,12 @@ export default {
   }),
 
   computed: {
+    seqRules() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required")];
+    },
+    seqRulesAR() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required_ar")];
+    },
     emailRules() {
       return [
         (v) => !!v || this.$t("email_required"),
@@ -787,11 +801,6 @@ export default {
           !v ||
           /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
           this.$t("email_valid"),
-      ];
-    },
-    phoneRules() {
-      return [
-        (v) => (v >= 0 && v <= 999999999999) || this.$t("number_required"),
       ];
     },
     numberRules() {
@@ -870,6 +879,9 @@ export default {
     },
   },
   methods: {
+    updateEventsSequence(value, index) {
+      this.events[index].seq = value;
+    },
     updateType(stor_type) {
       this.events[1].store_id = null;
       this.events[0].store_id = null;
@@ -1341,5 +1353,9 @@ input.larger {
 
 #quill_item_border {
   border: 1px solid #d1d5db;
+}
+
+.dimension_text {
+  text-align-last: start;
 }
 </style>

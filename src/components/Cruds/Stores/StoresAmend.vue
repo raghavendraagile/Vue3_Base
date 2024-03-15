@@ -427,6 +427,8 @@
                         <v-text-field
                           v-bind="props"
                           v-model="stores[0].seq"
+                          :rules="seqRules"
+                          @update:modelValue="(value) => updateSeq(value, 1)"
                           maxlength="5"
                           v-on:keypress="NumbersOnly"
                           v-bind:label="$t('sequence_en')"
@@ -561,6 +563,7 @@
                       @uploaded_image="uploaded_image"
                       :upload_profile="uploadfile"
                     />
+                    <div class="dimension_text">250 : 250</div>
                   </v-col>
                   <v-col cols="12" xs="12" sm="12" md="4">
                     <div>
@@ -641,6 +644,7 @@
                       @uploaded_image="uploaded_image"
                       :upload_profile="upload_bi_file"
                     />
+                    <div class="dimension_text">500 : 300</div>
                   </v-col>
                 </v-row>
               </v-layout>
@@ -1030,8 +1034,10 @@
                         <v-text-field
                           v-bind="props"
                           v-model="stores[1].seq"
+                          @update:modelValue="(value) => updateSeq(value, 0)"
                           v-on:keypress="NumbersOnly"
                           maxlength="5"
+                          :rules="seqRulesAR"
                           v-bind:label="$t('sequence_ar')"
                           class="rtl"
                           variant="outlined"
@@ -1168,6 +1174,7 @@
                       @uploaded_image="uploaded_image"
                       :upload_profile="uploadfilear"
                     />
+                    <div class="dimension_text">250 : 250</div>
                   </v-col>
                   <v-col cols="12" xs="12" sm="12" md="4">
                     <div>
@@ -1248,6 +1255,7 @@
                       @uploaded_image="uploaded_image"
                       :upload_profile="upload_bi_file_ar"
                     />
+                    <div class="dimension_text">500 : 300</div>
                   </v-col>
                 </v-row>
               </v-layout>
@@ -1439,6 +1447,12 @@ export default {
   }),
 
   computed: {
+    seqRules() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required")];
+    },
+    seqRulesAR() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required_ar")];
+    },
     fieldRulesArray() {
       return [
         (v) => (Array.isArray(v) && v.length > 0) || this.$t("field_required"),
@@ -1681,6 +1695,9 @@ export default {
       } else {
         return true;
       }
+    },
+    updateSeq(value, index) {
+      this.stores[index].seq = value;
     },
     updateType(stor_type) {
       if (this.tabs == 1) {
@@ -2067,5 +2084,8 @@ input.larger {
   position: relative;
   bottom: 45px;
   right: 88px;
+}
+.dimension_text {
+  text-align-last: start;
 }
 </style>

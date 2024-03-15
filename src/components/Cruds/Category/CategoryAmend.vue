@@ -208,8 +208,11 @@
                         <v-text-field
                           v-bind="props"
                           v-model="category[0].seq"
+                          @update:modelValue="
+                            (value) => updateCategorySequence(value, 1)
+                          "
                           maxlength="5"
-                          :rules="phoneRules"
+                          :rules="seqRules"
                           v-bind:label="$t('sequence_en')"
                           required
                           variant="outlined"
@@ -317,6 +320,7 @@
                       @uploaded_image="uploaded_image"
                       :upload_profile="uploadfile"
                     />
+                    <div class="dimension_text">150 : 100</div>
                   </v-col>
                 </v-row>
               </v-layout>
@@ -493,8 +497,11 @@
                       <v-text-field
                         v-bind="props"
                         v-model="category[1].seq"
+                        @update:modelValue="
+                          (value) => updateCategorySequence(value, 0)
+                        "
                         maxlength="5"
-                        :rules="phoneRules"
+                        :rules="seqRulesAR"
                         v-bind:label="$t('sequence_ar')"
                         required
                         variant="outlined"
@@ -591,11 +598,12 @@
                   <br />
                   <Imageupload
                     :folder="'category'"
-                    :resizewidth="0.4"
-                    :resizeheight="0.1"
+                    :resizewidth="150"
+                    :resizeheight="100"
                     @uploaded_image="uploaded_image"
                     :upload_profile="uploadfilear"
                   />
+                  <div class="dimension_text">150 : 100</div>
                 </v-col>
               </v-row>
             </v-form>
@@ -790,6 +798,12 @@ export default {
   }),
 
   computed: {
+    seqRules() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required")];
+    },
+    seqRulesAR() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required_ar")];
+    },
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
     },
@@ -960,6 +974,9 @@ export default {
       } else {
         this.category[1].image_path = img_src;
       }
+    },
+    updateCategorySequence(value, index) {
+      this.category[index].seq = value;
     },
     uploadFile() {
       if (this.tabs == 1) {
@@ -1306,7 +1323,7 @@ export default {
   animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   transform: translate3d(0, 0, 0);
 }
-.get_icons{
+.get_icons {
   font-size: 12px;
   padding-left: 5px;
 }

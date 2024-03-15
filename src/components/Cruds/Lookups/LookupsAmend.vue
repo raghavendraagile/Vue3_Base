@@ -178,6 +178,7 @@
                   @uploaded_image="uploaded_image"
                   :upload_profile="uploadfile"
                 />
+                <div class="dimension_text">200 : 200</div>
               </v-col>
             </v-row>
           </v-form>
@@ -185,7 +186,7 @@
         <!-- ENGLISH TAB STOPS -->
         <!-- ARABIC TAB STARTS -->
         <v-window-item :value="2">
-          <v-form ref="form" v-model="validAR" style="direction:rtl">
+          <v-form ref="form" v-model="validAR" style="direction: rtl">
             <v-row class="mx-auto mt-2 arabdirection" max-width="344">
               <v-col cols="12" sm="12" md="6">
                 <v-tooltip :text="this.$t('shortname_ar')" location="bottom">
@@ -321,6 +322,7 @@
                   @uploaded_image="uploaded_image_ar"
                   :upload_profile="uploadfile_ar"
                 />
+                <div class="dimension_text">200 : 200</div>
               </v-col>
             </v-row>
           </v-form>
@@ -646,5 +648,8 @@ input.larger {
   position: relative;
   bottom: 45px;
   right: 110px;
+}
+.dimension_text {
+  text-align-last: start;
 }
 </style>

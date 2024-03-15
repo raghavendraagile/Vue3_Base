@@ -209,7 +209,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="6" md="6">
+              <v-col cols="12" sm="6" md="3">
                 <div>
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">
@@ -272,7 +272,6 @@
                     </v-tooltip>
                   </span>
                 </div>
-
                 <br />
                 <Imageupload
                   :folder="'careers'"
@@ -281,6 +280,7 @@
                   @uploaded_image="uploaded_image"
                   :upload_profile="uploadfile"
                 />
+                <div class="dimension_text">200 : 200</div>
               </v-col>
             </v-row>
           </v-form>
@@ -524,15 +524,15 @@
                     </span>
                   </div>
                 </div>
-
                 <br />
                 <Imageupload
                   :folder="'careers'"
-                  :resizewidth="1.5"
-                  :resizeheight="2.5"
+                  :resizewidth="200"
+                  :resizeheight="200"
                   @uploaded_image="uploaded_image"
                   :upload_profile="uploadfilear"
                 />
+                <div class="dimension_text">200 : 200</div>
               </v-col>
             </v-row>
           </v-form>
@@ -1202,5 +1202,8 @@ input.larger {
 
 #quill_item_border {
   border: 1px solid #d1d5db;
+}
+.dimension_text{
+  text-align-last: start;
 }
 </style>

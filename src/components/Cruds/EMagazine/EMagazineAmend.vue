@@ -264,7 +264,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="6" sm="6" md="6">
+                  <v-col cols="6" sm="6" md="3">
                     <div>
                       <div class="image-container">
                         <v-hover v-slot="{ isHovering, props }">
@@ -338,6 +338,7 @@
                       @uploaded_image="uploaded_image"
                       :upload_profile="uploadfile"
                     />
+                    <div class="dimension_text">200 : 200</div>
                   </v-col>
                 </v-row>
               </v-layout>
@@ -572,7 +573,7 @@
                       </template>
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="6" sm="6" md="6">
+                  <v-col cols="6" sm="6" md="3">
                     <div>
                       <div class="image-container">
                         <v-hover v-slot="{ isHovering, props }">
@@ -650,6 +651,7 @@
                       @uploaded_image="uploaded_image"
                       :upload_profile="uploadfilear"
                     />
+                    <div class="dimension_text">200 : 200</div>
                   </v-col>
                 </v-row>
               </v-layout>
@@ -1419,5 +1421,8 @@ input.larger {
 .shake {
   animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   transform: translate3d(0, 0, 0);
+}
+.dimension_text {
+  text-align-last: start;
 }
 </style>

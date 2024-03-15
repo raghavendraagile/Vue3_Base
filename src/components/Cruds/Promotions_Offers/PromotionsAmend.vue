@@ -313,8 +313,9 @@
                     <v-text-field
                       v-bind="props"
                       v-model="promotions[0].seq"
+                      @update:modelValue="(value) => updatePOSequence(value, 1)"
                       maxlength="5"
-                      :rules="phoneRules"
+                      :rules="seqRules"
                       v-bind:label="$t('sequence_en')"
                       required
                       variant="outlined"
@@ -393,6 +394,7 @@
                   @uploaded_image="uploaded_image"
                   :upload_profile="uploadfile"
                 />
+                <div class="dimension_text">200 : 200</div>
               </v-col>
             </v-row>
           </v-form>
@@ -671,8 +673,9 @@
                     <v-text-field
                       v-bind="props"
                       v-model="promotions[1].seq"
+                      @update:modelValue="(value) => updatePOSequence(value, 0)"
                       maxlength="5"
-                      :rules="phoneRules"
+                      :rules="seqRulesAR"
                       v-bind:label="$t('sequence_ar')"
                       required
                       variant="outlined"
@@ -748,11 +751,12 @@
                 <br />
                 <Imageupload
                   :folder="'promotions_offers'"
-                  :resizewidth="0.4"
-                  :resizeheight="0.1"
+                  :resizewidth="200"
+                  :resizeheight="200"
                   @uploaded_image="uploaded_image"
                   :upload_profile="uploadfilear"
                 />
+                <div class="dimension_text">200 : 200</div>
               </v-col>
             </v-row>
           </v-form>
@@ -894,6 +898,12 @@ export default {
   }),
 
   computed: {
+    seqRules() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required")];
+    },
+    seqRulesAR() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required_ar")];
+    },
     emailRules() {
       return [
         (v) => !!v || this.$t("email_required"),
@@ -919,10 +929,6 @@ export default {
     },
     numberRules() {
       return [(v) => (v >= 0 && v <= 999999999999) || this.$t("entered_value")];
-    },
-
-    postcodeRules() {
-      return [(v) => (v >= 0 && v <= 999999) || this.$t("postcode_valid")];
     },
 
     fieldRules() {
@@ -994,6 +1000,9 @@ export default {
   methods: {
     updatePromotionType(value, index) {
       this.promotions[index].type = value;
+    },
+    updatePOSequence(value, index) {
+      this.promotions[index].seq = value;
     },
     updatePOEmail(value, index) {
       this.promotions[index].email = value;
@@ -1389,7 +1398,9 @@ input.larger {
   border: 2px solid black;
   padding: 1px;
 }
-
+.dimension_text {
+  text-align-last: start;
+}
 .rtl :deep() input {
   text-align: right;
   direction: rtl;

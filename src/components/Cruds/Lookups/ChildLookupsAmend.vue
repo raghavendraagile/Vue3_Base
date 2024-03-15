@@ -95,6 +95,7 @@
                         maxlength="5"
                         v-bind:label="$t('sequence_en')"
                         required
+                        :rules="seqRules"
                         variant="outlined"
                         density="compact"
                         v-on:keypress="NumbersOnly"
@@ -173,6 +174,7 @@
                   @uploaded_image="uploaded_image"
                   :upload_profile="uploadfile"
                 />
+                <div class="dimension_text">200 : 200</div>
               </v-col>
             </v-row>
           </v-form>
@@ -253,6 +255,7 @@
                         maxlength="5"
                         v-bind:label="$t('sequence_ar')"
                         required
+                        :rules="seqRulesAR"
                         variant="outlined"
                         density="compact"
                         v-on:keypress="NumbersOnly"
@@ -331,6 +334,7 @@
                   @uploaded_image="uploaded_image_ar"
                   :upload_profile="uploadfile_ar"
                 />
+                <div class="dimension_text">200 : 200</div>
               </v-col>
             </v-row>
           </v-form>
@@ -442,9 +446,14 @@ export default {
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
     },
-
     numberRules() {
       return [(v) => !!v || this.$t("number_required")];
+    },
+    seqRules() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required")];
+    },
+    seqRulesAR() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required_ar")];
     },
   },
 
@@ -510,7 +519,7 @@ export default {
     },
   },
   methods: {
-    updateSeq(value, index){
+    updateSeq(value, index) {
       this.lookup[index].seq = value;
     },
     NumbersOnly(evt) {
@@ -683,5 +692,9 @@ input.larger {
   position: relative;
   bottom: 45px;
   right: 110px;
+}
+
+.dimension_text {
+  text-align-last: start;
 }
 </style>
