@@ -147,7 +147,7 @@
               <br />
               <Imageupload
                 :folder="'user_profile'"
-                :resizewidth="200"
+                :resizewidth="400"
                 :resizeheight="150"
                 @uploaded_image="uploaded_image"
                 :upload_profile="uploadfile"
