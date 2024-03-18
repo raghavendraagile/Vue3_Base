@@ -126,7 +126,7 @@
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
                   size="small"
-                  @click="changeStatus(props.item.selectable.id)"
+                  @click="changeStatus(props.item.selectable.header_id)"
                   v-bind:color="[
                     props.item.selectable.status == 1 ? 'success' : 'warning',
                   ]"
@@ -282,7 +282,7 @@
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
                   size="small"
-                  @click="changeStatus(props.item.selectable.id)"
+                  @click="changeStatus(props.item.selectable.header_id)"
                   v-bind:color="[
                     props.item.selectable.status == 1 ? 'success' : 'warning',
                   ]"
