@@ -69,7 +69,7 @@
               </v-row>
             </v-layout>
             <v-row class="mx-auto mt-2" max-width="344">
-                <v-col
+              <v-col
                 cols="12"
                 sm="12"
                 md="3"
@@ -106,7 +106,10 @@
                       :label="this.$t('type_en')"
                       variant="outlined"
                       density="compact"
-                      :disabled="$route.query.slug"
+                      :disabled="
+                        $route.query.slug ||
+                        products[0].stor_type == 'MallAdmin'
+                      "
                       :items="types_en"
                       :rules="fieldRules"
                       item-title="shortname"
@@ -381,7 +384,7 @@
               </v-row>
             </v-layout>
             <v-row class="mx-auto mt-2 arabdirection" max-width="344">
-                  <v-col
+              <v-col
                 cols="12"
                 sm="12"
                 md="3"
@@ -395,7 +398,7 @@
                       :label="label_text_ar"
                       variant="outlined"
                       density="compact"
-                       :disabled="
+                      :disabled="
                         user.rolename == 'MallAdmin' &&
                         products[0].stor_type == 'MallAdmin'
                       "
@@ -415,7 +418,10 @@
                     <v-autocomplete
                       v-bind="props"
                       v-model="products[1].type"
-                      :disabled="$route.query.slug"
+                      :disabled="
+                        $route.query.slug ||
+                        products[0].stor_type == 'MallAdmin'
+                      "
                       :label="this.$t('type_ar')"
                       variant="outlined"
                       density="compact"
@@ -429,7 +435,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-          
+
               <v-col cols="12" sm="12" md="3">
                 <v-tooltip :text="this.$t('title_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
@@ -1551,6 +1557,19 @@ export default {
       }
     },
     updateType(stor_type) {
+      this.service_type = "";
+      if (stor_type == "MallAdmin") {
+        this.types_en.filter((ele) => {
+          if (ele.longname == "Services") {
+            this.service_type = ele.longname;
+            this.products[0].type = ele.header_id;
+            this.products[1].type = ele.header_id;
+          }
+        });
+      } else {
+        this.products[0].type = null;
+        this.products[1].type = null;
+      }
       this.products[1].store_id = null;
       this.products[0].store_id = null;
       this.assignType(stor_type);
@@ -1657,20 +1676,29 @@ export default {
         .then((response) => {
           this.types_en = response.data.lookup_en;
           this.types_ar = response.data.lookup_ar;
+          if (this.products[0].stor_type == "MallAdmin") {
+            this.types_en.filter((ele) => {
+              if (ele.longname == "Services") {
+                this.service_type = ele.longname;
+                this.products[0].type = ele.header_id;
+                this.products[1].type = ele.header_id;
+              }
+            });
+          }
         })
         .catch((err) => {
           this.$toast.error(this.$t("something_went_wrong"));
           console.log(err);
         });
     },
-     fetchMall() {
+    fetchMall() {
       this.$axios
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-malls")
         .then((response) => {
           console.log(response);
           this.mal_data_en = response.data.malls_en;
           this.mal_data_ar = response.data.malls_ar;
-           if (this.user.rolename == "MallAdmin" && !this.$route.query.slug) {
+          if (this.user.rolename == "MallAdmin" && !this.$route.query.slug) {
             this.mal_data_en.filter((ele) => {
               if (ele.header_id === this.user.store_id) {
                 this.products[0].store_id = ele.header_id;
