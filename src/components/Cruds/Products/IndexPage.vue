@@ -173,7 +173,10 @@
                     </template>
                   </v-tooltip>
                 </router-link>
-                <span @click="deleteItem(props.item.selectable.header_id)">
+                <span
+                  @click="deleteItem(props.item.selectable.header_id)"
+                  v-if="!props.item.selectable.total_claims > 0"
+                >
                   <v-tooltip :text="this.$t('delete')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-icon
@@ -187,6 +190,11 @@
                     </template>
                     <span>{{ $t("delete") }}</span>
                   </v-tooltip>
+                </span>
+                <span v-else>
+                  <v-icon color="grey" class="disabledmditrash" small
+                    >mdi-trash-can-outline</v-icon
+                  >
                 </span>
               </td>
               <td>
@@ -326,7 +334,10 @@
                     </template>
                   </v-tooltip>
                 </router-link>
-                <span @click="deleteItem(props.item.selectable.header_id)">
+                <span
+                  @click="deleteItem(props.item.selectable.header_id)"
+                  v-if="!props.item.selectable.total_claims > 0"
+                >
                   <v-tooltip :text="this.$t('delete')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-icon
@@ -340,6 +351,11 @@
                     </template>
                     <span>{{ $t("delete") }}</span>
                   </v-tooltip>
+                </span>
+                <span v-else>
+                  <v-icon color="grey" class="disabledmditrash" small
+                    >mdi-trash-can-outline</v-icon
+                  >
                 </span>
               </td>
               <td>
