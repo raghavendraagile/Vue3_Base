@@ -1357,6 +1357,9 @@ export default {
         currentSlot.to_time
       ) {
         isValid = false;
+            errorMessage= this.tabs == 1
+            ? this.$t("to_time_later_from_time_en")
+            : this.$t("to_time_later_from_time_ar");
         errorMessage = "The 'to time' must be later than the 'from time'.";
       }
 
@@ -1378,7 +1381,10 @@ export default {
             currentSlot.to_meridiem === slot_data.to_meridiem
           ) {
             isValid = false;
-            errorMessage = "This slot timing is duplicated.";
+            // errorMessage = "This slot timing is duplicated.";
+                     errorMessage= this.tabs == 1
+            ? this.$t("slot_time_duplicate_en")
+            : this.$t("slot_time_duplicate_ar");
           }
 
           // Check for overlapping times
@@ -1387,7 +1393,10 @@ export default {
             currentToTime.isAfter(comparingFromTime)
           ) {
             isValid = false;
-            errorMessage = "This slot timing overlaps with another slot.";
+         errorMessage= this.tabs == 1
+            ? this.$t("slot_time_overlaps_en")
+            : this.$t("slot_time_overlaps_ar");
+            // errorMessage = "This slot timing overlaps with another slot.";
           }
         }
       });

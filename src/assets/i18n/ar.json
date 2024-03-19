@@ -580,5 +580,11 @@
   "date_en":"Date",
   "date_ar":"تاريخ",
   "service_end_date_error_message_en":"Service end date has passed. Please extend the service end date to add more service slots.",
-  "service_end_date_error_message_ar":"لقد مر تاريخ انتهاء الخدمة. يرجى تمديد تاريخ انتهاء الخدمة لإضافة المزيد من فتحات الخدمة."
+  "service_end_date_error_message_ar":"لقد مر تاريخ انتهاء الخدمة. يرجى تمديد تاريخ انتهاء الخدمة لإضافة المزيد من فتحات الخدمة.",
+  "slot_time_overlaps_en":"This slot timing overlaps with another slot.",
+  "slot_time_overlaps_ar":"يتداخل توقيت هذه الفتحة مع فتحة أخرى.",
+  "slot_time_duplicate_en":"This slot timing is duplicated.",
+  "slot_time_duplicate_ar":"يتم تكرار توقيت الفتحة هذا.",
+  "to_time_later_from_time_en":"The 'to time' must be later than the 'from time'.",
+  "to_time_later_from_time_ar":"يجب أن يكون 'من الوقت' متأخرًا عن 'من الوقت'."
 }
