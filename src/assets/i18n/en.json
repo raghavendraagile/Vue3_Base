@@ -626,5 +626,7 @@
   "total_slots_ar": "إجمالي الفتحات",
   "copy_to_next_date_ar": "نسخ إلى التاريخ التالي",
   "date_en":"Date",
-  "date_ar":"تاريخ"
+  "date_ar":"تاريخ",
+  "service_end_date_error_message_en":"Service end date has passed. Please extend the service end date to add more service slots.",
+  "service_end_date_error_message_ar":"لقد مر تاريخ انتهاء الخدمة. يرجى تمديد تاريخ انتهاء الخدمة لإضافة المزيد من فتحات الخدمة."
 }

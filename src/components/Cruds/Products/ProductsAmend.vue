@@ -715,6 +715,13 @@
               :key="sindex"
               class="service-container"
             >
+                <div
+                v-bind:class="[tabs == 1 ? '' : 'rtl']"
+                v-if="slotErrorMessages[sindex]"
+                class="error-message"
+              >
+                {{ slotErrorMessages[sindex] }}
+              </div>
               <v-layout>
                 <v-row
                   class="px-6 mt-2 ml-8"
@@ -1158,6 +1165,8 @@ export default {
     user: "",
     label_text_ar: "مجمع تجاري",
     labelText: "Mall",
+        slotErrorMessages: [],
+
     service_slots: [
       {
         weekday: null,
@@ -1387,52 +1396,65 @@ export default {
         if (!this.slotErrors[week_index]) {
           this.slotErrors[week_index] = {};
         }
+
         this.slotErrors[week_index][slot_index] = errorMessage;
+        this.isDisabled=true;
       } else {
         if (
           this.slotErrors[week_index] &&
           this.slotErrors[week_index][slot_index]
         ) {
           this.slotErrors[week_index][slot_index] = "";
+                  this.isDisabled=false;
+
         }
       }
 
       return isValid;
     },
 
-    copyNextDate(service_data, index) {
+   copyNextDate(service_data, index) {
       const newServiceData = JSON.parse(JSON.stringify(service_data));
-
       const nextDay = moment(
         this.service_slots[index].slot_date,
         "YYYY-MM-DD"
       ).add(1, "days");
-      var formatted_day = moment(nextDay).format("dddd");
-      newServiceData.slot_date = nextDay;
-      if (this.$route.query.slug) {
-        newServiceData.slot.forEach((slot) => {
-          slot.id = 0;
-        });
-      }
-      if (this.tabs == 1) {
-        this.weekdays_en.filter((day) => {
-          if (day.shortname == formatted_day) {
-            return (newServiceData.weekday = day.header_id);
-          }
-        });
-      } else {
-        this.weekdays_ar.filter((day) => {
-          if (day.shortname == formatted_day) {
-            return (newServiceData.weekday = day.header_id);
-          }
-        });
-      }
-      console.log("all service date", newServiceData);
-      this.service_slots.push(newServiceData);
-      // var slot_date = moment(service_data.start_date, "YYYY-MM-DD");
-      // var formatted_day = nextDay.format("dddd");
+      let newErrorMessages = [...this.slotErrorMessages];
+      newErrorMessages[index] = "";
+      if (
+        nextDay.isAfter(moment(this.products[0].end_date, "YYYY-MM-DD"), "day")
+      ) {
+        newErrorMessages[index] =
+          this.tabs == 1
+            ? this.$t("service_end_date_error_message_en")
+            : this.$t("service_end_date_error_message_ar");
 
-      // this.min_slot_date[index + 1] = nextDay;
+        this.slotErrorMessages = newErrorMessages;
+      } else {
+        this.slotErrorMessages = newErrorMessages;
+
+        var formatted_day = moment(nextDay).format("dddd");
+        newServiceData.slot_date = nextDay;
+        if (this.$route.query.slug) {
+          newServiceData.slot.forEach((slot) => {
+            slot.id = 0;
+          });
+        }
+        if (this.tabs == 1) {
+          this.weekdays_en.filter((day) => {
+            if (day.shortname == formatted_day) {
+              return (newServiceData.weekday = day.header_id);
+            }
+          });
+        } else {
+          this.weekdays_ar.filter((day) => {
+            if (day.shortname == formatted_day) {
+              return (newServiceData.weekday = day.header_id);
+            }
+          });
+        }
+        this.service_slots.push(newServiceData);
+      }
     },
     getWeekdayRules(sindex) {
       return [
