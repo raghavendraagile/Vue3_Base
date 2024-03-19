@@ -715,7 +715,7 @@
               :key="sindex"
               class="service-container"
             >
-                <div
+              <div
                 v-bind:class="[tabs == 1 ? '' : 'rtl']"
                 v-if="slotErrorMessages[sindex]"
                 class="error-message"
@@ -1165,7 +1165,7 @@ export default {
     user: "",
     label_text_ar: "مجمع تجاري",
     labelText: "Mall",
-        slotErrorMessages: [],
+    slotErrorMessages: [],
 
     service_slots: [
       {
@@ -1357,10 +1357,11 @@ export default {
         currentSlot.to_time
       ) {
         isValid = false;
-            errorMessage= this.tabs == 1
+        errorMessage =
+          this.tabs == 1
             ? this.$t("to_time_later_from_time_en")
             : this.$t("to_time_later_from_time_ar");
-        errorMessage = "The 'to time' must be later than the 'from time'.";
+        // errorMessage = "The 'to time' must be later than the 'from time'.";
       }
 
       this.service_slots[week_index].slot.forEach((slot_data, index) => {
@@ -1382,9 +1383,10 @@ export default {
           ) {
             isValid = false;
             // errorMessage = "This slot timing is duplicated.";
-                     errorMessage= this.tabs == 1
-            ? this.$t("slot_time_duplicate_en")
-            : this.$t("slot_time_duplicate_ar");
+            errorMessage =
+              this.tabs == 1
+                ? this.$t("slot_time_duplicate_en")
+                : this.$t("slot_time_duplicate_ar");
           }
 
           // Check for overlapping times
@@ -1393,9 +1395,10 @@ export default {
             currentToTime.isAfter(comparingFromTime)
           ) {
             isValid = false;
-         errorMessage= this.tabs == 1
-            ? this.$t("slot_time_overlaps_en")
-            : this.$t("slot_time_overlaps_ar");
+            errorMessage =
+              this.tabs == 1
+                ? this.$t("slot_time_overlaps_en")
+                : this.$t("slot_time_overlaps_ar");
             // errorMessage = "This slot timing overlaps with another slot.";
           }
         }
@@ -1407,22 +1410,21 @@ export default {
         }
 
         this.slotErrors[week_index][slot_index] = errorMessage;
-        this.isDisabled=true;
+        this.isDisabled = true;
       } else {
         if (
           this.slotErrors[week_index] &&
           this.slotErrors[week_index][slot_index]
         ) {
           this.slotErrors[week_index][slot_index] = "";
-                  this.isDisabled=false;
-
+          this.isDisabled = false;
         }
       }
 
       return isValid;
     },
 
-   copyNextDate(service_data, index) {
+    copyNextDate(service_data, index) {
       const newServiceData = JSON.parse(JSON.stringify(service_data));
       const nextDay = moment(
         this.service_slots[index].slot_date,
