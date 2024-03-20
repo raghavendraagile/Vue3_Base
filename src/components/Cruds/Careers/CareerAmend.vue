@@ -156,7 +156,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" xs="12" sm="2" md="1">
+              <v-col cols="12" xs="12" sm="2" md="2">
                 <v-tooltip :text="$t('mobile_code_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -178,7 +178,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" xs="12" sm="4" md="3">
+              <v-col cols="12" xs="12" sm="4" md="2">
                 <v-tooltip :text="$t('mobile_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -465,7 +465,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" xs="12" sm="2" md="1">
+              <v-col cols="12" xs="12" sm="2" md="2">
                 <v-tooltip :text="$t('mobile_code_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -487,7 +487,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" xs="12" sm="4" md="3">
+              <v-col cols="12" xs="12" sm="4" md="2">
                 <v-tooltip :text="$t('mobile_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
