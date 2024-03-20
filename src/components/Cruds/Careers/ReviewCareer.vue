@@ -1,6 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('careers')"
@@ -9,7 +12,7 @@
     </div>
     <div class="mb-3 mx-auto">
       <div class="card-body">
-        <content-loader v-if="loader"></content-loader> 
+        <content-loader v-if="loader"></content-loader>
         <v-tabs v-model="tabs" color="blue">
           <v-tab :value="1">
             <span>{{ $t("english") }}</span>
@@ -76,11 +79,35 @@
                     <div class="d-label">{{ $t("meta_title_en") }}</div>
                     <div>{{ career.meta_title }}</div>
                   </v-col>
-                  <v-col cols="12" sm="12" md="4">
+                  <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("image_preview_en") }}</div>
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-if="
+                        career.image_path == '' || career.image_path == null
+                      "
+                      src="@/assets/images/no_image.png"
+                      width="100"
+                    />
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-else
+                      :src="envImagePath + career.image_path"
+                      width="100"
+                      height="65
+                          "
+                      alt
+                    />
+                  </v-col>
+                  <v-col cols="12" sm="12" md="12">
                     <div class="d-label">{{ $t("description_en") }}</div>
                     <div v-html="career.description"></div>
                   </v-col>
-                  <v-col cols="12" sm="12" md="4">
+                  <v-col cols="12" sm="12" md="12">
                     <div class="d-label">{{ $t("meta_description_en") }}</div>
                     <div>{{ career.meta_description }}</div>
                   </v-col>
@@ -102,7 +129,10 @@
               </v-layout>
               <div
                 class="d-flex justify-content-end"
-                v-if="career.approval_status == 'In Review'  && user_role != 'StoreAdmin' "
+                v-if="
+                  career.approval_status == 'In Review' &&
+                  user_role != 'StoreAdmin'
+                "
               >
                 <v-chip
                   @click="statusOnChange('Approved', career.header_id)"
@@ -167,12 +197,36 @@
                     <div v-else>{{ $t("not_applicable") }}</div>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
+                    <div class="d-label">{{ $t("vacancy_ar") }}</div>
+                    <div>{{ career.vacancy }}</div>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
                     <div class="d-label">{{ $t("meta_title_ar") }}</div>
                     <div>{{ career.meta_title }}</div>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <div class="d-label">{{ $t("meta_title_ar") }}</div>
-                    <div>{{ career.vacancy }}</div>
+                    <div class="d-label">{{ $t("image_preview_ar") }}</div>
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-if="
+                        career.image_path == '' || career.image_path == null
+                      "
+                      src="@/assets/images/no_image.png"
+                      width="100"
+                    />
+                    <img
+                      v-bind:style="
+                        isHovering == true ? 'filter: blur(1px);' : ''
+                      "
+                      v-else
+                      :src="envImagePath + career.image_path"
+                      width="100"
+                      height="65
+                          "
+                      alt
+                    />
                   </v-col>
                   <v-col cols="12" sm="12" md="12">
                     <div class="d-label">{{ $t("description_ar") }}</div>
@@ -200,7 +254,10 @@
               </v-layout>
               <div
                 class="d-flex justify-content-end"
-                v-if="career.approval_status == 'In Review' && user_role != 'StoreAdmin'"
+                v-if="
+                  career.approval_status == 'In Review' &&
+                  user_role != 'StoreAdmin'
+                "
               >
                 <v-chip
                   @click="statusOnChange('Approved', career.header_id)"
@@ -269,7 +326,7 @@ export default {
       icon: "material-symbols-outlined",
     },
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
-    user_role:"",
+    user_role: "",
     valid: true,
     successmessage: "",
     message: "",
@@ -298,11 +355,13 @@ export default {
       handler() {
         if (this.$route.query.slug) {
           this.fetchcareerDetails();
-    this.user_role = JSON.parse(localStorage.getItem("user_data")).rolename;
+          this.user_role = JSON.parse(
+            localStorage.getItem("user_data")
+          ).rolename;
         }
       },
     },
-      "$route.query.s_tab": {
+    "$route.query.s_tab": {
       immediate: true,
       handler() {
         if (this.$route.query.s_tab) {
@@ -314,17 +373,18 @@ export default {
         }
       },
     },
-    '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
 
   methods: {
-      changeStatusAr(status) {
+    changeStatusAr(status) {
       switch (status) {
         case "Approved":
           return this.$t("approved_ar");
@@ -436,7 +496,7 @@ export default {
     cancel() {
       this.$router.push({
         name: "careers",
-        query: { 's_tab': this.$route.query.s_tab },
+        query: { s_tab: this.$route.query.s_tab },
       });
     },
     closeReviewComment() {
