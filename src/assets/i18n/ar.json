@@ -589,5 +589,8 @@
   "to_time_later_from_time_ar":"يجب أن يكون 'من الوقت' متأخرًا عن 'من الوقت'.",
   "mobile_en": "Mobile",
   "mobile_ar": "متحرك",
-  "subscriptions": "الاشتراكات"
+  "subscriptions": "الاشتراكات",
+  "staff_name": "اسم الموظفين",
+  "shop_name": "اسم المحل",
+  "review_details": "تفاصيل المراجعة"
 }

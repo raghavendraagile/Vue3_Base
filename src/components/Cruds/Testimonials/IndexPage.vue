@@ -51,7 +51,7 @@
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
-               <td
+              <td
                 v-if="
                   props.item.selectable.customer &&
                   props.item.selectable.customer.firstname
@@ -64,7 +64,7 @@
                 {{ $t("not_appllicable") }}
               </td>
               <td>{{ props.item.selectable.testimonial_details }}</td>
-              
+
               <td>
                 <v-btn
                   class="hover_shine btn mr-2"
@@ -136,7 +136,7 @@
       <!-- Reviews Tab Start -->
       <v-window-item :value="2">
         <v-data-table
-          :headers="headers"
+          :headers="reviews_headers"
           :items="reviews"
           :search="search"
           :loading="initval"
@@ -145,83 +145,55 @@
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
-              <td
-                v-if="
-                  props.item.selectable.customer &&
-                  props.item.selectable.customer.firstname
-                "
-              >
-                {{ props.item.selectable.customer.firstname }}
-                {{ props.item.selectable.customer.lastname }}
+              <td>
+                {{ props.item.selectable.name }}
               </td>
-              <td v-else>
-                {{ $t("not_appllicable") }}
+              <td>{{ props.item.selectable.email }}</td>
+              <td>{{ props.item.selectable.shop_name }}</td>
+              <td>{{ props.item.selectable.staff_name }}</td>
+              <td>
+                {{ props.item.selectable.phone }}
+                {{ props.item.selectable.mobile_code }}
               </td>
-              <td>{{ props.item.selectable.testimonial_details }}</td>
-              
               <td>
                 <v-btn
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
-                  @click="
-                    updateStatus(
-                      props.item.selectable.id,
-                      props.item.selectable.status
-                    )
-                  "
+                  @click="updateReviewsStatus(props.item.selectable.id)"
                   size="small"
                   v-bind:color="[
-                    props.item.selectable.status == 1 ? 'success' : 'error',
+                    props.item.selectable.status == 1 ? 'success' : 'warning',
                   ]"
                 >
                   <span
                     v-if="props.item.selectable.status == 1"
                     class="spanactivesize"
-                    >{{ $t("accept") }}</span
+                    >{{ $t("active") }}</span
                   >
                   <span
                     v-if="props.item.selectable.status == 0"
                     class="spanactivesize"
-                    >{{ $t("reject") }}</span
+                    >{{ $t("inactive") }}</span
                   >
                 </v-btn>
               </td>
               <td>
-                <v-btn
-                  class="hover_shine btn mr-2"
-                  :disabled="isDisabled"
-                  @click="updateIsPublishStatus(props.item.selectable.id)"
-                  size="small"
-                  v-bind:color="[
-                    props.item.selectable.is_published == 1
-                      ? 'success'
-                      : 'warning',
-                  ]"
+                <router-link
+                  small
+                  :to="{
+                    name: 'view-reviews',
+                    query: { slug: props.item.selectable.slug },
+                  }"
                 >
-                  <span
-                    v-if="props.item.selectable.is_published == 1"
-                    class="spanactivesize"
-                    >{{ $t("yes") }}</span
+                  <v-btn
+                    size="small"
+                    :disabled="loading"
+                    class="ma-1"
+                    color="blue"
+                    >{{ $t("view") }}</v-btn
                   >
-                  <span
-                    v-if="props.item.selectable.is_published == 0"
-                    class="spanactivesize"
-                    >{{ $t("no") }}</span
-                  >
-                </v-btn>
+                </router-link>
               </td>
-              <!-- <td class="text-center">
-                <span @click="deleteItem(props.item.selectable.id)">
-                  <v-tooltip :text="this.$t('delete')" location="top">
-                    <template v-slot:activator="{ props }">
-                      <v-icon color="error" type="button" v-bind="props" small
-                        >mdi-trash-can-outline</v-icon
-                      >
-                    </template>
-                    <span>{{ $t("delete") }}</span>
-                  </v-tooltip>
-                </span>
-              </td> -->
             </tr>
           </template>
         </v-data-table>
@@ -250,6 +222,13 @@
       v-bind:title="$t('confirm')"
       v-bind:description="$t('status_change')"
     />
+    <ConfirmDialog
+      :show="showIReviewsStatusDialog"
+      :cancel="cancelReviewsStatus"
+      :confirm="confirmReviewsStatus"
+      v-bind:title="$t('confirm')"
+      v-bind:description="$t('status_change')"
+    />
   </div>
 </template>
 
@@ -274,8 +253,10 @@ export default {
     },
     status_id: null,
     is_publish_id: null,
+    review_id: null,
     showStatusDialog: false,
     showIsPublishStatusDialog: false,
+    showIReviewsStatusDialog: false,
     tabs: 1,
   }),
 
@@ -283,7 +264,7 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
-     headers() {
+    headers() {
       return [
         {
           title: this.$t("customer"),
@@ -300,6 +281,38 @@ export default {
         {
           title: this.$t("is_published"),
           key: "is_published",
+        },
+      ];
+    },
+    reviews_headers() {
+      return [
+        {
+          title: this.$t("name"),
+          key: "name",
+        },
+        {
+          title: this.$t("email"),
+          key: "email",
+        },
+        {
+          title: this.$t("shop_name"),
+          key: "shop_name",
+        },
+        {
+          title: this.$t("staff_name"),
+          key: "staff_name",
+        },
+        {
+          title: this.$t("phone"),
+          key: "phone",
+        },
+        {
+          title: this.$t("status"),
+          key: "status",
+        },
+        {
+          title: "",
+          align: "center",
         },
       ];
     },
@@ -446,6 +459,46 @@ export default {
       this.$axios
         .post(process.env.VUE_APP_API_URL_ADMIN + "update-is-publish-status", {
           id: this.is_publish_id,
+        })
+        .then((res) => {
+          if (Array.isArray(res.data.message)) {
+            this.array_data = res.data.message.toString();
+          } else {
+            this.array_data = res.data.message;
+          }
+          if (res.data.status == "S") {
+            this.$toast.success(this.array_data);
+            this.fetchReviewsTestimonials();
+          } else if (res.data.status == "E") {
+            this.$toast.error(this.array_data);
+          } else {
+            this.$toast.error(this.array_data);
+            this.fetchReviewsTestimonials();
+          }
+        })
+        .catch((err) => {
+          this.$toast.error(this.array_data);
+          console.log("this error" + err);
+        });
+      this.loader = false;
+    },
+    //-------------update Reviews Status----------------
+    updateReviewsStatus(id) {
+      this.review_id = id;
+      this.showIReviewsStatusDialog = true;
+    },
+    confirmReviewsStatus() {
+      this.statusReviewsUpdate();
+      this.showIReviewsStatusDialog = false;
+    },
+    cancelReviewsStatus() {
+      this.showIReviewsStatusDialog = false;
+    },
+    statusReviewsUpdate() {
+      this.loader = true;
+      this.$axios
+        .post(process.env.VUE_APP_API_URL_ADMIN + "update-reviews-status", {
+          id: this.review_id,
         })
         .then((res) => {
           if (Array.isArray(res.data.message)) {

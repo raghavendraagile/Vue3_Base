@@ -355,6 +355,13 @@ const routes = [
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/Testimonials/IndexPage.vue"),
   },
+  {
+    path: "/:lang?/view-reviews",
+    name: "view-reviews",
+    beforeEnter: guardMyroute,
+    // meta: { layout: "userpages" },
+    component: () => import("../components/Cruds/Testimonials/ViewReviews.vue"),
+  },
   // Stores
   {
     path: "/:lang?/stores",
