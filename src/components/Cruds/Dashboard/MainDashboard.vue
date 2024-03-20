@@ -114,6 +114,8 @@ export default {
           return this.$t("testimonials");
         case "ServiceBookings":
           return this.$t("service_bookings");
+        case "NewsletterSubscriptions":
+          return this.$t("newsletter_subscriptions");
         default:
           return "";
       }
@@ -134,6 +136,8 @@ export default {
           return this.$t("claims");
         case "Available":
           return this.$t("available");
+        case "Subscriptions":
+          return this.$t("subscriptions");
         default:
           return "";
       }
@@ -210,6 +214,8 @@ export default {
         this.$router.push({ name: "reviews-testimonials" });
       } else if (page == "ServiceBookings") {
         this.$router.push({ name: "products" });
+      } else if (page == "NewsletterSubscriptions") {
+        this.$router.push({ name: "customer-newsletter" });
       } else {
         this.$router.push({ name: "dashboard" });
       }
@@ -305,6 +311,6 @@ export default {
 } */
 
 .v-chip.v-chip--size-small {
-  width: 86px;
+  width: 100px;
 }
 </style>

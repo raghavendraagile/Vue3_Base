@@ -588,5 +588,6 @@
   "to_time_later_from_time_en":"The 'to time' must be later than the 'from time'.",
   "to_time_later_from_time_ar":"يجب أن يكون 'من الوقت' متأخرًا عن 'من الوقت'.",
   "mobile_en": "Mobile",
-  "mobile_ar": "متحرك"
+  "mobile_ar": "متحرك",
+  "subscriptions": "الاشتراكات"
 }
