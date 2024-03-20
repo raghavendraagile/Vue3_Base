@@ -65,6 +65,7 @@
           :loading="initval"
           v-bind:no-data-text="$t('no_data_available')"
           :items-per-page-text="$t('rows_per_page_en')"
+          class="my_store_container"
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
@@ -155,12 +156,12 @@
       <!-- ENGLISH TAB END -->
       <!-- ARABIC TAB STARTS -->
       <v-window-item :value="2">
-        <v-data-table
+        <v-data-table 
           :headers="headers_ar"
           :items="stores_ar"
           :search="search"
           :loading="initval"
-          class="rtl-direction"
+          class="rtl-direction my_store_container"
           :no-data-text="$t('no_data_available')"
           :items-per-page-text="$t('rows_per_page_ar')"
         >
@@ -591,5 +592,8 @@ export default {
   padding: 8px;
   border-radius: 7px 7px 7px 7px;
   color: white;
+}
+.my_store_container >>> .v-data-table-footer{
+  display: none !important;
 }
 </style>
