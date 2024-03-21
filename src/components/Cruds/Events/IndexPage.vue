@@ -51,7 +51,8 @@
               size="small"
               class="mb-2 preview-btn mx-2"
               v-bind="props"
-              >{{ $t("preview") }}<v-icon size="large" class="ml-1"
+              >{{ $t("preview")
+              }}<v-icon size="large" class="ml-1"
                 >mdi mdi-play-circle-outline</v-icon
               ></v-btn
             >
@@ -86,13 +87,13 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td v-if="this.role === 'SuperUser'">
+              <td v-if="role != 'StoreAdmin'">
                 <span v-if="props.item.selectable.store_name">
                   {{ props.item.selectable.store_name.stor_type }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td v-if="this.role === 'SuperUser'">
+              <td v-if="role != 'StoreAdmin'">
                 <span v-if="props.item.selectable.store_name">
                   {{ props.item.selectable.store_name.name }}</span
                 >
@@ -131,6 +132,7 @@
 
               <td>
                 <v-btn
+                  v-if="props.item.selectable.is_expired == 0"
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
                   size="small"
@@ -142,13 +144,22 @@
                   <span
                     v-if="props.item.selectable.status == 1"
                     class="spanactivesize"
-                    >{{ $t("active") }}</span
+                    >{{ $t("active_en") }}</span
                   >
                   <span
                     v-if="props.item.selectable.status == 0"
                     class="spanactivesize"
-                    >{{ $t("inactive") }}</span
+                    >{{ $t("inactive_en") }}</span
                   >
+                </v-btn>
+                <v-btn
+                  v-else
+                  class="hover_shine btn mr-2 event"
+                  size="small"
+                  color="error"
+                  elevation="0"
+                >
+                  <span class="spanactivesize">{{ $t("expired_en") }}</span>
                 </v-btn>
               </td>
               <td>
@@ -228,7 +239,7 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td v-if="this.role === 'SuperUser'">
+              <td v-if="role != 'StoreAdmin'">
                 <span v-if="props.item.selectable.store_name">
                   {{
                     changeName(props.item.selectable.store_name.stor_type)
@@ -236,7 +247,7 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td v-if="this.role === 'SuperUser'">
+              <td v-if="role != 'StoreAdmin'">
                 <span v-if="props.item.selectable.store_name">
                   {{ props.item.selectable.store_name.name }}</span
                 >
@@ -275,6 +286,7 @@
               </td> -->
               <td>
                 <v-btn
+                  v-if="props.item.selectable.is_expired == 0"
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
                   size="small"
@@ -285,14 +297,23 @@
                 >
                   <span
                     v-if="props.item.selectable.status == 1"
-                    class="spanactivesize"
+                    class="spanactivesizear"
                     >{{ $t("active_ar") }}</span
                   >
                   <span
                     v-if="props.item.selectable.status == 0"
-                    class="spanactivesize"
+                    class="spanactivesizear"
                     >{{ $t("inactive_ar") }}</span
                   >
+                </v-btn>
+                <v-btn
+                  v-else
+                  class="hover_shine btn mr-2 event"
+                  size="small"
+                  color="error"
+                  elevation="0"
+                >
+                  <span class="spanactivesizear">{{ $t("expired_ar") }}</span>
                 </v-btn>
               </td>
               <td>
@@ -424,9 +445,9 @@ export default {
   mounted() {
     this.role = JSON.parse(localStorage.getItem("user_data")).rolename;
     this.user = JSON.parse(localStorage.getItem("user"));
-     if (this.$route.query.s_tab) {
-    this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
-  }
+    if (this.$route.query.s_tab) {
+      this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
+    }
     this.fetchEvents();
   },
   watch: {
@@ -444,7 +465,7 @@ export default {
     //     if (this.$route.query.s_tab) {
     //       this.tabs = s_tab_value == 1 ? 1 : 2;
     //     }
-       
+
     //   },
     // },
   },
@@ -492,7 +513,7 @@ export default {
         },
       ];
 
-      if (this.role === "SuperUser") {
+      if (this.role != "StoreAdmin") {
         headers.splice(1, 0, {
           title: this.$t("store_type_en"),
           key: "store_name.stor_type",
@@ -545,7 +566,7 @@ export default {
         },
       ];
 
-      if (this.role === "SuperUser") {
+      if (this.role != "StoreAdmin") {
         headers.splice(1, 0, {
           title: this.$t("store_type_ar"),
           key: "store_name.stor_type",
@@ -731,5 +752,8 @@ export default {
 
 .delete_icon_size {
   font-size: 20px !important;
+}
+.event {
+  pointer-events: none;
 }
 </style>

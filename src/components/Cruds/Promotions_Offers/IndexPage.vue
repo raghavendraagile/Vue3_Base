@@ -52,7 +52,8 @@
               size="small"
               class="mb-2 preview-btn mx-2"
               v-bind="props"
-              >{{ $t("preview") }}<v-icon size="large" class="ml-1"
+              >{{ $t("preview")
+              }}<v-icon size="large" class="ml-1"
                 >mdi mdi-play-circle-outline</v-icon
               ></v-btn
             >
@@ -87,12 +88,16 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td v-if="this.role === 'SuperUser'">
-                <span v-if="props.item.selectable.store_name.length>0"> {{ props.item.selectable.store_name[0].stor_type }}</span>
+              <td v-if="role != 'StoreAdmin'">
+                <span v-if="props.item.selectable.store_name.length > 0">
+                  {{ props.item.selectable.store_name[0].stor_type }}</span
+                >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td v-if="this.role === 'SuperUser'">
-                <span v-if="props.item.selectable.store_name.length>0"> {{ props.item.selectable.store_name[0].name }}</span>
+              <td v-if="role != 'StoreAdmin'">
+                <span v-if="props.item.selectable.store_name.length > 0">
+                  {{ props.item.selectable.store_name[0].name }}</span
+                >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td>
@@ -144,15 +149,8 @@
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td> -->
               <td>
-                <v-chip
-                  :color="getStatusColor(props.item.selectable.approval_status)"
-                  variant="outlined"
-                >
-                  {{ props.item.selectable.approval_status }}
-                </v-chip>
-              </td>
-              <td>
                 <v-btn
+                  v-if="props.item.selectable.is_expired == 0"
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
                   size="small"
@@ -172,12 +170,29 @@
                     >{{ $t("inactive_en") }}</span
                   >
                 </v-btn>
+                <v-btn
+                  v-else
+                  class="hover_shine btn mr-2 event"
+                  size="small"
+                  color="error"
+                  elevation="0"
+                >
+                  <span class="spanactivesize">{{ $t("expired_en") }}</span>
+                </v-btn>
+              </td>
+              <td>
+                <v-chip
+                  :color="getStatusColor(props.item.selectable.approval_status)"
+                  variant="outlined"
+                >
+                  {{ props.item.selectable.approval_status }}
+                </v-chip>
               </td>
               <td>
                 <router-link
                   :to="{
                     name: 'promotions_amend',
-                    query: { slug: props.item.selectable.slug, 's_tab': tabs },
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -242,13 +257,20 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td v-if="this.role === 'SuperUser'">
-                <span v-if="props.item.selectable.store_name.length>0">
-                   {{ changeStoreType(props.item.selectable.store_name[0].stor_type) }}</span>
+              <td v-if="role != 'StoreAdmin'">
+                <span v-if="props.item.selectable.store_name.length > 0">
+                  {{
+                    changeStoreType(
+                      props.item.selectable.store_name[0].stor_type
+                    )
+                  }}</span
+                >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td v-if="this.role === 'SuperUser'">
-                <span v-if="props.item.selectable.store_name.length>0"> {{ props.item.selectable.store_name[0].name }}</span>
+              <td v-if="role != 'StoreAdmin'">
+                <span v-if="props.item.selectable.store_name.length > 0">
+                  {{ props.item.selectable.store_name[0].name }}</span
+                >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
               <td>
@@ -300,15 +322,8 @@
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td> -->
               <td>
-                <v-chip
-                  :color="getStatusColor(props.item.selectable.approval_status)"
-                  variant="outlined"
-                >
-                  {{ changeStatusAr(props.item.selectable.approval_status) }}
-                </v-chip>
-              </td>
-              <td>
                 <v-btn
+                  v-if="props.item.selectable.is_expired == 0"
                   class="hover_shine btn mr-2"
                   :disabled="isDisabled"
                   size="small"
@@ -319,21 +334,38 @@
                 >
                   <span
                     v-if="props.item.selectable.status == 1"
-                    class="spanactivesize"
+                    class="spanactivesizear"
                     >{{ $t("active_ar") }}</span
                   >
                   <span
                     v-if="props.item.selectable.status == 0"
-                    class="spanactivesize"
+                    class="spanactivesizear"
                     >{{ $t("inactive_ar") }}</span
                   >
                 </v-btn>
+                <v-btn
+                  v-else
+                  class="hover_shine btn mr-2 event"
+                  size="small"
+                  color="error"
+                  elevation="0"
+                >
+                  <span class="spanactivesizear">{{ $t("expired_ar") }}</span>
+                </v-btn>
+              </td>
+              <td>
+                <v-chip
+                  :color="getStatusColor(props.item.selectable.approval_status)"
+                  variant="outlined"
+                >
+                  {{ changeStatusAr(props.item.selectable.approval_status) }}
+                </v-chip>
               </td>
               <td>
                 <router-link
                   :to="{
                     name: 'promotions_amend',
-                    query: { slug: props.item.selectable.slug,'s_tab': tabs  },
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -462,8 +494,8 @@ export default {
     this.role = JSON.parse(localStorage.getItem("user_data")).rolename;
     this.user = JSON.parse(localStorage.getItem("user"));
     if (this.$route.query.s_tab) {
-    this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
-  }
+      this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
+    }
     this.fetchPromotions();
   },
   computed: {
@@ -493,16 +525,15 @@ export default {
           title: this.$t("email_en"),
           key: "email",
         },
-
-        {
-          title: this.$t("approval_en"),
-          key: "approval_status",
-        },
         {
           title: this.$t("status_en"),
           align: "left",
           sortable: false,
           key: "status",
+        },
+        {
+          title: this.$t("approval_en"),
+          key: "approval_status",
         },
         {
           title: this.$t("action_en"),
@@ -515,7 +546,7 @@ export default {
         },
       ];
 
-      if (this.role === "SuperUser") {
+      if (this.role != "StoreAdmin") {
         headers.splice(1, 0, {
           title: this.$t("store_type_en"),
           key: "store_name.stor_type",
@@ -552,16 +583,15 @@ export default {
           title: this.$t("email_ar"),
           key: "email",
         },
-
+        {
+          title: this.$t("status_ar"),
+          align: "center",
+          sortable: false,
+          key: "status",
+        },
         {
           title: this.$t("approval_ar"),
           key: "approval_status",
-        },
-        {
-          title: this.$t("status_ar"),
-          align: "left",
-          sortable: false,
-          key: "status",
         },
         {
           title: this.$t("action_ar"),
@@ -574,7 +604,7 @@ export default {
         },
       ];
 
-      if (this.role === "SuperUser") {
+      if (this.role != "StoreAdmin") {
         headers.splice(1, 0, {
           title: this.$t("store_type_ar"),
           key: "store_name.stor_type",
@@ -610,7 +640,6 @@ export default {
         default:
           return "";
       }
-      
     },
     changeStatusAr(status) {
       switch (status) {
@@ -786,5 +815,8 @@ export default {
 
 .delete_icon_size {
   font-size: 20px !important;
+}
+.event {
+  pointer-events: none;
 }
 </style>

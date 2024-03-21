@@ -640,5 +640,7 @@
   "to_time_later_from_time_ar": "يجب أن يكون 'من الوقت' متأخرًا عن 'من الوقت'.",
   "staff_name": "Staff Name",
   "shop_name": "Shop Name",
-  "review_details": "Review Details"
+  "review_details": "Review Details",
+  "expired_en": "Expired",
+  "expired_ar": "منتهي الصلاحية"
 }

@@ -76,13 +76,13 @@
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td>{{ props.item.selectable.title }}</td>
-              <td v-if="this.role === 'SuperUser'">
+              <td v-if="role != 'StoreAdmin'">
                 <span v-if="props.item.selectable.store_name">
                   {{ props.item.selectable.store_name.stor_type }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td v-if="this.role === 'SuperUser'">
+              <td v-if="role != 'StoreAdmin'">
                 <span v-if="props.item.selectable.store_name">
                   {{ props.item.selectable.store_name.name }}</span
                 >
@@ -180,7 +180,7 @@
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td>{{ props.item.selectable.title }}</td>
-              <td v-if="this.role === 'SuperUser'">
+              <td v-if="role != 'StoreAdmin'">
                 <span v-if="props.item.selectable.store_name">
                   {{
                     changeName(props.item.selectable.store_name.stor_type)
@@ -188,7 +188,7 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td v-if="this.role === 'SuperUser'">
+              <td v-if="role != 'StoreAdmin'">
                 <span v-if="props.item.selectable.store_name">
                   {{ props.item.selectable.store_name.name }}</span
                 >
@@ -347,7 +347,7 @@ export default {
           align: "center",
         },
       ];
-      if (this.role === "SuperUser") {
+      if (this.role != "StoreAdmin") {
         headers.splice(1, 0, {
           title: this.$t("store_type_en"),
           key: "store_name.stor_type",
@@ -388,7 +388,7 @@ export default {
           align: "center",
         },
       ];
-      if (this.role === "SuperUser") {
+      if (this.role != "StoreAdmin") {
         headers.splice(1, 0, {
           title: this.$t("store_type_ar"),
           key: "store_name.stor_type",

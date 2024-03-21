@@ -592,5 +592,8 @@
   "subscriptions": "الاشتراكات",
   "staff_name": "اسم الموظفين",
   "shop_name": "اسم المحل",
-  "review_details": "تفاصيل المراجعة"
+  "review_details": "تفاصيل المراجعة",
+  "expired_en": "Expired",
+  "inactive_ar": "غير نشط",
+  "expired_ar": "منتهي الصلاحية"
 }

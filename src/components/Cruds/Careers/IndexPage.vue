@@ -89,13 +89,13 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td v-if="this.role === 'SuperUser'">
+              <td v-if="role != 'StoreAdmin'">
                 <span v-if="props.item.selectable.store_name.length > 0">
                   {{ props.item.selectable.store_name[0].stor_type }}</span
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td v-if="this.role === 'SuperUser'">
+              <td v-if="role != 'StoreAdmin'">
                 <span v-if="props.item.selectable.store_name.length > 0">
                   {{ props.item.selectable.store_name[0].name }}</span
                 >
@@ -225,7 +225,7 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td v-if="this.role === 'SuperUser'">
+              <td v-if="role != 'StoreAdmin'">
                 <span v-if="props.item.selectable.store_name.length > 0">
                   {{
                     changeStoreType(
@@ -235,7 +235,7 @@
                 >
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td v-if="this.role === 'SuperUser'">
+              <td v-if="role != 'StoreAdmin'">
                 <span v-if="props.item.selectable.store_name.length > 0">
                   {{ props.item.selectable.store_name[0].name }}</span
                 >
@@ -472,7 +472,7 @@ export default {
           align: "center",
         },
       ];
-      if (this.role === "SuperUser") {
+      if (this.role != "StoreAdmin") {
         headers.splice(1, 0, {
           title: this.$t("store_type_en"),
           key: "store_name.stor_type",
@@ -521,7 +521,7 @@ export default {
           align: "center",
         },
       ];
-      if (this.role === "SuperUser") {
+      if (this.role != "StoreAdmin") {
         headers.splice(1, 0, {
           title: this.$t("store_type_ar"),
           key: "store_name.stor_type",
