@@ -116,7 +116,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" xs="12" sm="2" md="4">
+              <v-col cols="12" xs="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('email_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -171,7 +171,7 @@
                   <span>{{ $t("end_date_en") }}</span>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" xs="12" sm="2" md="2">
+              <v-col cols="12" xs="12" sm="12" md="2">
                 <v-tooltip :text="$t('mobile_code_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -193,7 +193,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" xs="12" sm="4" md="2">
+              <v-col cols="12" xs="12" sm="12" md="2">
                 <v-tooltip :text="$t('mobile_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -214,7 +214,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="3" md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="$t('floor_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -250,7 +250,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="3" md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="$t('sequence')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -321,7 +321,7 @@
                   <span>{{ $t("meta_description") }}</span>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="6" md="6">
+              <v-col cols="12" sm="12" md="6">
                 <div>
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">
@@ -477,7 +477,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" xs="12" sm="2" md="4">
+              <v-col cols="12" xs="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('email_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -535,7 +535,7 @@
                   <span>{{ $t("end_date_ar") }}</span>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" xs="12" sm="2" md="2">
+              <v-col cols="12" xs="12" sm="12" md="2">
                 <v-tooltip :text="$t('mobile_code_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -557,7 +557,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" xs="12" sm="4" md="2">
+              <v-col cols="12" xs="12" sm="12" md="2">
                 <v-tooltip :text="$t('mobile_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -578,7 +578,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="3" md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="$t('floor_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -615,7 +615,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="3" md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="$t('sequence_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -690,7 +690,7 @@
                   <span>{{ $t("meta_description_ar") }}</span>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="3" md="6">
+              <v-col cols="12" sm="12" md="6">
                 <div>
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">

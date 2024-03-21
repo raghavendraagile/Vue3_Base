@@ -74,7 +74,7 @@
             </v-layout>
             <v-row class="mx-auto mt-2" max-width="344">
               <v-col
-                cols="4"
+                cols="12"
                 sm="12"
                 md="4"
                 v-if="user.rolename != 'StoreAdmin'"
@@ -104,7 +104,7 @@
                 </v-tooltip>
               </v-col>
               <!--  -->
-              <v-col cols="4" sm="12" md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('title_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -122,7 +122,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="6" md="2" sm="2" lg="2">
+              <v-col cols="6" md="2" sm="6" lg="2">
                 <v-tooltip :text="$t('mobile_code_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -144,7 +144,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="6" sm="2" md="2">
+              <v-col cols="6" sm="6" md="2">
                 <v-tooltip :text="this.$t('phone_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -164,7 +164,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('email_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -184,7 +184,7 @@
                 </v-tooltip>
               </v-col>
               <!-- :rules="fieldRules" -->
-              <v-col md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('type_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-select
@@ -207,7 +207,44 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col md="4">
+              <v-col cols="12" sm="12" md="2">
+                <v-tooltip :text="$t('floor_en')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-autocomplete
+                      v-bind="props"
+                      v-model="promotions[0].floor"
+                      v-bind:label="$t('floor_en')"
+                      @update:modelValue="(value) => updateFloor(value, 1)"
+                      variant="outlined"
+                      density="compact"
+                      :items="floors_en"
+                      item-title="longname"
+                      item-value="shortname"
+                      class="required_field"
+                      :rules="fieldRules"
+                    ></v-autocomplete>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col cols="12" sm="12" md="2">
+                <v-tooltip :text="$t('sequence_en')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      v-model="promotions[0].seq"
+                      @update:modelValue="(value) => updatePOSequence(value, 1)"
+                      maxlength="5"
+                      :rules="seqRules"
+                      v-bind:label="$t('sequence_en')"
+                      required
+                      variant="outlined"
+                      density="compact"
+                      v-on:keypress="NumbersOnly"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('start_date_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker
@@ -223,7 +260,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('end_date_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker
@@ -240,7 +277,7 @@
                   <span>{{ $t("end_date") }}</span>
                 </v-tooltip>
               </v-col>
-              <v-col cols="4" sm="12" md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('meta_title_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -257,7 +294,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col md="4">
+              <v-col cols="12" sm="12" md="12">
                 <v-tooltip :text="this.$t('description_en')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-textarea
@@ -275,7 +312,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col md="4">
+              <v-col cols="12" sm="12" md="12">
                 <v-tooltip
                   :text="this.$t('meta_description_en')"
                   location="bottom"
@@ -293,38 +330,6 @@
                       v-bind:label="$t('meta_description_en')"
                       variant="outlined"
                     ></v-textarea>
-                  </template>
-                </v-tooltip>
-              </v-col>
-              <v-col cols="12" sm="4" md="4">
-                <v-tooltip :text="$t('floor_en')" location="bottom">
-                  <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-bind="props"
-                      v-model="promotions[0].floor"
-                      maxlength="10"
-                      v-bind:label="$t('floor_en')"
-                      variant="outlined"
-                      density="compact"
-                    ></v-text-field>
-                  </template>
-                </v-tooltip>
-              </v-col>
-              <v-col cols="12" sm="4" md="4">
-                <v-tooltip :text="$t('sequence_en')" location="bottom">
-                  <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-bind="props"
-                      v-model="promotions[0].seq"
-                      @update:modelValue="(value) => updatePOSequence(value, 1)"
-                      maxlength="5"
-                      :rules="seqRules"
-                      v-bind:label="$t('sequence_en')"
-                      required
-                      variant="outlined"
-                      density="compact"
-                      v-on:keypress="NumbersOnly"
-                    ></v-text-field>
                   </template>
                 </v-tooltip>
               </v-col>
@@ -437,7 +442,7 @@
             </v-layout>
             <v-row class="mx-auto mt-2 arabdirection" max-width="344">
               <v-col
-                cols="4"
+                cols="12"
                 sm="12"
                 md="4"
                 v-if="user.rolename != 'StoreAdmin'"
@@ -465,7 +470,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="4" sm="12" md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('title_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -483,7 +488,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="6" md="2" sm="2" lg="2">
+              <v-col cols="6" md="2" sm="6" lg="2">
                 <v-tooltip :text="$t('mobile_code_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-autocomplete
@@ -505,7 +510,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="6" md="2" sm="2" lg="2">
+              <v-col cols="6" md="2" sm="6" lg="2">
                 <v-tooltip :text="this.$t('phone_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -525,7 +530,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('email_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -544,7 +549,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('type_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-select
@@ -567,7 +572,44 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col md="4">
+              <v-col cols="12" sm="12" md="2">
+                <v-tooltip :text="$t('floor_ar')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-autocomplete
+                      v-bind="props"
+                      v-model="promotions[1].floor"
+                      v-bind:label="$t('floor_ar')"
+                      @update:modelValue="(value) => updateFloor(value, 0)"
+                      variant="outlined"
+                      density="compact"
+                      :items="floors_ar"
+                      item-title="longname"
+                      item-value="shortname"
+                      class="required_field"
+                      :rules="fieldRules"
+                    ></v-autocomplete>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col cols="12" sm="12" md="2">
+                <v-tooltip :text="$t('sequence_ar')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      v-model="promotions[1].seq"
+                      @update:modelValue="(value) => updatePOSequence(value, 0)"
+                      maxlength="5"
+                      :rules="seqRulesAR"
+                      v-bind:label="$t('sequence_ar')"
+                      required
+                      variant="outlined"
+                      density="compact"
+                      v-on:keypress="NumbersOnly"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('start_date_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker
@@ -583,7 +625,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('end_date_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <DatePicker
@@ -599,7 +641,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col cols="4" sm="12" md="4">
+              <v-col cols="12" sm="12" md="4">
                 <v-tooltip :text="this.$t('meta_title_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -617,7 +659,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col md="4">
+              <v-col cols="12" sm="12" md="12">
                 <v-tooltip :text="this.$t('description_ar')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-textarea
@@ -636,7 +678,7 @@
                   </template>
                 </v-tooltip>
               </v-col>
-              <v-col md="4">
+              <v-col cols="12" sm="12" md="12">
                 <v-tooltip
                   :text="this.$t('meta_description_ar')"
                   location="bottom"
@@ -659,39 +701,7 @@
                   <span>{{ $t("meta_description_ar") }}</span>
                 </v-tooltip>
               </v-col>
-              <v-col cols="12" sm="4" md="4">
-                <v-tooltip :text="$t('floor_ar')" location="bottom">
-                  <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-bind="props"
-                      v-model="promotions[1].floor"
-                      maxlength="10"
-                      v-bind:label="$t('floor_ar')"
-                      variant="outlined"
-                      density="compact"
-                    ></v-text-field>
-                  </template>
-                </v-tooltip>
-              </v-col>
-              <v-col cols="12" sm="4" md="4">
-                <v-tooltip :text="$t('sequence_ar')" location="bottom">
-                  <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-bind="props"
-                      v-model="promotions[1].seq"
-                      @update:modelValue="(value) => updatePOSequence(value, 0)"
-                      maxlength="5"
-                      :rules="seqRulesAR"
-                      v-bind:label="$t('sequence_ar')"
-                      required
-                      variant="outlined"
-                      density="compact"
-                      v-on:keypress="NumbersOnly"
-                    ></v-text-field>
-                  </template>
-                </v-tooltip>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
+              <v-col cols="12" sm="12" md="6">
                 <div>
                   <div class="image-container">
                     <v-hover v-slot="{ isHovering, props }">
@@ -901,6 +911,8 @@ export default {
 
     noimagepreview: "",
     items: [],
+    floors_en: [],
+    floors_ar: [],
   }),
 
   computed: {
@@ -1006,6 +1018,9 @@ export default {
   methods: {
     updatePromotionType(value, index) {
       this.promotions[index].type = value;
+    },
+    updateFloor(value, index) {
+      this.promotions[index].floor = value;
     },
     updatePOSequence(value, index) {
       this.promotions[index].seq = value;
@@ -1227,6 +1242,21 @@ export default {
         .then((response) => {
           this.p_type_en = response.data.lookup_en;
           this.p_type_ar = response.data.lookup_ar;
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+        });
+      //---fetch_lang_lookup-----
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_lang_lookup", {
+          params: {
+            lookup_type: "FLOORS",
+          },
+        })
+        .then((response) => {
+          this.floors_en = response.data.lookup_en;
+          this.floors_ar = response.data.lookup_ar;
         })
         .catch((err) => {
           this.$toast.error(this.$t("something_went_wrong"));
