@@ -226,7 +226,6 @@
                 </v-chip>
               </td>
               <td class="text-center">
-                {{ props.item.selectable.slug }}
                 <router-link
                   small
                   :to="{
