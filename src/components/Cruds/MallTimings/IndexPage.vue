@@ -38,6 +38,7 @@
                 name: 'mall-timings-amend',
                 query: {
                   s_tab: tabs,
+                  r_type: record_type,
                 },
               }"
               style="color: white"
@@ -56,13 +57,34 @@
               size="small"
               class="mb-2 preview-btn mx-2"
               v-bind="props"
-              >{{ $t("preview") }}<v-icon size="large" class="ml-1"
+              >{{ $t("preview")
+              }}<v-icon size="large" class="ml-1"
                 >mdi mdi-play-circle-outline</v-icon
               ></v-btn
             >
           </template>
         </v-tooltip>
       </div>
+    </div>
+
+    <div>
+      <v-container fluid style="padding: 0px 10px">
+        <v-radio-group v-model="record_type" inline>
+          <template v-slot:label>
+            <strong>Set your default Mall Timings type</strong>
+          </template>
+          <v-radio value="manual" @click="setDefault('manual')">
+            <template v-slot:label>
+              <div>Manual Entry</div>
+            </template>
+          </v-radio>
+          <v-radio value="image" @click="setDefault('image')">
+            <template v-slot:label>
+              <div>Image Upload</div>
+            </template>
+          </v-radio>
+        </v-radio-group>
+      </v-container>
     </div>
 
     <v-tabs v-model="tabs" color="blue">
@@ -89,25 +111,35 @@
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
-              <td>
+              <td v-if="record_type == 'image'" class="py-2">
+                <img width="50" :src="envImagePath + props.item.selectable.image_path" alt="image">
+              </td>
+              <td v-if="record_type == 'image'">
+                <span>{{ props.item.selectable.description }}</span>
+              </td>
+              <td v-if="record_type == 'manual'">
                 <span v-if="props.item.selectable.category">{{
                   props.item.selectable.category.longname
                 }}</span>
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td>
-                <span v-if="props.item.selectable.from_day">{{ props.item.selectable.from_day.longname }}</span> 
+              <td v-if="record_type == 'manual'">
+                <span v-if="props.item.selectable.from_day">{{
+                  props.item.selectable.from_day.longname
+                }}</span>
                 <span v-else>{{ $t("not_applicable") }}</span>
               </td>
-              <td>
-               <span v-if="props.item.selectable.to_day">{{ props.item.selectable.to_day.longname }}</span> 
+              <td v-if="record_type == 'manual'">
+                <span v-if="props.item.selectable.to_day">{{
+                  props.item.selectable.to_day.longname
+                }}</span>
                 <span v-else>{{ $t("not_applicable") }}</span>
               </td>
-              <td>
+              <td v-if="record_type == 'manual'">
                 {{ props.item.selectable.from_time }}
                 {{ props.item.selectable.from_meridiem }}
               </td>
-              <td>
+              <td v-if="record_type == 'manual'">
                 {{ props.item.selectable.to_time }}
                 {{ props.item.selectable.to_meridiem }}
               </td>
@@ -138,7 +170,11 @@
                   small
                   :to="{
                     name: 'mall-timings-amend',
-                    query: { slug: props.item.selectable.slug, s_tab: tabs },
+                    query: {
+                      slug: props.item.selectable.slug,
+                      s_tab: tabs,
+                      r_type: record_type,
+                    },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="top">
@@ -182,25 +218,35 @@
         >
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
-              <td>
+              <td v-if="record_type == 'image'" class="py-3">
+                <img width="50" :src="envImagePath + props.item.selectable.image_path" alt="صورة">
+              </td>
+              <td v-if="record_type == 'image'">
+                <span>{{ props.item.selectable.description }}</span>
+              </td>
+              <td v-if="record_type == 'manual'">
                 <span v-if="props.item.selectable.category">{{
                   props.item.selectable.category.longname
                 }}</span>
                 <span v-else>{{ $t("not_appllicable") }}</span>
               </td>
-              <td>
-                <span v-if="props.item.selectable.from_day">{{ props.item.selectable.from_day.longname }}</span> 
+              <td v-if="record_type == 'manual'">
+                <span v-if="props.item.selectable.from_day">{{
+                  props.item.selectable.from_day.longname
+                }}</span>
                 <span v-else>{{ $t("not_applicable") }}</span>
               </td>
-              <td>
-               <span v-if="props.item.selectable.to_day">{{ props.item.selectable.to_day.longname }}</span> 
+              <td v-if="record_type == 'manual'">
+                <span v-if="props.item.selectable.to_day">{{
+                  props.item.selectable.to_day.longname
+                }}</span>
                 <span v-else>{{ $t("not_applicable") }}</span>
               </td>
-              <td>
+              <td v-if="record_type == 'manual'">
                 {{ props.item.selectable.from_time }}
                 {{ changeArMeridian(props.item.selectable.from_meridiem) }}
               </td>
-              <td>
+              <td v-if="record_type == 'manual'">
                 {{ props.item.selectable.to_time }}
                 {{ changeArMeridian(props.item.selectable.to_meridiem) }}
               </td>
@@ -231,7 +277,11 @@
                   small
                   :to="{
                     name: 'mall-timings-amend',
-                    query: { slug: props.item.selectable.slug, s_tab: tabs },
+                    query: {
+                      slug: props.item.selectable.slug,
+                      s_tab: tabs,
+                      r_type: record_type,
+                    },
                   }"
                 >
                   <v-tooltip :text="this.$t('edit')" location="top">
@@ -294,6 +344,7 @@ export default {
     mall_timings_en: [],
     mall_timings_ar: [],
     initval: true,
+    envImagePath: process.env.VUE_APP_IMAGE_PATH,
     google_icon: {
       icon_name: "calendar_clock",
       color: "google_icon_gradient",
@@ -303,6 +354,7 @@ export default {
     showStatusDialog: false,
     tabs: 1,
     sel_lang: "",
+    record_type: "manual",
   }),
 
   computed: {
@@ -310,27 +362,7 @@ export default {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
     headers() {
-      return [
-        {
-          title: this.$t("mall_timing_categories_en"),
-          key: "category.longname",
-        },
-        {
-          title: this.$t("from_day_en"),
-          key: "from_day.longname",
-        },
-        {
-          title: this.$t("to_day_en"),
-          key: "to_day.longname",
-        },
-        {
-          title: this.$t("from_time_en"),
-          key: "from_time",
-        },
-        {
-          title: this.$t("to_time_en"),
-          key: "to_time",
-        },
+      let headers = [
         {
           title: this.$t("status_en"),
           key: "status",
@@ -341,29 +373,44 @@ export default {
           key: "email",
         },
       ];
+
+      if (this.record_type == "manual") {
+        headers.splice(0, 0, {
+          title: this.$t("mall_timing_categories_en"),
+          key: "category.longname",
+        });
+        headers.splice(1, 0, {
+          title: this.$t("from_day_en"),
+          key: "from_day.longname",
+        });
+        headers.splice(2, 0, {
+          title: this.$t("to_day_en"),
+          key: "to_day.longname",
+        });
+        headers.splice(3, 0, {
+          title: this.$t("from_time_en"),
+          key: "from_time",
+        });
+        headers.splice(4, 0, {
+          title: this.$t("to_time_en"),
+          key: "to_time",
+        });
+      }
+      if (this.record_type == "image") {
+        headers.splice(0, 0, {
+          title: this.$t("image"),
+          key: "image_path",
+        });
+        headers.splice(1, 0, {
+          title: this.$t("description_en"),
+          key: "description",
+        });
+      }
+
+      return headers;
     },
     headers_ar() {
-      return [
-        {
-          title: this.$t("mall_timing_categories_ar"),
-          key: "category.longname",
-        },
-        {
-          title: this.$t("from_day_ar"),
-          key: "from_day.longname",
-        },
-        {
-          title: this.$t("to_day_ar"),
-          key: "to_day.longname",
-        },
-        {
-          title: this.$t("from_time_ar"),
-          key: "from_time",
-        },
-        {
-          title: this.$t("to_time_ar"),
-          key: "to_time",
-        },
+      let headers = [
         {
           title: this.$t("status_ar"),
           key: "status",
@@ -374,6 +421,42 @@ export default {
           key: "email",
         },
       ];
+
+      if (this.record_type == "manual") {
+        headers.splice(0, 0, {
+          title: this.$t("mall_timing_categories_ar"),
+          key: "category.longname",
+        });
+        headers.splice(1, 0, {
+          title: this.$t("from_day_ar"),
+          key: "from_day.longname",
+        });
+        headers.splice(2, 0, {
+          title: this.$t("to_day_ar"),
+          key: "to_day.longname",
+        });
+        headers.splice(3, 0, {
+          title: this.$t("from_time_ar"),
+          key: "from_time",
+        });
+        headers.splice(4, 0, {
+          title: this.$t("to_time_ar"),
+          key: "to_time",
+        });
+      }
+
+      if (this.record_type == "image") {
+        headers.splice(0, 0, {
+          title: this.$t("image"),
+          key: "image_path",
+        });
+        headers.splice(1, 0, {
+          title: this.$t("description_ar"),
+          key: "description",
+        });
+      }
+
+      return headers;
     },
   },
 
@@ -381,7 +464,7 @@ export default {
     dialog(val) {
       val || this.close();
     },
-    
+
     "$i18n.locale"(newLocale) {
       if (newLocale === "ar") {
         this.sel_lang = "ar";
@@ -400,6 +483,29 @@ export default {
   },
 
   methods: {
+    setDefault(type) {
+      this.$axios
+        .post(process.env.VUE_APP_API_URL_ADMIN + "update-malltimings-type", {
+          type: type,
+        })
+        .then((res) => {
+          if (Array.isArray(res.data.message)) {
+            this.array_data = res.data.message.toString();
+          } else {
+            this.array_data = res.data.message;
+          }
+          if (res.data.status == "E") {
+            this.$toast.error(this.array_data);
+          } else {
+            this.$toast.success(this.array_data);
+            this.fetchMallTimings();
+          }
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log("this error" + err);
+        });
+    },
     previewPage() {
       var lang = this.tabs === 1 ? "en" : "ar";
 
@@ -457,6 +563,10 @@ export default {
         .then((res) => {
           this.mall_timings_en = res.data.mall_timings_en;
           this.mall_timings_ar = res.data.mall_timings_ar;
+          if (res.data.record_type) {
+            this.record_type = res.data.record_type;
+          }
+
           this.initval = false;
         })
         .catch((err) => {
@@ -551,5 +661,9 @@ export default {
 <style scoped>
 .list_item {
   cursor: pointer;
+}
+.type-selector {
+  position: absolute;
+  right: 30px;
 }
 </style>

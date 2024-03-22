@@ -648,5 +648,6 @@
   "copy_to_next":"Copy To Next",
   "copy_to_all":"Copy To All",
   "copy_all_weekdays":"Copy To All Weekdays",
-  "copied_successfully":"Copied successfully"
+  "copied_successfully":"Copied successfully",
+  "image":"Image"
 }

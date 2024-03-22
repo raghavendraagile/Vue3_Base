@@ -44,7 +44,7 @@
           <!-- ENGLISH TAB STARTS -->
           <v-window-item :value="1">
             <v-form ref="form" v-model="valid">
-              <v-layout>
+              <v-layout v-if="$route.query.r_type == 'manual'">
                 <v-row class="px-6 mt-2">
                   <v-col cols="12" sm="12" xs="6" md="4" lg="4">
                     <v-tooltip
@@ -213,6 +213,89 @@
                   </v-col>
                 </v-row>
               </v-layout>
+              <v-layout v-if="$route.query.r_type == 'image'">
+                <v-row class="px-6 mt-2">
+                  <v-col cols="12" sm="6" md="3">
+                    <div>
+                      <div class="image-container">
+                        <v-hover v-slot="{ isHovering, props }">
+                          <div style="position: relative" v-bind="props">
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-if="
+                                fieldItem[0].image_path == '' ||
+                                fieldItem[0].image_path == null
+                              "
+                              src="@/assets/images/upload_image_default.png"
+                              width="100"
+                            />
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-else
+                              :src="envImagePath + fieldItem[0].image_path"
+                              width="100"
+                              height="85
+                          "
+                              alt
+                            />
+                            <div v-show="isHovering" class="camera-icon">
+                              <v-icon @click="uploadFile">mdi-camera</v-icon>
+                            </div>
+                          </div>
+                        </v-hover>
+                      </div>
+                      <v-tooltip
+                        :text="this.$t('download_en')"
+                        location="bottom"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <a class="text-center pointer download_icon">
+                            <span
+                              ><v-icon
+                                v-if="fieldItem[0].image_path"
+                                v-bind="props"
+                                class="mr-2"
+                                @click="downloadImage(fieldItem[0].image_path)"
+                                >mdi mdi-download</v-icon
+                              ></span
+                            >
+                          </a>
+                        </template>
+                      </v-tooltip>
+                      <span>
+                        <v-tooltip
+                          :text="this.$t('delete_en')"
+                          location="bottom"
+                        >
+                          <template v-slot:activator="{ props }">
+                            <v-icon
+                              small
+                              v-bind="props"
+                              v-if="fieldItem[0].image_path"
+                              class="mr-2 edit_btn icon_size delete_icon"
+                              @click="removeImage(0)"
+                              >mdi mdi-trash-can-outline</v-icon
+                            >
+                          </template>
+                        </v-tooltip>
+                      </span>
+                    </div>
+                    <br />
+                    <Imageupload
+                      :folder="'mall_timings'"
+                      :resizewidth="300"
+                      :resizeheight="400"
+                      @uploaded_image="uploaded_image"
+                      :upload_profile="uploadfile"
+                    />
+                    <div class="dimension_text">300 : 400</div>
+                  </v-col>
+                </v-row>
+              </v-layout>
               <v-layout>
                 <v-row class="mt-2 px-6" max-width="344">
                   <v-col cols="12" sm="12" xs="12" md="12" lg="12">
@@ -249,7 +332,7 @@
               v-model="validAR"
               style="direction: rtl; text-align: end"
             >
-              <v-layout>
+              <v-layout v-if="$route.query.r_type == 'manual'">
                 <v-row class="px-6 mt-2 arabdirection">
                   <v-col cols="12" sm="12" xs="6" md="4" lg="4">
                     <v-tooltip
@@ -421,6 +504,98 @@
                   </v-col>
                 </v-row>
               </v-layout>
+              <v-layout v-if="$route.query.r_type == 'image'">
+                <v-row class="px-6 mt-2">
+                  <v-col cols="12" sm="3" md="3">
+                    <div>
+                      <div class="image-container">
+                        <v-hover v-slot="{ isHovering, props }">
+                          <div style="position: relative" v-bind="props">
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-if="
+                                fieldItem[1].image_path == '' ||
+                                fieldItem[1].image_path == null
+                              "
+                              src="@/assets/images/upload_image_default.png"
+                              width="100"
+                            />
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-else
+                              :src="envImagePath + fieldItem[1].image_path"
+                              width="100"
+                              height="85
+                          "
+                              alt
+                            />
+                            <div v-show="isHovering" class="camera-icon">
+                              <v-icon @click="uploadFile">mdi-camera</v-icon>
+                            </div>
+                          </div>
+                        </v-hover>
+                      </div>
+                      <div class="text-right">
+                        <v-tooltip
+                          :text="this.$t('download_ar')"
+                          location="bottom"
+                        >
+                          <template v-slot:activator="{ props }">
+                            <a class="text-center pointer download_icon_ar">
+                              <span
+                                ><v-icon
+                                  v-if="fieldItem[1].image_path"
+                                  v-bind="props"
+                                  class="mr-2"
+                                  @click="
+                                    downloadImage(fieldItem[1].image_path)
+                                  "
+                                  >mdi mdi-download</v-icon
+                                ></span
+                              >
+                            </a>
+                          </template>
+                        </v-tooltip>
+                        <span>
+                          <v-tooltip
+                            :text="this.$t('delete_ar')"
+                            location="bottom"
+                          >
+                            <template v-slot:activator="{ props }">
+                              <v-icon
+                                small
+                                v-if="fieldItem[1].image_path"
+                                v-bind="props"
+                                class="mr-2 edit_btn icon_size delete_icon_ar"
+                                @click="removeImage(1)"
+                                >mdi mdi-trash-can-outline</v-icon
+                              >
+                            </template>
+                          </v-tooltip>
+                        </span>
+                      </div>
+                    </div>
+                    <br />
+                    <Imageupload
+                      :folder="'mall_timings'"
+                      :resizewidth="300"
+                      :resizeheight="400"
+                      @uploaded_image="uploaded_image"
+                      :upload_profile="uploadfilear"
+                    />
+                    <div
+                      class="dimension_text"
+                      style="direction: rtl; text-align: start"
+                    >
+                      300 : 400
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-layout>
               <v-layout>
                 <v-row class="mt-2 px-6 arabdirection" max-width="344">
                   <v-col cols="12" sm="12" xs="12" md="12" lg="12">
@@ -501,9 +676,11 @@
     
 <script>
 import PageTitle from "../../CustomComponents/PageTitle.vue";
+import Imageupload from "../../CustomComponents/ImageUpload.vue";
 export default {
   components: {
     PageTitle,
+    Imageupload,
   },
   data: () => ({
     google_icon: {
@@ -529,6 +706,9 @@ export default {
     categories_en: [],
     categories_ar: [],
     tabs: 1,
+    uploadfile: false,
+    uploadfilear: false,
+    envImagePath: process.env.VUE_APP_IMAGE_PATH,
     fieldItem: [
       {
         id: 0,
@@ -541,6 +721,8 @@ export default {
         description: "",
         from_meridiem: "AM",
         to_meridiem: "AM",
+        image_path: "",
+        type:""
       },
       {
         id: 0,
@@ -553,6 +735,8 @@ export default {
         description: "",
         from_meridiem: "AM",
         to_meridiem: "AM",
+        image_path: "",
+        type:""
       },
     ],
     sel_lang: "",
@@ -643,6 +827,15 @@ export default {
         }
       },
     },
+    "$route.query.r_type": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.r_type) {
+          this.fieldItem[0].type = this.$route.query.r_type;
+          this.fieldItem[1].type = this.$route.query.r_type;
+        }
+      },
+    },
     "$i18n.locale"(newLocale) {
       if (newLocale === "ar") {
         this.sel_lang = "ar";
@@ -654,6 +847,41 @@ export default {
   },
 
   methods: {
+    onFileChanged(e) {
+      this.selectedFile = e.target.files[0];
+    },
+    downloadImage(image_url) {
+      window.open(this.envImagePath + image_url, "_blank");
+    },
+    removeImage(index) {
+      if (index == 1) {
+        this.fieldItem[1].image_path = null;
+      } else {
+        this.fieldItem[0].image_path = null;
+      }
+    },
+    uploadFile() {
+      if (this.tabs == 1) {
+        if (this.uploadfile == false) {
+          this.uploadfile = true;
+        } else {
+          this.uploadfile = false;
+        }
+      } else {
+        if (this.uploadfilear == false) {
+          this.uploadfilear = true;
+        } else {
+          this.uploadfilear = false;
+        }
+      }
+    },
+    uploaded_image(img_src) {
+      if (this.tabs == 1) {
+        this.fieldItem[0].image_path = img_src;
+      } else {
+        this.fieldItem[1].image_path = img_src;
+      }
+    },
     fetchLookup() {
       this.$axios
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_lang_lookup", {
