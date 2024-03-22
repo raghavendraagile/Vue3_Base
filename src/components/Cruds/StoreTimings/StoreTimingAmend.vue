@@ -103,7 +103,32 @@
                           size="small"
                           class="ml-2"
                           @click="copyToNext(day_index)"
-                          >Copy Next</v-btn
+                          >{{$t('copy_to_next')}}</v-btn
+                        >
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="4"
+                    md="2"
+                    class="mt-3"
+                    v-if="day_index == 0"
+                  >
+                    <v-tooltip :text="this.$t('copy_all_weekdays')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-btn
+                          v-bind="props"
+                          :disabled="
+                            !store_timings[day_index].from_time ||
+                            !store_timings[day_index].to_time
+                          "
+                          elevation="0"
+                          rounded="4"
+                          size="small"
+                          class="ml-2"
+                          @click="copyToAll(day_index)"
+                          >{{$t('copy_to_all')}}</v-btn
                         >
                       </template>
                     </v-tooltip>
@@ -413,6 +438,20 @@ export default {
         this.$t("copied_successfully_to") +
           this.store_timings[index + 1].week_day
       );
+    },
+    copyToAll(index) {
+      const sel_time = this.store_timings[index];
+
+      for (let index = 1; index < this.store_timings.length; index++) {
+        this.store_timings[index].is_holiday = sel_time.is_holiday;
+        this.store_timings[index].from_time = sel_time.from_time;
+        this.store_timings[index].from_meridiem = sel_time.from_meridiem;
+        this.store_timings[index].to_time = sel_time.to_time;
+        this.store_timings[index].to_meridiem = sel_time.to_meridiem;
+        this.store_timings[index].seq = sel_time.seq;
+      }
+
+      this.$toast.success(this.$t("copied_successfully"));
     },
     changeArWeekday(day) {
       switch (day) {

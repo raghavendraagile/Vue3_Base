@@ -644,5 +644,8 @@
   "expired_en": "Expired",
   "expired_ar": "منتهي الصلاحية",
   "copy_next_weekday":"Copy to next weekday",
-  "copied_successfully_to":"Copied successfully to "
+  "copied_successfully_to":"Copied successfully to ",
+  "copy_to_next":"Copy To Next",
+  "copy_to_all":"Copy To All",
+  "copy_all_weekdays":"Copy To All Weekdays"
 }

@@ -597,5 +597,8 @@
   "inactive_ar": "غير نشط",
   "expired_ar": "منتهي الصلاحية",
   "copy_next_weekday":"انسخ إلى يوم الأسبوع التالي",
-  "copied_successfully_to":" تم النسخ بنجاح إلى "
+  "copied_successfully_to":" تم النسخ بنجاح إلى ",
+  "copy_to_next":"نسخ إلى التالي",
+  "copy_to_all":"نسخ إلى الكل",
+  "copy_all_weekdays":"نسخ إلى جميع أيام الأسبوع"
 }
