@@ -77,12 +77,20 @@
           <template v-slot:label>
             <strong>{{ $t("set_default_malltime") }}</strong>
           </template>
-          <v-radio value="manual" @click="setDefault('manual')">
+          <v-radio
+            value="manual"
+            @click="setDefault('manual')"
+            :disabled="record_type == 'manual'"
+          >
             <template v-slot:label>
               <div>{{ $t("manual_entry") }}</div>
             </template>
           </v-radio>
-          <v-radio value="image" @click="setDefault('image')">
+          <v-radio
+            value="image"
+            @click="setDefault('image')"
+            :disabled="record_type == 'image'"
+          >
             <template v-slot:label>
               <div>{{ $t("image_upload") }}</div>
             </template>
@@ -116,11 +124,16 @@
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td v-if="record_type == 'image'" class="py-2">
-                <img
-                  width="50"
-                  :src="envImagePath + props.item.selectable.image_path"
-                  alt="image"
-                />
+                <a
+                  :href="envImagePath + props.item.selectable.image_path"
+                  target="_blank"
+                >
+                  <img
+                    width="50"
+                    :src="envImagePath + props.item.selectable.image_path"
+                    alt="image"
+                  />
+                </a>
               </td>
               <td v-if="record_type == 'image'">
                 <span>{{ props.item.selectable.description }}</span>
@@ -227,11 +240,16 @@
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td v-if="record_type == 'image'" class="py-3">
-                <img
-                  width="50"
-                  :src="envImagePath + props.item.selectable.image_path"
-                  alt="صورة"
-                />
+                <a
+                  :href="envImagePath + props.item.selectable.image_path"
+                  target="_blank"
+                >
+                  <img
+                    width="50"
+                    :src="envImagePath + props.item.selectable.image_path"
+                    alt="صورة"
+                  />
+                </a>
               </td>
               <td v-if="record_type == 'image'">
                 <span>{{ props.item.selectable.description }}</span>
