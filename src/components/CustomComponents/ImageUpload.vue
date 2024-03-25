@@ -116,7 +116,7 @@ export default {
       const ctx = canvas.getContext("2d");
       ctx.drawImage(croppedCanvas, 0, 0, this.resizewidth, this.resizeheight);
       this.imagedata = canvas.toDataURL(); 
-      console.log("Cropped image data: ", this.imagedata);
+      // console.log("Cropped image data: ", this.imagedata);
     }
   });
 },

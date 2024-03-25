@@ -602,5 +602,8 @@
   "copy_to_all":"نسخ إلى الكل",
   "copy_all_weekdays":"نسخ إلى جميع أيام الأسبوع",
   "copied_successfully":"تم النسخ بنجاح",
-  "image":"صورة"
+  "image":"صورة",
+  "set_default_malltime":"قم بتعيين نوع توقيت المول الافتراضي الخاص بك",
+  "image_upload":"تحميل الصورة",
+  "manual_entry":"الإدخال اليدوي"
 }
