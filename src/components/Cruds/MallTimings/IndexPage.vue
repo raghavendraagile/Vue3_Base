@@ -69,18 +69,22 @@
 
     <div>
       <v-container fluid style="padding: 0px 10px">
-        <v-radio-group v-model="record_type" inline>
+        <v-radio-group
+          v-model="record_type"
+          inline
+          v-bind:style="sel_lang == 'ar' ? 'direction:rtl' : ''"
+        >
           <template v-slot:label>
-            <strong>Set your default Mall Timings type</strong>
+            <strong>{{ $t("set_default_malltime") }}</strong>
           </template>
           <v-radio value="manual" @click="setDefault('manual')">
             <template v-slot:label>
-              <div>Manual Entry</div>
+              <div>{{ $t("manual_entry") }}</div>
             </template>
           </v-radio>
           <v-radio value="image" @click="setDefault('image')">
             <template v-slot:label>
-              <div>Image Upload</div>
+              <div>{{ $t("image_upload") }}</div>
             </template>
           </v-radio>
         </v-radio-group>
@@ -112,7 +116,11 @@
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td v-if="record_type == 'image'" class="py-2">
-                <img width="50" :src="envImagePath + props.item.selectable.image_path" alt="image">
+                <img
+                  width="50"
+                  :src="envImagePath + props.item.selectable.image_path"
+                  alt="image"
+                />
               </td>
               <td v-if="record_type == 'image'">
                 <span>{{ props.item.selectable.description }}</span>
@@ -219,7 +227,11 @@
           <template v-slot:item="props">
             <tr class="vdatatable_tbody">
               <td v-if="record_type == 'image'" class="py-3">
-                <img width="50" :src="envImagePath + props.item.selectable.image_path" alt="صورة">
+                <img
+                  width="50"
+                  :src="envImagePath + props.item.selectable.image_path"
+                  alt="صورة"
+                />
               </td>
               <td v-if="record_type == 'image'">
                 <span>{{ props.item.selectable.description }}</span>
