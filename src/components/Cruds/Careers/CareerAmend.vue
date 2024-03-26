@@ -144,11 +144,9 @@
                       v-on="on"
                       v-model="careers[0].email"
                       @update:modelValue="(value) => updateEmail(value, 1)"
-                      :rules="emailRules"
                       v-bind:label="$t('email_en')"
                       v-bind="props"
                       required
-                      class="required_field"
                       variant="outlined"
                       density="compact"
                       maxlength="500"
@@ -164,8 +162,6 @@
                       v-bind="props"
                       variant="outlined"
                       density="compact"
-                      :rules="fieldRules"
-                      class="required_field"
                       required
                       index="id"
                       item-key="header_id"
@@ -187,12 +183,10 @@
                         (value) => updateCareersMobile(value, 1)
                       "
                       v-model="careers[0].mobile"
-                      :rules="phoneRules"
                       v-on:keypress="NumbersOnly"
                       maxlength="12"
                       v-bind:label="$t('mobile_en')"
                       required
-                      class="required_field"
                       variant="outlined"
                       density="compact"
                     ></v-text-field>
@@ -455,11 +449,9 @@
                       v-on="on"
                       v-model="careers[1].email"
                       @update:modelValue="(value) => updateEmail(value, 0)"
-                      :rules="emailRulesAr"
                       v-bind:label="$t('email_ar')"
                       v-bind="props"
                       required
-                      class="required_field rtl"
                       variant="outlined"
                       density="compact"
                       maxlength="500"
@@ -475,8 +467,6 @@
                       v-bind="props"
                       variant="outlined"
                       density="compact"
-                      :rules="fieldRulesAR"
-                      class="required_field"
                       required
                       index="id"
                       item-key="header_id"
@@ -498,12 +488,10 @@
                         (value) => updateCareersMobile(value, 0)
                       "
                       v-model="careers[1].mobile"
-                      :rules="phoneRules"
                       v-on:keypress="NumbersOnly"
                       maxlength="12"
                       v-bind:label="$t('mobile_ar')"
                       required
-                      class="required_field"
                       variant="outlined"
                       density="compact"
                     ></v-text-field>

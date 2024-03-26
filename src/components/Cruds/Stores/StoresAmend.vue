@@ -248,6 +248,8 @@
                           v-bind:label="$t('store_code')"
                           variant="outlined"
                           density="compact"
+                          :rules="fieldRules"
+                          class="required_field"
                           required
                           index="id"
                           :items="shop_codes"
@@ -856,6 +858,8 @@
                           v-bind:label="$t('store_code_ar')"
                           variant="outlined"
                           density="compact"
+                          :rules="fieldRulesAr"
+                          class="required_field rtl"
                           required
                           counter="true"
                           index="id"
