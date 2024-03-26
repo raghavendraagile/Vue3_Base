@@ -344,7 +344,6 @@
                           v-on:keypress="AlphanumericAndArabic"
                           v-bind="props"
                           variant="outlined"
-                          class="required_field"
                           density="compact"
                           maxlength="12"
                           @update:modelValue="
@@ -951,13 +950,11 @@
                       <template v-slot:activator="{ props }">
                         <v-text-field
                           v-bind:label="$t('postcode_ar')"
-                          :rules="postcodeRulesAr"
                           v-on:keypress="AlphanumericAndArabic"
                           v-bind="props"
                           variant="outlined"
                           density="compact"
                           maxlength="12"
-                          class="required_field rtl"
                           @update:modelValue="
                             (value) => updateMallPost(value, 0)
                           "
