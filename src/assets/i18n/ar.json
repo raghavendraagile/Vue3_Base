@@ -605,5 +605,7 @@
   "image":"صورة",
   "set_default_malltime":"قم بتعيين نوع توقيت المول الافتراضي الخاص بك",
   "image_upload":"تحميل الصورة",
-  "manual_entry":"الإدخال اليدوي"
+  "manual_entry":"الإدخال اليدوي",
+  "delete_slot":"حذف الفتحة",
+  "add_slot":"إضافة فتحة"
 }

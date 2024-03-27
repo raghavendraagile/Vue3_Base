@@ -164,10 +164,7 @@
                       </v-tooltip>
                     </div>
                     <div>
-                      <v-tooltip
-                        :text="this.$t('delete_slot')"
-                        location="bottom"
-                      >
+                      <v-tooltip :text="this.$t('add_slot')" location="bottom">
                         <template v-slot:activator="{ props }">
                           <v-icon
                             v-bind="props"
@@ -470,26 +467,37 @@ export default {
         to_time_rules: this.timingRules(false),
       });
     },
-    copyToNext(index) {
+    copyToNext(day_index) {
       this.data_loader = true;
-      const sel_time = this.store_timings[index];
+      const currentDaySlots = this.store_timings[day_index].slots;
+      let newSlots = currentDaySlots.map((slot) => ({ ...slot }));
 
-      this.store_timings[index + 1].slots = sel_time.slots;
-      this.store_timings[index + 1].is_holiday = sel_time.is_holiday;
+      this.store_timings[day_index + 1].slots = newSlots;
+      this.store_timings[day_index + 1].is_holiday =
+        this.store_timings[day_index].is_holiday;
 
       this.$toast.success(
         this.$t("copied_successfully_to") +
-          this.store_timings[index + 1].week_day
+          this.store_timings[day_index + 1].week_day
       );
       this.data_loader = false;
     },
-    copyToAll(index) {
+    copyToAll(day_index) {
       this.data_loader = true;
-      const sel_time = this.store_timings[index];
-      for (let index = 1; index < this.store_timings.length; index++) {
-        this.store_timings[index].slots = sel_time.slots;
-        this.store_timings[index].is_holiday = sel_time.is_holiday;
-      }
+      const sourceDaySlots = this.store_timings[day_index].slots;
+      const sourceDayIsHoliday = this.store_timings[day_index].is_holiday;
+
+      const newSlots = sourceDaySlots.map((slot) => ({ ...slot }));
+
+      this.store_timings.forEach((day, index) => {
+        if (index !== day_index) {
+          this.store_timings[index].slots = newSlots.map((slot) => ({
+            ...slot,
+          }));
+          this.store_timings[index].is_holiday = sourceDayIsHoliday;
+        }
+      });
+
       this.$toast.success(this.$t("copied_successfully"));
       this.data_loader = false;
     },
@@ -691,7 +699,7 @@ input.larger {
   height: 20px;
 }
 .disable {
-  display: none;
+  display: none !important;
 }
 
 .req-field {

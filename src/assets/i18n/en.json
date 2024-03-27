@@ -652,5 +652,7 @@
   "image":"Image",
   "set_default_malltime":"Set your default Mall Timings type",
   "image_upload":"Image Upload",
-  "manual_entry":"Manual Entry"
+  "manual_entry":"Manual Entry",
+  "delete_slot":"Delete Slot",
+  "add_slot":"Add Slot"
 }
