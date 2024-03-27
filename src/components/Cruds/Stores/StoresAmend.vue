@@ -1870,8 +1870,8 @@ export default {
       if (this.tabs == 1) {
         this.image_upload_from = img_type;
         if (img_type == "icon") {
-          this.resizewidth = 250;
-          this.resizeheight = 250;
+          this.resizewidth = 500;
+          this.resizeheight = 500;
           if (this.uploadfile == false) {
             this.uploadfile = true;
           } else {
@@ -1889,8 +1889,8 @@ export default {
       } else {
         this.image_upload_from = img_type;
         if (img_type == "icon") {
-          this.resizewidth = 250;
-          this.resizeheight = 250;
+          this.resizewidth = 500;
+          this.resizeheight = 500;
           if (this.uploadfilear == false) {
             this.uploadfilear = true;
           } else {
