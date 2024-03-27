@@ -29,7 +29,10 @@
           </template>
         </v-tooltip>
       </div>
-      <div class="add_new_button" v-if="store_timings.length == 0 || user.rolename != 'StoreAdmin'">
+      <div
+        class="add_new_button"
+        v-if="store_timings.length == 0 || user.rolename != 'StoreAdmin'"
+      >
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link
@@ -169,21 +172,23 @@
                     <span v-else>{{ props.item.selectable.week_day }}</span>
                   </td>
                   <td v-if="props.item.selectable.is_holiday == 0">
-                    {{ props.item.selectable.from_time }}
-                    <span v-if="sel_lang == 'ar'">{{
-                      changeArMeridian(props.item.selectable.from_meridiem)
-                    }}</span>
-                    <span v-else>{{
-                      props.item.selectable.from_meridiem
-                    }}</span>
+                    <div v-for="(slot, s_index) in props.item.selectable.slots" :key="s_index">
+                      {{ slot.from_time }}
+                      <span v-if="sel_lang == 'ar'">{{
+                        changeArMeridian(slot.from_meridiem)
+                      }}</span>
+                      <span v-else>{{ slot.from_meridiem }}</span>
+                    </div>
                   </td>
                   <td v-else>{{ $t("holiday") }}</td>
                   <td v-if="props.item.selectable.is_holiday == 0">
-                    {{ props.item.selectable.to_time }}
-                    <span v-if="sel_lang == 'ar'">{{
-                      changeArMeridian(props.item.selectable.to_meridiem)
-                    }}</span>
-                    <span v-else>{{ props.item.selectable.to_meridiem }}</span>
+                    <div v-for="(slot, s_index) in props.item.selectable.slots" :key="s_index">
+                      {{ slot.from_time }}
+                      <span v-if="sel_lang == 'ar'">{{
+                        changeArMeridian(slot.to_meridiem)
+                      }}</span>
+                      <span v-else>{{ slot.to_meridiem }}</span>
+                    </div>
                   </td>
                   <td v-else>{{ $t("holiday") }}</td>
                   <td>

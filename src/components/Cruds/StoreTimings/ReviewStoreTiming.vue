@@ -107,8 +107,9 @@
                     </v-col>
                     <v-col cols="4" xs="4" sm="4" md="4">
                       <div v-if="store_time.is_holiday == 0">
-                        {{ store_time.from_time }}
-                        {{ store_time.from_meridiem }}
+                        <div v-for="(slot, s_index) in store_time.slots" :key="s_index">
+                          {{ slot.from_time }} {{ slot.from_meridiem }}
+                        </div>
                       </div>
                       <div v-else>
                         {{ $t("holiday") }}
@@ -116,7 +117,9 @@
                     </v-col>
                     <v-col cols="4" xs="4" sm="4" md="4" class="pl-5">
                       <div v-if="store_time.is_holiday == 0">
-                        {{ store_time.to_time }} {{ store_time.to_meridiem }}
+                        <div v-for="(slot, s_index) in store_time.slots" :key="s_index">
+                          {{ slot.to_time }} {{ slot.to_meridiem }}
+                        </div>
                       </div>
                       <div v-else>
                         {{ $t("holiday") }}
@@ -241,8 +244,10 @@
                     </v-col>
                     <v-col cols="4" xs="4" sm="4" md="4">
                       <div v-if="store_time.is_holiday == 0">
-                        {{ store_time.from_time }}
-                        {{ changeArMeridian(store_time.from_meridiem) }}
+                        <div v-for="(slot, s_index) in store_time.slots" :key="s_index">
+                          {{ slot.from_time }}
+                          {{ changeArMeridian(slot.from_meridiem) }}
+                        </div>
                       </div>
                       <div v-else>
                         {{ $t("holiday_ar") }}
@@ -250,8 +255,10 @@
                     </v-col>
                     <v-col cols="4" xs="4" sm="4" md="4" class="pl-5">
                       <div v-if="store_time.is_holiday == 0">
-                        {{ store_time.to_time }}
-                        {{ changeArMeridian(store_time.to_meridiem) }}
+                        <div v-for="(slot, s_index) in store_time.slots" :key="s_index">
+                          {{ slot.to_time }}
+                          {{ changeArMeridian(slot.to_meridiem) }}
+                        </div>
                       </div>
                       <div v-else>
                         {{ $t("holiday_ar") }}
@@ -350,7 +357,7 @@ export default {
     loader: false,
     tabs: 1,
     user: "",
-    store:[],
+    store: [],
     all_data_array: [],
     showApprovalDialog: false,
     selected: {

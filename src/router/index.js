@@ -439,6 +439,7 @@ const routes = [
     component: () =>
       import("../components/Cruds/StoreTimings/StoreTimingAmend.vue"),
   },
+  
   {
     path: "/:lang?/store-timing-review",
     name: "store-timing-review",

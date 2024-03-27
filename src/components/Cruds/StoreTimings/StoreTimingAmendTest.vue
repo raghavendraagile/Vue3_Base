@@ -10,6 +10,7 @@
         :google_icon="google_icon"
       ></page-title>
     </div>
+    <h1>TEST</h1>
     <content-loader v-if="loader"></content-loader>
     <div class="mb-3 mx-auto">
       <div class="card-body">
@@ -76,62 +77,6 @@
                       @update:modelValue="updateTimingRules(day_index)"
                     ></v-checkbox>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    sm="4"
-                    md="2"
-                    class="mt-3"
-                    v-if="day_index != 6"
-                  >
-                    <v-tooltip
-                      :text="this.$t('copy_next_weekday')"
-                      location="bottom"
-                    >
-                      <template v-slot:activator="{ props }">
-                        <v-btn
-                          v-bind="props"
-                          :disabled="
-                            !store_timings[day_index].slots[0].from_time ||
-                            !store_timings[day_index].slots[0].to_time
-                          "
-                          elevation="0"
-                          rounded="4"
-                          size="small"
-                          class="ml-2"
-                          @click="copyToNext(day_index)"
-                          >{{ $t("copy_to_next") }}</v-btn
-                        >
-                      </template>
-                    </v-tooltip>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="4"
-                    md="2"
-                    class="mt-3"
-                    v-if="day_index == 0"
-                  >
-                    <v-tooltip
-                      :text="this.$t('copy_all_weekdays')"
-                      location="bottom"
-                    >
-                      <template v-slot:activator="{ props }">
-                        <v-btn
-                          v-bind="props"
-                          :disabled="
-                            !store_timings[day_index].slots[0].from_time ||
-                            !store_timings[day_index].slots[0].to_time
-                          "
-                          elevation="0"
-                          rounded="4"
-                          size="small"
-                          class="ml-2"
-                          @click="copyToAll(day_index)"
-                          >{{ $t("copy_to_all") }}</v-btn
-                        >
-                      </template>
-                    </v-tooltip>
-                  </v-col>
                 </v-row>
               </v-col>
               <v-col cols="12" sm="12" md="12">
@@ -143,43 +88,22 @@
                     cols="12"
                     sm="12"
                     md="1"
-                    class="d-flex pt-5"
+                    class="pt-5"
                     v-bind:class="[day.is_holiday == 1 ? 'disable' : '']"
                   >
-                    <div>
-                      <v-tooltip
-                        :text="this.$t('delete_slot')"
-                        location="bottom"
-                      >
-                        <template v-slot:activator="{ props }">
-                          <v-icon
-                            v-bind="props"
-                            color="#E61D0E"
-                            v-if="day.slots.length > 1"
-                            class="mx-1"
-                            @click="deleteTimeSlot(day_index, slot_index)"
-                            >mdi-delete</v-icon
-                          >
-                        </template>
-                      </v-tooltip>
-                    </div>
-                    <div>
-                      <v-tooltip
-                        :text="this.$t('delete_slot')"
-                        location="bottom"
-                      >
-                        <template v-slot:activator="{ props }">
-                          <v-icon
-                            v-bind="props"
-                            v-if="slot_index == 0"
-                            color="#1A61CA"
-                            class="mx-1"
-                            @click="addTimeSlot(day_index)"
-                            >mdi-plus</v-icon
-                          >
-                        </template>
-                      </v-tooltip>
-                    </div>
+                    <v-icon
+                      color="#1A61CA"
+                      class="mx-1"
+                      @click="addTimeSlot(day_index)"
+                      >mdi-plus</v-icon
+                    >
+                    <v-icon
+                      color="#E61D0E"
+                      v-if="day.slots.length > 1"
+                      class="mx-1"
+                      @click="deleteTimeSlot(day_index, slot_index)"
+                      >mdi-delete</v-icon
+                    >
                   </v-col>
                   <v-col
                     cols="12"
@@ -473,10 +397,13 @@ export default {
     copyToNext(index) {
       this.data_loader = true;
       const sel_time = this.store_timings[index];
-
-      this.store_timings[index + 1].slots = sel_time.slots;
       this.store_timings[index + 1].is_holiday = sel_time.is_holiday;
-
+      this.store_timings[index + 1].from_time = sel_time.from_time;
+      this.store_timings[index + 1].from_meridiem = sel_time.from_meridiem;
+      this.store_timings[index + 1].to_time = sel_time.to_time;
+      this.store_timings[index + 1].to_meridiem = sel_time.to_meridiem;
+      this.store_timings[index + 1].seq =
+        (parseInt(sel_time.seq) ? parseInt(sel_time.seq) : 0) + 1;
       this.$toast.success(
         this.$t("copied_successfully_to") +
           this.store_timings[index + 1].week_day
@@ -487,8 +414,12 @@ export default {
       this.data_loader = true;
       const sel_time = this.store_timings[index];
       for (let index = 1; index < this.store_timings.length; index++) {
-        this.store_timings[index].slots = sel_time.slots;
         this.store_timings[index].is_holiday = sel_time.is_holiday;
+        this.store_timings[index].from_time = sel_time.from_time;
+        this.store_timings[index].from_meridiem = sel_time.from_meridiem;
+        this.store_timings[index].to_time = sel_time.to_time;
+        this.store_timings[index].to_meridiem = sel_time.to_meridiem;
+        this.store_timings[index].seq = sel_time.seq;
       }
       this.$toast.success(this.$t("copied_successfully"));
       this.data_loader = false;
