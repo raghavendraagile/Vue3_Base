@@ -26,7 +26,7 @@
               ref="cropper"
               :guides="true"
               :view-mode="0"
-              drag-mode="none"
+              drag-mode="move"
               :min-canvas-width="0"
               :min-canvas-height="0"
               :cropBoxResizable="false"
