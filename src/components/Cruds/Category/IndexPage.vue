@@ -168,7 +168,7 @@
                 </span>
                 <span v-else>
                   <v-icon color="grey" class="disabledmditrash" small
-                    >mdi-trash-can-outline</v-icon
+                    >mdi-delete-off-outline</v-icon
                   >
                 </span>
               </td>
@@ -282,7 +282,7 @@
                 </span>
                 <span v-else>
                   <v-icon color="grey" class="disabledmditrash" small
-                    >mdi-trash-can-outline</v-icon
+                    >mdi-delete-off-outline</v-icon
                   >
                 </span>
               </td>
@@ -582,7 +582,5 @@ export default {
   cursor: pointer;
 }
 
-.disabledmditrash:hover {
-  animation: none;
-}
+
 </style>
