@@ -108,21 +108,25 @@ export default {
   methods: {
     handleCrop() {
       this.$nextTick(() => {
-        const croppedCanvas = this.$refs.cropper.getCroppedCanvas();
-        if (croppedCanvas) {
-          const canvas = document.createElement("canvas");
-          canvas.width = this.resizewidth;
-          canvas.height = this.resizeheight;
-          const ctx = canvas.getContext("2d");
-          ctx.drawImage(
-            croppedCanvas,
-            0,
-            0,
-            this.resizewidth,
-            this.resizeheight
-          );
-          this.imagedata = canvas.toDataURL();
-          // console.log("Cropped image data: ", this.imagedata);
+        if (this.$refs.cropper) {
+          const croppedCanvas = this.$refs.cropper.getCroppedCanvas();
+          if (croppedCanvas) {
+            const canvas = document.createElement("canvas");
+            canvas.width = this.resizewidth;
+            canvas.height = this.resizeheight;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(
+              croppedCanvas,
+              0,
+              0,
+              this.resizewidth,
+              this.resizeheight
+            );
+            this.imagedata = canvas.toDataURL();
+            // console.log("Cropped image data: ", this.imagedata);
+          }
+        } else {
+          console.log("Cropper instance is not initialized yet!");
         }
       });
     },
@@ -191,7 +195,7 @@ export default {
         // this.compressAndLoadImage(file);
       } else {
         // alert("Uploaded successfully");
-        console.log('uploaded successfully');
+        console.log("uploaded successfully");
         this.loadImageDirectly(file);
       }
 
