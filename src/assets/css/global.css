@@ -228,7 +228,7 @@
 }
 
 .login-box-custom {
-  width: 527px;
+  width: 460px;
   margin: 0px auto;
   background: #fff;
   padding: 20px;
@@ -266,7 +266,7 @@ label {
 }
 
 .btn-theme-blue {
-  background-color: #614f38 !important;
+  background-color: #02518a !important;
   color: #fff !important;
   width: 100% !important;
 }
@@ -527,4 +527,6 @@ input::placeholder {
 .disabledmditrash {
   color: grey !important;
   pointer-events: none;
-}/*# sourceMappingURL=global.css.map */
+}
+.v-container{padding:0px 16px}
+/*# sourceMappingURL=global.css.map */

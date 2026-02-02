@@ -755,7 +755,10 @@ export default {
         .then((response) => {
           this.role_array_view_profile = response.data.roles;
           this.role_array = response.data.roles;
-          if (this.user.rolename == "SuperUser" && this.profile_details.id == 0) {
+          if (
+            this.user.rolename == "SuperUser" &&
+            this.profile_details.id == 0
+          ) {
             this.role_array_view_profile = this.role_array.filter((ele) => {
               return ele.rolename != "SuperUser";
             });

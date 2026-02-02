@@ -1,8 +1,8 @@
 {
-  "app_name": "Gulf Mall",
-  "base_app": "Gulf Mall",
+  "app_name": "PAF",
+  "base_app": "PAF",
   "welcome_msg": "Welcome",
-  "recoverpassword": "I've forgotten my password",
+  "recoverpassword": "Forgot password",
   "sign_in": "Sign In",
   "email": "E-mail",
   "password": "Password",

@@ -1,6 +1,6 @@
 <template>
-  <content-loader v-if="loader"></content-loader>
   <v-app>
+    <content-loader v-if="loader"></content-loader>
     <div>
       <transition name="fade" mode="out-in" appear>
         <div class="background">
@@ -50,7 +50,7 @@
                           <v-text-field
                             v-model="userdata.email"
                             v-bind="props"
-                             v-bind:class="[this.sel_lang == 'ar' ? 'rtl' : '']"
+                            v-bind:class="[this.sel_lang == 'ar' ? 'rtl' : '']"
                             :rules="[...fieldRules, ...emailRules]"
                             v-bind:label="$t('email')"
                             @keyup.enter="requestResetPassword"
@@ -104,7 +104,6 @@
                       </router-link>
                     </div>
                   </div>
-                  
                 </div>
               </v-form>
             </div>
@@ -163,7 +162,7 @@ export default {
   },
 
   methods: {
-     selectedLang() {
+    selectedLang() {
       if (localStorage.getItem("pref_lang")) {
         this.sel_lang = localStorage.getItem("pref_lang");
       } else {
@@ -236,7 +235,6 @@ export default {
   color: red;
 }
 .font-login {
-  font-family: "Goudy Old Style";
   font-size: 35px;
   color: black;
 }

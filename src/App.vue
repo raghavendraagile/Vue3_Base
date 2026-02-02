@@ -4,59 +4,60 @@ import { apptheme } from "./store/apptheme.js";
 </script>
 
 <template>
-  <content-loader v-if="c_loader"></content-loader>
-  <div id="app" v-bind:class="apptheme.theme_type">
-    <v-card>
-      <v-layout>
-        <NavigationDrawer
-          :key="componentKey"
-          v-if="layout === 'default-layout'"
-          :sel_lang="sel_lang"
-        ></NavigationDrawer>
+  <v-app>
+    <content-loader v-if="c_loader"></content-loader>
+    <div id="app" v-bind:class="apptheme.theme_type">
+      <v-card>
+        <v-layout>
+          <NavigationDrawer
+            :key="componentKey"
+            v-if="layout === 'default-layout'"
+            :sel_lang="sel_lang"
+          ></NavigationDrawer>
 
-        <v-app-bar
-          color="white"
-          elevation="3"
-          style="border-radius: 0px"
-          v-if="layout === 'default-layout'"
-          v-bind:style="sel_lang == 'ar' ? 'direction:rtl' : ''"
-        >
-          <template v-slot:prepend>
-            <v-app-bar-nav-icon
-              v-show="navigation.drawer === false"
-              @click="navigation.setDrawer(!navigation.drawer)"
-            ></v-app-bar-nav-icon>
-            <div v-show="navigation.drawer === false">
-              <div class="font-login text-center">
-                <div v-if="app_image_url">
-                  <span>
-                    <img v-bind:src="app_image_url" style="width: 150px;" />
-                  </span>
-                </div>
-                <div v-else-if="app_image_url == ''">
-                  <span class="font-base-app text-center">
-                    {{ application_name }}
-                  </span>
-                </div>
-                <div v-else>
-                  <span class="font-base-app text-center">
-                    {{ application_name }}
-                  </span>
+          <v-app-bar
+            color="white"
+            elevation="3"
+            style="border-radius: 0px"
+            v-if="layout === 'default-layout'"
+            v-bind:style="sel_lang == 'ar' ? 'direction:rtl' : ''"
+          >
+            <template v-slot:prepend>
+              <v-app-bar-nav-icon
+                v-show="navigation.drawer === false"
+                @click="navigation.setDrawer(!navigation.drawer)"
+              ></v-app-bar-nav-icon>
+              <div v-show="navigation.drawer === false">
+                <div class="font-login text-center">
+                  <div v-if="app_image_url">
+                    <span>
+                      <img v-bind:src="app_image_url" style="width: 150px" />
+                    </span>
+                  </div>
+                  <div v-else-if="app_image_url == ''">
+                    <span class="font-base-app text-center">
+                      {{ application_name }}
+                    </span>
+                  </div>
+                  <div v-else>
+                    <span class="font-base-app text-center">
+                      {{ application_name }}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </template>
-          <v-spacer></v-spacer>
+            </template>
+            <v-spacer></v-spacer>
 
-          <!-- <v-tooltip
+            <!-- <v-tooltip
             :text="$t('notifications')"
             location="bottom"
             v-if="showtradienotification"
           > -->
-          <!-- <template v-slot:activator="{ props }">
+            <!-- <template v-slot:activator="{ props }">
             
             </template> -->
-          <!-- <div class="text-center">
+            <!-- <div class="text-center">
             <v-menu
               v-model="notificationmenu"
               :close-on-content-click="false"
@@ -196,32 +197,32 @@ import { apptheme } from "./store/apptheme.js";
               </v-card>
             </v-menu>
           </div> -->
-          <!-- <v-tooltip :text="$t('change_language')" location="bottom">
+            <!-- <v-tooltip :text="$t('change_language')" location="bottom">
             <template v-slot:activator="{ props }"> -->
-          <div class="d-flex switch-lang bounce-all">
-            <div
-              v-if="sel_lang == 'en'"
-              class="mx-2"
-              @click="setUserLang('ar')"
-            >
-              <v-icon style="font-size: 20px; margin-top: 2px"
-                >mdi mdi-translate</v-icon
+            <div class="d-flex switch-lang bounce-all">
+              <div
+                v-if="sel_lang == 'en'"
+                class="mx-2"
+                @click="setUserLang('ar')"
               >
-              {{ $t("arabic") }}
+                <v-icon style="font-size: 20px; margin-top: 2px"
+                  >mdi mdi-translate</v-icon
+                >
+                {{ $t("arabic") }}
+              </div>
+              <div v-else class="mx-2" @click="setUserLang('en')">
+                <v-icon style="font-size: 20px; margin-top: 2px"
+                  >mdi mdi-translate</v-icon
+                >
+                {{ $t("english") }}
+              </div>
             </div>
-            <div v-else class="mx-2" @click="setUserLang('en')">
-              <v-icon style="font-size: 20px; margin-top: 2px"
-                >mdi mdi-translate</v-icon
-              >
-              {{ $t("english") }}
-            </div>
-          </div>
-          <!-- </template>
+            <!-- </template>
           </v-tooltip> -->
 
-          <!-- <v-tooltip :text="$t('switch_mode')" location="bottom">
+            <!-- <v-tooltip :text="$t('switch_mode')" location="bottom">
             <template v-slot:activator="{ props }"> -->
-          <!-- <v-btn
+            <!-- <v-btn
             icon
             @click="
               switchTheme();
@@ -237,18 +238,19 @@ import { apptheme } from "./store/apptheme.js";
               "
             ></v-icon>
           </v-btn> -->
-          <!-- </template>
+            <!-- </template>
           </v-tooltip> -->
-          <ProfileView @getuserdetails="fetchUserdetails"></ProfileView>
-        </v-app-bar>
+            <ProfileView @getuserdetails="fetchUserdetails"></ProfileView>
+          </v-app-bar>
 
-        <v-main style="min-height: 100vh;">
-          <router-view></router-view>
-        </v-main>
-      </v-layout>
-    </v-card>
-  </div>
-  <LogoutTimer></LogoutTimer>
+          <v-main style="min-height: 100vh">
+            <router-view></router-view>
+          </v-main>
+        </v-layout>
+      </v-card>
+    </div>
+    <LogoutTimer></LogoutTimer>
+  </v-app>
 </template>
 
 <script>
@@ -487,8 +489,12 @@ export default {
   text-align: right;
   direction: rtl;
 }
-:global(.v-list-group--prepend .v-list-item--active){background: #e4e4e4;}
-:global(.rtl-page-title .v-checkbox-btn){direction:rtl !important}
+:global(.v-list-group--prepend .v-list-item--active) {
+  background: #e4e4e4;
+}
+:global(.rtl-page-title .v-checkbox-btn) {
+  direction: rtl !important;
+}
 
 nav {
   padding: 30px;
@@ -506,7 +512,11 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
-.d-flex1{display:flex;justify-content: space-between;width:100%}
+.d-flex1 {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 .notificationcreatedbyclass {
   font-size: 12px;
   font-weight: 500;
@@ -557,7 +567,6 @@ nav a.router-link-exact-active {
 .v-toolbar-title__placeholder {
   font-size: 23px;
   font-weight: 500;
-  font-family: "Roboto";
   color: #000000bd;
   padding-left: 10px;
 }
@@ -568,4 +577,3 @@ nav a.router-link-exact-active {
   display: none; /* for Chrome, Safari, and Opera */
 }
 </style>
-

@@ -1,8 +1,7 @@
 <template>
-  <content-loader v-if="loader"></content-loader>
   <v-app>
+    <content-loader v-if="loader"></content-loader>
     <div>
-    
       <transition name="fade" mode="out-in" appear>
         <div class="background">
           <div class="login-box-custom">
@@ -34,22 +33,23 @@
                 <span class="font-sign-in-msg">{{ $t("sign_in_msg") }}</span>
               </div>
             </div>
-
             <v-divider></v-divider>
-
             <div>
               <v-form v-model="valid" class="w-100">
                 <v-container>
                   <v-row>
                     <v-col cols="12" md="12" class="pb-0">
-                      <label  v-bind:class="[sel_lang == 'ar' ? 'text-right' : '',]">{{ $t("email") }}</label>
+                      <label
+                        v-bind:class="[sel_lang == 'ar' ? 'text-right' : '']"
+                        >{{ $t("email") }}</label
+                      >
                       <v-tooltip :text="$t('email')" location="bottom">
                         <template v-slot:activator="{ props }">
                           <v-text-field
                             v-bind="props"
                             v-model="userdata.email"
                             :rules="emailRules"
-                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                             @keyup.enter="login"
                             required
                             variant="outlined"
@@ -59,7 +59,10 @@
                       </v-tooltip>
                     </v-col>
                     <v-col cols="12" md="12" class="pt-0">
-                      <label v-bind:class="[sel_lang == 'ar' ? 'text-right' : '',]">{{ $t("password") }}</label>
+                      <label
+                        v-bind:class="[sel_lang == 'ar' ? 'text-right' : '']"
+                        >{{ $t("password") }}</label
+                      >
                       <v-tooltip :text="$t('password')" location="bottom">
                         <template v-slot:activator="{ props }">
                           <v-text-field
@@ -73,7 +76,7 @@
                             name="input-10-1"
                             @keyup.enter="login"
                             counter
-                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                             variant="outlined"
                             density="compact"
                             @click:append-inner="show1 = !show1"
@@ -96,7 +99,7 @@
                           <div v-bind="props" class="d-inline-block w-100">
                             <v-btn
                               variant="flat"
-                              color="#fff;"
+                              color="#fff"
                               small
                               class="btn-theme-blue w-100"
                               @click="login"
@@ -115,7 +118,7 @@
                             name: 'forgot_password',
                           }"
                         >
-                        <!-- <router-link to="/forgot_password"> -->
+                          <!-- <router-link to="/forgot_password"> -->
                           {{ $t("recoverpassword") }}
                         </router-link>
                       </p>
@@ -137,23 +140,6 @@
                       </h6>
                     </div>
                   </div> -->
-                  <div class="divider" />
-                  <div class="d-flex">
-                    <div
-                      v-bind:class="[this.sel_lang == 'en' ? 'selected' : '']"
-                      class="lang_option"
-                      @click="setUserLang('en')"
-                    >
-                      {{ $t("english") }}
-                    </div>
-                    <div
-                      v-bind:class="[this.sel_lang == 'ar' ? 'selected' : '']"
-                      class="lang_option"
-                      @click="setUserLang('ar')"
-                    >
-                      {{ $t("arabic") }}
-                    </div>
-                  </div>
                 </v-container>
               </v-form>
             </div>
@@ -283,31 +269,29 @@ export default {
     ...mapActions("auth", ["loginRequest"]),
     async login() {
       this.loader = true;
-      await this.loginRequest(this.userdata)
-        .then(() => {
-          this.btnloading = true;
-          const lang = localStorage.getItem("pref_lang");
-          this.$i18n.locale = lang;
-          localStorage.setItem("active_menu", 'Dashboard');
-          let newRoute = {
-            name: "dashboard",
-            params: { lang: lang },
-          };
-          // alert('pushing to dashboard');
-          console.log(newRoute);
-          this.$router.push(newRoute);
-          //this.$router.push(newRoute);
-          this.loader = false;
-        })
-        .catch((err) => {
-          this.error_message = err.response.data.message;
-          this.loader = false;
-          this.show_error = true;
-          console.log(err.response.data.message);
-        })
-        .finally(() => {
-          this.btnloading = false;
-        });
+      this.show_error = false; // reset error
+      try {
+        // Wait for loginRequest to complete and update Vuex state
+        await this.loginRequest(this.userdata);
+
+        // Mark button as loading
+        this.btnloading = true;
+
+        // Set default active menu
+        localStorage.setItem("active_menu", "Dashboard");
+
+        // Redirect to dashboard after login is successful
+        this.$router.push({ name: "dashboard" });
+      } catch (err) {
+        // Handle errors
+        this.error_message = err.response?.data?.message || "Login failed";
+        this.show_error = true;
+        console.error(err.response?.data?.message);
+      } finally {
+        // Stop loader and button loading
+        this.loader = false;
+        this.btnloading = false;
+      }
     },
   },
 };
@@ -320,7 +304,6 @@ export default {
 }
 
 .font-login {
-  font-family: "Goudy Old Style";
   font-size: 35px;
   color: black;
 }

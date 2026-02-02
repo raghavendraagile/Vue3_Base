@@ -1,6 +1,6 @@
 <template>
-  <content-loader v-if="loader"></content-loader>
   <section class="vh-100 background">
+    <content-loader v-if="loader"></content-loader>
     <div class="container py-5 h-100">
       <div class="row justify-content-center align-items-center h-100">
         <div class="col-12 col-lg-9 col-xl-5">
@@ -30,7 +30,11 @@
               <v-divider></v-divider>
               <div class="d-flex">
                 <h5 class="mb-4 pt-1 mr-2">{{ $t("i_am") }}</h5>
-                <v-radio-group inline v-model="users.role_id" @update:modelValue="users.store_id = null">
+                <v-radio-group
+                  inline
+                  v-model="users.role_id"
+                  @update:modelValue="users.store_id = null"
+                >
                   <v-radio v-bind:label="$t('mall_admin')" :value="2"></v-radio>
                   <v-radio
                     v-bind:label="$t('store_admin')"
@@ -50,7 +54,7 @@
                           v-bind:label="$t('mall')"
                           variant="outlined"
                           density="compact"
-                          v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
+                          v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                           :items="malls_en"
                           item-title="name"
                           item-value="id"
@@ -70,7 +74,7 @@
                           v-bind:label="$t('store')"
                           variant="outlined"
                           density="compact"
-                          v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
+                          v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                           :items="stores_en"
                           item-title="name"
                           item-value="id"
@@ -90,7 +94,7 @@
                             :rules="fieldRules1"
                             v-bind:label="$t('firstname')"
                             required
-                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                             variant="outlined"
                             density="compact"
                             class="required_field"
@@ -109,7 +113,7 @@
                             :rules="fieldRules1"
                             v-bind:label="$t('lastname')"
                             required
-                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                             variant="outlined"
                             density="compact"
                             class="required_field"
@@ -133,7 +137,7 @@
                             v-bind:label="$t('email')"
                             variant="outlined"
                             density="compact"
-                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                             required
                             class="required_field"
                           ></v-text-field>
@@ -154,7 +158,7 @@
                           :type="show2 ? 'text' : 'password'"
                           @click:append-inner="show2 = !show2"
                           v-on="on"
-                          v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
+                          v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                           v-model="users.password"
                           :rules="[...passwordRules, ...fieldRules1]"
                           v-bind:label="$t('password')"
@@ -179,7 +183,7 @@
                           :type="show1 ? 'text' : 'password'"
                           @click:append-inner="show1 = !show1"
                           v-on="on"
-                          v-bind:class="[sel_lang == 'ar' ? 'rtl' : '',]"
+                          v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                           v-model="users.confirm_password"
                           :rules="[
                             !!users.confirm_password || $t('password_confirm'),
@@ -199,8 +203,16 @@
               </v-form>
               <!-- {{valid}} -->
               <div>
-                <v-btn 
-                :disabled="valid == false || !users.name|| !users.lastname|| !users.email|| !users.password|| !users.store_id|| !users.confirm_password"
+                <v-btn
+                  :disabled="
+                    valid == false ||
+                    !users.name ||
+                    !users.lastname ||
+                    !users.email ||
+                    !users.password ||
+                    !users.store_id ||
+                    !users.confirm_password
+                  "
                   v-bind="props"
                   :loading="isDisabled"
                   block
@@ -223,7 +235,6 @@
                   </div>
                 </div>
               </div>
-              
             </div>
           </div>
         </div>
@@ -268,9 +279,9 @@ export default {
     stores_en: [],
     malls_en: [],
   }),
-mounted(){
-   this.selectedLang();
-},
+  mounted() {
+    this.selectedLang();
+  },
   computed: {
     emailRules() {
       return [
@@ -422,7 +433,6 @@ mounted(){
   top: 13px;
 }
 .font-login {
-  font-family: "Goudy Old Style";
   font-size: 35px;
   color: black;
   text-decoration: none;
@@ -430,5 +440,4 @@ mounted(){
 /* .show_icon i{
 z-index: 1000 !important;
 /* } */
-
 </style>

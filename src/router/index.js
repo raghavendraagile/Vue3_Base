@@ -3,25 +3,25 @@ import store from "../store";
 
 const routes = [
   {
-    path: "/:lang?/",
+    path: "/",
     name: "login",
     meta: { layout: "userpages" },
     component: () => import("../Admin/UserPages/LoginPage.vue"),
   },
   {
-    path: "/:lang?/forgot_password",
+    path: "/forgot_password",
     name: "forgot_password",
     meta: { layout: "userpages" },
     component: () => import("../Admin/UserPages/ForgotPassword.vue"),
   },
   {
-    path: "/:lang?/set_password",
+    path: "/set_password",
     name: "set_password",
     meta: { layout: "userpages" },
     component: () => import("../Admin/UserPages/SetPassword.vue"),
   },
   {
-    path: "/:lang?/reset_password_form/:email?&:name?",
+    path: "/reset_password_form/:email?&:name?",
     name: "reset_password_form",
     component: () => import("../Admin/UserPages/ResetPasswordForm.vue"),
     meta: { layout: "userpages" },
@@ -29,55 +29,55 @@ const routes = [
   // reset password from profile section
   {
     name: "reset_password",
-    path: "/:lang?/reset_password",
+    path: "/reset_password",
     beforeEnter: guardMyroute,
     component: () => import("../Admin/UserPages/ResetPassword.vue"),
   },
   {
-    path: "/:lang?/dashboard",
+    path: "/dashboard",
     name: "dashboard",
-    beforeEnter: guardMyroute,
+    meta: { requiresAuth: true },
     component: () => import("../components/Cruds/Dashboard/MainDashboard.vue"),
   },
   {
-    path: "/:lang?/users",
+    path: "/users",
     name: "users",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Users/IndexPage.vue"),
   },
   {
-    path: "/:lang?/user_creation",
+    path: "/user_creation",
     name: "user_creation",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Users/UserAmend.vue"),
   },
   {
-    path: "/:lang?/menus",
+    path: "/menus",
     name: "menus",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Menus/IndexPage.vue"),
   },
   {
-    path: "/:lang?/menu_amend",
+    path: "/menu_amend",
     name: "menu_amend",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/Menus/MenuAmend.vue"),
   },
   {
-    path: "/:lang?/roles",
+    path: "/roles",
     name: "roles",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Roles/IndexPage.vue"),
   },
   {
-    path: "/:lang?/roles_amend/:slug?",
+    path: "/roles_amend/:slug?",
     name: "roles_amend",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Roles/RolesAmend.vue"),
   },
   {
-    path: "/:lang?/roles_menu",
+    path: "/roles_menu",
     name: "roles_menu",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Roles/RolesMenu.vue"),
@@ -85,14 +85,14 @@ const routes = [
 
   //system parameters
   {
-    path: "/:lang?/system_parameter",
+    path: "/system_parameter",
     name: "system_parameter",
     beforeEnter: guardMyroute,
     component: () =>
       import("../components/Cruds/SystemParameter/SystemParameterIndex.vue"),
   },
   {
-    path: "/:lang?/system_parameter_amend",
+    path: "/system_parameter_amend",
     name: "system_parameter_amend",
     beforeEnter: guardMyroute,
     component: () =>
@@ -100,26 +100,26 @@ const routes = [
   },
   //lookup
   {
-    path: "/:lang?/lookups",
+    path: "/lookups",
     name: "lookups",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Lookups/LookupsIndex.vue"),
   },
   {
-    path: "/:lang?/lookups_amend",
+    path: "/lookups_amend",
     name: "lookups_amend",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Lookups/LookupsAmend.vue"),
   },
   {
-    path: "/:lang?/child_lookup",
+    path: "/child_lookup",
     name: "child_lookup",
     beforeEnter: guardMyroute,
     component: () =>
       import("../components/Cruds/Lookups/ChildLookupsIndex.vue"),
   },
   {
-    path: "/:lang?/child_lookups_amend",
+    path: "/child_lookups_amend",
     name: "child_lookups_amend",
     beforeEnter: guardMyroute,
     component: () =>
@@ -128,14 +128,14 @@ const routes = [
 
   //email template
   {
-    path: "/:lang?/email_template",
+    path: "/email_template",
     name: "email_template",
     beforeEnter: guardMyroute,
     component: () =>
       import("../components/Cruds/EmailTemplates/EmailTemplateIndex.vue"),
   },
   {
-    path: "/:lang?/email_template_amend",
+    path: "/email_template_amend",
     name: "email_template_amend",
     beforeEnter: guardMyroute,
     component: () =>
@@ -143,7 +143,7 @@ const routes = [
   },
 
   {
-    path: "/:lang?/navigate_invite",
+    path: "/navigate_invite",
     name: "navigate_invite",
     beforeEnter: guardMyroute,
     meta: { layout: "userpages" },
@@ -153,52 +153,52 @@ const routes = [
   //countries
   {
     name: "countries",
-    path: "/:lang?/countries",
+    path: "/countries",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Countries/CountriesIndex.vue"),
   },
   {
     name: "countries_amend",
-    path: "/:lang?/countries_amend",
+    path: "/countries_amend",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Countries/CountriesAmend.vue"),
   },
   //states
   {
     name: "states",
-    path: "/:lang?/states",
+    path: "/states",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Countries/StatesIndex.vue"),
   },
   {
     name: "states_amend",
-    path: "/:lang?/states_amend",
+    path: "/states_amend",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Countries/StatesAmend.vue"),
   },
   //cities
   {
     name: "cities",
-    path: "/:lang?/cities",
+    path: "/cities",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Countries/CitiesIndex.vue"),
   },
   {
     name: "cities_amend",
-    path: "/:lang?/cities_amend",
+    path: "/cities_amend",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Countries/CitiesAmend.vue"),
   },
   //registration
 
   {
-    path: "/:lang?/register_user",
+    path: "/register_user",
     name: "register_user",
     meta: { layout: "userpages" },
     component: () => import("../Admin/UserPages/RegisterUser.vue"),
   },
   {
-    path: "/:lang?/register",
+    path: "/register",
     name: "register",
     meta: { layout: "userpages" },
     component: () => import("../Admin/UserPages/OtpValidation.vue"),
@@ -206,13 +206,13 @@ const routes = [
  
   //frontend user profile page
   {
-    path: "/:lang?/view-my-profile",
+    path: "/view-my-profile",
     name: "view-my-profile",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Profile/ViewProfile.vue"),
   },
   {
-    path: "/:lang?/update-my-profile",
+    path: "/update-my-profile",
     name: "update-my-profile",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Profile/ProfileAmend.vue"),
@@ -220,89 +220,89 @@ const routes = [
   //Activity Log
   {
     name: "activity_log",
-    path: "/:lang?/activity_log",
+    path: "/activity_log",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/ActivityLog/ActivityLog.vue"),
   },
   //Notification
   {
     name: "notification",
-    path: "/:lang?/notification",
+    path: "/notification",
     beforeEnter: guardMyroute,
     component: () =>
       import("../components/Cruds/Notification/NotificationIndex.vue"),
   },
   {
     name: "notification_amend",
-    path: "/:lang?/notification_amend",
+    path: "/notification_amend",
     beforeEnter: guardMyroute,
     component: () =>
       import("../components/Cruds/Notification/NotificationAmend.vue"),
   },
   {
     name: "career_amend",
-    path: "/:lang?/career_amend",
+    path: "/career_amend",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Careers/CareerAmend.vue"),
   },
   {
     name: "careers",
-    path: "/:lang?/careers",
+    path: "/careers",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Careers/IndexPage.vue"),
   },
   {
-    path: "/:lang?/careers-review",
+    path: "/careers-review",
     name: "careers-review",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Careers/ReviewCareer.vue"),
   },
   {
     name: "promotions_amend",
-    path: "/:lang?/promotions_amend",
+    path: "/promotions_amend",
     beforeEnter: guardMyroute,
     component: () =>
       import("../components/Cruds/Promotions_Offers/PromotionsAmend.vue"),
   },
   {
     name: "events",
-    path: "/:lang?/events",
+    path: "/events",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Events/IndexPage.vue"),
   },
   {
     name: "events_amend",
-    path: "/:lang?/events_amend",
+    path: "/events_amend",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Events/EventsAmend.vue"),
   },
   {
-    path: "/:lang?/events-review",
+    path: "/events-review",
     name: "events-review",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Events/ReviewEvents.vue"),
   },
   {
     name: "products",
-    path: "/:lang?/products",
+    path: "/products",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Products/IndexPage.vue"),
   },
   {
     name: "products_amend",
-    path: "/:lang?/products_amend",
+    path: "/products_amend",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Products/ProductsAmend.vue"),
   },
   {
     name: "promotions_offers",
-    path: "/:lang?/promotions_offers",
+    path: "/promotions_offers",
     beforeEnter: guardMyroute,
     component: () =>
       import("../components/Cruds/Promotions_Offers/IndexPage.vue"),
   },
   {
-    path: "/:lang?/promotions-review",
+    path: "/promotions-review",
     name: "promotions-review",
     beforeEnter: guardMyroute,
     component: () =>
@@ -310,14 +310,14 @@ const routes = [
   },
   //Mall Timings
   {
-    path: "/:lang?/mall-timings",
+    path: "/mall-timings",
     name: "mall-timings",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/MallTimings/IndexPage.vue"),
   },
   {
-    path: "/:lang?/mall-timings-amend",
+    path: "/mall-timings-amend",
     name: "mall-timings-amend",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
@@ -326,21 +326,21 @@ const routes = [
   },
   // E-Magazine
   {
-    path: "/:lang?/e-magazine",
+    path: "/e-magazine",
     name: "e-magazine",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/EMagazine/IndexPage.vue"),
   },
   {
-    path: "/:lang?/e-magazine-amend",
+    path: "/e-magazine-amend",
     name: "e-magazine-amend",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/EMagazine/EMagazineAmend.vue"),
   },
   {
-    path: "/:lang?/e-magazine-review",
+    path: "/e-magazine-review",
     name: "e-magazine-review",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
@@ -349,14 +349,14 @@ const routes = [
   },
   // Reviews & Testimonials
   {
-    path: "/:lang?/reviews-testimonials",
+    path: "/reviews-testimonials",
     name: "reviews-testimonials",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/Testimonials/IndexPage.vue"),
   },
   {
-    path: "/:lang?/view-reviews",
+    path: "/view-reviews",
     name: "view-reviews",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
@@ -364,49 +364,49 @@ const routes = [
   },
   // Stores
   {
-    path: "/:lang?/stores",
+    path: "/stores",
     name: "stores",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/Stores/IndexPage.vue"),
   },
   {
-    path: "/:lang?/stores-amend",
+    path: "/stores-amend",
     name: "stores-amend",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/Stores/StoresAmend.vue"),
   },
   {
-    path: "/:lang?/stores-review",
+    path: "/stores-review",
     name: "stores-review",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Stores/ReviewStores.vue"),
   },
   //categories
   {
-    path: "/:lang?/categories",
+    path: "/categories",
     name: "categories",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/Category/IndexPage.vue"),
   },
   {
-    path: "/:lang?/categories-amend",
+    path: "/categories-amend",
     name: "categories-amend",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/Category/CategoryAmend.vue"),
   },
   {
-    path: "/:lang?/home-sliders",
+    path: "/home-sliders",
     name: "home-sliders",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/HomeSlider/IndexPage.vue"),
   },
   {
-    path: "/:lang?/home-slider-amend",
+    path: "/home-slider-amend",
     name: "home-slider-amend",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
@@ -414,26 +414,26 @@ const routes = [
       import("../components/Cruds/HomeSlider/HomeSliderAmend.vue"),
   },
   {
-    path: "/:lang?/home-slider-review",
+    path: "/home-slider-review",
     name: "home-slider-review",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/HomeSlider/ReviewSlider.vue"),
   },
   {
-    path: "/:lang?/categories-review",
+    path: "/categories-review",
     name: "categories-review",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Category/ReviewCategory.vue"),
   },
   {
-    path: "/:lang?/store-timings",
+    path: "/store-timings",
     name: "store-timings",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/StoreTimings/IndexPage.vue"),
   },
   {
-    path: "/:lang?/store-timing-amend",
+    path: "/store-timing-amend",
     name: "store-timing-amend",
     beforeEnter: guardMyroute,
     component: () =>
@@ -441,14 +441,14 @@ const routes = [
   },
   
   {
-    path: "/:lang?/store-timing-review",
+    path: "/store-timing-review",
     name: "store-timing-review",
     beforeEnter: guardMyroute,
     component: () =>
       import("../components/Cruds/StoreTimings/ReviewStoreTiming.vue"),
   },
   {
-    path: "/:lang?/products-review",
+    path: "/products-review",
     name: "products-review",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Products/ReviewProducts.vue"),
@@ -456,7 +456,7 @@ const routes = [
 
   //
   {
-    path: "/:lang?/customer-newsletter",
+    path: "/customer-newsletter",
     name: "customer-newsletter",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
@@ -466,7 +466,7 @@ const routes = [
 
   //MyStores
   {
-    path: "/:lang?/my_stores",
+    path: "/my_stores",
     name: "my_stores",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
@@ -474,7 +474,7 @@ const routes = [
   },
 
   {
-    path: "/:lang?/preview_webapp/:page?",
+    path: "/preview_webapp/:page?",
     name: "preview_webapp",
     beforeEnter: guardMyroute,
     meta: { layout: "userpages" },
@@ -483,14 +483,14 @@ const routes = [
 
   //Page Builder
   {
-    path: "/:lang?/page-builder",
+    path: "/page-builder",
     name: "page-builder",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/PageBuilder/IndexPage.vue"),
   },
   {
-    path: "/:lang?/page-builder-amend",
+    path: "/page-builder-amend",
     name: "page-builder-amend",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
@@ -498,7 +498,7 @@ const routes = [
       import("../components/Cruds/PageBuilder/PageBuilderAmend.vue"),
   },
   {
-    path: "/:lang?/page-builder-review",
+    path: "/page-builder-review",
     name: "page-builder-review",
     beforeEnter: guardMyroute,
     component: () =>
@@ -506,33 +506,33 @@ const routes = [
   },
   {
     name: "not-found",
-    path: "/:lang?/not-found",
+    path: "/not-found",
     meta: { layout: "userpages" },
     component: () => import("../../src/components/PageNotFound.vue"),
   },
   {
-    path: "/:lang?/store-code",
+    path: "/store-code",
     name: "store-code",
     beforeEnter: guardMyroute,
     component: () =>
       import("../components/Cruds/StoreCode/IndexPage.vue"),
   },
   {
-    path: "/:lang?/store-code-amend",
+    path: "/store-code-amend",
     name: "store-code-amend",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/StoreCode/StoreCodeAmend.vue"),
   },
   {
-    path: "/:lang?/leasing",
+    path: "/leasing",
     name: "leasing",
     beforeEnter: guardMyroute,
     component: () =>
       import("../components/Cruds/Leasing/IndexPage.vue"),
   },
   {
-    path: "/:lang?/leasing-amend",
+    path: "/leasing-amend",
     name: "leasing-amend",
     beforeEnter: guardMyroute,
     // meta: { layout: "userpages" },
@@ -546,46 +546,40 @@ const router = createRouter({
 });
 
 // var isAuthenticated = store.getters["auth/authentication"];
-
 router.beforeEach((to, from, next) => {
-  const lang = localStorage.getItem("pref_lang") || "en";
+  console.log('to');
+  console.log(to);
   const isAuthenticated = store.getters["auth/authentication"];
-
+  // const isAuthenticated=true;
+  console.log("isAuthenticated", isAuthenticated, "to.name:", to.name);
   if (to.matched.length === 0) {
-    console.log("inside matched route length");
-    const notFoundPath = `/${lang}/not-found`;
-    next(notFoundPath);
+    next("/not-found");
     return;
   }
-  
-  if (!to.params.lang) {
-    if (isAuthenticated || to.name === "login") {
-      if (!to.redirectedFrom) {
-        const redirectpath = "/" + lang + to.path;
-        next({
-          path: redirectpath,
-          query: to.query,
-        });
-      } else {
-        const redirectpathlogin = "/" + lang + to.redirectedFrom.fullPath;
-        next({ path: redirectpathlogin });
-        // next({ path: `/${lang}${to.fullPath}` });
-      }
-    } else {
-      next({ path: "/" });
-    }
-  } else {
-    next();
+
+  // Redirect logged in users from login/register to dashboard
+  if (isAuthenticated && ["login", "register", "forgot_password"].includes(to.name)) {
+    next({ name: "dashboard" });
+    return;
   }
+
+  // Protect routes that require authentication
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next({ name: "login" });
+    return;
+  }
+
+  next();
 });
+
+
+
 
 function guardMyroute(to, from, next) {
   const isAuthenticated = store.getters["auth/authentication"];
-  if (isAuthenticated) {
-    next();
-  } else {
-    next({ path: "/" });
-  }
+  if (isAuthenticated) next();
+  else next({ name: "login" });
 }
+
 
 export default router;
