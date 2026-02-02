@@ -5,6 +5,7 @@
       :google_icon="google_icon"
     ></page-title>
     <content-loader v-if="loader"></content-loader>
+    DASHBOARD
   </div>
 </template>
 <script>
