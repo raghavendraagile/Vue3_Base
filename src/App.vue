@@ -284,7 +284,7 @@ export default {
       notificationmenu: false,
       componentKey: 0,
       app_image_url: "",
-      application_name: "Gulf Mall",
+      application_name: "EPAF",
       app_name: "",
       showtradienotification: false,
       notification_count: 0,
@@ -389,10 +389,7 @@ export default {
       this.user = getuserdetails;
       this.user_id = getuserdetails.id;
       // this.fetchNotification();
-      if (
-        this.user.role.rolename == "Tradie" ||
-        this.user.role.rolename == "Principal"
-      ) {
+      if (this.user.rolename == "Tradie" || this.user.rolename == "Principal") {
         this.showtradienotification = true;
       } else {
         this.showtradienotification = false;

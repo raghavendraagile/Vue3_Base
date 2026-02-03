@@ -131,7 +131,7 @@ export default {
     userprofile: "",
     loader: false,
     app_image_url: "",
-    application_name: "Gulf Mall",
+    application_name: "EPAF",
     app_name: "",
     error_message: "",
     show_error: false,
