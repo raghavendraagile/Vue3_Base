@@ -199,7 +199,7 @@ import { apptheme } from "./store/apptheme.js";
           </div> -->
             <!-- <v-tooltip :text="$t('change_language')" location="bottom">
             <template v-slot:activator="{ props }"> -->
-            <div class="d-flex switch-lang bounce-all">
+            <!-- <div class="d-flex switch-lang bounce-all">
               <div
                 v-if="sel_lang == 'en'"
                 class="mx-2"
@@ -216,7 +216,7 @@ import { apptheme } from "./store/apptheme.js";
                 >
                 {{ $t("english") }}
               </div>
-            </div>
+            </div> -->
             <!-- </template>
           </v-tooltip> -->
 

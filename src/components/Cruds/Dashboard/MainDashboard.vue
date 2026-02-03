@@ -5,7 +5,6 @@
       :google_icon="google_icon"
     ></page-title>
     <content-loader v-if="loader"></content-loader>
-    DASHBOARD
   </div>
 </template>
 <script>
@@ -41,7 +40,7 @@ export default {
   },
   mounted() {
     this.user = JSON.parse(localStorage.getItem("user_data"));
-    this.fetchDashboard(this.user.id, this.user.rolename);
+    // this.fetchDashboard(this.user.id, this.user.rolename);
   },
 
   methods: {
@@ -93,58 +92,58 @@ export default {
           return "";
       }
     },
-    fetchDashboard(userId, Role) {
-      this.loader = true;
-      if (Role == "SuperUser") {
-        this.$axios
-          .get(
-            process.env.VUE_APP_API_URL_ADMIN +
-              "fetchDashboardSuperUser/" +
-              userId
-          )
-          .then((res) => {
-            this.dashboard_count = res.data.count_dashboard;
-            this.loader = false;
-          })
-          .catch((err) => {
-            this.$toast.error(this.$t("something_went_wrong"));
-            this.initval = false;
-            console.log(err);
-          });
-      } else if (Role == "MallAdmin") {
-        this.$axios
-          .get(
-            process.env.VUE_APP_API_URL_ADMIN +
-              "fetchDashboardMallAdmin/" +
-              userId
-          )
-          .then((res) => {
-            this.dashboard_count = res.data.count_dashboard;
-            this.loader = false;
-          })
-          .catch((err) => {
-            this.$toast.error(this.$t("something_went_wrong"));
-            this.initval = false;
-            console.log(err);
-          });
-      } else {
-        this.$axios
-          .get(
-            process.env.VUE_APP_API_URL_ADMIN +
-              "fetchDashboardStoreAdmin/" +
-              userId
-          )
-          .then((res) => {
-            this.dashboard_count = res.data.count_dashboard;
-            this.loader = false;
-          })
-          .catch((err) => {
-            this.$toast.error(this.$t("something_went_wrong"));
-            this.initval = false;
-            console.log(err);
-          });
-      }
-    },
+    // fetchDashboard(userId, Role) {
+    //   this.loader = true;
+    //   if (Role == "SuperUser") {
+    //     this.$axios
+    //       .get(
+    //         process.env.VUE_APP_API_URL_ADMIN +
+    //           "fetchDashboardSuperUser/" +
+    //           userId
+    //       )
+    //       .then((res) => {
+    //         this.dashboard_count = res.data.count_dashboard;
+    //         this.loader = false;
+    //       })
+    //       .catch((err) => {
+    //         this.$toast.error(this.$t("something_went_wrong"));
+    //         this.initval = false;
+    //         console.log(err);
+    //       });
+    //   } else if (Role == "MallAdmin") {
+    //     this.$axios
+    //       .get(
+    //         process.env.VUE_APP_API_URL_ADMIN +
+    //           "fetchDashboardMallAdmin/" +
+    //           userId
+    //       )
+    //       .then((res) => {
+    //         this.dashboard_count = res.data.count_dashboard;
+    //         this.loader = false;
+    //       })
+    //       .catch((err) => {
+    //         this.$toast.error(this.$t("something_went_wrong"));
+    //         this.initval = false;
+    //         console.log(err);
+    //       });
+    //   } else {
+    //     this.$axios
+    //       .get(
+    //         process.env.VUE_APP_API_URL_ADMIN +
+    //           "fetchDashboardStoreAdmin/" +
+    //           userId
+    //       )
+    //       .then((res) => {
+    //         this.dashboard_count = res.data.count_dashboard;
+    //         this.loader = false;
+    //       })
+    //       .catch((err) => {
+    //         this.$toast.error(this.$t("something_went_wrong"));
+    //         this.initval = false;
+    //         console.log(err);
+    //       });
+    //   }
+    // },
 
     route_to_page(page) {
       if (page == "Users") {

@@ -1,4 +1,3 @@
-
 <script setup>
 import { apptheme } from "../store/apptheme.js";
 </script>
@@ -24,7 +23,10 @@ import { apptheme } from "../store/apptheme.js";
             >
             </v-avatar>
           </template>
-          <v-list-item-title style="font-weight: bold; font-size: 14px" class="user_name">
+          <v-list-item-title
+            style="font-weight: bold; font-size: 14px"
+            class="user_name"
+          >
             <span
               v-if="user"
               v-bind:class="
@@ -86,7 +88,7 @@ import { apptheme } from "../store/apptheme.js";
                     >
                   </h4>
                   <span class="ml-2" style="color: #918f8f"
-                    >Role: {{ user.role.role_display_name }}</span
+                    >Role: {{ user.rolename }}</span
                   >
                   <div>
                     <div class="mt-2 d-flex justify-content-between rounded">
@@ -128,7 +130,7 @@ import { apptheme } from "../store/apptheme.js";
                               class="w-100 ml-2 list-menus"
                               @click="logoutUser"
                             >
-                              {{$t('logout')}}
+                              {{ $t("logout") }}
                             </a>
                           </span>
                         </template>
@@ -189,7 +191,8 @@ export default {
     },
     ...mapActions("auth", ["logoutUser"]),
     logoutUser() {
-      this.$store.dispatch('auth/logoutUser') 
+      this.$store
+        .dispatch("auth/logoutUser")
         .then(() => {
           this.$router.push("/");
         })
@@ -290,8 +293,8 @@ a:hover {
 }
 @media only screen and (max-width: 600px) {
   .user_name {
-    font-size: 13px; 
-    white-space: normal; 
+    font-size: 13px;
+    white-space: normal;
   }
 }
 </style>
