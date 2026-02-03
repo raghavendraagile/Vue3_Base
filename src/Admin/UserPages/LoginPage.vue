@@ -5,10 +5,10 @@
       <transition name="fade" mode="out-in" appear>
         <div class="background">
           <div class="login-box-custom">
-            <div>
-              <!-- <img src="../../assets/images/TradieSafe_logo.png" /> -->
+            <div class="d-flex flex-column">
+              <img src="../../assets/images/logo.png" />
               <div class="w-100 d-flex" style="flex-direction: column">
-                <h4 class="mb-0">{{ $t("welcome_msg") }}</h4>
+                <!-- <h4 class="mb-0">{{ $t("welcome_msg") }}</h4> -->
                 <div class="font-login">
                   <div v-if="app_image_url">
                     <span>
@@ -30,7 +30,7 @@
                     </span>
                   </div>
                 </div>
-                <span class="font-sign-in-msg">{{ $t("sign_in_msg") }}</span>
+                <!-- <span class="font-sign-in-msg">{{ $t("sign_in_msg") }}</span> -->
               </div>
             </div>
             <v-divider></v-divider>
@@ -38,7 +38,7 @@
               <v-form v-model="valid" class="w-100">
                 <v-container>
                   <v-row>
-                    <v-col cols="12" md="12" class="pb-0">
+                    <v-col cols="12" md="12" class="pb-0 pt-0">
                       <label
                         v-bind:class="[sel_lang == 'ar' ? 'text-right' : '']"
                         >{{ $t("email") }}</label
