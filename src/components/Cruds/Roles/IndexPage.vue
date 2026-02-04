@@ -35,7 +35,7 @@
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link :to="{ name: 'roles_amend' }" style="color: white">
-              <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
+              <v-btn size="small" class="mb-2 create-btn" v-bind="props">{{
                 $t("add_new")
               }}</v-btn>
             </router-link>

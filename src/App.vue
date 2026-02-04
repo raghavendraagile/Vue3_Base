@@ -487,7 +487,7 @@ export default {
   direction: rtl;
 }
 :global(.v-list-group--prepend .v-list-item--active) {
-  background: #e4e4e4;
+  background: #d4edfd;
 }
 :global(.rtl-page-title .v-checkbox-btn) {
   direction: rtl !important;

@@ -3,7 +3,7 @@
     <div
       flat
       color="white"
-      class="row px-3 align-items-center component_app_bar position-relative"
+      class="row my-3 align-items-center component_app_bar position-relative"
       v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
     >
       <page-title
@@ -33,7 +33,7 @@
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link :to="{ name: 'menu_amend' }" style="color: white">
-              <v-btn size="small" class="mb-2 theme_btn" v-bind="props">
+              <v-btn size="small" class="mb-2 create-btn" v-bind="props">
                 {{ $t("add_new") }}
               </v-btn>
             </router-link>

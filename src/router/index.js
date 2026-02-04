@@ -538,6 +538,7 @@ const routes = [
     // meta: { layout: "userpages" },
     component: () => import("../components/Cruds/Leasing/LeasingAmend.vue"),
   },
+ 
 ];
 
 const router = createRouter({

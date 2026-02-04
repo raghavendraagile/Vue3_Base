@@ -5,12 +5,14 @@
       :google_icon="google_icon"
     ></page-title>
     <content-loader v-if="loader"></content-loader>
+    <Comingsoon></Comingsoon>
   </div>
 </template>
 <script>
+import Comingsoon from "../../CustomComponents/ComingSoon.vue";
 import { mapGetters } from "vuex";
 export default {
-  components: {},
+  components: { Comingsoon },
   computed: {
     ...mapGetters("auth", ["loggedin"]),
   },
