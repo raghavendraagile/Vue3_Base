@@ -1,4 +1,3 @@
-
 <script setup>
 import { apptheme } from "../store/apptheme.js";
 </script>
@@ -24,7 +23,10 @@ import { apptheme } from "../store/apptheme.js";
             >
             </v-avatar>
           </template>
-          <v-list-item-title style="font-weight: bold; font-size: 14px">
+          <v-list-item-title
+            style="font-weight: bold; font-size: 14px"
+            class="user_name"
+          >
             <span
               v-if="user"
               v-bind:class="
@@ -86,12 +88,10 @@ import { apptheme } from "../store/apptheme.js";
                     >
                   </h4>
                   <span class="ml-2" style="color: #918f8f"
-                    >Role: {{ user.role.role_display_name }}</span
+                    >Role: {{ user.rolename }}</span
                   >
                   <div>
-                    <div
-                      class="mt-2 d-flex justify-content-between rounded"
-                    >
+                    <div class="mt-2 d-flex justify-content-between rounded">
                       <v-tooltip :text="$t('my_profile')" location="bottom">
                         <template v-slot:activator="{ props }">
                           <router-link
@@ -110,22 +110,18 @@ import { apptheme } from "../store/apptheme.js";
                         </template>
                       </v-tooltip>
                     </div>
-                    <div
-                      class="mt-2 d-flex justify-content-between rounded"
-                    >
+                    <div class="mt-2 d-flex justify-content-between rounded">
                       <v-tooltip :text="$t('reset_password')" location="bottom">
                         <template v-slot:activator="{ props }">
-                          <router-link :to="{ name: 'reset_password' }">
+                          <div @click="resetPasswordRedirect()">
                             <a class="w-100 ml-2 list-menus" v-bind="props">
                               {{ $t("reset_password") }}
                             </a>
-                          </router-link>
+                          </div>
                         </template>
                       </v-tooltip>
                     </div>
-                    <div
-                      class="mt-2 d-flex justify-content-between rounded"
-                    >
+                    <div class="mt-2 d-flex justify-content-between rounded">
                       <v-tooltip :text="$t('logout')" location="bottom">
                         <template v-slot:activator="{ props }">
                           <span>
@@ -134,7 +130,7 @@ import { apptheme } from "../store/apptheme.js";
                               class="w-100 ml-2 list-menus"
                               @click="logoutUser"
                             >
-                              Logout
+                              {{ $t("logout") }}
                             </a>
                           </span>
                         </template>
@@ -185,15 +181,24 @@ export default {
     });
   },
   methods: {
+    resetPasswordRedirect() {
+      this.$router.push({
+        name: "reset_password",
+      });
+    },
     fetchUserData() {
       this.user = JSON.parse(localStorage.getItem("user_data"));
     },
-    ...mapActions("auth", ["logoutRequest"]),
+    ...mapActions("auth", ["logoutUser"]),
     logoutUser() {
-      console.log("inside ");
-      localStorage.clear();
-      this.$router.push("/");
-      // window.location.reload();
+      this.$store
+        .dispatch("auth/logoutUser")
+        .then(() => {
+          this.$router.push("/");
+        })
+        .catch((error) => {
+          console.error("Logout failed", error);
+        });
     },
     // async login() {
     //   await this.loginRequest(this.userdata).then(() => {
@@ -285,5 +290,11 @@ a:hover {
   transform: translateY(20px);
   font-weight: bold;
   color: rgb(77, 77, 253);
+}
+@media only screen and (max-width: 600px) {
+  .user_name {
+    font-size: 13px;
+    white-space: normal;
+  }
 }
 </style>

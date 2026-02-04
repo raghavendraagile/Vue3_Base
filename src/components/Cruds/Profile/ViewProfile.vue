@@ -1,5 +1,5 @@
 <template>
-      <content-loader v-if="loader"></content-loader>
+  <content-loader v-if="loader"></content-loader>
   <div class="main-20">
     <div
       flat
@@ -21,15 +21,15 @@
                 }"
                 style="color: white"
               > -->
-                <v-btn
-                  size="small"
-                  class="mb-2"
-                  color="cancel"
-                  style="color: white"
-                  v-bind="props"
-                  @click="$router.go(-1)"
-                  >{{ $t("back") }}</v-btn
-                >
+              <v-btn
+                size="small"
+                class="mb-2"
+                color="cancel"
+                style="color: white"
+                v-bind="props"
+                @click="$router.go(-1)"
+                >{{ $t("back") }}</v-btn
+              >
               <!-- </router-link> -->
             </template>
           </v-tooltip>
@@ -38,12 +38,12 @@
           <v-tooltip :text="this.$t('update_profile')" location="bottom">
             <template v-slot:activator="{ props }">
               <router-link
-              v-if="show_update"
+                v-if="show_update"
                 :to="{
                   name: 'user_creation',
                   query: {
                     slug: profile_details.slug,
-                    from: 'view_profile',
+                    from: $route.query.from,
                   },
                 }"
               >
@@ -150,7 +150,7 @@
           <v-col md="3" sm="3">
             <div class="field_label">{{ $t("country") }}</div>
             <div class="field_value" v-if="profile_details.country">
-              {{ profile_details.country }}
+              {{ profile_details.country.name }}
             </div>
             <div v-else>
               {{ $t("not_applicable") }}
@@ -159,7 +159,7 @@
           <v-col md="3" sm="3">
             <div class="field_label">{{ $t("state") }}</div>
             <div class="field_value" v-if="profile_details.state">
-              {{ profile_details.state }}
+              {{ profile_details.state.name }}
             </div>
             <div v-else>
               {{ $t("not_applicable") }}
@@ -170,7 +170,7 @@
           <v-col md="4" sm="4">
             <div class="field_label">{{ $t("city") }}</div>
             <div class="field_value" v-if="profile_details.city">
-              {{ profile_details.city }}
+              {{ profile_details.city.name }}
             </div>
             <div v-else>
               {{ $t("not_applicable") }}
@@ -208,11 +208,11 @@ export default {
   },
   data: () => ({
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
-loader:false,
+    loader: false,
     profile_details: [],
     role_details: [],
     isDisabled: false,
-    show_update:false,
+    show_update: false,
     google_icon: {
       icon_name: "account_circle",
       color: "google_icon_gradient",
@@ -229,7 +229,7 @@ loader:false,
           this.$axios
             .get(
               process.env.VUE_APP_API_URL_ADMIN +
-                "fetchuserbyslug/" +
+                "fetchuserdatabyslug/" +
                 this.$route.query.slug
             )
             .then((res) => {
@@ -250,18 +250,16 @@ loader:false,
       },
     },
 
-    "$route.query.from":{
+    "$route.query.from": {
       immediate: true,
-      handler(){
-        if(this.$route.query.from){
-          if(this.$route.query.from=='amend'){
-            this.show_update=true;
+      handler() {
+        if (this.$route.query.from) {
+          if (this.$route.query.from == "amend") {
+            this.show_update = true;
           }
         }
-      }
-
-
-    }
+      },
+    },
   },
   methods: {},
 };

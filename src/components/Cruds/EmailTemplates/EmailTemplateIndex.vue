@@ -1,27 +1,31 @@
 <template>
   <div class="main-20">
-    <div flat color="white" class="row py-5 pl-5 align-items-center">
+    <div
+      flat
+      color="white"
+      class="row py-5 pl-5 align-items-center component_app_bar position-relative"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
-        class="col-md-3"
+        class="col-md-4"
         :heading="$t('email_templates')"
         :google_icon="google_icon"
       ></page-title>
 
       <div class="col-md-4">
-        <v-tooltip :text="this.$t('search')" location="top">
+        <v-tooltip :text="this.$t('search')" location="bottom">
           <template v-slot:activator="{ props }">
             <v-text-field
-              dense
+              rounded
               density="compact"
-              v-on="on"
               variant="outlined"
+              elevation="24"
+              v-bind="props"
               v-model="search"
               append-icon="search"
-              label="Search"
-              class="srch_bar"
-              small
+              v-bind:label="$t('search')"
               hide-details
-              v-bind="props"
+              class="srch_bar"
             ></v-text-field>
           </template>
         </v-tooltip>
@@ -31,7 +35,7 @@
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link
-              :to="{ name: 'email_template_amend' }"
+              :to="{ name: 'email_template_amend', query: { s_tab: tabs } }"
               style="color: white"
             >
               <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
@@ -42,52 +46,120 @@
         </v-tooltip>
       </div>
     </div>
-    <v-data-table
-      :headers="headers"
-      :items="email_templates"
-      :search="search"
-      :loading="initval"
-      v-bind:no-data-text="$t('no_data_available')"
-      :footer-props="{
-        'items-per-page-text': $t('rows_per_page'),
-      }"
-    >
-      <template v-slot:item="props">
-        <tr class="vdatatable_tbody">
-          <td>{{ props.item.selectable.templatetypename }}</td>
-          <td>{{ props.item.selectable.template_name }}</td>
-          <td>{{ props.item.selectable.template_subject }}</td>
-          <td class="text-center">
-            <router-link
-              small
-              :to="{
-                name: 'email_template_amend',
-                query: { slug: props.item.selectable.slug },
-              }"
-            >
-              <v-tooltip :text="this.$t('edit')" location="top">
-                <template v-slot:activator="{ props }">
-                  <v-icon v-bind="props" small class="mr-2 edit_btn icon_size"
-                    >mdi-pencil-outline</v-icon
-                  >
-                </template>
-                <span>{{ $t("edit") }}</span>
-              </v-tooltip>
-            </router-link>
-            <span @click="deleteItem(props.item.selectable.id)">
-              <v-tooltip :text="this.$t('delete')" location="top">
-                <template v-slot:activator="{ props }">
-                  <v-icon color="error" type="button" v-bind="props" small
-                    >mdi-trash-can-outline</v-icon
-                  >
-                </template>
-                <span>{{ $t("delete") }}</span>
-              </v-tooltip>
-            </span>
-          </td>
-        </tr>
-      </template>
-    </v-data-table>
+    <v-tabs v-model="tabs" color="blue">
+      <v-tab :value="1" @click="checkUploadImage">
+        <span>{{ $t("english") }}</span>
+      </v-tab>
+      <v-tab :value="2" @click="checkUploadImage">
+        <span>{{ $t("arabic") }}</span>
+      </v-tab>
+    </v-tabs>
+    <v-window v-model="tabs">
+      <!-- ENGLISH TAB STARTS -->
+      <v-window-item :value="1">
+        <v-data-table
+          :headers="headers"
+          :items="email_templates"
+          :search="search"
+          :loading="initval"
+          v-bind:no-data-text="$t('no_data_available')"
+          :items-per-page-text="$t('rows_per_page_en')"
+        >
+          <template v-slot:item="props">
+            <tr class="vdatatable_tbody">
+              <td>{{ props.item.selectable.templatetypename }}</td>
+              <td>{{ props.item.selectable.template_name }}</td>
+              <td>{{ props.item.selectable.template_subject }}</td>
+              <td class="text-center">
+                <router-link
+                  small
+                  :to="{
+                    name: 'email_template_amend',
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
+                  }"
+                >
+                  <v-tooltip :text="this.$t('edit_en')" location="top">
+                    <template v-slot:activator="{ props }">
+                      <v-icon
+                        v-bind="props"
+                        small
+                        class="mr-2 edit_btn icon_size"
+                        >mdi-pencil-outline</v-icon
+                      >
+                    </template>
+                    <span>{{ $t("edit_en") }}</span>
+                  </v-tooltip>
+                </router-link>
+                <span @click="deleteItem(props.item.selectable.id)">
+                  <v-tooltip :text="this.$t('delete_en')" location="top">
+                    <template v-slot:activator="{ props }">
+                      <v-icon color="error" type="button" v-bind="props" small
+                        >mdi-trash-can-outline</v-icon
+                      >
+                    </template>
+                    <span>{{ $t("delete_en") }}</span>
+                  </v-tooltip>
+                </span>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-window-item>
+      <!-- ENGLISH TAB STOPS -->
+      <!-- ARABIC TAB STARTS -->
+      <v-window-item :value="2">
+        <v-data-table
+          :headers="headers_ar"
+          :items="email_templates"
+          :search="search"
+          :loading="initval"
+          class="rtl-direction"
+          :items-per-page-text="$t('rows_per_page_ar')"
+          :no-data-text="$t('no_data_available_ar')"
+        >
+          <template v-slot:item="props">
+            <tr class="vdatatable_tbody">
+              <td>{{ props.item.selectable.templatetypename }}</td>
+              <td>{{ props.item.selectable.template_name }}</td>
+              <td>{{ props.item.selectable.template_subject_ar }}</td>
+              <td class="text-center">
+                <router-link
+                  small
+                  :to="{
+                    name: 'email_template_amend',
+                    query: { slug: props.item.selectable.slug, s_tab: tabs },
+                  }"
+                >
+                  <v-tooltip :text="this.$t('edit_ar')" location="top">
+                    <template v-slot:activator="{ props }">
+                      <v-icon
+                        v-bind="props"
+                        small
+                        class="ml-2 edit_btn icon_size"
+                        >mdi-pencil-outline</v-icon
+                      >
+                    </template>
+                    <span>{{ $t("edit_ar") }}</span>
+                  </v-tooltip>
+                </router-link>
+                <span @click="deleteItem(props.item.selectable.id)">
+                  <v-tooltip :text="this.$t('delete_ar')" location="top">
+                    <template v-slot:activator="{ props }">
+                      <v-icon color="error" type="button" v-bind="props" small
+                        >mdi-trash-can-outline</v-icon
+                      >
+                    </template>
+                    <span>{{ $t("delete_ar") }}</span>
+                  </v-tooltip>
+                </span>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-window-item>
+    </v-window>
+    <!--  ARABIC TAB ENDS-->
+
     <ConfirmDialog
       :show="showConfirmDialog"
       :cancel="cancel"
@@ -108,6 +180,7 @@ export default {
     search: "",
     showConfirmDialog: false,
     delete_id: null,
+    tabs: 1,
     dialog: false,
     email_templates: [],
     initval: true,
@@ -117,6 +190,7 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
+    sel_lang: "",
   }),
 
   computed: {
@@ -126,19 +200,40 @@ export default {
     headers() {
       return [
         {
-          title: this.$t("type"),
+          title: this.$t("type_en"),
           key: "templatetypename",
         },
         {
-          title: this.$t("name"),
+          title: this.$t("name_en"),
           key: "template_name",
         },
         {
-          title: this.$t("subject"),
+          title: this.$t("subject_en"),
           key: "template_subject",
         },
         {
-          title: this.$t("action"),
+          title: this.$t("action_en"),
+          align: "center",
+          key: "email",
+        },
+      ];
+    },
+    headers_ar() {
+      return [
+        {
+          title: this.$t("type_ar"),
+          key: "templatetypename",
+        },
+        {
+          title: this.$t("name_ar"),
+          key: "template_name",
+        },
+        {
+          title: this.$t("subject_ar"),
+          key: "template_subject",
+        },
+        {
+          title: this.$t("action_ar"),
           align: "center",
           key: "email",
         },
@@ -163,11 +258,22 @@ export default {
     dialog(val) {
       val || this.close();
     },
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
+      }
+    },
   },
 
   created() {},
   mounted() {
     this.fetchEmailTemplates();
+    if (this.$route.query.s_tab) {
+      this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
+    }
   },
 
   methods: {

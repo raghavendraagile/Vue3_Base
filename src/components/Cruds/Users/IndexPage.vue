@@ -1,29 +1,32 @@
-
-      <template>
+<template>
   <div>
-    <div flat color="white" class="row py-5 pl-5 align-items-center">
+    <div
+      flat
+      color="white"
+      class="row py-5 pl-5 align-items-center component_app_bar position-relative"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-3"
         :heading="$t('users')"
         :google_icon="google_icon"
       ></page-title>
       <div class="col-md-4">
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+        <v-tooltip :text="this.$t('search')" location="bottom">
+          <template v-slot:activator="{ props }">
             <v-text-field
-              dense
+              rounded
               density="compact"
-              v-on="on"
               variant="outlined"
+              elevation="24"
+              v-bind="props"
               v-model="search"
               append-icon="search"
-              label="Search"
-              class="srch_bar"
-              small
+              v-bind:label="$t('search')"
               hide-details
+              class="srch_bar"
             ></v-text-field>
           </template>
-          <span>{{ $t("search") }}</span>
         </v-tooltip>
       </div>
       <div class="add_new_button">
@@ -44,9 +47,7 @@
       :search="search"
       :loading="initval"
       v-bind:no-data-text="$t('no_data_available')"
-      :footer-props="{
-        'items-per-page-text': $t('rows_per_page'),
-      }"
+      :items-per-page-text="$t('rows_per_page')"
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
@@ -76,7 +77,7 @@
           </td>
           <td>
             <span v-if="props.item.selectable.rolename">
-              {{ props.item.selectable.rolename }}</span
+              {{ props.item.selectable.role.role_display_name }}</span
             >
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
@@ -122,6 +123,16 @@
               </v-tooltip>
             </router-link>
           </td>
+          <td>
+            <v-btn
+              size="small"
+              @click="redirectView(props.item.selectable.slug)"
+              :disabled="loading"
+              class="ma-1"
+              color="blue"
+              >{{ $t("view") }}</v-btn
+            >
+          </td>
         </tr>
       </template>
     </v-data-table>
@@ -158,41 +169,7 @@ export default {
     isDisabled: false,
     showConfirmDialog: false,
     delete_id: "",
-    headers: [
-      {
-        title: "Name",
-        align: "left",
-        key: "full_name",
-      },
-      {
-        title: "Email ID",
-        key: "email",
-      },
-      {
-        title: "Phone",
-        key: "phone",
-      },
-      {
-        title: "Postcode",
-        key: "postcode",
-      },
-
-      {
-        title: "Role",
-        key: "rolename",
-      },
-      {
-        title: "Status",
-        align: "left",
-        sortable: false,
-        key: "status",
-      },
-      {
-        title: "Actions",
-        key: "",
-        align: "left",
-      },
-    ],
+    sel_lang: "",
     google_icon: {
       icon_name: "group",
       color: "google_icon_gradient",
@@ -207,11 +184,90 @@ export default {
     user: "",
     showStatusDialog: false,
   }),
+  created() {
+    this.user = JSON.parse(localStorage.getItem("user_data"));
+    console.log("asdasd", this.user);
+  },
   mounted() {
-    this.user = JSON.parse(localStorage.getItem("user"));
+    this.selectedLang();
     this.fetchUsers();
   },
+  watch: {
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
+      }
+    },
+  },
+  computed: {
+    headers() {
+      return [
+        {
+          title: this.$t("name"),
+          align: "left",
+          sortable: true,
+          key: "full_name",
+        },
+        {
+          title: this.$t("email"),
+          align: "left",
+          sortable: true, // Assuming sorting is desired
+          key: "email",
+        },
+        {
+          title: this.$t("phone"),
+          align: "left",
+          sortable: true,
+          key: "phone",
+        },
+        {
+          title: this.$t("postcode"),
+          align: "left",
+          sortable: true,
+          key: "postcode",
+        },
+        {
+          title: this.$t("role"),
+          align: "left",
+          sortable: true,
+          key: "role_display_name",
+        },
+        {
+          title: this.$t("status"),
+          align: "left",
+          sortable: false,
+          key: "status",
+        },
+        {
+          title: this.$t("actions"),
+          align: "center",
+          sortable: false,
+          key: "actions",
+        },
+        {
+          title: " ",
+          align: "center",
+        },
+      ];
+    },
+  },
+
   methods: {
+    selectedLang() {
+      this.sel_lang = localStorage.getItem("pref_lang") || "en";
+    },
+    redirectView(slug) {
+      this.$router.push({
+        name: "view-my-profile",
+        query: {
+          slug: slug,
+          from: "view",
+        },
+      });
+    },
     cancel() {
       this.showConfirmDialog = false;
     },
@@ -261,10 +317,19 @@ export default {
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetchuser")
         .then((res) => {
           this.allUsers = res.data.usersdata;
+          this.allUsers = this.allUsers.filter((elem) => {
+            console.log("dsaasd", this.user);
+            if (
+              elem.id !== this.user.id &&
+              elem.role.rolename !== "SuperUser"
+            ) {
+              return elem;
+            }
+          });
           this.initval = false;
         })
         .catch((err) => {
-          this.$toast.success(this.$t("something_went_wrong"));
+          this.$toast.error(this.$t("something_went_wrong"));
           console.log(" error" + err);
         });
     },

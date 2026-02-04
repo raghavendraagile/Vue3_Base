@@ -1,28 +1,33 @@
 <template>
   <div>
-    <div flat color="white" class="row py-5 pl-5 align-items-center">
+    <div
+      flat
+      color="white"
+      class="row py-5 pl-5 align-items-center component_app_bar position-relative"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]"
+    >
       <page-title
         class="col-md-3"
         :heading="$t('role')"
         :google_icon="google_icon"
       ></page-title>
+
       <div class="col-md-4">
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
+        <v-tooltip :text="this.$t('search')" location="bottom">
+          <template v-slot:activator="{ props }">
             <v-text-field
-              dense
+              rounded
               density="compact"
-              v-on="on"
               variant="outlined"
+              elevation="24"
+              v-bind="props"
               v-model="search"
               append-icon="search"
-              label="Search"
-              class="srch_bar"
-              small
+              v-bind:label="$t('search')"
               hide-details
+              class="srch_bar"
             ></v-text-field>
           </template>
-          <span>{{ $t("search") }}</span>
         </v-tooltip>
       </div>
 
@@ -44,9 +49,8 @@
       :search="search"
       :loading="initval"
       v-bind:no-data-text="$t('no_data_available')"
-      :footer-props="{
-        'items-per-page-text': $t('rows_per_page'),
-      }"
+      :items-per-page-text="$t('rows_per_page')"
+      v-bind:style="$route.params.lang == 'ar' ? 'direction:rtl' : ''"
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
@@ -111,6 +115,7 @@ export default {
       icon: "material-symbols-outlined",
     },
     roles: [],
+    sel_lang:""
   }),
 
   computed: {
@@ -137,15 +142,20 @@ export default {
     },
   },
 
-  watch: {
-    dialog(val) {
+    watch: {
+      dialog(val) {
       val || this.close();
     },
+    '$i18n.locale'(newLocale) {
+      if (newLocale === 'ar') {
+        this.sel_lang = 'ar';
+      } else {''
+        this.sel_lang = 'en';
+      }
+    }
   },
 
-  created() {
-    
-  },
+  created() {},
   mounted() {
     this.initialize();
   },

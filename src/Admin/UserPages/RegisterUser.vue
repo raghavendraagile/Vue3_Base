@@ -1,6 +1,6 @@
 <template>
-  <content-loader v-if="loader"></content-loader>
   <section class="vh-100 background">
+    <content-loader v-if="loader"></content-loader>
     <div class="container py-5 h-100">
       <div class="row justify-content-center align-items-center h-100">
         <div class="col-12 col-lg-9 col-xl-5">
@@ -28,9 +28,62 @@
               </div>
               <h4 class="pb-md-0 text-center">{{ $t("registration_form") }}</h4>
               <v-divider></v-divider>
-
+              <div class="d-flex">
+                <h5 class="mb-4 pt-1 mr-2">{{ $t("i_am") }}</h5>
+                <v-radio-group
+                  inline
+                  v-model="users.role_id"
+                  @update:modelValue="users.store_id = null"
+                >
+                  <v-radio v-bind:label="$t('mall_admin')" :value="2"></v-radio>
+                  <v-radio
+                    v-bind:label="$t('store_admin')"
+                    :value="3"
+                  ></v-radio>
+                </v-radio-group>
+              </div>
               <v-form ref="form" v-model="valid" lazy-validation>
                 <div class="row mt-2">
+                  <div class="col-md-12 mb-2" v-if="users.role_id == 2">
+                    <v-tooltip :text="this.$t('title')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="users.store_id"
+                          :disabled="users.id > 0"
+                          v-bind:label="$t('mall')"
+                          variant="outlined"
+                          density="compact"
+                          v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
+                          :items="malls_en"
+                          item-title="name"
+                          item-value="id"
+                          :rules="fieldRules"
+                          class="required_field"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </div>
+                  <div class="col-md-12 mb-2" v-if="users.role_id == 3">
+                    <v-tooltip :text="this.$t('title')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="users.store_id"
+                          :disabled="users.id > 0"
+                          v-bind:label="$t('store')"
+                          variant="outlined"
+                          density="compact"
+                          v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
+                          :items="stores_en"
+                          item-title="name"
+                          item-value="id"
+                          :rules="fieldRules"
+                          class="required_field"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </div>
                   <div class="col-md-6 mb-2">
                     <div class="form-outline">
                       <v-tooltip :text="this.$t('firstname')" location="bottom">
@@ -38,9 +91,10 @@
                           <v-text-field
                             v-model="users.name"
                             v-bind="props"
-                            :rules="fieldRules"
+                            :rules="fieldRules1"
                             v-bind:label="$t('firstname')"
                             required
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                             variant="outlined"
                             density="compact"
                             class="required_field"
@@ -56,9 +110,10 @@
                           <v-text-field
                             v-bind="props"
                             v-model="users.lastname"
-                            :rules="fieldRules"
+                            :rules="fieldRules1"
                             v-bind:label="$t('lastname')"
                             required
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                             variant="outlined"
                             density="compact"
                             class="required_field"
@@ -77,11 +132,12 @@
                           <v-text-field
                             v-bind="props"
                             v-model="users.email"
-                            :rules="[...fieldRules,...emailRules]"
+                            :rules="[...fieldRules1, ...emailRules]"
                             @keyup.enter="login"
                             v-bind:label="$t('email')"
                             variant="outlined"
                             density="compact"
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                             required
                             class="required_field"
                           ></v-text-field>
@@ -102,8 +158,9 @@
                           :type="show2 ? 'text' : 'password'"
                           @click:append-inner="show2 = !show2"
                           v-on="on"
+                          v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                           v-model="users.password"
-                          :rules="[...passwordRules, ...fieldRules]"
+                          :rules="[...passwordRules, ...fieldRules1]"
                           v-bind:label="$t('password')"
                           required
                           @keyup.enter="saveUser"
@@ -126,6 +183,7 @@
                           :type="show1 ? 'text' : 'password'"
                           @click:append-inner="show1 = !show1"
                           v-on="on"
+                          v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                           v-model="users.confirm_password"
                           :rules="[
                             !!users.confirm_password || $t('password_confirm'),
@@ -142,27 +200,19 @@
                     </v-tooltip>
                   </div>
                 </div>
-                <div v-if="role_array" class="row">
-                  <v-radio-group
-                    required
-                    :rules="fieldRules1"
-                    inline
-                    v-model="users.role_id"
-                    :label="$t('is_trade_or_principle')"
-                    class="radio_item"
-                  >
-                    <v-radio
-                      v-for="(role, i) in role_array"
-                      :key="i"
-                      :label="role.rolename"
-                      :value="role.id"
-                    ></v-radio>
-                  </v-radio-group>
-                </div>
               </v-form>
+              <!-- {{valid}} -->
               <div>
                 <v-btn
-                  :disabled="isDisabled || !valid"
+                  :disabled="
+                    valid == false ||
+                    !users.name ||
+                    !users.lastname ||
+                    !users.email ||
+                    !users.password ||
+                    !users.store_id ||
+                    !users.confirm_password
+                  "
                   v-bind="props"
                   :loading="isDisabled"
                   block
@@ -185,7 +235,6 @@
                   </div>
                 </div>
               </div>
-              
             </div>
           </div>
         </div>
@@ -210,23 +259,29 @@ export default {
       salutation: "",
       name: "",
       lastname: "",
-      gender: "",
+      // gender: "",
       email: "",
       password: "",
-      role_id: null,
+      role_id: 2,
+      store_id: null,
       userrole: "User",
       confirm_password: "",
     },
+    sel_lang: "en",
     app_image_url: "",
     application_name: "",
     app_name: "",
-    valid: true,
+    valid: false,
     valid_error: false,
     message: "",
     alertmessage: "",
     array_data: "",
+    stores_en: [],
+    malls_en: [],
   }),
-
+  mounted() {
+    this.selectedLang();
+  },
   computed: {
     emailRules() {
       return [
@@ -237,7 +292,7 @@ export default {
       ];
     },
     fieldRules() {
-      return [(v) => (!!v && !!v.trim()) || this.$t("field_required")];
+      return [(v) => !!v || this.$t("field_required")];
     },
     fieldRules1() {
       return [(v) => !!v || this.$t("field_required")];
@@ -250,8 +305,30 @@ export default {
   created() {
     this.fetchRoles();
     this.getAppImage();
+    this.get_stores();
   },
   methods: {
+    selectedLang() {
+      if (localStorage.getItem("pref_lang")) {
+        this.sel_lang = localStorage.getItem("pref_lang");
+      } else {
+        this.sel_lang = "en";
+      }
+    },
+    get_stores() {
+      this.initval = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-reg-stores")
+        .then((response) => {
+          console.log(response);
+          this.stores_en = response.data.stores_en;
+          this.malls_en = response.data.malls_en;
+          this.initval = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     getAppImage() {
       if (localStorageWrapper.getItem("App_Image_Url") != null) {
         this.app_image_url = localStorageWrapper.getItem("App_Image_Url");
@@ -266,7 +343,7 @@ export default {
       }
     },
     saveUser() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.form.validate() && this.valid) {
         if (this.users.password != this.users.confirm_password) {
           this.valid_error = true;
           this.alertmessage = this.$t("confirm_password_match");
@@ -283,14 +360,14 @@ export default {
                 this.loader = false;
                 this.$toast.success(res.data.message);
                 this.message = res.data.message;
-                setTimeout(
-                  () =>
-                    this.$router.replace({
-                      name: "register",
-                      query: { email: this.users.email },
-                    }),
-                  500
-                );
+
+                if (this.users.email) {
+                  localStorageWrapper.setItem("verifyemail", this.users.email);
+                }
+                this.$router.push({
+                  name: "register",
+                  query: { slug: this.users.email },
+                });
               } else {
                 this.loader = false;
                 this.isDisabled = false;
@@ -356,7 +433,6 @@ export default {
   top: 13px;
 }
 .font-login {
-  font-family: "Goudy Old Style";
   font-size: 35px;
   color: black;
   text-decoration: none;

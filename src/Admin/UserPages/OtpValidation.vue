@@ -69,6 +69,7 @@
                 {{ $t("seconds") }}
               </span>
             </span>
+
             <div class="Resendbtn">
               <v-tooltip :text="this.$t('resend_code')" location="bottom">
                 <template v-slot:activator="{ props }">
@@ -195,13 +196,10 @@ export default {
       },
       immediate: true,
     },
-    "$route.query.email": {
+    $route: {
       immediate: true,
       handler() {
-        if (this.$route.query.email) {
-          localStorage.setItem("verifyemail", this.$route.params.email);
-          this.email = this.$route.query.email;
-        }
+        this.email = localStorage.getItem("verifyemail");
       },
     },
   },
@@ -288,7 +286,7 @@ export default {
                 this.$toast.error(this.$t("something_went_wrong"));
                 this.message = this.$t("too_many_request");
                 this.isBtnLoading = false;
-                this.isDisabled = true;
+                this.isDisabled = false;
                 this.loader = false;
                 setTimeout(() => (this.isDisabled = false), 60000);
               }

@@ -4,6 +4,7 @@
       flat
       color="white"
       class="row py-5 pl-5 align-items-center component_app_bar"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
     >
       <page-title
         class="col-md-3"
@@ -28,6 +29,7 @@
           </template>
         </v-tooltip>
       </div>
+
       <div class="add_new_button">
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
@@ -37,6 +39,7 @@
                 query: {
                   countryslug: countryname,
                   statesslug: statename,
+                  s_tab: tabs,
                 },
               }"
               style="color: white"
@@ -54,13 +57,14 @@
                 name: 'states',
                 query: {
                   countryslug: countryname,
+                  s_tab: tabs,
                 },
               }"
               style="color: white"
             >
               <v-btn
                 size="small"
-                class="mb-2 ml-2"
+                class="mb-2 ml-2 mr-2"
                 color="cancel"
                 v-bind="props"
                 >{{ $t("back") }}</v-btn
@@ -70,55 +74,134 @@
         </v-tooltip>
       </div>
     </div>
+    <v-tabs v-model="tabs" color="blue">
+      <v-tab :value="1" @click="checkUploadImage">
+        <span>{{ $t("english") }}</span>
+      </v-tab>
+      <v-tab :value="2" @click="checkUploadImage">
+        <span>{{ $t("arabic") }}</span>
+      </v-tab>
+    </v-tabs>
+    <v-window v-model="tabs">
+      <!-- ENGLISH TAB STARTS -->
+      <v-window-item :value="1">
+        <v-data-table
+          :headers="headers"
+          :items="cities_en"
+          :search="search"
+          :loading="initval"
+          :no-data-text="$t('no_data_available_en')"
+          :items-per-page-text="$t('rows_per_page_en')"
+        >
+          <template v-slot:item="props">
+            <tr class="vdatatable_tbody">
+              <td>{{ props.item.selectable.name }}</td>
+              <td class="text-center px-0">
+                <router-link
+                  :to="{
+                    name: 'cities_amend',
+                    query: {
+                      slug: props.item.selectable.slug,
+                      s_tab: tabs,
+                    },
+                  }"
+                >
+                  <v-tooltip :text="this.$t('edit_en')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-icon
+                        v-on="on"
+                        small
+                        class="mr-2 edit_btn icon_size"
+                        v-bind="props"
+                        >mdi-pencil-outline</v-icon
+                      >
+                    </template>
+                  </v-tooltip>
+                </router-link>
+                <span @click="deleteItem(props.item.selectable.header_id)">
+                  <v-tooltip :text="this.$t('delete_en')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-icon
+                        class="delete_btn icon_size"
+                        v-bind="props"
+                        v-on="on"
+                        small
+                        type="button"
+                        >mdi-trash-can-outline</v-icon
+                      >
+                    </template>
+                  </v-tooltip>
+                </span>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-window-item>
+      <!-- ENGLISH TAB STOPS -->
+      <!-- ARABIC TAB STARTS -->
+      <v-window-item :value="2">
+        <v-data-table
+          :headers="headers_ar"
+          :items="cities_ar"
+          :search="search"
+          :loading="initval"
+          class="rtl-direction"
+          :no-data-text="$t('no_data_available_ar')"
+          :items-per-page-text="$t('rows_per_page_ar')"
+        >
+          <template v-slot:item="props">
+            <tr class="vdatatable_tbody">
+              <td>
+                {{
+                  props.item.selectable.name
+                    ? props.item.selectable.name
+                    : $t("not_appllicable")
+                }}
+              </td>
+              <td class="text-center px-0">
+                <router-link
+                  :to="{
+                    name: 'cities_amend',
+                    query: {
+                      slug: props.item.selectable.slug,
+                      s_tab: tabs,
+                    },
+                  }"
+                >
+                  <v-tooltip :text="this.$t('edit_ar')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-icon
+                        v-on="on"
+                        small
+                        class="mr-2 edit_btn icon_size"
+                        v-bind="props"
+                        >mdi-pencil-outline</v-icon
+                      >
+                    </template>
+                  </v-tooltip>
+                </router-link>
+                <span @click="deleteItem(props.item.selectable.header_id)">
+                  <v-tooltip :text="this.$t('delete_ar')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-icon
+                        class="delete_btn icon_size"
+                        v-bind="props"
+                        v-on="on"
+                        small
+                        type="button"
+                        >mdi-trash-can-outline</v-icon
+                      >
+                    </template>
+                  </v-tooltip>
+                </span>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-window-item>
+    </v-window>
+    <!--  ARABIC TAB ENDS-->
 
-    <v-data-table
-      :headers="headers"
-      :items="cities"
-      :search="search"
-      :loading="initval"
-    >
-      <template v-slot:item="props">
-        <tr class="vdatatable_tbody">
-          <td>{{ props.item.selectable.name }}</td>
-          <td class="text-center px-0">
-            <router-link
-              :to="{
-                name: 'cities_amend',
-                query: {
-                  slug: props.item.selectable.slug,
-                },
-              }"
-            >
-              <v-tooltip :text="this.$t('edit')" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-icon
-                    v-on="on"
-                    small
-                    class="mr-2 edit_btn icon_size"
-                    v-bind="props"
-                    >mdi-pencil-outline</v-icon
-                  >
-                </template>
-              </v-tooltip>
-            </router-link>
-            <span @click="deleteItem(props.item.selectable.id)">
-              <v-tooltip :text="this.$t('delete')" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-icon
-                    class="delete_btn icon_size"
-                    v-bind="props"
-                    v-on="on"
-                    small
-                    type="button"
-                    >mdi-trash-can-outline</v-icon
-                  >
-                </template>
-              </v-tooltip>
-            </span>
-          </td>
-        </tr>
-      </template>
-    </v-data-table>
     <ConfirmDialog
       :show="showdeleteDialog"
       :cancel="cancel"
@@ -139,25 +222,13 @@ export default {
   },
   data: () => ({
     cities: [],
-    selected_country_details: [],
+    s_country: "",
+    s_state: "",
     showdeleteDialog: false,
     delete_id: null,
     status_id: null,
     isDisabled: false,
-    headers: [
-      {
-        title: "Name",
-        align: "left",
-        sortable: true,
-        key: "name",
-      },
-      {
-        title: "Actions",
-        key: "actions",
-        align: "center",
-        sortable: false,
-      },
-    ],
+    tabs: 1,
     google_icon: {
       icon_name: "settings_suggest",
       color: "google_icon_gradient",
@@ -171,6 +242,9 @@ export default {
     message: "",
     countryname: "",
     statename: "",
+    cities_en: [],
+    cities_ar: [],
+    sel_lang: "",
     json_fields: [
       {
         label: "Name",
@@ -178,6 +252,40 @@ export default {
       },
     ],
   }),
+  computed: {
+    headers() {
+      return [
+        {
+          title: this.$t("name_en"),
+          align: "left",
+          sortable: true,
+          key: "name",
+        },
+        {
+          title: this.$t("actions_en"),
+          // key: "name",
+          align: "center",
+          sortable: false,
+        },
+      ];
+    },
+    headers_ar() {
+      return [
+        {
+          title: this.$t("name_ar"),
+          align: "left",
+          sortable: true,
+          key: "name",
+        },
+        {
+          title: this.$t("actions_ar"),
+          // key: "name",
+          align: "center",
+          sortable: false,
+        },
+      ];
+    },
+  },
   watch: {
     "$route.query.countryslug": {
       immediate: true,
@@ -195,9 +303,32 @@ export default {
         }
       },
     },
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
+      }
+    },
+    "$route.query.s_tab": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.s_tab) {
+          if (this.$route.query.s_tab == 1) {
+            this.tabs = 1;
+          } else {
+            this.tabs = 2;
+          }
+        }
+      },
+    },
   },
   mounted() {
     this.fetchcities();
+    if (this.$route.query.s_tab) {
+      this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
+    }
   },
   methods: {
     cancel() {
@@ -220,9 +351,8 @@ export default {
         .then((res) => {
           this.initval = false;
           // this.$toast.success(this.array_data);
-          this.cities = res.data.cities;
-          this.selected_country_details = res.data.countries;
-          this.selected_state_details = res.data.states;
+          this.cities_en = res.data.cities_en;
+          this.cities_ar = res.data.cities_ar;
         })
         .catch((err) => {
           this.$toast.error(this.array_data);
@@ -248,7 +378,6 @@ export default {
           if (res.data.status == "S") {
             this.$toast.success(this.array_data);
             this.fetchcities();
-            localStorage.removeItem("appimage");
           } else if (res.data.status == "E") {
             this.$toast.error(this.array_data);
           } else {

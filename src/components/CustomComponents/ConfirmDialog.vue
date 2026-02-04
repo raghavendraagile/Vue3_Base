@@ -127,16 +127,5 @@ export default {
   color: rgb(4, 206, 4);
   font-size: 15px;
 }
-.outline-no {
-  /* -webkit-text-stroke: 0.9px red;
-  -webkit-text-fill-color: rgb(255, 255, 255); */
-}
-.outline-ok{
-  /* -webkit-text-stroke: 0.9px blue;
-  -webkit-text-fill-color: rgb(255, 255, 255); */
-}
-.outline-yes {
-  /* -webkit-text-stroke: 0.9px rgb(4, 206, 4);
-  -webkit-text-fill-color: rgb(255, 255, 255); */
-}
+
 </style>

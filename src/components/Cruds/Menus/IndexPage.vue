@@ -3,7 +3,8 @@
     <div
       flat
       color="white"
-      class="row py-5 pl-5 align-items-center component_app_bar"
+      class="row py-5 pl-5 align-items-center component_app_bar position-relative"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]"
     >
       <page-title
         class="col-md-3"
@@ -49,6 +50,7 @@
       :footer-props="{
         'items-per-page-text': $t('rows_per_page'),
       }"
+      v-bind:style="$route.params.lang == 'ar' ? 'direction:rtl' : ''"
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
@@ -184,6 +186,13 @@ export default {
     dialog(val) {
       val || this.close();
     },
+     '$i18n.locale'(newLocale) {
+      if (newLocale === 'ar') {
+        this.sel_lang = 'ar';
+      } else {''
+        this.sel_lang = 'en';
+      }
+    }
   },
 
   created() {

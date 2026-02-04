@@ -30,15 +30,22 @@ const mutations = {
 const actions = {
   loginRequest({ commit }, data) {
     // commit("setErrors", {}, { root: true });
+    console.log('inside login');
+    console.log(process.env.VUE_APP_API_URL_ADMIN);
     return axios
       .post(process.env.VUE_APP_API_URL_ADMIN + "login", data)
       .then((res) => {
+        console.log('inside res');
+        console.log(res);
         if (res.data.status == "S") {
-          commit("setUserData", res.data.userdata);
+          console.log(res.data.user);
+          commit("setUserData", res.data.user);
           commit("setAuthentication", true);
           // const parsedUserData = JSON.stringify(res.data.userdata);
+          console.log('res.data.user');
+          console.log(res.data.user);
           localStorageWrapper.setItem("access_token", res.data.access_token);
-          localStorageWrapper.setItem("user_data", JSON.stringify(res.data.userdata));
+          localStorageWrapper.setItem("user_data", JSON.stringify(res.data.user));
           setTimeout(() => {
             commit("updateLoggedIn");
           }, 3000);
@@ -51,17 +58,10 @@ const actions = {
       // });
   },
 
-  // logoutRequest({ commit }) {
-  //   axios
-  //     .post(process.env.VUE_APP_API_URL_ADMIN + "logout")
-  //     .then(() => {
-  //       commit("setUserData", null);
-  //       commit("setAuthentication", false);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // },
+  logoutUser({ commit }) {
+    localStorage.clear();
+    commit("setAuthentication", false);
+  },
 };
 
 export default {

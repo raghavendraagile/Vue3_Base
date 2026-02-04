@@ -1,78 +1,346 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="container my-3 p-0">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('create_lookup')"
         :google_icon="google_icon"
       ></page-title>
     </div>
-
     <div class="card-body">
       <content-loader v-if="loader"></content-loader>
-      <v-form ref="form" v-model="valid">
-        <v-row class="mx-auto mt-2" max-width="344">
-          <v-col md="6">
-            <v-tooltip :text="this.$t('shortname')" location="bottom">
-              <template v-slot:activator="{ props }">
-                <v-text-field
-                  v-on="on"
-                  v-model="lookup.shortname"
-                  v-bind="props"
-                  :rules="fieldRules"
-                  v-bind:label="$t('shortname')"
-                  required
-                  class="required_field"
-                  variant="outlined"
-                  density="compact"
-                  maxlength="100"
-                ></v-text-field>
-              </template>
-            </v-tooltip>
-          </v-col>
-          <v-col md="6">
-            <v-tooltip :text="this.$t('longname')" location="bottom">
-              <template v-slot:activator="{ props }">
-                <v-text-field
-                  v-on="on"
-                  v-model="lookup.longname"
-                  v-bind="props"
-                  :rules="fieldRules"
-                  v-bind:label="$t('longname')"
-                  required
-                  class="required_field"
-                  variant="outlined"
-                  density="compact"
-                  maxlength="500"
-                ></v-text-field>
-              </template>
-            </v-tooltip>
-          </v-col>
-        </v-row>
-        <v-layout>
-          <v-row class="mx-auto mt-2" max-width="344">
-            <v-col md="12">
-              <v-tooltip :text="this.$t('description')" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-textarea
-                    v-on="on"
-                    rows="2"
-                    v-model="lookup.description"
-                    v-bind="props"
-                    :rules="fieldRules"
-                    v-bind:label="$t('description')"
-                    required
-                    class="required_field"
-                    variant="outlined"
-                    maxlength="100"
-                    counter="true"
-                  ></v-textarea>
-                </template>
-              </v-tooltip>
-            </v-col>
-          </v-row>
-        </v-layout>
-      </v-form>
+      <v-tabs v-model="tabs" color="blue">
+        <v-tab :value="1" @click="checkUploadImage">
+          <span>{{ $t("english") }}</span>
+        </v-tab>
+        <v-tab :value="2" @click="checkUploadImage">
+          <span>{{ $t("arabic") }}</span>
+        </v-tab>
+      </v-tabs>
+      <v-window v-model="tabs">
+        <!-- ENGLISH TAB STARTS -->
+        <v-window-item :value="1">
+          <v-form ref="form" v-model="valid">
+            <v-row class="mx-auto mt-2" max-width="344">
+              <v-col md="6">
+                <v-tooltip :text="this.$t('shortname_en')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-on="on"
+                      :readonly="lookup[0].id > 0"
+                      v-model="lookup[0].shortname"
+                      v-bind="props"
+                      :rules="fieldRules"
+                      v-bind:label="$t('shortname_en')"
+                      required
+                      class="required_field"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="100"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col md="6">
+                <v-tooltip :text="this.$t('longname_en')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-on="on"
+                      v-model="lookup[0].longname"
+                      v-bind="props"
+                      :rules="fieldRules"
+                      v-bind:label="$t('longname_en')"
+                      required
+                      class="required_field"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="500"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+            </v-row>
+            <v-layout>
+              <v-row class="mx-auto mt-2" max-width="344">
+                <v-col md="12">
+                  <v-tooltip
+                    :text="this.$t('description_en')"
+                    location="bottom"
+                  >
+                    <template v-slot:activator="{ props }">
+                      <v-textarea
+                        v-on="on"
+                        rows="2"
+                        v-model="lookup[0].description"
+                        v-bind="props"
+                        v-bind:label="$t('description_en')"
+                        required
+                        variant="outlined"
+                        maxlength="100"
+                        counter="true"
+                      ></v-textarea>
+                    </template>
+                  </v-tooltip>
+                </v-col>
+                <v-col cols="12" sm="12" md="2">
+                  <v-tooltip :text="$t('sequence_en')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-text-field
+                        v-bind="props"
+                        v-model="lookup[0].seq"
+                        @update:modelValue="(value) => updateSeq(value, 1)"
+                        maxlength="5"
+                        v-bind:label="$t('sequence_en')"
+                        required
+                        :rules="seqRules"
+                        variant="outlined"
+                        density="compact"
+                        v-on:keypress="NumbersOnly"
+                      ></v-text-field>
+                    </template>
+                  </v-tooltip>
+                </v-col>
+              </v-row>
+            </v-layout>
+            <v-row class="mx-auto mt-2" max-width="344">
+              <v-col md="6" v-if="enable_upload_image == 1">
+                <div>
+                  <div class="image-container">
+                    <v-hover v-slot="{ isHovering, props }">
+                      <div style="position: relative" v-bind="props">
+                        <img
+                          v-bind:style="
+                            isHovering == true ? 'filter: blur(1px);' : ''
+                          "
+                          v-if="lookup[0].icon != '' && lookup[0].icon != null"
+                          :src="envImagePath + lookup[0].icon"
+                          width="100"
+                          height="85
+                          "
+                          alt
+                        />
+                        <img
+                          v-bind:style="
+                            isHovering == true ? 'filter: blur(1px);' : ''
+                          "
+                          v-else
+                          src="@/assets/images/upload_image_default.png"
+                          width="100"
+                        />
+                        <div v-show="isHovering" class="camera-icon">
+                          <v-icon @click="uploadFile">mdi-camera</v-icon>
+                        </div>
+                      </div>
+                    </v-hover>
+                  </div>
+                  <v-tooltip :text="this.$t('download_en')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <a class="text-center pointer download_icon">
+                        <span
+                          ><v-icon
+                            v-if="lookup[0].icon"
+                            v-bind="props"
+                            class="mr-2"
+                            @click="downloadImage(lookup[0].icon)"
+                            >mdi mdi-download</v-icon
+                          ></span
+                        >
+                      </a>
+                    </template>
+                  </v-tooltip>
+                  <v-tooltip :text="this.$t('delete_en')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <span>
+                        <v-icon
+                          small
+                          v-if="lookup[0].icon"
+                          v-bind="props"
+                          class="mr-2 edit_btn icon_size delete_icon"
+                          @click="removeImage(0)"
+                          >mdi mdi-trash-can-outline</v-icon
+                        >
+                      </span>
+                    </template>
+                  </v-tooltip>
+                </div>
+                <br />
+                <Imageupload
+                  :folder="'lookups'"
+                  :resizewidth="200"
+                  :resizeheight="200"
+                  @uploaded_image="uploaded_image"
+                  :upload_profile="uploadfile"
+                />
+                <div class="dimension_text">200 : 200</div>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-window-item>
+        <!-- ENGLISH TAB STOPS -->
+        <!-- ARABIC TAB STARTS -->
+        <v-window-item :value="2">
+          <v-form ref="form" v-model="valid" style="direction: rtl">
+            <v-row class="mx-auto mt-2" max-width="344">
+              <v-col md="6">
+                <v-tooltip :text="this.$t('shortname_ar')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-on="on"
+                      :readonly="lookup[1].id > 0"
+                      v-model="lookup[1].shortname"
+                      v-bind="props"
+                      :rules="fieldRules"
+                      v-bind:label="$t('shortname_ar')"
+                      required
+                      class="required_field rtl"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="100"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+              <v-col md="6">
+                <v-tooltip :text="this.$t('longname_ar')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-on="on"
+                      v-model="lookup[1].longname"
+                      v-bind="props"
+                      :rules="fieldRules"
+                      v-bind:label="$t('longname_ar')"
+                      required
+                      class="required_field rtl"
+                      variant="outlined"
+                      density="compact"
+                      maxlength="500"
+                    ></v-text-field>
+                  </template>
+                </v-tooltip>
+              </v-col>
+            </v-row>
+            <v-layout>
+              <v-row class="mx-auto mt-2" max-width="344">
+                <v-col md="12">
+                  <v-tooltip
+                    :text="this.$t('description_ar')"
+                    location="bottom"
+                  >
+                    <template v-slot:activator="{ props }">
+                      <v-textarea
+                        v-on="on"
+                        rows="2"
+                        v-model="lookup[1].description"
+                        v-bind="props"
+                        v-bind:label="$t('description_ar')"
+                        required
+                        class="rtl"
+                        variant="outlined"
+                        maxlength="100"
+                        counter="true"
+                      ></v-textarea>
+                    </template>
+                  </v-tooltip>
+                </v-col>
+                <v-col cols="12" sm="12" md="2">
+                  <v-tooltip :text="$t('sequence_ar')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-text-field
+                        v-bind="props"
+                        v-model="lookup[1].seq"
+                        @update:modelValue="(value) => updateSeq(value, 0)"
+                        maxlength="5"
+                        v-bind:label="$t('sequence_ar')"
+                        required
+                        :rules="seqRulesAR"
+                        variant="outlined"
+                        density="compact"
+                        v-on:keypress="NumbersOnly"
+                      ></v-text-field>
+                    </template>
+                  </v-tooltip>
+                </v-col>
+              </v-row>
+            </v-layout>
+            <v-row class="mx-auto mt-2" max-width="344">
+              <v-col md="6">
+                <div>
+                  <div class="image-container">
+                    <v-hover v-slot="{ isHovering, props }">
+                      <div style="position: relative" v-bind="props">
+                        <img
+                          v-bind:style="
+                            isHovering == true ? 'filter: blur(1px);' : ''
+                          "
+                          v-if="lookup[1].icon != '' && lookup[1].icon != null"
+                          :src="envImagePath + lookup[1].icon"
+                          width="100"
+                          height="85
+                          "
+                          alt
+                        />
+                        <img
+                          v-bind:style="
+                            isHovering == true ? 'filter: blur(1px);' : ''
+                          "
+                          v-else
+                          src="@/assets/images/upload_image_default.png"
+                          width="100"
+                        />
+                        <div v-show="isHovering" class="camera-icon">
+                          <v-icon @click="uploadFile_ar">mdi-camera</v-icon>
+                        </div>
+                      </div>
+                    </v-hover>
+                  </div>
+                  <v-tooltip :text="this.$t('download_ar')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <a class="text-center pointer download_icon">
+                        <span
+                          ><v-icon
+                            v-if="lookup[1].icon"
+                            v-bind="props"
+                            class="mr-2"
+                            @click="downloadImage(lookup[1].icon)"
+                            >mdi mdi-download</v-icon
+                          ></span
+                        >
+                      </a>
+                    </template>
+                  </v-tooltip>
+                  <v-tooltip :text="this.$t('delete_ar')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <span>
+                        <v-icon
+                          small
+                          v-if="lookup[1].icon"
+                          v-bind="props"
+                          class="mr-2 edit_btn icon_size delete_icon_ar"
+                          @click="removeImage(1)"
+                          >mdi mdi-trash-can-outline</v-icon
+                        >
+                      </span>
+                    </template>
+                  </v-tooltip>
+                </div>
+                <br />
+                <Imageupload
+                  :folder="'lookups'"
+                  :resizewidth="200"
+                  :resizeheight="200"
+                  @uploaded_image="uploaded_image_ar"
+                  :upload_profile="uploadfile_ar"
+                />
+                <div class="dimension_text">200 : 200</div>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-window-item>
+      </v-window>
+      <!--  ARABIC TAB ENDS-->
     </div>
     <div class="d-block mr-4 mt-3 pb-3 text-right">
       <v-tooltip :text="this.$t('cancel')" location="bottom">
@@ -81,7 +349,7 @@
             <v-btn
               v-bind="props"
               size="small"
-              @click="$router.go(-1)"
+              @click="cancel()"
               :disabled="loading"
               class="ma-1"
               color="cancel"
@@ -118,7 +386,9 @@
 </template>
 
 <script>
+import Imageupload from "../../CustomComponents/ImageUpload.vue";
 export default {
+  components: { Imageupload },
   data: () => ({
     google_icon: {
       icon_name: "edit_note",
@@ -133,25 +403,57 @@ export default {
     showupload: "",
     isDisabled: false,
     checkbox_value: false,
-    lookup: {
-      id: 0,
-      shortname: "",
-      longname: "",
-      description: "",
-      parentslug: "",
-    },
+    lookup: [
+      {
+        id: 0,
+        header_id: 0,
+        lang: "en",
+        seq: "",
+        shortname: "",
+        longname: "",
+        description: "",
+        parentslug: "",
+        icon: "",
+      },
+      {
+        id: 0,
+        header_id: 0,
+        lang: "ar",
+        seq: "",
+        shortname: "",
+        longname: "",
+        description: "",
+        parentslug: "",
+        icon: "",
+      },
+    ],
+    parentslug: "",
+    // parentname: "",
     noimagepreview: "",
     items: [],
     parentlookup: [],
+    tabs: 1,
+    envImagePath: process.env.VUE_APP_IMAGE_PATH,
+    enable_upload_image: 1,
+    uploadfile: false,
+    uploadfile_ar: false,
+    parent_en: "",
+    parent_ar: "",
+    sel_lang: "",
   }),
 
   computed: {
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
     },
-
     numberRules() {
       return [(v) => !!v || this.$t("number_required")];
+    },
+    seqRules() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required")];
+    },
+    seqRulesAR() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required_ar")];
     },
   },
 
@@ -163,17 +465,23 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(
-              process.env.VUE_APP_API_URL_ADMIN +
-                "lookups/" +
-                this.$route.query.slug +
-                "/edit"
-            )
+            .get(process.env.VUE_APP_API_URL_ADMIN + "child_lookups_edit", {
+              params: {
+                slug: this.$route.query.slug,
+              },
+            })
             .then((res) => {
-              this.lookup = res.data.lookup;
-              // this.lookup.parentslug = this.lookup.parentlookup.slug;
-              this.parentlookup = this.lookup.parentlookup;
-              this.loader = false;
+              if (res.data.status == "S") {
+                this.lookup = res.data.lookup;
+                this.parentslug = res.data.parent_slug;
+                this.parent_en = res.data.parent_name;
+                this.lookup[0].parentslug = this.parentslug;
+                this.lookup[1].parentslug = this.parentslug;
+                this.loader = false;
+              }
+            })
+            .catch((err) => {
+              console.log(err);
             });
         }
       },
@@ -182,13 +490,84 @@ export default {
       immediate: true,
       handler() {
         if (this.$route.query.parentslug) {
-          this.lookup.parentslug = this.$route.query.parentslug;
+          this.parentslug = this.$route.query.parentslug;
+          this.lookup[0].parentslug = this.parentslug;
+          this.lookup[1].parentslug = this.parentslug;
           this.fetchparentlookup();
+        }
+      },
+    },
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
+      }
+    },
+    "$route.query.s_tab": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.s_tab) {
+          if (this.$route.query.s_tab == 1) {
+            this.tabs = 1;
+          } else {
+            this.tabs = 2;
+          }
         }
       },
     },
   },
   methods: {
+    updateSeq(value, index) {
+      this.lookup[index].seq = value;
+    },
+    NumbersOnly(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
+    checkUploadImage() {
+      this.enable_upload_image = this.tabs;
+    },
+    uploaded_image(img_src) {
+      this.lookup[0].icon = img_src;
+    },
+    uploaded_image_ar(img_src_ar) {
+      this.lookup[1].icon = img_src_ar;
+    },
+    uploadFile() {
+      if (this.uploadfile == false) {
+        this.uploadfile = true;
+      } else {
+        this.uploadfile = false;
+      }
+    },
+    uploadFile_ar() {
+      if (this.uploadfile_ar == false) {
+        this.uploadfile_ar = true;
+      } else {
+        this.uploadfile_ar = false;
+      }
+    },
+    updateFile(filepath) {
+      this.lookup[0].icon = filepath;
+    },
+    updateFile_ar(filepath_ar) {
+      this.lookup[1].icon = filepath_ar;
+    },
+
+    downloadImage(image_url) {
+      window.open(this.envImagePath + image_url, "_blank");
+    },
     onFileChanged(e) {
       this.selectedFile = e.target.files[0];
 
@@ -214,12 +593,12 @@ export default {
             if (res.data.status == "S") {
               this.$toast.success(this.array_data);
               this.message = res.data.message;
-              this.lookup.slug = res.data.lookups.slug;
               this.$router.push({
                 name: "child_lookup",
                 query: {
-                  slug: this.parentlookup.slug,
-                  parentname: this.parentlookup.shortname,
+                  slug: this.parentslug,
+                  s_tab: this.tabs,
+                  // parentname: this.parent_en,
                 },
               });
             } else if (res.data.status == "E") {
@@ -233,6 +612,11 @@ export default {
           })
           .catch((err) => {
             console.log(err);
+          })
+          .finally(() => {
+            this.isDisabled = false;
+            this.isBtnLoading = false;
+            this.btnloading = false;
           });
       } else {
         //alert("Form is Invalid");
@@ -241,15 +625,32 @@ export default {
     fetchparentlookup() {
       this.$axios
         .post(process.env.VUE_APP_API_URL_ADMIN + "fetch_parent_lookup", {
-          slug: this.lookup.parentslug,
+          slug: this.parentslug,
         })
         .then((res) => {
-          this.parentlookup = res.data.lookups;
+          this.parent_en = res.data.parent_en;
+          this.parent_ar = res.data.parent_ar;
           this.loader = false;
         });
     },
     clear() {
       this.$refs.form.reset();
+    },
+    removeImage(index) {
+      if (index == 1) {
+        this.lookup[1].icon = null;
+      } else {
+        this.lookup[0].icon = null;
+      }
+    },
+    cancel() {
+      this.$router.push({
+        name: "child_lookup",
+        query: {
+          slug: this.parentslug,
+          s_tab: this.tabs,
+        },
+      });
     },
   },
 };
@@ -271,5 +672,29 @@ input.larger {
 .image-width {
   border: 2px solid black;
   padding: 1px;
+}
+.delete_icon {
+  position: relative;
+  left: 85px;
+  bottom: 90px;
+}
+.delete_icon_ar {
+  position: relative;
+  left: 85px;
+  bottom: 90px;
+}
+.download_icon {
+  position: relative;
+  left: 116px;
+  bottom: 52px;
+}
+.download_icon_ar {
+  position: relative;
+  bottom: 45px;
+  right: 110px;
+}
+
+.dimension_text {
+  text-align-last: start;
 }
 </style>

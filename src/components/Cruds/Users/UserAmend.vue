@@ -1,6 +1,6 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="container my-3 p-0">
+    <div class="my-3 p-0">
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('create_user')"
@@ -27,7 +27,7 @@
                         item-title="longname"
                         v-model="profile_details.salutation"
                         :rules="fieldRules"
-                        :items="salutation_array"
+                        :items="salutation_array_en"
                         class="required_field"
                       ></v-autocomplete>
                     </template>
@@ -77,12 +77,12 @@
                       <v-autocomplete
                         v-bind:label="$t('gender')"
                         index="id"
-                        item-key="longname"
+                        item-key="shortname"
                         item-title="longname"
                         v-model="profile_details.gender"
                         :rules="fieldRules"
                         class="required_field"
-                        :items="gender_array"
+                        :items="gender_array_en"
                         v-bind="props"
                         variant="outlined"
                         density="compact"
@@ -94,13 +94,14 @@
                 <v-col cols="12" md="3" sm="3" lg="3">
                   <DatePicker
                     :label="$t('dob')"
+                    :max="new Date().toISOString().substr(0, 10)"
                     :stored_date="profile_details.dob"
                     @formatted_date="formatted_from_date"
                     dense
                     v-model="profile_details.dob"
                   />
                 </v-col>
-                
+
                 <v-col
                   cols="12"
                   md="4"
@@ -109,7 +110,7 @@
                   v-if="from_page == 'view_profile'"
                 >
                 </v-col>
-                <v-col cols="12" md="4" lg="4" sm="4" v-else>
+                <v-col cols="12" md="3" lg="3" sm="3" v-else>
                   <v-tooltip :text="$t('role')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-autocomplete
@@ -119,6 +120,7 @@
                         v-bind="props"
                         variant="outlined"
                         density="compact"
+                        :disabled="profile_details.id > 0"
                         item-title="role_display_name"
                         item-value="id"
                         v-model="profile_details.role_id"
@@ -128,6 +130,56 @@
                       ></v-autocomplete>
                     </template>
                     <span>{{ $t("role") }}</span>
+                  </v-tooltip>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="4"
+                  sm="4"
+                  lg="4"
+                  v-if="profile_details.role_id == 2"
+                >
+                  <v-tooltip :text="this.$t('title')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-autocomplete
+                        v-bind="props"
+                        v-model="profile_details.store_id"
+                        :disabled="profile_details.id > 0"
+                        v-bind:label="$t('store')"
+                        variant="outlined"
+                        density="compact"
+                        :items="malls_en"
+                        item-title="name"
+                        item-value="header_id"
+                        :rules="fieldRules"
+                        class="required_field"
+                      ></v-autocomplete>
+                    </template>
+                  </v-tooltip>
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="4"
+                  sm="4"
+                  lg="4"
+                  v-if="profile_details.role_id == 3"
+                >
+                  <v-tooltip :text="this.$t('title')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-autocomplete
+                        v-bind="props"
+                        v-model="profile_details.store_id"
+                        :disabled="profile_details.id > 0"
+                        v-bind:label="$t('store')"
+                        variant="outlined"
+                        density="compact"
+                        :items="stores_en"
+                        item-title="name"
+                        item-value="header_id"
+                        :rules="fieldRules"
+                        class="required_field"
+                      ></v-autocomplete>
+                    </template>
                   </v-tooltip>
                 </v-col>
               </v-row>
@@ -149,8 +201,28 @@
                     </template>
                   </v-tooltip>
                 </v-col>
-
-                <v-col cols="12" md="3" lg="3" sm="3" px-2>
+                <v-col cols="12" md="3" sm="3" lg="3">
+                  <v-tooltip :text="$t('mobile_code')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-autocomplete
+                        v-bind:label="$t('mobile_code')"
+                        v-bind="props"
+                        variant="outlined"
+                        density="compact"
+                        index="id"
+                        item-key="header_id"
+                        item-value="header_id"
+                        item-title="mobile_code"
+                        v-model="profile_details.mobile_code"
+                        @update:model-value="
+                          changeCountry(profile_details.mobile_code)
+                        "
+                        :items="country_array_en"
+                      ></v-autocomplete>
+                    </template>
+                  </v-tooltip>
+                </v-col>
+                <v-col cols="12" md="4" lg="4" sm="4" px-2>
                   <v-tooltip :text="$t('phone_number')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-text-field
@@ -159,7 +231,7 @@
                         v-bind="props"
                         variant="outlined"
                         density="compact"
-                        maxlength="12"
+                        :maxlength="phonelength"
                         v-model="profile_details.phone"
                         @keypress="isNumber($event)"
                         required
@@ -168,7 +240,6 @@
                   </v-tooltip>
                 </v-col>
               </v-row>
-
               <v-row class="mt-1 px-4">
                 <v-col cols="12" md="3" sm="3" lg="3">
                   <v-tooltip :text="$t('country')" location="bottom">
@@ -179,13 +250,14 @@
                         variant="outlined"
                         density="compact"
                         index="id"
-                        item-key="name"
+                        item-key="header_id"
+                        item-value="header_id"
                         item-title="name"
                         v-model="profile_details.country"
                         @update:model-value="
                           fetchStates(profile_details.country)
                         "
-                        :items="country_array"
+                        :items="country_array_en"
                       ></v-autocomplete>
                     </template>
                   </v-tooltip>
@@ -200,7 +272,8 @@
                         variant="outlined"
                         density="compact"
                         index="id"
-                        item-key="name"
+                        item-key="header_id"
+                        item-value="header_id"
                         item-title="name"
                         v-model="profile_details.state"
                         @update:model-value="
@@ -220,7 +293,8 @@
                         variant="outlined"
                         density="compact"
                         index="id"
-                        item-key="name"
+                        item-key="header_id"
+                        item-value="header_id"
                         item-title="name"
                         v-model="profile_details.city"
                         :items="city_array"
@@ -274,7 +348,7 @@
                         v-bind="props"
                         variant="outlined"
                         density="compact"
-                        maxlength="250"
+                        maxlength="2000"
                         counter="true"
                         v-model="profile_details.description"
                         v-bind:label="$t('description')"
@@ -285,7 +359,6 @@
                 </v-col>
               </v-row>
             </div>
-
             <div class="col-md-2 pb-8 pr-8">
               <center>
                 <div>
@@ -296,19 +369,22 @@
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
-                          v-if="profile_details.image_url != null"
-                          :src="envImagePath + profile_details.image_url"
+                          v-if="
+                            profile_details.image_url == '' ||
+                            profile_details.image_url == null
+                          "
+                          src="@/assets/images/upload_image_default.png"
                           width="100"
-                          height="100"
-                          alt
                         />
                         <img
                           v-bind:style="
                             isHovering == true ? 'filter: blur(1px);' : ''
                           "
                           v-else
-                          src="@/assets/images/avatars/default.png"
+                          :src="envImagePath + profile_details.image_url"
                           width="100"
+                          height="85"
+                          alt
                         />
                         <div v-show="isHovering" class="camera-icon">
                           <v-icon @click="uploadFile">mdi-camera</v-icon>
@@ -316,35 +392,52 @@
                       </div>
                     </v-hover>
                   </div>
-                  <!-- @click="uploadFile" -->
-                  <!-- <v-avatar color="surface-variant" size="80" @click="uploadFile"  class="avatar-icon">
-                    <img
-                        v-if="profile_details.image_url != null"
-                        width="135"
-                        class="rounded-circle avatar-image"
-                        :src="image_upload_url + profile_details.image_url"
-                        alt
-                      />
-                      <img
-                        v-else
-                        width="88"
-                        class="rounded-circle avatar-image"
-                        src="@/assets/images/avatars/13.png"
-                        alt
-                      />
-                  <div class=camera-icon>
-                 <v-icon class="camera-icon">mdi-camera</v-icon>
-                 </div>
-                  </v-avatar> -->
+                  <v-tooltip :text="this.$t('download')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <a class="text-center pointer download_icon">
+                        <span
+                          ><v-icon
+                            v-if="profile_details.image_url"
+                            v-bind="props"
+                            class="mr-2"
+                            @click="downloadImage(profile_details.image_url)"
+                            >mdi mdi-download</v-icon
+                          ></span
+                        >
+                      </a>
+                    </template>
+                  </v-tooltip>
+                  <v-tooltip :text="this.$t('delete')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <span
+                        v-bind="props"
+                        v-if="
+                          profile_details.image_url == '' ||
+                          profile_details.image_url == null
+                        "
+                      >
+                      </span>
+                      <span v-else>
+                        <v-icon
+                          v-bind="props"
+                          small
+                          class="mr-2 edit_btn icon_size delete_icon"
+                          @click="removeImage"
+                          >mdi mdi-trash-can-outline</v-icon
+                        >
+                      </span>
+                    </template>
+                  </v-tooltip>
                 </div>
                 <br />
                 <Imageupload
                   :folder="'user_profile'"
-                  :resizewidth="0.3"
-                  :resizeheight="0.4"
+                  :resizewidth="200"
+                  :resizeheight="200"
                   @uploaded_image="uploaded_image"
                   :upload_profile="uploadfile"
                 />
+                <div class="dimension_text">200 : 200</div>
               </center>
             </div>
           </div>
@@ -357,7 +450,7 @@
               <v-btn
                 v-bind="props"
                 size="small"
-                @click="$router.go(-1)"
+                @click="cancel()"
                 :disabled="loading"
                 class="ma-1"
                 color="cancel"
@@ -393,7 +486,7 @@
     </div>
   </div>
 </template>
-  
+
 <script>
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 import DatePicker from "../../CustomComponents/DatePicker.vue";
@@ -407,7 +500,6 @@ export default {
       icon: "material-symbols-outlined",
     },
     envImagePath: process.env.VUE_APP_IMAGE_PATH,
-
     valid: false,
     valid_error: false,
     message: "",
@@ -416,6 +508,8 @@ export default {
     loading: false,
     isDisabled: false,
     from_page: "",
+    stores_en: [],
+    malls_en: [],
     profile_details: {
       id: 0,
       salutation: null,
@@ -436,16 +530,20 @@ export default {
       description: "",
       role_id: null,
       phone: "",
+      mobile_code: null,
+      store_id: null,
     },
+    user: "",
     role_array_view_profile: [],
     uploadfile: false,
-    user: "",
+    phonelength: "10",
     role_array: [],
-    salutation_array: [],
-    gender_array: [],
-    country_array: [],
+    salutation_array_en: [],
+    gender_array_en: [],
+    country_array_en: [],
     state_array: [],
     city_array: [],
+    sel_lang: "en",
   }),
 
   computed: {
@@ -466,7 +564,7 @@ export default {
     },
 
     postcodeRules() {
-      return [(v) => (v >= 0 && v <= 9999) || this.$t("postcode_valid")];
+      return [(v) => (v >= 0 && v <= 999999) || this.$t("postcode_valid")];
     },
 
     fieldRules() {
@@ -476,11 +574,19 @@ export default {
 
   created() {
     this.fetchlookup();
-    this.fetchRoles();
     this.get_countries();
     this.user = JSON.parse(localStorage.getItem("user_data"));
   },
+  mounted() {
+    this.sel_lang = this.$i18n.locale;
+    this.get_stores();
+    this.get_malls();
+    this.fetchRoles();
+  },
   watch: {
+    "$i18n.locale"(newVal) {
+      this.sel_lang = newVal;
+    },
     "$route.query.slug": {
       immediate: true,
       handler() {
@@ -520,6 +626,38 @@ export default {
     },
   },
   methods: {
+    changeCountry(header_id) {
+      this.profile_details.country = header_id;
+      this.fetchStates(this.profile_details.country);
+      this.profile_details.state = null;
+      this.profile_details.city = null;
+    },
+    get_stores() {
+      this.initval = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-stores")
+        .then((response) => {
+          console.log(response);
+          this.stores_en = response.data.stores_en;
+          this.initval = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    get_malls() {
+      this.initval = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-malls")
+        .then((response) => {
+          console.log(response);
+          this.malls_en = response.data.malls_en;
+          this.initval = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     isNumber(evt) {
       evt = evt ? evt : window.event;
       var charCode = evt.which ? evt.which : evt.keyCode;
@@ -541,19 +679,22 @@ export default {
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_countries")
         .then((response) => {
           console.log(response);
-          this.country_array = response.data.countries;
+          this.country_array_en = response.data.countries_en;
           this.initval = false;
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    fetchStates(name) {
+    fetchStates(country_id) {
+      this.profile_details.mobile_code = country_id;
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_states_name/" + name)
+        .get(
+          process.env.VUE_APP_API_URL_ADMIN + "fetch_states_name/" + country_id
+        )
         .then((response) => {
-          this.state_array = response.data.states;
+          this.state_array = response.data.states_en;
           this.initval = false;
           this.city_array = [];
         })
@@ -561,13 +702,13 @@ export default {
           console.log(err);
         });
     },
-    fetch_cities(name) {
+    fetch_cities(city_id) {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_cities_name/" + name)
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_cities_name/" + city_id)
         .then((response) => {
           console.log(response);
-          this.city_array = response.data.cities;
+          this.city_array = response.data.cities_en;
           this.initval = false;
         })
         .catch((err) => {
@@ -582,26 +723,26 @@ export default {
     },
     fetchlookup() {
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetchlookup", {
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_lang_lookup", {
           params: {
             lookup_type: "SALUTATION",
           },
         })
         .then((response) => {
-          this.salutation_array = response.data.lookup_details;
+          this.salutation_array_en = response.data.lookup_en;
         })
         .catch((err) => {
           console.log(err);
         });
-      
+
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetchlookup", {
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_lang_lookup", {
           params: {
             lookup_type: "GENDER",
           },
         })
         .then((response) => {
-          this.gender_array = response.data.lookup_details;
+          this.gender_array_en = response.data.lookup_en;
         })
         .catch((err) => {
           console.log(err);
@@ -614,12 +755,19 @@ export default {
         .then((response) => {
           this.role_array_view_profile = response.data.roles;
           this.role_array = response.data.roles;
-
-          this.role_array = this.role_array.filter((ele) => {
-            if (ele.rolename == "Admin" && this.from_page == "") {
-              this.profile_details.role_id = ele.id;
-            }
-          });
+          if (
+            this.user.rolename == "SuperUser" &&
+            this.profile_details.id == 0
+          ) {
+            this.role_array_view_profile = this.role_array.filter((ele) => {
+              return ele.rolename != "SuperUser";
+            });
+          }
+          if (this.user.rolename == "MallAdmin") {
+            this.role_array_view_profile = this.role_array.filter((ele) => {
+              return ele.rolename != "SuperUser" && ele.rolename != "MallAdmin";
+            });
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -650,6 +798,7 @@ export default {
                   name: "view-my-profile",
                   query: {
                     slug: this.profile_details.slug,
+                    from: this.$route.query.from,
                   },
                 });
               }
@@ -669,6 +818,18 @@ export default {
           });
       }
     },
+    cancel() {
+      this.$router.push({
+        name: "users",
+      });
+    },
+    removeImage() {
+      this.profile_details.image_url = null;
+    },
+
+    downloadImage(image_url) {
+      window.open(this.envImagePath + image_url, "_blank");
+    },
   },
 };
 </script>
@@ -684,5 +845,23 @@ export default {
   left: 40px;
   animation: fadeInUp 0.5s forwards;
 }
+.delete_icon {
+  position: relative;
+  left: 70px;
+  bottom: 120px;
+}
+.download_btn_color {
+  color: blue;
+}
+.pointer {
+  cursor: pointer;
+}
+.download_icon {
+  position: relative;
+  left: 103px;
+  bottom: 70px;
+}
+.dimension_text {
+  text-align-last: center;
+}
 </style>
-  

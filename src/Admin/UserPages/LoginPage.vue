@@ -1,53 +1,55 @@
 <template>
-  <content-loader v-if="loader"></content-loader>
   <v-app>
+    <content-loader v-if="loader"></content-loader>
     <div>
       <transition name="fade" mode="out-in" appear>
         <div class="background">
           <div class="login-box-custom">
-            <div>
-                  <!-- <img src="../../assets/images/TradieSafe_logo.png" /> -->
+            <div class="d-flex flex-column">
+              <img src="../../assets/images/logo.png" />
               <div class="w-100 d-flex" style="flex-direction: column">
-                <h4 class="mb-0">{{ $t("welcome_msg") }}</h4>
+                <!-- <h4 class="mb-0">{{ $t("welcome_msg") }}</h4> -->
                 <div class="font-login">
-                   <div v-if="app_image_url">
-                  <span>
-                    <img
-                      class="custom-logo"
-                      v-bind:src="app_image_url"
-                      style="width: 130px;"
-                    />
-                  </span>
+                  <div v-if="app_image_url">
+                    <span>
+                      <img
+                        class="custom-logo"
+                        v-bind:src="app_image_url"
+                        style="width: 130px"
+                      />
+                    </span>
+                  </div>
+                  <div v-else-if="app_image_url == ''">
+                    <span class="font-base-app text-center">
+                      {{ application_name }}
+                    </span>
+                  </div>
+                  <div v-else>
+                    <span class="font-base-app text-center">
+                      {{ application_name }}
+                    </span>
+                  </div>
                 </div>
-                <div v-else-if="app_image_url == ''">
-                  <span class="font-base-app text-center">
-                    {{ application_name }}
-                  </span>
-                </div>
-                <div v-else>
-                  <span class="font-base-app text-center">
-                    {{ application_name }}
-                  </span>
-                </div>
-                </div>
-                <span class="font-sign-in-msg">{{ $t("sign_in_msg") }}</span>
+                <!-- <span class="font-sign-in-msg">{{ $t("sign_in_msg") }}</span> -->
               </div>
             </div>
-
             <v-divider></v-divider>
-
             <div>
               <v-form v-model="valid" class="w-100">
                 <v-container>
                   <v-row>
-                    <v-col cols="12" md="12" class="pb-0">
-                      <label>{{ $t("email") }}</label>
+                    <v-col cols="12" md="12" class="pb-0 pt-0">
+                      <label
+                        v-bind:class="[sel_lang == 'ar' ? 'text-right' : '']"
+                        >{{ $t("email") }}</label
+                      >
                       <v-tooltip :text="$t('email')" location="bottom">
                         <template v-slot:activator="{ props }">
                           <v-text-field
                             v-bind="props"
                             v-model="userdata.email"
                             :rules="emailRules"
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                             @keyup.enter="login"
                             required
                             variant="outlined"
@@ -57,7 +59,10 @@
                       </v-tooltip>
                     </v-col>
                     <v-col cols="12" md="12" class="pt-0">
-                      <label>{{ $t("password") }}</label>
+                      <label
+                        v-bind:class="[sel_lang == 'ar' ? 'text-right' : '']"
+                        >{{ $t("password") }}</label
+                      >
                       <v-tooltip :text="$t('password')" location="bottom">
                         <template v-slot:activator="{ props }">
                           <v-text-field
@@ -71,6 +76,7 @@
                             name="input-10-1"
                             @keyup.enter="login"
                             counter
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                             variant="outlined"
                             density="compact"
                             @click:append-inner="show1 = !show1"
@@ -88,32 +94,31 @@
                       >{{ error_message }}</v-col
                     >
                     <v-col cols="12" md="12" class="pt-0">
-                      <v-tooltip bottom>
-                        <template v-slot:activator="{ on }">
-                          <div v-on="on" class="d-inline-block w-100">
+                      <v-tooltip :text="this.$t('sign_in')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <div v-bind="props" class="d-inline-block w-100">
                             <v-btn
                               variant="flat"
-                              color="#fff;"
+                              color="#fff"
                               small
                               class="btn-theme-blue w-100"
                               @click="login"
                               @keyup.enter="login"
                               :disabled="!valid || btnloading"
                               >{{ $t("sign_in") }}
-                              <b-spinner
-                                :disabled="btnloading"
-                                small
-                                v-if="btnloading"
-                              ></b-spinner>
                             </v-btn>
                           </div>
                         </template>
-                        <span>{{ $t("sign_in") }}</span>
                       </v-tooltip>
                     </v-col>
                     <a class="a-underline">
                       <p>
-                        <router-link to="/forgot_password">
+                        <router-link
+                          :to="{
+                            name: 'forgot_password',
+                          }"
+                        >
+                          <!-- <router-link to="/forgot_password"> -->
                           {{ $t("recoverpassword") }}
                         </router-link>
                       </p>
@@ -121,7 +126,7 @@
                   </v-row>
 
                   <div class="divider" />
-                  <div class="d-flex align-items-center mt-10">
+                  <!-- <div class="d-flex align-items-center mt-5">
                     <div>
                       <h6 class="mb-0">
                         {{ $t("no_account") }}
@@ -134,7 +139,7 @@
                         </router-link>
                       </h6>
                     </div>
-                  </div>
+                  </div> -->
                 </v-container>
               </v-form>
             </div>
@@ -148,7 +153,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import localStorageWrapper from "../../localStorageWrapper.js";
-import { getToken,getMessaging } from "firebase/messaging";
+// import { getToken, getMessaging } from "firebase/messaging";
 
 export default {
   name: "LoginPage",
@@ -156,9 +161,9 @@ export default {
     userdata: {
       email: "",
       password: "",
-      token_id : '',
+      token_id: "",
     },
-    firebase_vapid : process.env.VUE_APP_FIREBASE_VAPID_KEY,
+    // firebase_vapid: process.env.VUE_APP_FIREBASE_VAPID_KEY,
     valid: false,
     show1: false,
     user: "",
@@ -170,6 +175,7 @@ export default {
     app_name: "",
     error_message: "",
     show_error: false,
+    sel_lang: "en",
   }),
   computed: {
     ...mapState({
@@ -192,33 +198,58 @@ export default {
   },
 
   mounted() {
-   this.fetchAppImageUrl();
+    this.fetchAppImageUrl();
+    this.selectedLang();
   },
 
   created() {
-    if (window.location.protocol === "https:") {
-    const messaging = getMessaging();
-          getToken(messaging, { vapidKey: this.firebase_vapid }).then((currentToken) => {
-            if (currentToken) {
-              console.log('token id' , currentToken);
-           this.userdata.token_id = currentToken;
-            } else {
-              console.log('No registration token available. Request permission to generate one.');
-            }
-          }).catch((err) => {
-            console.log('An error occurred while retrieving token. ', err);
-          });
-           }
+    // if (window.location.protocol === "https:") {
+    //   const messaging = getMessaging();
+    //   getToken(messaging, { vapidKey: this.firebase_vapid })
+    //     .then((currentToken) => {
+    //       if (currentToken) {
+    //         console.log("token id", currentToken);
+    //         this.userdata.token_id = currentToken;
+    //       } else {
+    //         console.log(
+    //           "No registration token available. Request permission to generate one."
+    //         );
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log("An error occurred while retrieving token. ", err);
+    //     });
+    // }
   },
 
   methods: {
-        fetchAppImageUrl() {
+    setUserLang(lang) {
+      localStorage.setItem("pref_lang", lang);
+      this.$i18n.locale = lang;
+      let newRoute = {
+        name: this.$route.name,
+        params: { ...this.$route.params, lang: lang },
+      };
+      this.$router.push(newRoute);
+      this.selectedLang();
+    },
+    selectedLang() {
+      if (localStorage.getItem("pref_lang")) {
+        this.sel_lang = localStorage.getItem("pref_lang");
+      } else {
+        this.sel_lang = "en";
+      }
+    },
+    fetchAppImageUrl() {
       this.$axios
         .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_image_url", {})
         .then((res) => {
           this.app_image_url = res.data.parameter_image;
           this.application_name = res.data.application_name;
-          localStorageWrapper.setItem("Application_Name", this.application_name);
+          localStorageWrapper.setItem(
+            "Application_Name",
+            this.application_name
+          );
 
           if (this.app_image_url != null) {
             localStorageWrapper.setItem(
@@ -232,31 +263,35 @@ export default {
           }
         })
         .catch((err) => {
-          this.flashMessage.error({
-            message: this.$t("something_went_wrong"),
-            time: 4000,
-            blockClass: "custom-block-class",
-          });
           console.log("this error" + err);
         });
     },
     ...mapActions("auth", ["loginRequest"]),
     async login() {
       this.loader = true;
-      await this.loginRequest(this.userdata)
-        .then(() => {
-          this.btnloading = true;
-          this.$router.push({
-            name: "dashboard",
-          });
-          this.loader = false;
-        })
-        .catch((err) => {
-          this.error_message = err.response.data.message;
-          this.loader = false;
-          this.show_error = true;
-          console.log(err.response.data.message);
-        });
+      this.show_error = false; // reset error
+      try {
+        // Wait for loginRequest to complete and update Vuex state
+        await this.loginRequest(this.userdata);
+
+        // Mark button as loading
+        this.btnloading = true;
+
+        // Set default active menu
+        localStorage.setItem("active_menu", "Dashboard");
+
+        // Redirect to dashboard after login is successful
+        this.$router.push({ name: "dashboard" });
+      } catch (err) {
+        // Handle errors
+        this.error_message = err.response?.data?.message || "Login failed";
+        this.show_error = true;
+        console.error(err.response?.data?.message);
+      } finally {
+        // Stop loader and button loading
+        this.loader = false;
+        this.btnloading = false;
+      }
     },
   },
 };
@@ -269,7 +304,6 @@ export default {
 }
 
 .font-login {
-  font-family: "Goudy Old Style";
   font-size: 35px;
   color: black;
 }
@@ -292,5 +326,20 @@ export default {
 .error_message {
   color: red;
   font-style: italic;
+}
+.lang_option {
+  font-size: 14px;
+  margin: 10px 10px;
+  color: grey;
+}
+.lang_option:hover {
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.1s;
+  color: black;
+}
+.selected {
+  font-weight: bold;
+  color: black;
 }
 </style>

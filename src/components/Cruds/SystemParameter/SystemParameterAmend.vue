@@ -1,6 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="container my-3 p-0">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('create_system_parameter')"
@@ -11,7 +14,13 @@
     <div class="mb-3 mx-auto">
       <div class="card-body">
         <v-form ref="form" v-model="valid">
-          <v-row class="px-6" v-if="system_params.parameter_name == 'APP_LOGO'">
+          <v-row
+            class="px-6"
+            v-if="
+              system_params.parameter_name == 'APP_LOGO' ||
+              system_params.parameter_name == 'MALL_LOGO'
+            "
+          >
             <!-- :value="system_params.is_file_upload" -->
             <v-col md="6">
               <!-- <v-checkbox
@@ -68,8 +77,9 @@
             <v-col
               md="6"
               v-if="
-                system_params.is_file_upload == true &&
-                system_params.parameter_name == 'APP_LOGO'
+                (system_params.is_file_upload == true &&
+                  system_params.parameter_name == 'APP_LOGO') ||
+                system_params.parameter_name == 'MALL_LOGO'
               "
             >
               <div>
@@ -83,7 +93,7 @@
                         v-if="system_params.parameter_value != null"
                         :src="envImagePath + system_params.parameter_value"
                         width="100"
-                        height="65
+                        height="85
                           "
                         alt
                       />
@@ -101,29 +111,57 @@
                     </div>
                   </v-hover>
                 </div>
-                <a
-                  class="text-center pointer"
-                  @click="downloadImage(system_params.parameter_value)"
+                <v-tooltip :text="this.$t('download')" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <a class="text-center pointer download_icon">
+                      <span
+                        ><v-icon
+                          v-if="
+                            (system_params.parameter_value &&
+                              system_params.parameter_name == 'APP_LOGO') ||
+                            (system_params.parameter_name == 'MALL_LOGO' &&
+                              system_params.is_file_upload == true)
+                          "
+                          v-bind="props"
+                          class="mr-2"
+                          @click="downloadImage(system_params.parameter_value)"
+                          >mdi mdi-download</v-icon
+                        ></span
+                      >
+                    </a>
+                  </template>
+                </v-tooltip>
+                <span
+                  v-if="
+                    (system_params.parameter_value &&
+                      system_params.parameter_name == 'APP_LOGO') ||
+                    (system_params.parameter_name == 'MALL_LOGO' &&
+                      system_params.is_file_upload == true)
+                  "
                 >
-                  <span
-                    v-if="
-                      system_params.parameter_value &&
-                      system_params.parameter_name == 'APP_LOGO' &&
-                      system_params.is_file_upload == true
-                    "
-                    class="download_btn_color"
-                    >{{ $t("download") }}</span
-                  >
-                </a>
+                  <v-tooltip :text="this.$t('delete')" location="bottom">
+                    <template v-slot:activator="{ props }">
+                      <v-icon
+                        v-on="on"
+                        v-bind="props"
+                        small
+                        class="mr-2 edit_btn icon_size delete_icon"
+                        @click="removeImage"
+                        >mdi mdi-trash-can-outline</v-icon
+                      >
+                    </template>
+                  </v-tooltip></span
+                >
               </div>
               <br />
               <Imageupload
                 :folder="'user_profile'"
-                :resizewidth="0.4"
-                :resizeheight="0.1"
+                :resizewidth="400"
+                :resizeheight="150"
                 @uploaded_image="uploaded_image"
                 :upload_profile="uploadfile"
               />
+              <div class="dimension_text">400 : 150</div>
             </v-col>
           </v-row>
           <v-layout class="pt-3">
@@ -160,7 +198,7 @@
               <v-btn
                 v-bind="props"
                 size="small"
-                @click="$router.go(-1)"
+                @click="cancel"
                 :disabled="isDisabled"
                 class="ma-1"
                 color="cancel"
@@ -173,7 +211,12 @@
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="d-inline-block">
               <v-btn
-                :disabled="isDisabled"
+                :disabled="
+                  system_params.parameter_value == '' ||
+                  system_params.parameter_value == null
+                    ? isSubmitDisabled == false
+                    : isSubmitDisabled == true
+                "
                 :loading="isDisabled"
                 @click="submit"
                 size="small"
@@ -209,6 +252,7 @@ export default {
     isBtnLoading: false,
     showupload: "",
     isDisabled: false,
+    isSubmitDisabled: false,
     checkbox_value: false,
     system_params: {
       id: 0,
@@ -220,6 +264,7 @@ export default {
     noimagepreview: "",
     uploadfile: false,
     items: [],
+    sel_lang: "",
   }),
 
   computed: {
@@ -252,8 +297,21 @@ export default {
         }
       },
     },
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
+      }
+    },
   },
   methods: {
+    cancel() {
+      this.$router.push({
+        name: "system_parameter",
+      });
+    },
     uploaded_image(img_src) {
       this.system_params.parameter_value = img_src;
     },
@@ -277,7 +335,7 @@ export default {
           .then((res) => {
             this.btnloading = false;
             let app_image_url = res.data.systemparameter.image_full_url;
-            if (app_image_url) {
+            if (app_image_url && res.data.systemparameter.parameter_name && res.data.systemparameter.parameter_name == 'APP_LOGO') {
               localStorageWrapper.setItem("App_Image_Url", app_image_url);
               this.emitter.emit("app_image_update");
             }
@@ -326,10 +384,17 @@ export default {
     },
 
     downloadImage(image_url) {
-      window.open(this.envPath + image_url, "_blank");
+      window.open(this.envImagePath + image_url, "_blank");
     },
     clear() {
       this.$refs.form.reset();
+    },
+    removeImage() {
+      this.system_params.parameter_value = null;
+      this.isSubmitDisabled = false;
+      this.$router.push({
+        name: "system_parameter_amend",
+      });
     },
   },
 };
@@ -339,11 +404,11 @@ input.larger {
   width: 20px;
   height: 20px;
 }
-.image-container {
+/* .image-container {
   max-width: 110px;
   border: 1px double black;
   border-radius: 3px;
-}
+} */
 .camera-icon {
   position: absolute;
   bottom: 20px;
@@ -366,5 +431,17 @@ input.larger {
   border: 2px solid black;
   padding: 1px;
 }
+.delete_icon {
+  position: relative;
+  left: 83px;
+  bottom: 90px;
+}
+.download_icon {
+  position: relative;
+  left: 116px;
+  bottom: 52px;
+}
+.dimension_text {
+  text-align-last: start;
+}
 </style>
-

@@ -1,0 +1,2001 @@
+<template>
+  <div class="mx-2 mt-3 p-0">
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
+      <page-title
+        class="col-md-4 ml-2"
+        :heading="$t('create_amend_home_slider')"
+        :google_icon="google_icon"
+      ></page-title>
+    </div>
+    <div class="mb-3 mx-auto">
+      <div class="card-body">
+        <content-loader v-if="loader"></content-loader>
+        <v-tabs
+          v-model="tabs"
+          color="blue"
+          @update:modelValue="have_noimage = false"
+        >
+          <v-tab :value="1">
+            <span>{{ $t("english") }}</span>
+          </v-tab>
+
+          <v-tab :value="2">
+            <span>{{ $t("arabic") }}</span>
+          </v-tab>
+        </v-tabs>
+        <v-alert
+          closable
+          close-label="Close Alert"
+          density="compact"
+          color="rgb(var(--v-theme-error))"
+          v-if="error_valid"
+          variant="tonal"
+          @click:close="error_valid = false"
+          class="my-3"
+          v-bind:class="[tabs == 1 ? '' : 'arabdirectionalert']"
+          :title="
+            tabs == 1 ? $t('validation_error_en') : $t('validation_error_ar')
+          "
+          :text="
+            tabs == 1
+              ? $t('please_fill_required_fields_en')
+              : $t('please_fill_required_fields_ar')
+          "
+        ></v-alert>
+        <v-window v-model="tabs">
+          <!-- ENGLISH TAB STARTS -->
+          <v-window-item :value="1">
+            <v-form ref="form" v-model="valid">
+              <v-layout>
+                <v-row class="px-6 mt-2">
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="4"
+                    v-if="user.rolename != 'StoreAdmin'"
+                  >
+                    <v-tooltip :text="$t('mall_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="home_slider[0].store_id"
+                          v-bind:label="$t('mall_en')"
+                          @update:modelValue="(value) => updateStore(value)"
+                          variant="outlined"
+                          density="compact"
+                          :disabled="user.rolename == 'MallAdmin'"
+                          :items="stores_en"
+                          item-title="name"
+                          item-value="header_id"
+                          class="required_field"
+                          :rules="fieldRules"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="4">
+                    <v-tooltip :text="$t('title_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          v-model="home_slider[0].title"
+                          maxlength="100"
+                          v-bind:label="$t('title_en')"
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-layout>
+              <v-layout>
+                <v-row class="px-6 mt-2">
+                  <v-col cols="12" sm="12" md="4">
+                    <v-tooltip :text="$t('slider_type_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="home_slider[0].slider_type"
+                          v-bind:label="$t('slider_type_en')"
+                          @update:modelValue="
+                            (value) => updateSliderType(value)
+                          "
+                          variant="outlined"
+                          density="compact"
+                          :items="slider_type_en"
+                          item-title="name"
+                          item-value="shortname"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="4"
+                    v-if="home_slider[0].slider_type != null"
+                  >
+                    <v-tooltip :text="labelText" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          :label="labelText"
+                          v-model="home_slider[0].action_slug"
+                          @update:modelValue="
+                            (value) => updateActionSlug(value)
+                          "
+                          variant="outlined"
+                          density="compact"
+                          :items="slug_details_en"
+                          item-title="title"
+                          item-value="header_id"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="4"
+                    v-if="home_slider[0].slider_type == null"
+                  >
+                    <v-tooltip :text="$t('link_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          v-model="home_slider[0].action"
+                          maxlength="100"
+                          v-bind:label="$t('link_en')"
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="4">
+                    <v-tooltip
+                      :text="$t('target_en')"
+                      location="bottom"
+                      v-if="
+                        home_slider[0].action != '' ||
+                        home_slider[0].slider_type != null
+                      "
+                    >
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="home_slider[0].target"
+                          v-bind:label="$t('target_en')"
+                          variant="outlined"
+                          density="compact"
+                          :items="targets_en"
+                          item-title="shortname"
+                          item-value="shortname"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-layout>
+              <v-layout>
+                <v-row class="px-6 pt-0">
+                  <v-col cols="12" md="12" lg="12" sm="12" class="pt-0">
+                    <v-card-title class="text-left" style="font-size: 17px">{{
+                      $t("description_en")
+                    }}</v-card-title>
+                    <!-- v-bind:id="quill_item == true ? 'quill_item': 'quill_item_border'" -->
+                    <v-tooltip :text="$t('description_en')" location="top">
+                      <template v-slot:activator="{ props }">
+                        <div v-bind="props">
+                          <quill-editor
+                            :options="editorOptions_en"
+                            class="hide_quill_input"
+                            v-model:value="home_slider[0].description"
+                            @blur="onEditorBlur($event)"
+                            @focus="onEditorFocus($event)"
+                            @ready="onEditorReady($event)"
+                            @change="onEditorChange($event)"
+                          />
+                          <!-- <small
+                            v-if="quill_item"
+                            class="text-danger ml-5 required_item shake"
+                            >Field Required</small
+                          > -->
+                        </div>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-layout>
+              <v-layout>
+                <v-row class="mt-2 px-6" max-width="344">
+                  <v-col cols="12" sm="4" md="2">
+                    <v-tooltip :text="$t('sequence_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          v-model="home_slider[0].seq"
+                          maxlength="5"
+                          @update:modelValue="
+                            (value) => updateHomeSliderSequence(value, 1)
+                          "
+                          v-bind:label="$t('sequence_en')"
+                          required
+                          :rules="seqRules"
+                          variant="outlined"
+                          density="compact"
+                          v-on:keypress="NumbersOnly"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" sm="4" md="4">
+                    <v-tooltip :text="$t('media_type_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="home_slider[0].media_type"
+                          v-if="mediatype_en"
+                          @update:modelValue="
+                            (value) => clearimage_n_video(0, value)
+                          "
+                          v-bind:label="$t('media_type_en')"
+                          variant="outlined"
+                          density="compact"
+                          :items="mediatype_en"
+                          :rules="fieldRules"
+                          class="required_field"
+                          item-title="longname"
+                          item-value="shortname"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="4"
+                    md="3"
+                    v-if="home_slider[0].media_type == 'Image'"
+                  >
+                    <div style="text-align: -webkit-center">
+                      <span>{{ $t("w_image_en") }}</span>
+                      <div
+                        class="image-container"
+                        v-bind:class="[have_noimage ? 'errorborder' : '']"
+                      >
+                        <v-hover v-slot="{ isHovering, props }">
+                          <div style="position: relative" v-bind="props">
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-if="
+                                home_slider[0].image == '' ||
+                                home_slider[0].image == null
+                              "
+                              src="@/assets/images/upload_image_default.png"
+                              width="100"
+                            />
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-else
+                              :src="envImagePath + home_slider[0].image"
+                              width="100"
+                              height="85
+                          "
+                              alt
+                            />
+                            <div v-show="isHovering" class="camera-icon">
+                              <v-icon @click="uploadFile('website')"
+                                >mdi-camera</v-icon
+                              >
+                            </div>
+                          </div>
+                        </v-hover>
+                      </div>
+                      <v-tooltip
+                        :text="this.$t('download_en')"
+                        location="bottom"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <a class="text-center pointer download_icon">
+                            <span
+                              ><v-icon
+                                v-bind="props"
+                                v-if="home_slider[0].image"
+                                class="mr-2"
+                                @click="downloadImage(home_slider[0].image)"
+                                >mdi mdi-download</v-icon
+                              ></span
+                            >
+                          </a>
+                        </template>
+                      </v-tooltip>
+                      <v-tooltip :text="this.$t('delete_en')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <span>
+                            <v-icon
+                              small
+                              v-bind="props"
+                              v-if="home_slider[0].image"
+                              class="mr-2 edit_btn icon_size delete_icon"
+                              @click="removeImage(0, 'website')"
+                              >mdi mdi-trash-can-outline</v-icon
+                            >
+                          </span>
+                        </template>
+                      </v-tooltip>
+                    </div>
+                    <br />
+                    <Imageupload
+                      :folder="'home_slider'"
+                      :resizewidth="resizewidth"
+                      :resizeheight="resizeheight"
+                      :no_image_trans="'en'"
+                      :no_image="have_noimage"
+                      @uploaded_image="uploaded_image"
+                      :upload_profile="uploadfile"
+                    />
+                    <div class="dimension_text">1200 : 420</div>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="4"
+                    md="3"
+                    v-if="home_slider[0].media_type == 'Image'"
+                  >
+                    <div style="text-align: -webkit-center">
+                      <span>{{ $t("m_image_en") }}</span>
+                      <div
+                        class="image-container"
+                        v-bind:class="[have_noimage ? 'errorborder' : '']"
+                      >
+                        <v-hover v-slot="{ isHovering, props }">
+                          <div style="position: relative" v-bind="props">
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-if="
+                                home_slider[0].m_image == '' ||
+                                home_slider[0].m_image == null
+                              "
+                              src="@/assets/images/upload_image_default.png"
+                              width="100"
+                            />
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-else
+                              :src="envImagePath + home_slider[0].m_image"
+                              width="100"
+                              height="85
+                          "
+                              alt
+                            />
+                            <div v-show="isHovering" class="camera-icon">
+                              <v-icon @click="uploadFile('mobile')"
+                                >mdi-camera</v-icon
+                              >
+                            </div>
+                          </div>
+                        </v-hover>
+                      </div>
+                      <v-tooltip
+                        :text="this.$t('download_en')"
+                        location="bottom"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <a class="text-center pointer download_icon">
+                            <span
+                              ><v-icon
+                                v-bind="props"
+                                v-if="home_slider[0].m_image"
+                                class="mr-2"
+                                @click="downloadImage(home_slider[0].m_image)"
+                                >mdi mdi-download</v-icon
+                              ></span
+                            >
+                          </a>
+                        </template>
+                      </v-tooltip>
+                      <v-tooltip :text="this.$t('delete_en')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <span>
+                            <v-icon
+                              small
+                              v-bind="props"
+                              v-if="home_slider[0].m_image"
+                              class="mr-2 edit_btn icon_size delete_icon"
+                              @click="removeImage(0, 'mobile')"
+                              >mdi mdi-trash-can-outline</v-icon
+                            >
+                          </span>
+                        </template>
+                      </v-tooltip>
+                    </div>
+                    <br />
+                    <Imageupload
+                      :folder="'home_slider'"
+                      :resizewidth="resizewidth"
+                      :resizeheight="resizeheight"
+                      :no_image_trans="'en'"
+                      :no_image="have_noimage"
+                      @uploaded_image="uploaded_image"
+                      :upload_profile="upload_mob_file"
+                    />
+                    <div class="dimension_text">600 : 300</div>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="6"
+                    v-if="home_slider[0].media_type == 'Video'"
+                    v-bind:class="[showurl ? 'videourlclass' : '']"
+                  >
+                    <v-tooltip :text="$t('video_url_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          hint="https://www.youtube.com/embed/FhX_e0_cCdg"
+                          persistent-hint
+                          v-bind="props"
+                          v-model="home_slider[0].video"
+                          maxlength="500"
+                          :append-inner-icon="showurl ? 'mdi-eye' : ''"
+                          @click:appendInner="gotourl(home_slider[0].video)"
+                          v-bind:label="$t('video_url_en')"
+                          required
+                          variant="outlined"
+                          density="compact"
+                          class="required_field"
+                          :rules="[...fieldRules, ...URLRules]"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-layout>
+            </v-form>
+          </v-window-item>
+          <!-- ENGLISH TAB END -->
+          <!-- ARABIC TAB STARTS -->
+          <v-window-item :value="2" style="direction: rtl">
+            <v-form ref="form" v-model="validAR">
+              <v-layout>
+                <v-row class="px-6 mt-2">
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="4"
+                    v-if="user.rolename != 'StoreAdmin'"
+                  >
+                    <v-tooltip :text="$t('mall_en')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="home_slider[1].store_id"
+                          v-bind:label="$t('mall_ar')"
+                          @update:modelValue="(value) => updateStore(value)"
+                          variant="outlined"
+                          density="compact"
+                          :disabled="user.rolename == 'MallAdmin'"
+                          :items="stores_ar"
+                          item-title="name"
+                          item-value="header_id"
+                          class="required_field"
+                          :rules="fieldRulesAR"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="4">
+                    <v-tooltip :text="$t('title_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          v-model="home_slider[1].title"
+                          class="rtl"
+                          maxlength="100"
+                          v-bind:label="$t('title_ar')"
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-layout>
+              <v-layout>
+                <v-row class="px-6 mt-2 arabdirection">
+                  <v-col cols="12" sm="12" md="4">
+                    <v-tooltip :text="$t('slider_type_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="home_slider[1].slider_type"
+                          v-bind:label="$t('slider_type_ar')"
+                          @update:modelValue="
+                            (value) => updateSliderType(value)
+                          "
+                          variant="outlined"
+                          density="compact"
+                          :items="slider_type_ar"
+                          item-title="name"
+                          item-value="shortname"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="4"
+                    v-if="home_slider[1].slider_type != null"
+                  >
+                    <v-tooltip :text="labelTextAr" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="home_slider[1].action_slug"
+                          :label="labelTextAr"
+                          @update:modelValue="
+                            (value) => updateActionSlug(value)
+                          "
+                          variant="outlined"
+                          density="compact"
+                          :items="slug_details_ar"
+                          item-title="title"
+                          item-value="header_id"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="4"
+                    v-if="home_slider[1].slider_type == null"
+                  >
+                    <v-tooltip :text="$t('link_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          v-model="home_slider[1].action"
+                          maxlength="100"
+                          class="rtl"
+                          v-bind:label="$t('link_ar')"
+                          variant="outlined"
+                          density="compact"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="4"
+                    v-if="
+                      home_slider[1].action != '' ||
+                      home_slider[1].slider_type != null
+                    "
+                  >
+                    <v-tooltip :text="$t('target_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="home_slider[1].target"
+                          v-bind:label="$t('target_ar')"
+                          variant="outlined"
+                          density="compact"
+                          class="rtl"
+                          :items="targets_ar"
+                          item-title="shortname"
+                          item-value="shortname"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-layout>
+              <v-layout>
+                <v-row class="px-6 pt-0 arabdirection">
+                  <v-col cols="12" md="12" lg="12" sm="12" class="pt-0">
+                    <v-card-title class="text-right" style="font-size: 17px">{{
+                      $t("description_ar")
+                    }}</v-card-title>
+                    <!-- v-bind:id="quill_item_ar == true ? 'quill_item': 'quill_item_border'" -->
+                    <!-- @ready="onEditorReadyAR($event)" -->
+                    <v-tooltip :text="$t('description_ar')" location="top">
+                      <template v-slot:activator="{ props }">
+                        <div v-bind="props">
+                          <quill-editor
+                            :options="editorOptions"
+                            class="arabclassquill"
+                            v-model:value="home_slider[1].description"
+                            @blur="onEditorBlurAR($event)"
+                            @focus="onEditorFocusAR($event)"
+                            @ready="setRtlDirection"
+                            @change="onEditorChangeAR($event)"
+                          />
+                          <!-- <small
+                            v-if="quill_item_ar"
+                            class="text-danger ml-5 required_item shake"
+                            >{{ $t("field_required_ar") }}</small> -->
+                        </div>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-layout>
+              <v-layout>
+                <v-row class="mt-2 px-6 arabdirection" max-width="344">
+                  <v-col cols="12" sm="4" md="2">
+                    <v-tooltip :text="$t('sequence_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          v-model="home_slider[1].seq"
+                          maxlength="5"
+                          @update:modelValue="
+                            (value) => updateHomeSliderSequence(value, 0)
+                          "
+                          v-bind:label="$t('sequence_ar')"
+                          class="rtl"
+                          :rules="seqRulesAR"
+                          variant="outlined"
+                          density="compact"
+                          v-on:keypress="NumbersOnly"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="12" sm="4" md="4">
+                    <v-tooltip :text="$t('media_type_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-autocomplete
+                          v-bind="props"
+                          v-model="home_slider[1].media_type"
+                          v-if="mediatype_ar"
+                          @update:modelValue="
+                            (value) => clearimage_n_video(1, value)
+                          "
+                          v-bind:label="$t('media_type_ar')"
+                          variant="outlined"
+                          density="compact"
+                          :items="mediatype_ar"
+                          :rules="fieldRulesAR"
+                          class="required_field"
+                          item-title="longname"
+                          item-value="shortname"
+                        ></v-autocomplete>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="4"
+                    md="3"
+                    v-if="home_slider[1].media_type == 'صورة'"
+                  >
+                    <div style="text-align: -webkit-center">
+                      <span>{{ $t("w_image_ar") }}</span>
+                      <div
+                        class="image-container"
+                        v-bind:class="[have_noimage ? 'errorborder' : '']"
+                      >
+                        <v-hover v-slot="{ isHovering, props }">
+                          <div style="position: relative" v-bind="props">
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-if="
+                                home_slider[1].image == '' ||
+                                home_slider[1].image == null
+                              "
+                              src="@/assets/images/upload_image_default.png"
+                              width="100"
+                            />
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-else
+                              :src="envImagePath + home_slider[1].image"
+                              width="100"
+                              height="85"
+                              alt
+                            />
+                            <div v-show="isHovering" class="camera-icon">
+                              <v-icon @click="uploadFile('website')"
+                                >mdi-camera</v-icon
+                              >
+                            </div>
+                          </div>
+                        </v-hover>
+                      </div>
+
+                      <v-tooltip
+                        :text="this.$t('download_ar')"
+                        location="bottom"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <a class="text-center pointer download_icon_ar">
+                            <span
+                              ><v-icon
+                                v-if="home_slider[1].image"
+                                v-bind="props"
+                                class="mr-2"
+                                @click="downloadImage(home_slider[1].image)"
+                                >mdi mdi-download</v-icon
+                              ></span
+                            >
+                          </a>
+                        </template>
+                      </v-tooltip>
+                      <v-tooltip :text="this.$t('delete_ar')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <span>
+                            <v-icon
+                              small
+                              v-bind="props"
+                              v-if="home_slider[1].image"
+                              class="mr-2 edit_btn icon_size delete_icon_ar"
+                              @click="removeImage(1, 'website')"
+                              >mdi mdi-trash-can-outline</v-icon
+                            >
+                          </span>
+                        </template>
+                      </v-tooltip>
+                    </div>
+                    <br />
+                    <Imageupload
+                      :folder="'home_slider'"
+                      :resizewidth="resizewidth"
+                      :resizeheight="resizeheight"
+                      :no_image_trans="'ar'"
+                      :no_image="have_noimage"
+                      :viewmodeslider="3"
+                      @uploaded_image="uploaded_image"
+                      :upload_profile="upload_file_ar"
+                    />
+                    <div class="dimension_text">1200 : 420</div>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="4"
+                    md="3"
+                    v-if="home_slider[1].media_type == 'صورة'"
+                  >
+                    <div style="text-align: -webkit-center">
+                      <span>{{ $t("m_image_ar") }}</span>
+                      <div
+                        class="image-container"
+                        v-bind:class="[have_noimage ? 'errorborder' : '']"
+                      >
+                        <v-hover v-slot="{ isHovering, props }">
+                          <div style="position: relative" v-bind="props">
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-if="
+                                home_slider[1].m_image == '' ||
+                                home_slider[1].m_image == null
+                              "
+                              src="@/assets/images/upload_image_default.png"
+                              width="100"
+                            />
+                            <img
+                              v-bind:style="
+                                isHovering == true ? 'filter: blur(1px);' : ''
+                              "
+                              v-else
+                              :src="envImagePath + home_slider[1].m_image"
+                              width="100"
+                              height="85
+                          "
+                              alt
+                            />
+                            <div v-show="isHovering" class="camera-icon">
+                              <v-icon @click="uploadFile('mobile')"
+                                >mdi-camera</v-icon
+                              >
+                            </div>
+                          </div>
+                        </v-hover>
+                      </div>
+                      <v-tooltip
+                        :text="this.$t('download_ar')"
+                        location="bottom"
+                      >
+                        <template v-slot:activator="{ props }">
+                          <a class="text-center pointer download_icon_ar">
+                            <span
+                              ><v-icon
+                                v-if="home_slider[1].m_image"
+                                v-bind="props"
+                                class="mr-2"
+                                @click="downloadImage(home_slider[1].m_image)"
+                                >mdi mdi-download</v-icon
+                              ></span
+                            >
+                          </a>
+                        </template>
+                      </v-tooltip>
+                      <v-tooltip :text="this.$t('delete_ar')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <span>
+                            <v-icon
+                              small
+                              v-bind="props"
+                              v-if="home_slider[1].m_image"
+                              class="mr-2 edit_btn icon_size delete_icon_ar"
+                              @click="removeImage(1, 'mobile')"
+                              >mdi mdi-trash-can-outline</v-icon
+                            >
+                          </span>
+                        </template>
+                      </v-tooltip>
+                    </div>
+                    <br />
+                    <Imageupload
+                      :folder="'home_slider'"
+                      :resizewidth="resizewidth"
+                      :resizeheight="resizeheight"
+                      :no_image_trans="'ar'"
+                      :no_image="have_noimage"
+                      @uploaded_image="uploaded_image"
+                      :upload_profile="upload_file_mob_ar"
+                    />
+                    <div class="dimension_text">600 : 300</div>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="6"
+                    v-if="home_slider[1].media_type == 'فيديو'"
+                    v-bind:class="[showurlAR ? 'videourlclass' : '']"
+                  >
+                    <v-tooltip :text="$t('video_url_ar')" location="bottom">
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          hint="https://www.youtube.com/embed/FhX_e0_cCdg"
+                          persistent-hint
+                          v-bind="props"
+                          v-model="home_slider[1].video"
+                          maxlength="500"
+                          :append-inner-icon="showurlAR ? 'mdi-eye' : ''"
+                          @click:appendInner="gotourl(home_slider[1].video)"
+                          v-bind:label="$t('video_url_ar')"
+                          required
+                          variant="outlined"
+                          density="compact"
+                          class="required_field"
+                          :rules="[...fieldRulesAR, ...URLRulesAR]"
+                        ></v-text-field>
+                      </template>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-layout>
+            </v-form>
+          </v-window-item>
+          <!-- ARABIC TAB END -->
+        </v-window>
+      </div>
+      <div class="d-block mr-4 mt-3 pb-3 text-right">
+        <v-tooltip :text="this.$t('cancel')" location="bottom">
+          <template v-slot:activator="{ props }">
+            <div v-bind="props" class="d-inline-block mr-2">
+              <v-btn
+                v-bind="props"
+                size="small"
+                :disabled="loading"
+                @click="cancel()"
+                class="ma-1"
+                color="cancel"
+                >{{ $t("cancel") }}</v-btn
+              >
+            </div>
+          </template>
+        </v-tooltip>
+        <v-tooltip :text="this.$t('submit')" location="bottom">
+          <template v-slot:activator="{ props }">
+            <div v-bind="props" class="d-inline-block">
+              <v-btn
+                :disabled="isDisabled"
+                @click="presubmitvalidation"
+                size="small"
+                class="mr-2"
+                color="success"
+              >
+                {{ $t("submit") }}
+                <v-progress-circular
+                  v-if="isBtnLoading"
+                  indeterminate
+                  width="1"
+                  color="cancel"
+                  size="x-small"
+                  class="ml-2"
+                ></v-progress-circular>
+              </v-btn>
+            </div>
+          </template>
+        </v-tooltip>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import Imageupload from "../../CustomComponents/ImageUpload.vue";
+import PageTitle from "../../CustomComponents/PageTitle.vue";
+import { quillEditor } from "vue3-quill";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
+export default {
+  components: {
+    PageTitle,
+    Imageupload,
+    quillEditor,
+  },
+  setup() {
+    const onEditorFocus = () => {
+      // console.log("editor focus!", quill);
+    };
+    const onEditorFocusAR = () => {
+      // console.log("editor focus!", quill);
+    };
+    const onEditorReady = () => {
+      // console.log("editor ready!", quill);
+    };
+    const onEditorReadyAR = () => {
+      // console.log("editor ready!", quill);
+    };
+
+    return { onEditorReady, onEditorFocus, onEditorFocusAR, onEditorReadyAR };
+  },
+  data: () => ({
+    google_icon: {
+      icon_name: "transition_push",
+      color: "google_icon_gradient",
+      icon: "material-symbols-outlined",
+    },
+    envImagePath: process.env.VUE_APP_IMAGE_PATH,
+    valid: false,
+    quill_item: false,
+    quill_item_ar: false,
+    error_valid: false,
+    validAR: false,
+    successmessage: "",
+    message: "",
+    selected_media_type: "",
+    showurlAR: false,
+    showurl: false,
+    have_noimage: false,
+    valid_error: false,
+    file: "",
+    sel_lang: "",
+    loading: false,
+    isBtnLoading: false,
+    isDisabled: false,
+    loader: false,
+    tabs: 1,
+    uploadfile: false,
+    upload_mob_file: false,
+    upload_file_ar: false,
+    upload_file_mob_ar: false,
+    user: "",
+    resizewidth: "",
+    resizeheight: "",
+    image_upload_from: "",
+    mall_id: null,
+    stores_en: [],
+    stores_ar: [],
+    mediatype_en: [],
+    mediatype_ar: [],
+    slug_details_en: [],
+    slug_details_ar: [],
+    labelText: "",
+    labelTextAr: "",
+    editorOptions: {
+      theme: "snow",
+      direction: "rtl",
+      placeholder: "أدخل المحتوى هنا",
+    },
+    editorOptions_en: {
+      theme: "snow",
+      direction: "ltr",
+      placeholder: "Enter the content here",
+    },
+    home_slider: [
+      {
+        id: 0,
+        title: "",
+        description: "",
+        image: "",
+        m_image: "",
+        action: "",
+        target: "",
+        media_type: "",
+        video: "",
+        header_id: 0,
+        lang: "en",
+        slider_type: null,
+        action_slug: "",
+        seq: null,
+      },
+      {
+        id: 0,
+        title: "",
+        description: "",
+        image: "",
+        m_image: "",
+        action: "",
+        target: "",
+        header_id: 0,
+        media_type: "",
+        video: "",
+        lang: "ar",
+        slider_type: null,
+        action_slug: "",
+        seq: null,
+      },
+    ],
+    targets_en: [
+      {
+        id: 0,
+        shortname: "Blank",
+        longname: "Blank",
+      },
+      {
+        id: 0,
+        shortname: "Existing",
+        longname: "Existing",
+      },
+    ],
+    targets_ar: [
+      {
+        id: 0,
+        shortname: "فارغ",
+        longname: "فارغ",
+      },
+      {
+        id: 0,
+        shortname: "موجود",
+        longname: "موجود",
+      },
+    ],
+    slider_type_en: [
+      {
+        id: 0,
+        header_id: null,
+        shortname: null,
+        name: "--Select--",
+      },
+      {
+        id: 0,
+        header_id: 1,
+        shortname: "ev",
+        name: "Events",
+      },
+      {
+        id: 0,
+        header_id: 2,
+        shortname: "po",
+        name: "Promotions/Offers",
+      },
+    ],
+    slider_type_ar: [
+      {
+        id: 0,
+        header_id: null,
+        shortname: null,
+        name: "--يختار--",
+      },
+      {
+        id: 0,
+        header_id: 1,
+        shortname: "ev",
+        name: "الأحداث",
+      },
+      {
+        id: 0,
+        header_id: 2,
+        shortname: "po",
+        name: "الترقيات/العروض",
+      },
+    ],
+  }),
+
+  computed: {
+    fieldRules() {
+      return [(v) => !!v || this.$t("field_required")];
+    },
+    fieldRulesAR() {
+      return [(v) => !!v || this.$t("field_required_ar")];
+    },
+    URLRules() {
+      return [(v) => this.validateUrl(v) || this.$t("enter_a_valid_url_en")];
+    },
+    URLRulesAR() {
+      return [(v) => this.validateUrlAR(v) || this.$t("enter_a_valid_url_ar")];
+    },
+    descriptionRules() {
+      return [(v) => !!v || this.$t("description_required")];
+    },
+
+    phoneRules() {
+      return [
+        (v) => (v >= 0 && v <= 999999999999) || this.$t("number_required"),
+      ];
+    },
+    seqRules() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required")];
+    },
+    seqRulesAR() {
+      return [(v) => (v >= 0 && v <= 9999999) || this.$t("number_required_ar")];
+    },
+  },
+
+  created() {
+    this.user = JSON.parse(localStorage.getItem("user_data"));
+    this.fetchLookup();
+  },
+  mounted() {
+    this.fetchMall();
+  },
+
+  watch: {
+    "$route.query.slug": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.slug) {
+          this.valid = true;
+          this.validAR = true;
+          this.loader = true;
+          this.$axios
+            .get(
+              process.env.VUE_APP_API_URL_ADMIN +
+                "edit-home-sliders/" +
+                this.$route.query.slug
+            )
+            .then((res) => {
+              if (Array.isArray(res.data.message)) {
+                this.array_data = res.data.message.toString();
+              } else {
+                this.array_data = res.data.message;
+              }
+              if (res.data.status == "S") {
+                this.home_slider = res.data.home_slider;
+                this.fetchActionSlug();
+                this.loader = false;
+              } else {
+                this.$toast.error(this.$t("something_went_wrong"));
+                this.loader = false;
+              }
+            })
+            .catch((err) => {
+              this.loader = false;
+              this.$toast.error(this.$t("something_went_wrong"));
+              console.log(err);
+            });
+        }
+      },
+    },
+    "$route.query.s_tab": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.s_tab) {
+          if (this.$route.query.s_tab == 1) {
+            this.tabs = 1;
+          } else {
+            this.tabs = 2;
+          }
+        }
+      },
+    },
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
+      }
+    },
+  },
+
+  methods: {
+    validateUrl(url) {
+      const urlPattern = new RegExp(
+        "^(https?://)?" + // Protocol
+          "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // Domain name
+          "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR IP (v4) address
+          "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // Port and path
+          "(\\?[;&a-z\\d%_.~+=-]*)?" + // Query string
+          "(\\#[-a-z\\d_]*)?$",
+        "i"
+      ); // Fragment locator
+      if (("validation", urlPattern.test(url))) {
+        this.showurl = true;
+      } else {
+        this.showurl = false;
+      }
+      return urlPattern.test(url);
+    },
+    validateUrlAR(url) {
+      const urlPattern = new RegExp(
+        "^(https?://)?" + // Protocol
+          "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // Domain name
+          "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR IP (v4) address
+          "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // Port and path
+          "(\\?[;&a-z\\d%_.~+=-]*)?" + // Query string
+          "(\\#[-a-z\\d_]*)?$",
+        "i"
+      ); // Fragment locator
+      if (("validation", urlPattern.test(url))) {
+        this.showurlAR = true;
+      } else {
+        this.showurlAR = false;
+      }
+      return urlPattern.test(url);
+    },
+    clearimage_n_video(index, value) {
+      this.home_slider[0].video = "";
+      this.home_slider[0].m_image = "";
+      this.home_slider[0].image = "";
+      this.home_slider[1].video = "";
+      this.home_slider[1].m_image = "";
+      this.home_slider[1].image = "";
+      if (index == 0) {
+        var header = this.mediatype_en.find((item) => item.shortname === value);
+        var arabicheader = this.mediatype_ar.find(
+          (item) => item.header_id === header.header_id
+        );
+        this.home_slider[1].media_type = arabicheader.shortname;
+        this.selected_media_type = header.shortname;
+      } else {
+        var arheader = this.mediatype_ar.find(
+          (item) => item.shortname === value
+        );
+        var englishheader = this.mediatype_en.find(
+          (item) => item.header_id === arheader.header_id
+        );
+        this.home_slider[0].media_type = englishheader.shortname;
+        this.selected_media_type = englishheader.shortname;
+      }
+    },
+    removeImage(index, type) {
+      if (index == 1) {
+        if (type == "website") {
+          this.home_slider[1].image = null;
+        } else {
+          this.home_slider[1].m_image = null;
+        }
+      } else {
+        if (type == "website") {
+          this.home_slider[0].image = null;
+        } else {
+          this.home_slider[0].m_image = null;
+        }
+      }
+    },
+    NumbersOnly(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
+    uploaded_image(img_src) {
+      if (this.tabs == 1) {
+        if (this.image_upload_from == "website") {
+          this.home_slider[0].image = img_src;
+          this.have_noimage = false;
+        } else {
+          this.home_slider[0].m_image = img_src;
+          this.have_noimage = false;
+        }
+      } else {
+        if (this.image_upload_from == "website") {
+          this.have_noimage = false;
+          this.home_slider[1].image = img_src;
+        } else {
+          this.have_noimage = false;
+          this.home_slider[1].m_image = img_src;
+        }
+      }
+    },
+    uploadFile(img_type) {
+      if (this.tabs == 1) {
+        this.image_upload_from = img_type;
+        if (img_type == "website") {
+          this.resizewidth = 1200;
+          this.resizeheight = 450;
+          if (this.uploadfile == false) {
+            this.uploadfile = true;
+          } else {
+            this.uploadfile = false;
+          }
+        } else {
+          this.resizewidth = 600;
+          this.resizeheight = 300;
+          if (this.upload_mob_file == false) {
+            this.upload_mob_file = true;
+          } else {
+            this.upload_mob_file = false;
+          }
+        }
+      } else {
+        this.image_upload_from = img_type;
+        if (img_type == "website") {
+          this.resizewidth = 1200;
+          this.resizeheight = 450;
+          if (this.upload_file_ar == false) {
+            this.upload_file_ar = true;
+          } else {
+            this.upload_file_ar = false;
+          }
+        } else {
+          this.resizewidth = 600;
+          this.resizeheight = 300;
+          if (this.upload_file_mob_ar == false) {
+            this.upload_file_mob_ar = true;
+          } else {
+            this.upload_file_mob_ar = false;
+          }
+        }
+      }
+    },
+    setRtlDirection(quill) {
+      quill.on("text-change", () => {
+        const text = quill.getText();
+        const rtlChar = /[\u0590-\u05FF\u0600-\u06FF]/;
+        console.log("rtl char ", rtlChar);
+        if (rtlChar.test(text)) {
+          quill.root.setAttribute("dir", "rtl");
+        } else {
+          quill.root.setAttribute("dir", "ltr");
+        }
+      });
+    },
+    //
+    // if (this.selected_media_type == "Image") {
+    //       if (this.home_slider[0].image != "" && this.home_slider[0].image != null) {
+    //         if (this.$refs.form.validate() && this.valid == true && this.validAR == true) {
+    //           this.error_valid = false;
+    //           this.submit();
+    //         }
+    //         else {
+    //           if (this.valid == true && this.home_slider[0].image != "" && this.home_slider[0].image != null) {
+    //             this.error_valid = true;
+    //             this.tabs = 2;
+    //           }
+    //         }
+    //       }
+    //       else {
+    //         this.have_noimage = true;
+    //       }
+    //     }
+    //     else {
+    //       if (this.$refs.form.validate() && this.valid == true && this.validAR == true) {
+    //         this.error_valid = false;
+    //         this.submit();
+    //       }
+    //       else {
+    //         if (this.valid == true) {
+    //           this.error_valid = true;
+    //           this.tabs = 2;
+    //         }
+    //       }
+    //     }
+    //   }
+    //   else {
+    //     if (this.selected_media_type == "Image") {
+    //       if (this.home_slider[1].image != "" && this.home_slider[1].image != null) {
+    //         if (this.$refs.form.validate() && this.validAR == true && this.valid == true) {
+    //           this.error_valid = false;
+    //           this.submit();
+    //         }
+    //         else {
+    //           if (this.validAR == true && this.home_slider[1].image != "" && this.home_slider[1].image != null) {
+    //             this.error_valid = true;
+    //             this.tabs = 1;
+    //           }
+    //         }
+    //       }
+    //       else {
+    //         this.have_noimage = true;
+    //       }
+    //     }
+    //     else {
+    //       if (this.$refs.form.validate() && this.validAR == true && this.valid == true) {
+    //         this.error_valid = false;
+    //         this.submit();
+    //       }
+    //       else {
+    //         if (this.validAR == true) {
+    //           this.error_valid = true;
+    //           this.tabs = 1;
+    //         }
+    //       }
+    //     }
+    //   }
+    presubmitvalidation() {
+      if (this.tabs == 1) {
+        if (
+          this.home_slider[0].description == "" ||
+          this.home_slider[0].description == null
+        ) {
+          this.quill_item = true;
+        } else {
+          this.quill_item = false;
+        }
+        if (this.selected_media_type == "Image") {
+          if (
+            this.home_slider[0].image == "" ||
+            this.home_slider[0].image == null
+          ) {
+            this.have_noimage = true;
+          } else {
+            this.have_noimage = false;
+          }
+        } else {
+          this.have_noimage = false;
+        }
+        if (
+          this.$refs.form.validate() &&
+          this.valid == true &&
+          this.have_noimage == false &&
+          // this.quill_item == false &&
+          // this.quill_item_ar == false &&
+          this.validAR == true
+        ) {
+          this.error_valid = false;
+          this.submit();
+        } else {
+          if (
+            this.valid == true &&
+            this.have_noimage == false
+            // && this.quill_item == false
+          ) {
+            this.error_valid = true;
+            this.tabs = 2;
+          }
+        }
+      } else {
+        if (
+          this.home_slider[1].description == "" ||
+          this.home_slider[1].description == null
+        ) {
+          this.quill_item_ar = true;
+        } else {
+          this.quill_item_ar = false;
+        }
+        if (this.selected_media_type == "Image") {
+          if (
+            this.home_slider[1].image == "" ||
+            this.home_slider[1].image == null
+          ) {
+            this.have_noimage = true;
+          } else {
+            this.have_noimage = false;
+          }
+        } else {
+          this.have_noimage = false;
+        }
+        if (
+          this.$refs.form.validate() &&
+          this.validAR == true &&
+          this.have_noimage == false &&
+          // this.quill_item_ar == false &&
+          // this.quill_item == false &&
+          this.valid == true
+        ) {
+          this.error_valid = false;
+          this.submit();
+        } else {
+          if (
+            this.validAR == true &&
+            this.have_noimage == false
+            // && this.quill_item_ar == false
+          ) {
+            this.error_valid = true;
+            this.tabs = 1;
+          }
+        }
+      }
+    },
+    submit() {
+      if (this.selected_media_type == "Image") {
+        // if (
+        //   this.home_slider[0].description == "" ||
+        //   this.home_slider[0].description == null
+        // ) {
+        //   this.quill_item = true;
+        // }
+        // if (
+        //   this.home_slider[1].description == "" ||
+        //   this.home_slider[1].description == null
+        // ) {
+        //   this.quill_item_ar = true;
+        // }
+        if (
+          this.valid == true &&
+          ((this.tabs == 1 &&
+            this.home_slider[0].image != "" &&
+            this.home_slider[0].image != null) ||
+            (this.tabs == 2 &&
+              this.home_slider[1].image != "" &&
+              this.home_slider[1].image != null))
+        ) {
+          // if (
+          //   this.home_slider[0].description == "" ||
+          //   this.home_slider[0].description == null ||
+          //   this.home_slider[1].description == "" ||
+          //   this.home_slider[1].description == null
+          // ) {
+          //   return;
+          // }
+          this.have_noimage = false;
+          this.isDisabled = true;
+          this.isBtnLoading = true;
+          // Form is valid, process
+          this.$axios
+            .post(
+              process.env.VUE_APP_API_URL_ADMIN + "save-home-slider",
+              this.home_slider
+            )
+            .then((res) => {
+              if (Array.isArray(res.data.message)) {
+                this.array_data = res.data.message.toString();
+              } else {
+                this.array_data = res.data.message;
+              }
+              if (res.data.status == "S") {
+                this.$toast.success(this.array_data);
+                this.message = res.data.message;
+                this.$router.push({
+                  name: "home-sliders",
+                });
+              } else {
+                this.$toast.error(this.array_data);
+              }
+            })
+            .catch((err) => {
+              this.isDisabled = false;
+              this.isBtnLoading = false;
+              this.$toast.error(this.$t("something_went_wrong"));
+              console.log("error", err);
+            })
+            .finally(() => {
+              this.isDisabled = false;
+              this.isBtnLoading = false;
+            });
+        } else {
+          if (
+            (this.tabs == 1 &&
+              (this.home_slider[0].image == "" ||
+                this.home_slider[0].image == null)) ||
+            (this.tabs == 2 &&
+              (this.home_slider[1].image == "" ||
+                this.home_slider[1].image == null))
+          ) {
+            this.have_noimage = true;
+          }
+        }
+      } else {
+        // if (
+        //   this.home_slider[0].description == "" ||
+        //   this.home_slider[0].description == null
+        // ) {
+        //   this.quill_item = true;
+        // }
+        // if (
+        //   this.home_slider[1].description == "" ||
+        //   this.home_slider[1].description == null
+        // ) {
+        //   this.quill_item_ar = true;
+        // }
+        if (this.valid == true) {
+          // if (
+          //   this.home_slider[0].description == "" ||
+          //   this.home_slider[0].description == null ||
+          //   this.home_slider[1].description == "" ||
+          //   this.home_slider[1].description == null
+          // ) {
+          //   return;
+          // }
+          this.isDisabled = true;
+          this.isBtnLoading = true;
+          this.$axios
+            .post(
+              process.env.VUE_APP_API_URL_ADMIN + "save-home-slider",
+              this.home_slider
+            )
+            .then((res) => {
+              if (Array.isArray(res.data.message)) {
+                this.array_data = res.data.message.toString();
+              } else {
+                this.array_data = res.data.message;
+              }
+              if (res.data.status == "S") {
+                this.$toast.success(this.array_data);
+                this.message = res.data.message;
+                this.$router.push({
+                  name: "home-sliders",
+                  query: { s_tab: this.tabs },
+                });
+              } else {
+                this.$toast.error(this.array_data);
+              }
+            })
+            .catch((err) => {
+              this.isDisabled = false;
+              this.isBtnLoading = false;
+              this.$toast.error(this.$t("something_went_wrong"));
+              console.log("error", err);
+            })
+            .finally(() => {
+              this.isDisabled = false;
+              this.isBtnLoading = false;
+            });
+        }
+      }
+    },
+    cancel() {
+      this.$router.push({
+        name: "home-sliders",
+        query: { s_tab: this.tabs },
+      });
+    },
+    // submit() {
+    //   if (this.selected_media_type == "Image") {
+    //     if (this.home_slider[0].description == "" || this.home_slider[0].description == null) {
+    //       this.quill_item = true;
+    //     }
+    //     if (this.home_slider[1].description == "" || this.home_slider[1].description == null) {
+    //       this.quill_item_ar = true;
+    //     }
+    //     if (
+    //       this.$refs.form.validate() &&
+    //       this.valid == true &&
+    //       ((this.tabs == 1 &&
+    //         this.home_slider[0].image != "" &&
+    //         this.home_slider[0].image != null) ||
+    //         (this.tabs == 2 &&
+    //           this.home_slider[1].image != "" &&
+    //           this.home_slider[1].image != null))
+    //     ) {
+    //       if (this.home_slider[0].description == "" || this.home_slider[0].description == null || this.home_slider[1].description == "" || this.home_slider[1].description == null) {
+    //         return;
+    //       }
+    //       this.have_noimage = false;
+    //       this.isDisabled = true;
+    //       this.isBtnLoading = true;
+    //       // Form is valid, process
+    //       this.$axios
+    //         .post(
+    //           process.env.VUE_APP_API_URL_ADMIN + "save-home-slider",
+    //           this.home_slider
+    //         )
+    //         .then((res) => {
+    //           if (Array.isArray(res.data.message)) {
+    //             this.array_data = res.data.message.toString();
+    //           } else {
+    //             this.array_data = res.data.message;
+    //           }
+    //           if (res.data.status == "S") {
+    //             this.$toast.success(this.array_data);
+    //             this.message = res.data.message;
+    //             this.$router.push({
+    //               name: "home-sliders",
+    //             });
+    //           } else {
+    //             this.$toast.error(this.array_data);
+    //           }
+    //         })
+    //         .catch((err) => {
+    //           this.isDisabled = false;
+    //           this.isBtnLoading = false;
+    //           this.$toast.error(this.$t("something_went_wrong"));
+    //           console.log("error", err);
+    //         })
+    //         .finally(() => {
+    //           this.isDisabled = false;
+    //           this.isBtnLoading = false;
+    //         });
+    //     } else {
+    //       if (
+    //         (this.tabs == 1 &&
+    //           (this.home_slider[0].image == "" ||
+    //             this.home_slider[0].image == null)) ||
+    //         (this.tabs == 2 &&
+    //           (this.home_slider[1].image == "" ||
+    //             this.home_slider[1].image == null))
+    //       ) {
+    //         this.have_noimage = true;
+    //       }
+    //     }
+    //   } else {
+    //     if (this.home_slider[0].description == "" || this.home_slider[0].description == null) {
+    //       this.quill_item = true;
+    //     }
+    //     if (this.home_slider[1].description == "" || this.home_slider[1].description == null) {
+    //       this.quill_item_ar = true;
+    //     }
+    //     if (this.$refs.form.validate() && this.valid == true) {
+    //       if (this.home_slider[0].description == "" || this.home_slider[0].description == null || this.home_slider[1].description == "" || this.home_slider[1].description == null) {
+    //         return;
+    //       }
+    //       this.isDisabled = true;
+    //       this.isBtnLoading = true;
+    //       this.$axios
+    //         .post(
+    //           process.env.VUE_APP_API_URL_ADMIN + "save-home-slider",
+    //           this.home_slider
+    //         )
+    //         .then((res) => {
+    //           if (Array.isArray(res.data.message)) {
+    //             this.array_data = res.data.message.toString();
+    //           } else {
+    //             this.array_data = res.data.message;
+    //           }
+    //           if (res.data.status == "S") {
+    //             this.$toast.success(this.array_data);
+    //             this.message = res.data.message;
+    //             this.$router.push({
+    //               name: "home-sliders",
+    //             });
+    //           } else {
+    //             this.$toast.error(this.array_data);
+    //           }
+    //         })
+    //         .catch((err) => {
+    //           this.isDisabled = false;
+    //           this.isBtnLoading = false;
+    //           this.$toast.error(this.$t("something_went_wrong"));
+    //           console.log("error", err);
+    //         })
+    //         .finally(() => {
+    //           this.isDisabled = false;
+    //           this.isBtnLoading = false;
+    //         });
+    //     }
+    //   }
+    // },
+    gotourl(url) {
+      window.open(url, "_blank");
+    },
+    onEditorChange(event) {
+      if (event.text.length == 1) {
+        this.quill_item = true;
+      } else {
+        this.quill_item = false;
+      }
+    },
+    onEditorChangeAR(event) {
+      if (event.text.length == 1) {
+        this.quill_item_ar = true;
+      } else {
+        this.quill_item_ar = false;
+      }
+    },
+    onEditorBlur() {
+      // console.log(event.options);
+      if (this.home_slider.description == "") {
+        this.quill_item = true;
+      }
+    },
+    onEditorBlurAR(event) {
+      console.log(event.options);
+      if (this.home_slider.description_ar == "") {
+        this.quill_item = true;
+      }
+    },
+    clear() {
+      this.$refs.form.reset();
+    },
+    downloadImage(image_url) {
+      window.open(this.envImagePath + image_url, "_blank");
+    },
+    updateStore(store) {
+      if (this.tabs == 1) {
+        this.home_slider[1].store_id = store;
+      } else {
+        this.home_slider[0].store_id = store;
+      }
+    },
+    updateActionSlug(action_id) {
+      if (this.tabs == 1) {
+        this.home_slider[1].action_slug = action_id;
+      } else {
+        this.home_slider[0].action_slug = action_id;
+      }
+    },
+    updateHomeSliderSequence(value, index) {
+      this.home_slider[index].seq = value;
+    },
+    updateSliderType(type) {
+      if (this.tabs == 1) {
+        this.home_slider[1].slider_type = type;
+      } else {
+        this.home_slider[0].slider_type = type;
+      }
+      this.home_slider[0].action_slug = "";
+      this.home_slider[1].action_slug = "";
+      if (type == "ev") {
+        this.labelText = this.$t("events_en");
+        this.labelTextAr = this.$t("events_ar");
+      } else {
+        this.labelText = this.$t("promotions_offers_en");
+        this.labelTextAr = this.$t("promotions_offers_ar");
+      }
+      this.fetchActionSlug();
+    },
+
+    fetchActionSlug() {
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-action-slug", {
+          params: {
+            slider_type: this.home_slider[0].slider_type,
+          },
+        })
+        .then((response) => {
+          this.slug_details_en = response.data.slug_details_en;
+          this.slug_details_ar = response.data.slug_details_ar;
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+        });
+    },
+    fetchLookup() {
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_lang_lookup", {
+          params: {
+            lookup_type: "MEDIA_TYPE",
+          },
+        })
+        .then((response) => {
+          this.mediatype_en = response.data.lookup_en;
+          this.mediatype_ar = response.data.lookup_ar;
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+        });
+    },
+    fetchMall() {
+      this.initval = true;
+      this.$axios
+        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-malls")
+        .then((response) => {
+          console.log(response);
+          this.stores_en = response.data.malls_en;
+          this.stores_ar = response.data.malls_ar;
+          if (this.user.rolename == "MallAdmin" && !this.$route.query.slug) {
+            this.stores_en.filter((ele) => {
+              if (ele.header_id === this.user.store_id) {
+                this.home_slider[0].store_id = ele.header_id;
+                this.home_slider[1].store_id = ele.header_id;
+                this.mall_id = ele.header_id;
+              }
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
+};
+</script>
+<style scoped>
+#quill_item {
+  border: 1px solid #b00020;
+}
+
+#quill_item_border {
+  border: 1px solid #d1d5db;
+}
+.arabclassquill /deep/ .ql-editor {
+  text-align: right !important;
+}
+input.larger {
+  width: 20px;
+  height: 20px;
+}
+
+.image-container {
+  max-width: 110px;
+  border: 5px double black;
+  border-radius: 3px;
+}
+
+.camera-icon {
+  position: absolute;
+  bottom: 35px;
+  left: 35px;
+  animation: fadeInUp 0.5s forwards;
+}
+
+.upload_doc {
+  margin-top: -14px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.upload_image {
+  margin-bottom: 3px;
+}
+
+.download_btn_color {
+  color: blue;
+}
+
+.image-width {
+  border: 3px solid black;
+  padding: 1px;
+}
+
+.errorborder {
+  border: solid red 2px;
+  text-align: center;
+}
+
+.arabdirection /deep/ .v-messages__message {
+  text-align: right !important;
+}
+
+.arabdirection /deep/ .v-field {
+  direction: rtl !important;
+}
+
+.delete_icon_ar {
+  position: relative;
+  right: 78px;
+  bottom: 90px;
+}
+
+.delete_icon {
+  position: relative;
+  left: 80px;
+  bottom: 90px;
+}
+
+.download_icon {
+  position: relative;
+  left: 112px;
+  bottom: 52px;
+}
+
+.download_icon_ar {
+  position: relative;
+  bottom: 45px;
+  right: 110px;
+}
+
+.videourlclass /deep/ .v-field__input {
+  color: blue !important;
+}
+
+.dimension_text {
+  text-align-last: start;
+}
+</style>

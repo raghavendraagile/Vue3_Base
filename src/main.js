@@ -12,6 +12,8 @@ import AxiosPlugin from "./axios-plugin.js";
 import Toaster from "@meforma/vue-toaster";
 import moment from "moment";
 import VOtpInput from "vue3-otp-input";
+import Vue3IconPicker from 'vue3-icon-picker';
+import 'vue3-icon-picker/dist/style.css';
 
 // import FlashMessage from './vue-flash-message';
 
@@ -38,7 +40,6 @@ import { dateMixin } from "./dateMixin.js";
 
 import mitt from "mitt";
 const emitter = mitt();
-
 const vuetify = createVuetify({
   components: {
     ...components,
@@ -55,7 +56,8 @@ const app = createApp(App)
   .use(Toaster)
   .use(moment)
   .use(Vue3FormWizard)
-  .use(i18n);
+  .use(i18n)
+  .use(Vue3IconPicker, { name: 'IconPicker' });
 
 app.config.globalProperties.emitter = emitter;
 app.component("page-title", PageTitle);

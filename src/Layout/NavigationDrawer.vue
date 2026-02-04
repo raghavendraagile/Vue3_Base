@@ -3,7 +3,11 @@ import { navigation } from "../store/navigation.js";
 </script>
 <template>
   <content-loader v-if="loader"></content-loader>
-  <v-navigation-drawer v-model="navigation.drawer" class="pa-0">
+  <v-navigation-drawer
+    v-model="navigation.drawer"
+    class="pa-0"
+    :location="sel_lang == 'ar' ? 'right' : 'left'"
+  >
     <div
       class="d-flex align-items-center justify-space-between pa-5 navigation-title"
       elevation="3"
@@ -12,10 +16,7 @@ import { navigation } from "../store/navigation.js";
       <div class="app-header__logo">
         <div v-if="app_image_url">
           <span>
-            <img
-              v-bind:src="app_image_url"
-              style="width: 70px"
-            />
+            <img v-bind:src="app_image_url" style="width: 65%" />
           </span>
         </div>
         <div v-else-if="app_image_url == ''">
@@ -27,6 +28,9 @@ import { navigation } from "../store/navigation.js";
           <span class="font-base-app text-center">
             {{ application_name }}
           </span>
+        </div>
+        <div>
+          <span class="font-base-app text-center"> PAF </span>
         </div>
       </div>
       <v-btn
@@ -67,11 +71,13 @@ import { navigation } from "../store/navigation.js";
 import localStorageWrapper from "../localStorageWrapper.js";
 
 export default {
+  props: ["sel_lang"],
   data() {
     return {
       drawer: true,
       loader: false,
       user: [],
+      active_menu: "",
       menuitems: [],
       role_id: "",
       app_image_url: "",
@@ -81,6 +87,7 @@ export default {
         ["Management", "mdi-account-multiple-outline"],
         ["Settings", "mdi-cog-outline"],
       ],
+      lang: "",
     };
   },
   created() {
@@ -93,6 +100,7 @@ export default {
     this.appImageUpdate();
   },
   mounted() {
+    this.active_menu = localStorage.getItem("active_menu");
     if (JSON.parse(localStorage.getItem("user_data"))) {
       this.user = JSON.parse(localStorage.getItem("user_data"));
       this.role_id = this.user.role_id;
@@ -106,6 +114,11 @@ export default {
           this.fetchMenuTree();
         }
       },
+    },
+    "$route.params.lang"() {
+      if (this.role_id > 0) {
+        this.fetchMenuTree();
+      }
     },
   },
   methods: {
@@ -130,6 +143,7 @@ export default {
       }
       if (classvalue == "parent") {
         this.menuitems[index].classactive = true;
+        localStorage.setItem("active_menu", this.menuitems[index].title);
       }
       if (classvalue == "parent" && childvalue != null) {
         return;
@@ -142,15 +156,28 @@ export default {
 
     fetchMenuTree() {
       this.loader = true;
+      const lang = localStorage.getItem("pref_lang") || "en";
       this.$axios
         .post(process.env.VUE_APP_API_URL_ADMIN + "menutree", {
           role: this.role_id,
+          lang: lang,
         })
         .then((response) => {
           this.loader = false;
           if (response.data.status == "S") {
             this.menuitems = response.data.menu;
+            const indexofActive = this.menuitems.findIndex(
+              (item) => item.title === this.active_menu
+            );
+            if (indexofActive !== -1) {
+              this.menuitems[indexofActive].classactive = true;
+            }
           }
+        })
+        .catch((err) => {
+          this.loader = false;
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log("this error" + err);
         });
     },
   },
@@ -158,7 +185,7 @@ export default {
 </script>
 
 <style scoped>
-.navigation-title{
+.navigation-title {
   position: sticky;
   top: 0px;
   z-index: 10;

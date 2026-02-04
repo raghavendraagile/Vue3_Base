@@ -4,57 +4,60 @@ import { apptheme } from "./store/apptheme.js";
 </script>
 
 <template>
-  <div id="app" v-bind:class="apptheme.theme_type">
-    <v-card>
-      <FlashMessage
-        :position="'right bottom'"
-        style="position: fixed; z-index: 15000"
-      ></FlashMessage>
-      <v-layout>
-        <NavigationDrawer v-if="layout === 'default-layout'"></NavigationDrawer>
+  <v-app>
+    <content-loader v-if="c_loader"></content-loader>
+    <div id="app" v-bind:class="apptheme.theme_type">
+      <v-card>
+        <v-layout>
+          <NavigationDrawer
+            :key="componentKey"
+            v-if="layout === 'default-layout'"
+            :sel_lang="sel_lang"
+          ></NavigationDrawer>
 
-        <v-app-bar
-          color="white"
-          elevation="3"
-          style="border-radius: 0px"
-          v-if="layout === 'default-layout'"
-        >
-          <template v-slot:prepend>
-            <v-app-bar-nav-icon
-              v-show="navigation.drawer === false"
-              @click="navigation.setDrawer(!navigation.drawer)"
-            ></v-app-bar-nav-icon>
-            <div v-show="navigation.drawer === false">
-              <div class="font-login text-center">
-                <div v-if="app_image_url">
-                  <span>
-                    <img v-bind:src="app_image_url" style="width: 10vh" />
-                  </span>
-                </div>
-                <div v-else-if="app_image_url == ''">
-                  <span class="font-base-app text-center">
-                    {{ application_name }}
-                  </span>
-                </div>
-                <div v-else>
-                  <span class="font-base-app text-center">
-                    {{ application_name }}
-                  </span>
+          <v-app-bar
+            color="white"
+            elevation="3"
+            style="border-radius: 0px"
+            v-if="layout === 'default-layout'"
+            v-bind:style="sel_lang == 'ar' ? 'direction:rtl' : ''"
+          >
+            <template v-slot:prepend>
+              <v-app-bar-nav-icon
+                v-show="navigation.drawer === false"
+                @click="navigation.setDrawer(!navigation.drawer)"
+              ></v-app-bar-nav-icon>
+              <div v-show="navigation.drawer === false">
+                <div class="font-login text-center">
+                  <div v-if="app_image_url">
+                    <span>
+                      <img v-bind:src="app_image_url" style="width: 150px" />
+                    </span>
+                  </div>
+                  <div v-else-if="app_image_url == ''">
+                    <span class="font-base-app text-center">
+                      {{ application_name }}
+                    </span>
+                  </div>
+                  <div v-else>
+                    <span class="font-base-app text-center">
+                      {{ application_name }}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </template>
-          <v-spacer></v-spacer>
+            </template>
+            <v-spacer></v-spacer>
 
-          <!-- <v-tooltip
+            <!-- <v-tooltip
             :text="$t('notifications')"
             location="bottom"
             v-if="showtradienotification"
           > -->
-          <!-- <template v-slot:activator="{ props }">
+            <!-- <template v-slot:activator="{ props }">
             
             </template> -->
-          <div class="text-center">
+            <!-- <div class="text-center">
             <v-menu
               v-model="notificationmenu"
               :close-on-content-click="false"
@@ -101,7 +104,6 @@ import { apptheme } from "./store/apptheme.js";
                       <v-icon
                         @click="notificationmenu = false"
                         v-bind="props"
-                        v-on="on"
                         class="mr-4"
                         >mdi-close</v-icon
                       >
@@ -194,12 +196,33 @@ import { apptheme } from "./store/apptheme.js";
                 </div>
               </v-card>
             </v-menu>
-          </div>
-          <!-- </v-tooltip> -->
-          <!-- <v-btn icon>
-            <v-icon>mdi-magnify</v-icon>
-          </v-btn> -->
-          <v-btn
+          </div> -->
+            <!-- <v-tooltip :text="$t('change_language')" location="bottom">
+            <template v-slot:activator="{ props }"> -->
+            <!-- <div class="d-flex switch-lang bounce-all">
+              <div
+                v-if="sel_lang == 'en'"
+                class="mx-2"
+                @click="setUserLang('ar')"
+              >
+                <v-icon style="font-size: 20px; margin-top: 2px"
+                  >mdi mdi-translate</v-icon
+                >
+                {{ $t("arabic") }}
+              </div>
+              <div v-else class="mx-2" @click="setUserLang('en')">
+                <v-icon style="font-size: 20px; margin-top: 2px"
+                  >mdi mdi-translate</v-icon
+                >
+                {{ $t("english") }}
+              </div>
+            </div> -->
+            <!-- </template>
+          </v-tooltip> -->
+
+            <!-- <v-tooltip :text="$t('switch_mode')" location="bottom">
+            <template v-slot:activator="{ props }"> -->
+            <!-- <v-btn
             icon
             @click="
               switchTheme();
@@ -214,40 +237,41 @@ import { apptheme } from "./store/apptheme.js";
                   : 'mdi-white-balance-sunny'
               "
             ></v-icon>
-          </v-btn>
-          <ProfileView @getuserdetails="fetchUserdetails"></ProfileView>
-        </v-app-bar>
+          </v-btn> -->
+            <!-- </template>
+          </v-tooltip> -->
+            <ProfileView @getuserdetails="fetchUserdetails"></ProfileView>
+          </v-app-bar>
 
-        <v-main style="min-height: 100vh; background-color: #fffffffc">
-          <!-- <transition name="scale" mode="out-in"> -->
+          <v-main style="min-height: 100vh">
             <router-view></router-view>
-          <!-- </transition> -->
-        </v-main>
-      </v-layout>
-    </v-card>
-  </div>
-  <LogoutTimer></LogoutTimer>
+          </v-main>
+        </v-layout>
+      </v-card>
+    </div>
+    <LogoutTimer></LogoutTimer>
+  </v-app>
 </template>
 
 <script>
 import localStorageWrapper from "./localStorageWrapper.js";
-import { getMessaging, onMessage } from "firebase/messaging";
-import { initializeApp } from "firebase/app";
-if (window.location.protocol === "https:") {
-  const firebaseConfig = {
-    apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
-    authDomain: process.env.VUE_APP_FIREBASE_AUTHDOMAIN,
-    projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.VUE_APP_FIREBASE_APP_ID,
-    measurementId: process.env.VUE_APP_FIREBASE_MEASUREMENT_ID,
-  };
+// import { getMessaging, onMessage } from "firebase/messaging";
+// import { initializeApp } from "firebase/app";
+// if (window.location.protocol === "https:") {
+//   const firebaseConfig = {
+//     apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
+//     authDomain: process.env.VUE_APP_FIREBASE_AUTHDOMAIN,
+//     projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
+//     storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
+//     messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
+//     appId: process.env.VUE_APP_FIREBASE_APP_ID,
+//     measurementId: process.env.VUE_APP_FIREBASE_MEASUREMENT_ID,
+//   };
 
-  const app = initializeApp(firebaseConfig);
-  console.log(app);
-  var messaging = getMessaging();
-}
+//   const app = initializeApp(firebaseConfig);
+//   console.log(app);
+//   var messaging = getMessaging();
+// }
 
 const default_layout = "default";
 import NavigationDrawer from "./Layout/NavigationDrawer.vue";
@@ -258,8 +282,9 @@ export default {
   data() {
     return {
       notificationmenu: false,
+      componentKey: 0,
       app_image_url: "",
-      application_name: "",
+      application_name: "EPAF",
       app_name: "",
       showtradienotification: false,
       notification_count: 0,
@@ -272,6 +297,8 @@ export default {
       loader: false,
       currentIndex: 0,
       itemsPerPage: 5,
+      sel_lang: "",
+      c_loader: false,
     };
   },
   computed: {
@@ -289,7 +316,9 @@ export default {
     },
   },
 
-  mounted() {},
+  mounted() {
+    this.selectedLang();
+  },
   created() {
     this.emitter.on("app_image_update", () => {
       this.getAppImage();
@@ -297,30 +326,70 @@ export default {
     this.getAppImage();
   },
   watch: {
-    messaging: {
-      immediate: true,
-      handler() {
-        if (window.location.protocol === "https:") {
-          onMessage(messaging, (payload) => {
-            console.log("Message received. ", payload.notification);
-            if (this.user_id > 0) {
-              // this.fetchNotification();
-            }
-          });
+    // messaging: {
+    //   immediate: true,
+    //   handler() {
+    //     if (window.location.protocol === "https:") {
+    //       onMessage(messaging, (payload) => {
+    //         console.log("Message received. ", payload.notification);
+    //         if (this.user_id > 0) {
+    //           // this.fetchNotification();
+    //         }
+    //       });
+    //     }
+    //   },
+    // },
+    "$route.params.lang"(newLang) {
+      if (newLang == "en" || newLang == "ar") {
+        this.$i18n.locale = newLang;
+        if (newLang) {
+          localStorage.setItem("pref_lang", newLang);
+          this.sel_lang = newLang;
+        } else {
+          localStorage.setItem("pref_lang", "en");
+          this.sel_lang = "en";
         }
-      },
+      } else {
+        localStorage.setItem("pref_lang", "en");
+        this.sel_lang = "en";
+      }
     },
   },
 
   methods: {
+    setUserLang(lang) {
+      this.c_loader = true;
+      setTimeout(() => {
+        this.c_loader = false;
+      }, 1000);
+      localStorage.setItem("pref_lang", lang);
+      this.$i18n.locale = lang;
+
+      let newRoute = {
+        ...this.$route,
+        params: {
+          ...this.$route.params,
+          lang: lang,
+        },
+      };
+
+      this.$router.push(newRoute).catch((err) => {
+        if (err.name !== "NavigationDuplicated") {
+          throw err;
+        }
+      });
+
+      this.selectedLang();
+      this.componentKey += 1;
+    },
+    selectedLang() {
+      this.sel_lang = localStorage.getItem("pref_lang") || "en";
+    },
     fetchUserdetails(getuserdetails) {
       this.user = getuserdetails;
       this.user_id = getuserdetails.id;
       // this.fetchNotification();
-      if (
-        this.user.role.rolename == "Tradie" ||
-        this.user.role.rolename == "Principal"
-      ) {
+      if (this.user.rolename == "Tradie" || this.user.rolename == "Principal") {
         this.showtradienotification = true;
       } else {
         this.showtradienotification = false;
@@ -408,7 +477,22 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
+:global(.rtl input) {
+  text-align: right;
+  direction: rtl;
+}
+:global(.rtl textarea) {
+  text-align: right;
+  direction: rtl;
+}
+:global(.v-list-group--prepend .v-list-item--active) {
+  background: #e4e4e4;
+}
+:global(.rtl-page-title .v-checkbox-btn) {
+  direction: rtl !important;
+}
+
 nav {
   padding: 30px;
 }
@@ -425,7 +509,11 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
-
+.d-flex1 {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 .notificationcreatedbyclass {
   font-size: 12px;
   font-weight: 500;
@@ -470,13 +558,12 @@ nav a.router-link-exact-active {
 }
 
 .v-toolbar__content {
-  height: 80px !important;
+  height: 57px !important;
 }
 
 .v-toolbar-title__placeholder {
   font-size: 23px;
   font-weight: 500;
-  font-family: "Roboto";
   color: #000000bd;
   padding-left: 10px;
 }

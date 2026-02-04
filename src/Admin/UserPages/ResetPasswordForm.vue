@@ -451,13 +451,12 @@ export default {
 };
 </script>
 
-<style  scoped>
+<style scoped>
 .v-messages__message,
 .v-text-field--is-booted .error--text {
   color: red;
 }
 .font-login {
-  font-family: "Goudy Old Style";
   font-size: 35px;
   color: black;
 }
