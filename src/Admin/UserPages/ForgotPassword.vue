@@ -126,6 +126,7 @@ export default {
       password: "",
     },
     show1: false,
+    isDisabled: false,
     user: "",
     btnloading: false,
     userprofile: "",
