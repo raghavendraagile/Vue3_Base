@@ -15,7 +15,7 @@
 
 .app-name {
   font-family: cursive;
-  color: #614f38;
+  color: #003b84;
 }
 
 .navigation-title {
@@ -368,7 +368,7 @@ input::placeholder {
 .font-base-app {
   font-weight: 600;
   font-family: cursive;
-  color: #614f38;
+  color: #003b84;
 }
 
 .req_field {
@@ -414,7 +414,7 @@ input::placeholder {
 }
 
 .dialog-header {
-  background: #614f38;
+  background: #003b84;
   color: white;
 }
 
@@ -491,15 +491,15 @@ input::placeholder {
   }
 }
 .v-list-item__content {
-  color: #624e37;
+  color: #003b84;
 }
 
 .v-tab.v-tab {
-  color: #624e37;
+  color: #003b84;
 }
 
 .v-list-item__prepend > .v-icon {
-  color: #614f38;
+  color: #003b84;
 }
 
 @media (orientation: landscape) {
@@ -529,4 +529,12 @@ input::placeholder {
   pointer-events: none;
 }
 .v-container{padding:0px 16px}
+.logo{width: 200px;}
+.v-text-field .v-input__details {
+  padding-inline: 1px;
+}
+.v-list{padding-top:0px !important}
+/* Theme color setup css start */
+.theme_btn{background:#0287d9 !important;color:#fff !important}
+/* Theme color setup css start */
 /*# sourceMappingURL=global.css.map */

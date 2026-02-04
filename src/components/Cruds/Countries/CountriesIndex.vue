@@ -3,7 +3,7 @@
     <div
       flat
       color="white"
-      class="row py-5 pl-5 align-items-center component_app_bar"
+      class="row my-3 align-items-center component_app_bar"
     >
       <page-title
         class="col-md-3"

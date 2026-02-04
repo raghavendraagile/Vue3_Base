@@ -3,8 +3,8 @@
     <div
       flat
       color="white"
-      class="row py-5 pl-5 align-items-center component_app_bar position-relative"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]"
+      class="row px-3 align-items-center component_app_bar position-relative"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
     >
       <page-title
         class="col-md-3"
@@ -33,7 +33,7 @@
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link :to="{ name: 'menu_amend' }" style="color: white">
-              <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">
+              <v-btn size="small" class="mb-2 theme_btn" v-bind="props">
                 {{ $t("add_new") }}
               </v-btn>
             </router-link>
@@ -41,6 +41,7 @@
         </v-tooltip>
       </div>
     </div>
+
     <v-data-table
       :headers="headers"
       :items="menu"
@@ -55,27 +56,21 @@
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
           <td>
-            <span v-if="props.item.selectable.title">{{
-              props.item.selectable.title
+            <span v-if="props.item.title">{{ props.item.title }}</span>
+            <span v-else>{{ $t("not_appllicable") }}</span>
+          </td>
+          <td>
+            <span v-if="props.item.href">{{ props.item.href }}</span>
+            <span v-else>{{ $t("not_appllicable") }}</span>
+          </td>
+          <td>
+            <span v-if="props.item.parent_name">{{
+              props.item.parent_name
             }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span v-if="props.item.selectable.href">{{
-              props.item.selectable.href
-            }}</span>
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
-          <td>
-            <span v-if="props.item.selectable.parent_name">{{
-              props.item.selectable.parent_name
-            }}</span>
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
-          <td>
-            <span v-if="props.item.selectable.seq">{{
-              props.item.selectable.seq
-            }}</span>
+            <span v-if="props.item.seq">{{ props.item.seq }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
 
@@ -83,7 +78,7 @@
             <router-link
               :to="{
                 name: 'menu_amend',
-                query: { slug: props.item.selectable.slug },
+                query: { slug: props.item.slug },
               }"
             >
               <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -99,7 +94,7 @@
               </v-tooltip>
             </router-link>
 
-            <span @click="deleteItem(props.item.selectable.id)">
+            <span @click="deleteItem(props.item.id)">
               <v-tooltip :text="this.$t('delete')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-icon
@@ -186,13 +181,14 @@ export default {
     dialog(val) {
       val || this.close();
     },
-     '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
 
   created() {

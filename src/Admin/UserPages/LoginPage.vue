@@ -6,7 +6,7 @@
         <div class="background">
           <div class="login-box-custom">
             <div class="d-flex flex-column">
-              <img src="../../assets/images/logo.png" />
+              <img src="../../assets/images/logo.png" class="logo" />
               <div class="w-100 d-flex" style="flex-direction: column">
                 <!-- <h4 class="mb-0">{{ $t("welcome_msg") }}</h4> -->
                 <div class="font-login">
