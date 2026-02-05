@@ -531,7 +531,7 @@
     },
     data: () => ({
       documentDialog: false,
-      aws_url: process.env.MIX_AWS_URL,
+      aws_url: import.meta.env.VITE_AWS_URL,
       page: 1,
       totalPages: 0,
       sharedpage: 1,
@@ -617,7 +617,7 @@
       this.selectedtype = "Pdf";
   
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "lookupdata/IMAGE_CATEGORY")
+        .get(import.meta.env.VITE_API_URL_ADMIN + "lookupdata/IMAGE_CATEGORY")
         .then((res) => {
           this.categories = res.data;
         })
@@ -708,7 +708,7 @@
           if (this.edit_id > 0) {
             this.$axios
               .patch(
-                process.env.VUE_APP_API_URL_ADMIN + "assets/" + this.edit_id,
+                import.meta.env.VITE_API_URL_ADMIN + "assets/" + this.edit_id,
                 {
                   alt_text: this.alt_text,
                   description: this.description,
@@ -738,7 +738,7 @@
               });
           } else {
             this.$axios
-              .post(process.env.VUE_APP_API_URL_ADMIN + "upload", {})
+              .post(import.meta.env.VITE_API_URL_ADMIN + "upload", {})
               .then((res) => {
                 console.log("success");
                 this.btnloading = false;
@@ -779,7 +779,7 @@
           // formData.append("id", this.edit_id);
           console.log("form data will b e", this.selectedfile);
           this.$axios
-            .post(process.env.VUE_APP_API_URL_ADMIN + "upload", formData)
+            .post(import.meta.env.VITE_API_URL_ADMIN + "upload", formData)
             .then((res) => {
               this.btnloading = false;
               if (res.data.status == "E") {

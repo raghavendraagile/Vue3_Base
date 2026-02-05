@@ -207,7 +207,7 @@ export default {
     PageTitle,
   },
   data: () => ({
-    envImagePath: process.env.VUE_APP_IMAGE_PATH,
+    envImagePath: import.meta.env.VITE_IMAGE_PATH,
     loader: false,
     profile_details: [],
     role_details: [],
@@ -228,7 +228,7 @@ export default {
           this.loader = true;
           this.$axios
             .get(
-              process.env.VUE_APP_API_URL_ADMIN +
+              import.meta.env.VITE_API_URL_ADMIN +
                 "fetchuserdatabyslug/" +
                 this.$route.query.slug
             )

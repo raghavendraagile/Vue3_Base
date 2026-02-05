@@ -85,7 +85,7 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
-    envPath: process.env.VUE_APP_IMAGE_DOWNLOAD_URL,
+    envPath: import.meta.env.VUE_APP_IMAGE_DOWNLOAD_URL,
     valid: true,
     loader: false,
     file: "",
@@ -120,7 +120,7 @@ export default {
           this.loader = true;
           this.$axios
             .get(
-              process.env.VUE_APP_API_URL_ADMIN +
+              import.meta.env.VUE_APP_API_URL_ADMIN +
                 "edit_countries/" +
                 this.$route.query.slug
             )
@@ -147,7 +147,7 @@ export default {
         // Form is valid, process
         this.$axios
           .post(
-            process.env.VUE_APP_API_URL_ADMIN + "save_countries",
+            import.meta.env.VUE_APP_API_URL_ADMIN + "save_countries",
             this.country
           )
           .then((res) => {

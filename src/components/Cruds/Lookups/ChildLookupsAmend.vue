@@ -125,7 +125,7 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
-    envPath: process.env.VUE_APP_IMAGE_DOWNLOAD_URL,
+    envPath: import.meta.env.VUE_APP_IMAGE_DOWNLOAD_URL,
     valid: false,
     loader: false,
     file: "",
@@ -164,7 +164,7 @@ export default {
           this.loader = true;
           this.$axios
             .get(
-              process.env.VUE_APP_API_URL_ADMIN +
+              import.meta.env.VUE_APP_API_URL_ADMIN +
                 "lookups/" +
                 this.$route.query.slug +
                 "/edit"
@@ -201,7 +201,7 @@ export default {
         // Form is valid, process
         this.$axios
           .post(
-            process.env.VUE_APP_API_URL_ADMIN + "save_child_lookups",
+            import.meta.env.VITE_API_URL_ADMIN + "save_child_lookups",
             this.lookup
           )
           .then((res) => {
@@ -240,7 +240,7 @@ export default {
     },
     fetchparentlookup() {
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "fetch_parent_lookup", {
+        .post(import.meta.env.VITE_API_URL_ADMIN + "fetch_parent_lookup", {
           slug: this.lookup.parentslug,
         })
         .then((res) => {

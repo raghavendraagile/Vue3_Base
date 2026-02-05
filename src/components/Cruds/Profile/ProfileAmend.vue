@@ -439,7 +439,7 @@ export default {
           this.loader = true;
           this.$axios
             .get(
-              process.env.VUE_APP_API_URL_ADMIN +
+              import.meta.env.VITE_API_URL_ADMIN +
                 "fetchuserbyslug/" +
                 this.$route.query.slug
             )
@@ -466,7 +466,7 @@ export default {
     },
     fetchlookup() {
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetchlookup", {
+        .get(import.meta.env.VITE_API_URL_ADMIN + "fetchlookup", {
           params: {
             lookup_type: "SALUTATION",
           },
@@ -478,7 +478,7 @@ export default {
           console.log(err);
         });
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetchlookup", {
+        .get(import.meta.env.VITE_API_URL_ADMIN + "fetchlookup", {
           params: {
             lookup_type: "MARITAL_STATUS",
           },
@@ -490,7 +490,7 @@ export default {
           console.log(err);
         });
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetchlookup", {
+        .get(import.meta.env.VITE_API_URL_ADMIN + "fetchlookup", {
           params: {
             lookup_type: "GENDER",
           },
@@ -505,7 +505,7 @@ export default {
 
     fetchRoles() {
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetchrole")
+        .get(import.meta.env.VITE_API_URL_ADMIN + "fetchrole")
         .then((response) => {
           this.role_array = response.data.roles;
           this.role_array = this.role_array.filter((ele) => {
@@ -522,7 +522,7 @@ export default {
         this.isDisabled = true;
         this.$axios
           .post(
-            process.env.VUE_APP_API_URL_ADMIN + "saveuser",
+            import.meta.env.VITE_API_URL_ADMIN + "saveuser",
             this.profile_details
           )
           .then((res) => {

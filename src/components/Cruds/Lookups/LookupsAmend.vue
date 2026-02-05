@@ -125,7 +125,7 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
-    envPath: process.env.VUE_APP_IMAGE_DOWNLOAD_URL,
+    envPath: import.meta.env.VITE_API_URL_ADMIN,
     valid: false,
     loader: false,
     file: "",
@@ -162,7 +162,7 @@ export default {
           this.loader = true;
           this.$axios
             .get(
-              process.env.VUE_APP_API_URL_ADMIN +
+              import.meta.env.VITE_API_URL_ADMIN +
                 "lookups/" +
                 this.$route.query.slug +
                 "/edit"
@@ -190,7 +190,7 @@ export default {
         this.loader = true;
         // Form is valid, process
         this.$axios
-          .post(process.env.VUE_APP_API_URL_ADMIN + "save_lookups", this.lookup)
+          .post(import.meta.env.VITE_API_URL_ADMIN + "save_lookups", this.lookup)
           .then((res) => {
             this.btnloading = false;
             if (Array.isArray(res.data.message)) {

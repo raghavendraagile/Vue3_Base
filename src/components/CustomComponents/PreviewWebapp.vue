@@ -19,7 +19,7 @@
 export default {
   data() {
     return {
-      web_url: process.env.VUE_APP_WEB_URL,
+      web_url: import.meta.env.VITE_WEB_URL,
       webpath: "",
     };
   },

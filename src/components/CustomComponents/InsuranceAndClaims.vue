@@ -77,7 +77,7 @@ export default {
   data: () => ({
     loader_tradie: true,
     tradie_answers: [],
-    envImagePath: process.env.VUE_APP_IMAGE_PATH,
+    envImagePath: import.meta.env.VITE_IMAGE_PATH,
   }),
   props: ["user_id", "version_id"],
   mounted() {},
@@ -104,7 +104,7 @@ export default {
       this.loader_tradie = true;
       this.$emit("startstoploading", this.loader_tradie);
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "fetch_tradiesurvey_answer", {
+        .post(import.meta.env.VITE_API_URL_ADMIN + "fetch_tradiesurvey_answer", {
           user_id: this.user_id,
           version_id: version,
         })

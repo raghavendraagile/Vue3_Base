@@ -114,7 +114,7 @@ export default {
   },
   data() {
     return {
-      doc_path: process.env.VUE_APP_IMAGE_PATH,
+      doc_path: import.meta.env.VITE_IMAGE_PATH,
       documents: [],
       menu1: false,
       errorName: false,
@@ -221,7 +221,7 @@ export default {
         return;
       }
       this.message = "";
-      return this.$axios.post(process.env.VUE_APP_API_URL_ADMIN + "file_upload", { 'image': imagedata, 'folder': this.folder, 'filename': this.filename, 'extension': this.extension })
+      return this.$axios.post(import.meta.env.VITE_API_URL_ADMIN + "file_upload", { 'image': imagedata, 'folder': this.folder, 'filename': this.filename, 'extension': this.extension })
         .then((res) => {
           console.log(res.data);
           if (res.data.status == 'S') {

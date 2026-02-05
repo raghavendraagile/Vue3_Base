@@ -17,7 +17,7 @@ export default {
     ...mapGetters("auth", ["loggedin"]),
   },
   data: () => ({
-    envImagePath: process.env.VUE_APP_IMAGE_PATH,
+    envImagePath: import.meta.env.VUE_APP_IMAGE_PATH,
     search: "",
     is_arabic: false,
     user: [],
@@ -99,7 +99,7 @@ export default {
       if (Role == "SuperUser") {
         this.$axios
           .get(
-            process.env.VUE_APP_API_URL_ADMIN +
+            import.meta.env.VUE_APP_API_URL_ADMIN +
               "fetchDashboardSuperUser/" +
               userId
           )
@@ -115,7 +115,7 @@ export default {
       } else if (Role == "MallAdmin") {
         this.$axios
           .get(
-            process.env.VUE_APP_API_URL_ADMIN +
+            import.meta.env.VUE_APP_API_URL_ADMIN +
               "fetchDashboardMallAdmin/" +
               userId
           )
@@ -131,7 +131,7 @@ export default {
       } else {
         this.$axios
           .get(
-            process.env.VUE_APP_API_URL_ADMIN +
+            import.meta.env.VUE_APP_API_URL_ADMIN +
               "fetchDashboardStoreAdmin/" +
               userId
           )

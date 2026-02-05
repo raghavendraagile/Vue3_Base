@@ -289,7 +289,7 @@ export default {
           this.template_slug = this.$route.query.slug;
           this.$axios
             .get(
-              process.env.VUE_APP_API_URL_ADMIN +
+              import.meta.env.VUE_APP_API_URL_ADMIN +
                 "emailtemplates/" +
                 this.$route.query.slug
             )
@@ -339,7 +339,7 @@ export default {
 
     fetchLookup() {
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetchlookup", {
+        .get(import.meta.env.VUE_APP_API_URL_ADMIN + "fetchlookup", {
           params: {
             lookup_type: "TEMPLATE_TYPE",
           },
@@ -373,7 +373,7 @@ export default {
         if (this.template_slug == "") {
           this.$axios
             .post(
-              process.env.VUE_APP_API_URL_ADMIN + "emailtemplates",
+              import.meta.env.VUE_APP_API_URL_ADMIN + "emailtemplates",
               this.fieldItem
             )
             .then((res) => {
@@ -402,7 +402,7 @@ export default {
         } else {
           this.$axios
             .patch(
-              process.env.VUE_APP_API_URL_ADMIN +
+              import.meta.env.VUE_APP_API_URL_ADMIN +
                 "emailtemplates/" +
                 this.template_slug,
               this.fieldItem

@@ -212,7 +212,7 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
-    envImagePath: process.env.VUE_APP_IMAGE_PATH,
+    envImagePath: import.meta.env.VITE_IMAGE_PATH,
     valid: false,
     loader: false,
     file: "",
@@ -251,7 +251,7 @@ export default {
           this.loader = true;
           this.$axios
             .get(
-              process.env.VUE_APP_API_URL_ADMIN +
+              import.meta.env.VITE_API_URL_ADMIN +
                 "edit_system_params/" +
                 this.$route.query.slug
             )
@@ -284,7 +284,7 @@ export default {
         // Form is valid, process
         this.$axios
           .post(
-            process.env.VUE_APP_API_URL_ADMIN + "save_system_params",
+            import.meta.env.VITE_API_URL_ADMIN + "save_system_params",
             this.system_params
           )
           .then((res) => {

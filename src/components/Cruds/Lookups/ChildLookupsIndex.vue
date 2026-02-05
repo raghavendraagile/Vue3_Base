@@ -255,7 +255,7 @@ export default {
     },
     statusUpdate() {
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "update_lookups_status", {
+        .post(import.meta.env.VITE_API_URL_ADMIN + "update_lookups_status", {
           id: this.status_id,
         })
         .then((res) => {
@@ -282,7 +282,7 @@ export default {
     },
     deleteLookup(id) {
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "delete_lookup/" + id)
+        .post(import.meta.env.VITE_API_URL_ADMIN + "delete_lookup/" + id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -306,7 +306,7 @@ export default {
       this.initval = true;
       this.$axios
         .get(
-          process.env.VUE_APP_API_URL_ADMIN +
+          import.meta.env.VITE_API_URL_ADMIN +
             "lookupdata/" +
             this.$route.query.parentname
         )

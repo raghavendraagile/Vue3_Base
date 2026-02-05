@@ -226,7 +226,7 @@ export default {
     fetchSystemParameters() {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "getsystem_params")
+        .get(import.meta.env.VITE_API_URL_ADMIN + "getsystem_params")
         .then((res) => {
           this.initval = false;
 
@@ -247,7 +247,7 @@ export default {
     },
     deletesystemparameter(id) {
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "delete_system_params/" + id)
+        .post(import.meta.env.VITE_API_URL_ADMIN + "delete_system_params/" + id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -276,7 +276,7 @@ export default {
     statusUpdate() {
       this.$axios
         .post(
-          process.env.VUE_APP_API_URL_ADMIN + "update_system_param_status",
+          import.meta.env.VITE_API_URL_ADMIN + "update_system_param_status",
           {
             id: this.status_id,
           }

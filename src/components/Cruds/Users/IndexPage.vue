@@ -268,7 +268,7 @@ export default {
     },
     deleteConfirm(id) {
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "delete_draft_user/" + id)
+        .post(import.meta.env.VITE_API_URL_ADMIN + "delete_draft_user/" + id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -301,7 +301,7 @@ export default {
     fetchUsers() {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetchuser")
+        .get(import.meta.env.VITE_API_URL_ADMIN + "fetchuser")
         .then((res) => {
           this.allUsers = res.data.usersdata;
           // console.log("this.allUsers");
@@ -350,7 +350,7 @@ export default {
 
     statusUpdate() {
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "updateuserstatus", {
+        .post(import.meta.env.VITE_API_URL_ADMIN + "updateuserstatus", {
           id: this.status_id,
         })
         .then((res) => {

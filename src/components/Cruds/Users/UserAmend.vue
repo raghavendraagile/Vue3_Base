@@ -499,7 +499,7 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
-    envImagePath: process.env.VUE_APP_IMAGE_PATH,
+    envImagePath: import.meta.env.VITE_IMAGE_PATH,
     valid: false,
     valid_error: false,
     message: "",
@@ -594,7 +594,7 @@ export default {
           this.loader = true;
           this.$axios
             .get(
-              process.env.VUE_APP_API_URL_ADMIN +
+              import.meta.env.VITE_API_URL_ADMIN +
                 "fetchuserbyslug/" +
                 this.$route.query.slug
             )
@@ -635,7 +635,7 @@ export default {
     get_stores() {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-stores")
+        .get(import.meta.env.VITE_API_URL_ADMIN + "fetch-stores")
         .then((response) => {
           console.log(response);
           this.stores_en = response.data.stores_en;
@@ -648,7 +648,7 @@ export default {
     get_malls() {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-malls")
+        .get(import.meta.env.VITE_API_URL_ADMIN + "fetch-malls")
         .then((response) => {
           console.log(response);
           this.malls_en = response.data.malls_en;
@@ -676,7 +676,7 @@ export default {
     get_countries() {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_countries")
+        .get(import.meta.env.VITE_API_URL_ADMIN + "fetch_countries")
         .then((response) => {
           console.log(response);
           this.country_array_en = response.data.countries_en;
@@ -691,7 +691,7 @@ export default {
       this.initval = true;
       this.$axios
         .get(
-          process.env.VUE_APP_API_URL_ADMIN + "fetch_states_name/" + country_id
+          import.meta.env.VITE_API_URL_ADMIN + "fetch_states_name/" + country_id
         )
         .then((response) => {
           this.state_array = response.data.states_en;
@@ -705,7 +705,7 @@ export default {
     fetch_cities(city_id) {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_cities_name/" + city_id)
+        .get(import.meta.env.VITE_API_URL_ADMIN + "fetch_cities_name/" + city_id)
         .then((response) => {
           console.log(response);
           this.city_array = response.data.cities_en;
@@ -723,7 +723,7 @@ export default {
     },
     fetchlookup() {
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_lang_lookup", {
+        .get(import.meta.env.VITE_API_URL_ADMIN + "fetch_lang_lookup", {
           params: {
             lookup_type: "SALUTATION",
           },
@@ -736,7 +736,7 @@ export default {
         });
 
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_lang_lookup", {
+        .get(import.meta.env.VITE_API_URL_ADMIN + "fetch_lang_lookup", {
           params: {
             lookup_type: "GENDER",
           },
@@ -751,7 +751,7 @@ export default {
 
     fetchRoles() {
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetchrole")
+        .get(import.meta.env.VITE_API_URL_ADMIN + "fetchrole")
         .then((response) => {
           this.role_array_view_profile = response.data.roles;
           this.role_array = response.data.roles;
@@ -779,7 +779,7 @@ export default {
         this.isDisabled = true;
         this.$axios
           .post(
-            process.env.VUE_APP_API_URL_ADMIN + "saveuser",
+            import.meta.env.VITE_API_URL_ADMIN + "saveuser",
             this.profile_details
           )
           .then((res) => {

@@ -132,7 +132,7 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(process.env.VUE_APP_API_URL_ADMIN + "rolemenu")
+            .get(import.meta.env.VITE_API_URL_ADMIN + "rolemenu")
             .then((res) => {
               if (Array.isArray(res.data.message)) {
                 this.array_data = res.data.message.toString();
@@ -187,7 +187,7 @@ export default {
     selectedmenus(roleid) {
       this.loader = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "getmenuaccess/" + roleid)
+        .get(import.meta.env.VITE_API_URL_ADMIN + "getmenuaccess/" + roleid)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -218,7 +218,7 @@ export default {
       this.isDisabled = true;
       this.loader = true;
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "storemenuaccess", {
+        .post(import.meta.env.VITE_API_URL_ADMIN + "storemenuaccess", {
           role_id: this.$route.query.id,
           role_access: this.selected,
         })
