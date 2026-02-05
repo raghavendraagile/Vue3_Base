@@ -8,6 +8,12 @@ const routes = [
     meta: { layout: "userpages" },
     component: () => import("../Admin/UserPages/LoginPage.vue"),
   },
+  {
+    path: "/login-otp-validation",
+    name: "login-otp-validation",
+    meta: { layout: "userpages" },
+    component: () => import("../Admin/UserPages/LoginOtpValidation.vue"),
+  },
    {
     name: "not-found",
     path: "/not-found",
