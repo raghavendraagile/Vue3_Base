@@ -4,116 +4,145 @@
     <div>
       <transition name="fade" mode="out-in" appear>
         <div class="background">
-          <!-- new login form -->
           <div class="login-box-custom">
-            <div class="w-100 d-flex" style="flex-direction: column">
-              <!-- <h4 class="mb-0">{{ $t("welcome_msg") }}</h4> -->
-              <div class="font-login">
-                <div v-if="app_image_url">
-                  <span>
-                    <img
-                      class="custom-logo"
-                      v-bind:src="app_image_url"
-                      style="width: 130px"
-                    />
-                  </span>
+            <div class="d-flex flex-column">
+              <img src="../../assets/images/logo.png" class="logo" />
+              <div class="w-100 d-flex" style="flex-direction: column">
+                <!-- <h4 class="mb-0">{{ $t("welcome_msg") }}</h4> -->
+                <div class="font-login">
+                  <div v-if="app_image_url">
+                    <span>
+                      <img
+                        class="custom-logo"
+                        v-bind:src="app_image_url"
+                        style="width: 130px"
+                      />
+                    </span>
+                  </div>
+                  <div v-else-if="app_image_url == ''">
+                    <span class="font-base-app text-center">
+                      {{ application_name }}
+                    </span>
+                  </div>
+                  <div v-else>
+                    <span class="font-base-app text-center">
+                      {{ application_name }}
+                    </span>
+                  </div>
                 </div>
-                <div v-else-if="app_image_url == ''">
-                  <span class="font-base-app text-center">
-                    {{ application_name }}
-                  </span>
-                </div>
-                <div v-else>
-                  <span class="font-base-app text-center">
-                    {{ application_name }}
-                  </span>
-                </div>
+                <!-- <span class="font-sign-in-msg">{{ $t("sign_in_msg") }}</span> -->
               </div>
-
-              <!-- <span class="font-sign-in-msg">{{ $t("sign_in_msg") }}</span> -->
             </div>
-            <div class="heading">Sign In</div>
             <v-divider></v-divider>
-            <form class="form" @submit.prevent="login">
-              <!-- Email -->
-              <input
-                v-model="userdata.email"
-                required
-                class="input"
-                type="email"
-                name="email"
-                id="email"
-                placeholder="E-mail"
-                @input="
-                  formErrors.email = validateField(userdata.email, emailRules)
-                "
-                @keyup.enter="login"
-              />
-              <span v-if="formErrors.email" class="error-text">
-                {{ formErrors.email }}
-              </span>
+            <div>
+              <v-form v-model="valid" class="w-100" ref="form">
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" md="12" class="pb-0 pt-0">
+                      <label
+                        v-bind:class="[sel_lang == 'ar' ? 'text-right' : '']"
+                        >{{ $t("email") }}</label
+                      >
+                      <v-tooltip :text="$t('email')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <v-text-field
+                            v-bind="props"
+                            v-model="userdata.email"
+                            :rules="emailRules"
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
+                            @keyup.enter="sendLoginOtp"
+                            required
+                            variant="outlined"
+                            density="compact"
+                          ></v-text-field>
+                        </template>
+                      </v-tooltip>
+                    </v-col>
+                    <v-col cols="12" md="12" class="pt-0">
+                      <label
+                        v-bind:class="[sel_lang == 'ar' ? 'text-right' : '']"
+                        >{{ $t("password") }}</label
+                      >
+                      <v-tooltip :text="$t('password')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <v-text-field
+                            v-bind="props"
+                            v-model="userdata.password"
+                            :append-inner-icon="
+                              show1 ? 'mdi-eye' : 'mdi-eye-off'
+                            "
+                            :rules="fieldRules"
+                            :type="show1 ? 'text' : 'password'"
+                            name="input-10-1"
+                            @keyup.enter="sendLoginOtp"
+                            counter
+                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
+                            variant="outlined"
+                            density="compact"
+                            @click:append-inner="show1 = !show1"
+                          ></v-text-field>
+                        </template>
+                      </v-tooltip>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      md="12"
+                      class="error_message pt-0"
+                      v-if="error_message && show_error"
+                      ><v-icon style="font-size: 18px" class="mr-1"
+                        >mdi mdi-close-circle-outline</v-icon
+                      >{{ error_message }}</v-col
+                    >
+                    <v-col cols="12" md="12" class="pt-0">
+                      <v-tooltip :text="this.$t('sign_in')" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <div v-bind="props" class="d-inline-block w-100">
+                            <v-btn
+                              variant="flat"
+                              color="#fff"
+                              small
+                              class="btn-theme-blue w-100"
+                              @click="sendLoginOtp"
+                              @keyup.enter="sendLoginOtp"
+                              :disabled="!valid || btnloading"
+                              >{{ $t("sign_in") }}
+                            </v-btn>
+                          </div>
+                        </template>
+                      </v-tooltip>
+                    </v-col>
+                    <a class="a-underline">
+                      <p>
+                        <router-link
+                          :to="{
+                            name: 'forgot_password',
+                          }"
+                        >
+                          <!-- <router-link to="/forgot_password"> -->
+                          {{ $t("recoverpassword") }}
+                        </router-link>
+                      </p>
+                    </a>
+                  </v-row>
 
-              <!-- Password -->
-              <input
-                v-model="userdata.password"
-                required
-                class="input"
-                :type="show1 ? 'text' : 'password'"
-                name="password"
-                id="password"
-                placeholder="Password"
-                @input="
-                  formErrors.password = validateField(
-                    userdata.password,
-                    fieldRules
-                  )
-                "
-                @keyup.enter="login"
-              />
-              <span v-if="formErrors.password" class="error-text">
-                {{ formErrors.password }}
-              </span>
-
-              <!-- Forgot password -->
-              <span class="forgot-password">
-                <router-link :to="{ name: 'forgot_password' }">
-                  Forgot Password ?
-                </router-link>
-              </span>
-
-              <!-- Submit -->
-              <button
-                class="login-button"
-                type="submit"
-                :disabled="btnloading || !validateForm()"
-              >
-                <span v-if="!btnloading">Sign In</span>
-                <span v-else>Signing in...</span>
-              </button>
-            </form>
-
-            <!-- Social login -->
-            <!-- <div class="social-account-container">
-              <span class="title">Or Sign in with</span>
-
-              <div class="social-accounts">
-                <button class="social-button google" type="button">
-                 
-                </button>
-
-                <button class="social-button apple" type="button">
-                  
-                </button>
-
-                <button class="social-button twitter" type="button">
-                 
-                </button>
-              </div>
-            </div> -->
-
-            <!-- <span class="agreement">
-              <a href="#">Learn user licence agreement</a>
-            </span> -->
+                  <div class="divider" />
+                  <!-- <div class="d-flex align-items-center mt-5">
+                    <div>
+                      <h6 class="mb-0">
+                        {{ $t("no_account") }}
+                        <router-link
+                          :to="{
+                            name: 'register_user',
+                          }"
+                        >
+                          {{ $t("register_here") }}
+                        </router-link>
+                      </h6>
+                    </div>
+                  </div> -->
+                </v-container>
+              </v-form>
+            </div>
           </div>
         </div>
       </transition>
@@ -122,9 +151,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
 import localStorageWrapper from "../../localStorageWrapper.js";
-// import { getToken, getMessaging } from "firebase/messaging";
 
 export default {
   name: "LoginPage",
@@ -134,7 +161,6 @@ export default {
       password: "",
       token_id: "",
     },
-    // firebase_vapid: process.env.VUE_APP_FIREBASE_VAPID_KEY,
     valid: false,
     show1: false,
     user: "",
@@ -147,17 +173,8 @@ export default {
     error_message: "",
     show_error: false,
     sel_lang: "en",
-    formErrors: {
-      email: "",
-      password: "",
-    },
   }),
   computed: {
-    ...mapState({
-      userDetails: (state) => state.auth.userData,
-      isAuth: (state) => state.auth.isAuthenticated,
-    }),
-
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
     },
@@ -168,8 +185,6 @@ export default {
         (v) => /.+@.+/.test(v) || this.$t("email_valid"),
       ];
     },
-
-    // ...mapGetters(["errors"]),
   },
 
   mounted() {
@@ -177,48 +192,9 @@ export default {
     this.selectedLang();
   },
 
-  created() {
-    // if (window.location.protocol === "https:") {
-    //   const messaging = getMessaging();
-    //   getToken(messaging, { vapidKey: this.firebase_vapid })
-    //     .then((currentToken) => {
-    //       if (currentToken) {
-    //         console.log("token id", currentToken);
-    //         this.userdata.token_id = currentToken;
-    //       } else {
-    //         console.log(
-    //           "No registration token available. Request permission to generate one."
-    //         );
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log("An error occurred while retrieving token. ", err);
-    //     });
-    // }
-  },
+  created() {},
 
   methods: {
-    validateField(value, rules) {
-      for (const rule of rules) {
-        const result = rule(value);
-        if (result !== true) return result;
-      }
-      return "";
-    },
-
-    validateForm() {
-      this.formErrors.email = this.validateField(
-        this.userdata.email,
-        this.emailRules
-      );
-
-      this.formErrors.password = this.validateField(
-        this.userdata.password,
-        this.fieldRules
-      );
-
-      return !this.formErrors.email && !this.formErrors.password;
-    },
     setUserLang(lang) {
       localStorage.setItem("pref_lang", lang);
       this.$i18n.locale = lang;
@@ -238,10 +214,8 @@ export default {
     },
     fetchAppImageUrl() {
       this.$axios
-        .get(import.meta.env.VITE_API_URL_ADMIN + "fetch_image_url", {})
+        .get("fetch_image_url", {})
         .then((res) => {
-          console.log("res.data");
-          console.log(res.data);
           this.app_image_url = res.data.parameter_image;
           this.application_name = res.data.application_name;
           localStorageWrapper.setItem(
@@ -264,31 +238,53 @@ export default {
           console.log("this error" + err);
         });
     },
-    ...mapActions("auth", ["loginRequest"]),
-    async login() {
-      this.loader = true;
-      this.show_error = false; // reset error
-      try {
-        // Wait for loginRequest to complete and update Vuex state
-        await this.loginRequest(this.userdata);
 
-        // Mark button as loading
+    sendLoginOtp() {
+      if (this.$refs.form.validate()) {
         this.btnloading = true;
+        this.loader = true;
+        this.$axios
+          .post(
+              "send_login_otp?email=" +
+              this.userdata.email +
+              "&role=User"
+          )
+          .then((response) => {
+            this.response = response.data;
+            this.message = response.data.message;
+            this.status = response.data.status;
+            if (this.status == "S") {
+              this.btnloading = true;
+              this.$toast.success(this.message);
+              if (this.userdata.email) {
+                localStorageWrapper.setItem("verifyemail", this.userdata.email);
+              }
+              localStorage.setItem("active_menu", "OTP Validation");
 
-        // Set default active menu
-        localStorage.setItem("active_menu", "Dashboard");
-
-        // Redirect to dashboard after login is successful
-        this.$router.push({ name: "dashboard" });
-      } catch (err) {
-        // Handle errors
-        this.error_message = err.response?.data?.message || "Login failed";
-        this.show_error = true;
-        console.error(err.response?.data?.message);
-      } finally {
-        // Stop loader and button loading
-        this.loader = false;
-        this.btnloading = false;
+              // Redirect to dashboard after login is successful
+              this.$router.push({
+                name: "login-otp-validation",
+                query: {
+                  userdata: JSON.stringify(this.userdata),
+                },
+              });
+              setTimeout(() => {
+                this.btnloading = false;
+                this.loader = false;
+              }, 500);
+            } else if (this.status == "E") {
+              this.$toast.error(this.message);
+              this.btnloading = false;
+              this.loader = false;
+            }
+          })
+          .catch((err) => {
+            this.btnloading = false;
+            this.loader = false;
+            this.error_message = err.response.data.message;
+            this.show_error = true;
+            console.log(err);
+          });
       }
     },
   },
@@ -339,156 +335,5 @@ export default {
 .selected {
   font-weight: bold;
   color: black;
-}
-.container {
-  max-width: 350px;
-  background: #f8f9fd;
-  background: linear-gradient(
-    0deg,
-    rgb(255, 255, 255) 0%,
-    rgb(244, 247, 251) 100%
-  );
-  border-radius: 40px;
-  padding: 25px 35px;
-  border: 5px solid rgb(255, 255, 255);
-  box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 30px 30px -20px;
-  margin: 20px;
-}
-
-.heading {
-  text-align: center;
-  font-weight: 900;
-  font-size: 30px;
-  color: rgb(16, 137, 211);
-}
-
-.form {
-  margin-top: 20px;
-}
-
-.form .input {
-  width: 100%;
-  background: white;
-  border: none;
-  padding: 15px 20px;
-  border-radius: 20px;
-  margin-top: 15px;
-  box-shadow: #cff0ff 0px 10px 10px -5px;
-  border-inline: 2px solid transparent;
-}
-
-.form .input::-moz-placeholder {
-  color: rgb(170, 170, 170);
-}
-
-.form .input::placeholder {
-  color: rgb(170, 170, 170);
-}
-
-.form .input:focus {
-  outline: none;
-  border-inline: 2px solid #12b1d1;
-}
-
-.form .forgot-password {
-  display: block;
-  margin-top: 10px;
-  margin-left: 10px;
-}
-
-.form .forgot-password a {
-  font-size: 11px;
-  color: #0099ff;
-  text-decoration: none;
-}
-
-.form .login-button {
-  display: block;
-  width: 100%;
-  font-weight: bold;
-  background: linear-gradient(
-    45deg,
-    rgb(16, 137, 211) 0%,
-    rgb(18, 177, 209) 100%
-  );
-  color: white;
-  padding-block: 15px;
-  margin: 20px auto;
-  border-radius: 20px;
-  box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 20px 10px -15px;
-  border: none;
-  transition: all 0.2s ease-in-out;
-}
-
-.form .login-button:hover {
-  transform: scale(1.03);
-  box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 23px 10px -20px;
-}
-
-.form .login-button:active {
-  transform: scale(0.95);
-  box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 15px 10px -10px;
-}
-
-.social-account-container {
-  margin-top: 25px;
-}
-
-.social-account-container .title {
-  display: block;
-  text-align: center;
-  font-size: 10px;
-  color: rgb(170, 170, 170);
-}
-
-.social-account-container .social-accounts {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 5px;
-}
-
-.social-account-container .social-accounts .social-button {
-  background: linear-gradient(45deg, rgb(0, 0, 0) 0%, rgb(112, 112, 112) 100%);
-  border: 5px solid white;
-  padding: 5px;
-  border-radius: 50%;
-  width: 40px;
-  aspect-ratio: 1;
-  display: grid;
-  place-content: center;
-  box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 12px 10px -8px;
-  transition: all 0.2s ease-in-out;
-}
-
-.social-account-container .social-accounts .social-button .svg {
-  fill: white;
-  margin: auto;
-}
-
-.social-account-container .social-accounts .social-button:hover {
-  transform: scale(1.2);
-}
-
-.social-account-container .social-accounts .social-button:active {
-  transform: scale(0.9);
-}
-
-.agreement {
-  display: block;
-  text-align: center;
-  margin-top: 15px;
-}
-
-.agreement a {
-  text-decoration: none;
-  color: #0099ff;
-  font-size: 9px;
-}
-.error-text {
-  font-size: 10px;
-  color: #e53935;
-  margin-left: 12px;
 }
 </style>
