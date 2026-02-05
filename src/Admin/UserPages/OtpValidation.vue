@@ -252,13 +252,10 @@ export default {
           this.isBtnLoading = true;
           this.loader = true;
           this.$axios
-            .post(
-              import.meta.env.VITE_API_URL_ADMIN + "registration_otp_validate",
-              {
-                otp: this.verification_code,
-                email: this.email,
-              }
-            )
+            .post("registration_otp_validate", {
+              otp: this.verification_code,
+              email: this.email,
+            })
             .then(
               (response) => {
                 this.message = response.data.message;
@@ -303,11 +300,7 @@ export default {
       this.isdisabled = true;
       this.isbtnLoading = true;
       this.$axios
-        .post(
-          import.meta.env.VITE_API_URL_ADMIN +
-            "resend_otp_validate?email=" +
-            this.email
-        )
+        .post("resend_otp_validate?email=" + this.email)
         .then(
           (response) => {
             this.response = response.data;

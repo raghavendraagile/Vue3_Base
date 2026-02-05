@@ -250,11 +250,7 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(
-              import.meta.env.VITE_API_URL_ADMIN +
-                "edit_system_params/" +
-                this.$route.query.slug
-            )
+            .get("edit_system_params/" + this.$route.query.slug)
             .then((res) => {
               this.system_params = res.data.systemparameter;
               this.loader = false;
@@ -283,10 +279,7 @@ export default {
         this.isBtnLoading = true;
         // Form is valid, process
         this.$axios
-          .post(
-            import.meta.env.VITE_API_URL_ADMIN + "save_system_params",
-            this.system_params
-          )
+          .post("save_system_params", this.system_params)
           .then((res) => {
             this.emitter.emit("app_image_update");
             this.btnloading = false;

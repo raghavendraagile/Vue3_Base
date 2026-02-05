@@ -255,7 +255,7 @@ export default {
     },
     statusUpdate() {
       this.$axios
-        .post(import.meta.env.VITE_API_URL_ADMIN + "update_lookups_status", {
+        .post("update_lookups_status", {
           id: this.status_id,
         })
         .then((res) => {
@@ -282,7 +282,7 @@ export default {
     },
     deleteLookup(id) {
       this.$axios
-        .post(import.meta.env.VITE_API_URL_ADMIN + "delete_lookup/" + id)
+        .post("delete_lookup/" + id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -305,11 +305,7 @@ export default {
     initialize() {
       this.initval = true;
       this.$axios
-        .get(
-          import.meta.env.VITE_API_URL_ADMIN +
-            "lookupdata/" +
-            this.$route.query.parentname
-        )
+        .get("lookupdata/" + this.$route.query.parentname)
         .then((res) => {
           this.initval = false;
           this.lookup = res.data.lookups;

@@ -214,7 +214,7 @@ export default {
     deleteMenu() {
       this.initval = true;
       this.$axios
-        .delete(import.meta.env.VITE_API_URL_ADMIN + "menu/" + this.delete_id)
+        .delete("menu/" + this.delete_id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -240,7 +240,7 @@ export default {
 
     initialize() {
       this.$axios
-        .get(import.meta.env.VITE_API_URL_ADMIN + "menu")
+        .get("menu")
         .then((res) => {
           this.menu = res.data.menu;
           this.initval = false;

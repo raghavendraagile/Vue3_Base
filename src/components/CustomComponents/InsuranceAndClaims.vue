@@ -104,7 +104,7 @@ export default {
       this.loader_tradie = true;
       this.$emit("startstoploading", this.loader_tradie);
       this.$axios
-        .post(import.meta.env.VITE_API_URL_ADMIN + "fetch_tradiesurvey_answer", {
+        .post("fetch_tradiesurvey_answer", {
           user_id: this.user_id,
           version_id: version,
         })

@@ -318,7 +318,7 @@ export default {
     get_stores() {
       this.initval = true;
       this.$axios
-        .get(import.meta.env.VITE_API_URL_ADMIN + "fetch-reg-stores")
+        .get("fetch-reg-stores")
         .then((response) => {
           console.log(response);
           this.stores_en = response.data.stores_en;
@@ -351,10 +351,7 @@ export default {
           this.loader = true;
           this.isDisabled = true;
           this.$axios
-            .post(
-              import.meta.env.VITE_API_URL_ADMIN + "register_user",
-              this.users
-            )
+            .post("register_user", this.users)
             .then((res) => {
               if (res.data.status == "S") {
                 this.loader = false;
@@ -385,7 +382,7 @@ export default {
     fetchRoles() {
       this.loader = true;
       this.$axios
-        .get(import.meta.env.VITE_API_URL_ADMIN + "fetchrole")
+        .get("fetchrole")
         .then((response) => {
           this.loader = false;
           this.role_array = response.data.roles;

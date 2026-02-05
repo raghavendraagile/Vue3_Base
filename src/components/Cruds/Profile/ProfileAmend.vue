@@ -438,11 +438,7 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(
-              import.meta.env.VITE_API_URL_ADMIN +
-                "fetchuserbyslug/" +
-                this.$route.query.slug
-            )
+            .get("fetchuserbyslug/" + this.$route.query.slug)
             .then((res) => {
               this.loader = false;
               if (res.data.status == "S") {
@@ -466,7 +462,7 @@ export default {
     },
     fetchlookup() {
       this.$axios
-        .get(import.meta.env.VITE_API_URL_ADMIN + "fetchlookup", {
+        .get("fetchlookup", {
           params: {
             lookup_type: "SALUTATION",
           },
@@ -478,7 +474,7 @@ export default {
           console.log(err);
         });
       this.$axios
-        .get(import.meta.env.VITE_API_URL_ADMIN + "fetchlookup", {
+        .get("fetchlookup", {
           params: {
             lookup_type: "MARITAL_STATUS",
           },
@@ -490,7 +486,7 @@ export default {
           console.log(err);
         });
       this.$axios
-        .get(import.meta.env.VITE_API_URL_ADMIN + "fetchlookup", {
+        .get("fetchlookup", {
           params: {
             lookup_type: "GENDER",
           },
@@ -505,7 +501,7 @@ export default {
 
     fetchRoles() {
       this.$axios
-        .get(import.meta.env.VITE_API_URL_ADMIN + "fetchrole")
+        .get("fetchrole")
         .then((response) => {
           this.role_array = response.data.roles;
           this.role_array = this.role_array.filter((ele) => {
@@ -521,10 +517,7 @@ export default {
       if (this.$refs.form.validate() && this.valid == true) {
         this.isDisabled = true;
         this.$axios
-          .post(
-            import.meta.env.VITE_API_URL_ADMIN + "saveuser",
-            this.profile_details
-          )
+          .post("saveuser", this.profile_details)
           .then((res) => {
             if (res.data.status == "S") {
               this.$toast.success(res.data.message);

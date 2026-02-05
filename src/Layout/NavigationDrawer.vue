@@ -167,7 +167,7 @@ export default {
       this.loader = true;
       const lang = localStorage.getItem("pref_lang") || "en";
       this.$axios
-        .post(import.meta.env.VITE_API_URL_ADMIN + "menutree", {
+        .post("menutree", {
           role: this.role_id,
           lang: lang,
         })

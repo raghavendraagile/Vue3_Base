@@ -161,12 +161,7 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(
-              import.meta.env.VITE_API_URL_ADMIN +
-                "lookups/" +
-                this.$route.query.slug +
-                "/edit"
-            )
+            .get("lookups/" + this.$route.query.slug + "/edit")
             .then((res) => {
               console.log("CALLED IN ROUTE");
               console.log(res);
@@ -184,13 +179,13 @@ export default {
       // Do whatever you need with the file, liek reading it with FileReader
     },
     submit() {
-      if (this.$refs.form.validate() && this.valid==true) {
+      if (this.$refs.form.validate() && this.valid == true) {
         this.isDisabled = true;
         this.isBtnLoading = true;
         this.loader = true;
         // Form is valid, process
         this.$axios
-          .post(import.meta.env.VITE_API_URL_ADMIN + "save_lookups", this.lookup)
+          .post("save_lookups", this.lookup)
           .then((res) => {
             this.btnloading = false;
             if (Array.isArray(res.data.message)) {

@@ -381,11 +381,7 @@ export default {
 
     shownotificationdialog() {
       this.$axios
-        .get(
-          import.meta.env.VITE_API_URL_ADMIN +
-            "seennotifications/" +
-            this.user_id
-        )
+        .get("seennotifications/" + this.user_id)
         .then((res) => {
           if (res.data.status == "S") {
             this.notification_count = 0;
@@ -403,11 +399,7 @@ export default {
       this.notification_array = [];
       this.notification_count = 0;
       this.$axios
-        .get(
-          import.meta.env.VITE_API_URL_ADMIN +
-            "fetchusernotifications/" +
-            this.user_id
-        )
+        .get("fetchusernotifications/" + this.user_id)
         .then((res) => {
           if (res.data.status == "S") {
             this.notification_array = res.data.notification;

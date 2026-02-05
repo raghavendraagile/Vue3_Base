@@ -135,12 +135,7 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(
-              import.meta.env.VITE_API_URL_ADMIN +
-                "roles/" +
-                this.$route.query.slug +
-                "/edit"
-            )
+            .get("roles/" + this.$route.query.slug + "/edit")
             .then((res) => {
               if (Array.isArray(res.data.message)) {
                 this.array_data = res.data.message.toString();
@@ -186,7 +181,7 @@ export default {
         // Form is valid, process
         if (this.fieldItem.id == 0) {
           this.$axios
-            .post(import.meta.env.VITE_API_URL_ADMIN + "roles", this.fieldItem)
+            .post("roles", this.fieldItem)
             .then((res) => {
               if (Array.isArray(res.data.message)) {
                 this.array_data = res.data.message.toString();
@@ -213,10 +208,7 @@ export default {
             });
         } else {
           this.$axios
-            .patch(
-              import.meta.env.VITE_API_URL_ADMIN + "roles/" + this.fieldItem.id,
-              this.fieldItem
-            )
+            .patch("roles/" + this.fieldItem.id, this.fieldItem)
             .then((res) => {
               this.valid_error = false;
               this.btnloading = false;

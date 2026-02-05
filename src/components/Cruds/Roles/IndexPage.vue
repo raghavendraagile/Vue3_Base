@@ -164,7 +164,7 @@ export default {
   methods: {
     deleteRole(role) {
       this.$axios
-        .delete(import.meta.env.VITE_API_URL_ADMIN + "roles/" + role.id)
+        .delete("roles/" + role.id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -190,7 +190,7 @@ export default {
     initialize() {
       this.initval = true;
       this.$axios
-        .get(import.meta.env.VITE_API_URL_ADMIN + "roles")
+        .get("roles")
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();

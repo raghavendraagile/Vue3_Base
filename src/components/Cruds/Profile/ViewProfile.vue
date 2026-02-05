@@ -227,11 +227,7 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(
-              import.meta.env.VITE_API_URL_ADMIN +
-                "fetchuserdatabyslug/" +
-                this.$route.query.slug
-            )
+            .get("fetchuserdatabyslug/" + this.$route.query.slug)
             .then((res) => {
               this.loader = false;
               if (res.data.status == "S") {

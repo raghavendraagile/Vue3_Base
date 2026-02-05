@@ -197,7 +197,7 @@ export default {
 
   created() {
     this.$axios
-      .get(import.meta.env.VITE_API_URL_ADMIN + "parentmenus")
+      .get("parentmenus")
       .then((res) => {
         this.items = res.data;
         this.items.parentmenu = [
@@ -217,12 +217,7 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(
-              import.meta.env.VITE_API_URL_ADMIN +
-                "menu/" +
-                this.$route.query.slug +
-                "/edit"
-            )
+            .get("menu/" + this.$route.query.slug + "/edit")
             .then((res) => {
               if (res.data.status == "S") {
                 this.loader = false;
@@ -271,7 +266,7 @@ export default {
         if (this.fieldItem.id == 0) {
           this.isDisabled = true;
           this.$axios
-            .post(import.meta.env.VITE_API_URL_ADMIN + "menu", this.fieldItem)
+            .post("menu", this.fieldItem)
             .then((res) => {
               if (Array.isArray(res.data.message)) {
                 this.array_data = res.data.message.toString();
@@ -301,10 +296,7 @@ export default {
         } else {
           this.isDisabled = true;
           this.$axios
-            .patch(
-              import.meta.env.VITE_API_URL_ADMIN + "menu/" + this.fieldItem.id,
-              this.fieldItem
-            )
+            .patch("menu/" + this.fieldItem.id, this.fieldItem)
             .then((res) => {
               if (Array.isArray(res.data.message)) {
                 this.array_data = res.data.message.toString();

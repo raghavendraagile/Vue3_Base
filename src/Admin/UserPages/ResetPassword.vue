@@ -213,10 +213,7 @@ export default {
           this.fieldItem.email = this.userprofile.email;
           this.fieldItem.user_id = this.userprofile.id;
           this.$axios
-            .post(
-            import.meta.env.VITE_API_URL_ADMIN + "resetuserpassword",
-              this.fieldItem
-            )
+            .post("resetuserpassword", this.fieldItem)
             .then(
               (res) => {
                 if (Array.isArray(res.data.message)) {

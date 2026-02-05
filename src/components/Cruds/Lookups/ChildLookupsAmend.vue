@@ -200,10 +200,7 @@ export default {
         this.isBtnLoading = true;
         // Form is valid, process
         this.$axios
-          .post(
-            import.meta.env.VITE_API_URL_ADMIN + "save_child_lookups",
-            this.lookup
-          )
+          .post("save_child_lookups", this.lookup)
           .then((res) => {
             this.btnloading = false;
             if (Array.isArray(res.data.message)) {
@@ -240,7 +237,7 @@ export default {
     },
     fetchparentlookup() {
       this.$axios
-        .post(import.meta.env.VITE_API_URL_ADMIN + "fetch_parent_lookup", {
+        .post("fetch_parent_lookup", {
           slug: this.lookup.parentslug,
         })
         .then((res) => {
