@@ -229,6 +229,12 @@ const routes = [
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Institutions/IndexPage.vue"),
   },
+  {
+    path: "/institution_amend",
+    name: "institutions_amend",
+    beforeEnter: guardMyroute,
+    component: () => import("../components/Cruds/Institutions/InstitutionAmend.vue"),
+  },
   
 ];
 

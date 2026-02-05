@@ -4,8 +4,8 @@
       flat
       color="white"
       class="row my-3 align-items-center component_app_bar position-relative"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
     >
+      <!-- v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']" -->
       <page-title
         class="col-md-3"
         heading="Institutions"
@@ -32,7 +32,10 @@
       <div class="add_new_button">
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
-            <router-link :to="{ name: 'menu_amend' }" style="color: white">
+            <router-link
+              :to="{ name: 'institutions_amend' }"
+              style="color: white"
+            >
               <v-btn size="small" class="mb-2 create-btn" v-bind="props">
                 {{ $t("add_new") }}
               </v-btn>
@@ -67,10 +70,6 @@
             <span v-if="props.item.parent_name">{{
               props.item.parent_name
             }}</span>
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
-          <td>
-            <span v-if="props.item.seq">{{ props.item.seq }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
 
@@ -150,21 +149,18 @@ export default {
     headers() {
       return [
         {
-          title: this.$t("title"),
+          title: "Institution Name",
           align: "left",
           sortable: true,
           key: "title",
         },
+
         {
-          title: this.$t("link"),
-          key: "href",
+          title: "Type",
+          key: "seq",
         },
         {
-          title: this.$t("parent"),
-          key: "parent_name",
-        },
-        {
-          title: this.$t("sequence"),
+          title: "Address",
           key: "seq",
         },
         {
