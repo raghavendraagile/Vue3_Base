@@ -176,7 +176,7 @@ export default {
 };
 </script>
 <style scoped>
-.card /deep/ .v-card-item__prepend {
+.card :deep(.v-card-item__prepend) {
   padding-right: 0px;
 }
 

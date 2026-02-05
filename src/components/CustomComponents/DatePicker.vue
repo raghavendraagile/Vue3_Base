@@ -201,7 +201,7 @@ export default {
 };
 </script>
 <style scoped>
-.datepickerpackage /deep/ .vuejs3-datepicker__calendar-topbar {
+.datepickerpackage :deep(.vuejs3-datepicker__calendar-topbar) {
   display: none !important;
 }
 </style>

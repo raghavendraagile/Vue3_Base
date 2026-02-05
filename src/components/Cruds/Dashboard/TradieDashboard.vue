@@ -334,7 +334,7 @@ export default {
   background-color: rgb(45, 45, 45) !important;
   color: white !important;
 }
-.checkbox_item /deep/ .v-input__details {
+.checkbox_item :deep(.v-input__details) {
   display: none;
 }
 .name_header {

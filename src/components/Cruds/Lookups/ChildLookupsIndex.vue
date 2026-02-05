@@ -393,7 +393,7 @@ export default {
 };
 </script>
 <style scoped>
-.v-text-field /deep/ .v-input__slot {
+.v-text-field :deep(.v-input__slot) {
   min-height: 38px !important;
   width: 353px;
 }

@@ -269,13 +269,13 @@ export default {
 };
 </script>
 <style scoped>
-.arabicclass /deep/ .v-field {
+.arabicclass :deep(.v-field) {
   direction: rtl;
 }
 .arabicclass .emailclass {
   direction: rtl;
 }
-.arabicclass /deep/ .v-messages__message {
+.arabicclass :deep(.v-messages__message) {
   direction: rtl;
 }
 .arabicclass {

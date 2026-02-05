@@ -474,7 +474,7 @@ export default {
   display: flex;
   justify-content: end;
 }
-.show_icon /deep/ i {
+.show_icon :deep( i) {
   z-index: 1000;
 }
 .cancel-btn {

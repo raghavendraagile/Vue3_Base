@@ -204,7 +204,7 @@ export default {
   font-size: 16px;
 }
 
-.erroralert /deep/ i {
+.erroralert :deep( i) {
   margin-top: 5px;
 }
 </style>

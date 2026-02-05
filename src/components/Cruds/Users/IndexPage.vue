@@ -380,11 +380,6 @@ export default {
 };
 </script>
 <style scoped>
-/* .v-text-field /deep/ .v-input__slot {
-  min-height: 38px !important;
-  width: 353px;
-} */
-
 .param-value {
   max-width: 200px;
   text-overflow: ellipsis;
