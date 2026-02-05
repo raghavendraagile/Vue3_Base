@@ -3,12 +3,12 @@
     <div
       flat
       color="white"
-      class="row py-5 pl-5 align-items-center component_app_bar position-relative"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+      class="row my-3 align-items-center component_app_bar position-relative"
     >
+      <!-- v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']" -->
       <page-title
         class="col-md-3"
-        :heading="$t('leasing')"
+        heading="Institutions"
         :google_icon="google_icon"
       ></page-title>
       <div class="col-md-4">
@@ -29,10 +29,25 @@
           </template>
         </v-tooltip>
       </div>
+      <div class="add_new_button">
+        <v-tooltip :text="this.$t('add_new')" location="bottom">
+          <template v-slot:activator="{ props }">
+            <router-link
+              :to="{ name: 'institutions_amend' }"
+              style="color: white"
+            >
+              <v-btn size="small" class="mb-2 create-btn" v-bind="props">
+                {{ $t("add_new") }}
+              </v-btn>
+            </router-link>
+          </template>
+        </v-tooltip>
+      </div>
     </div>
+
     <v-data-table
       :headers="headers"
-      :items="leasing_data"
+      :items="menu"
       :search="search"
       :loading="initval"
       v-bind:no-data-text="$t('no_data_available')"
@@ -44,50 +59,52 @@
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
           <td>
-            <span>{{ props.item.selectable.enquiry }}</span>
+            <span v-if="props.item.title">{{ props.item.title }}</span>
+            <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span>{{ props.item.selectable.store_type }}</span>
+            <span v-if="props.item.href">{{ props.item.href }}</span>
+            <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span>{{ props.item.selectable.company_name }}</span>
+            <span v-if="props.item.parent_name">{{
+              props.item.parent_name
+            }}</span>
+            <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
-          <td>
-            <span>{{ props.item.selectable.contact_person }}</span>
-          </td>
-          <td>
-            <span>{{ props.item.selectable.email }}</span>
-          </td>
-          <td>
-            <span>{{ props.item.selectable.mobile }}</span>
-          </td>
+
           <td class="px-0 text-center">
             <router-link
               :to="{
-                name: 'leasing-amend',
-                query: { slug: props.item.selectable.slug },
+                name: 'menu_amend',
+                query: { slug: props.item.slug },
               }"
             >
-              <v-tooltip :text="this.$t('view')" location="bottom">
+              <v-tooltip :text="this.$t('edit')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-icon
                     plain
                     v-bind="props"
                     dense
                     class="mr-2 edit_btn icon_size"
-                    >mdi-eye</v-icon
+                    >mdi-pencil-outline</v-icon
                   >
                 </template>
               </v-tooltip>
             </router-link>
-            <span @click="deleteItem(props.item.selectable.id)">
-              <v-tooltip :text="this.$t('delete')" location="top">
+
+            <span @click="deleteItem(props.item.id)">
+              <v-tooltip :text="this.$t('delete')" location="bottom">
                 <template v-slot:activator="{ props }">
-                  <v-icon color="error" type="button" v-bind="props" small
+                  <v-icon
+                    type="button"
+                    class="delete_btn icon_size"
+                    v-bind="props"
+                    dense
+                    color="error"
                     >mdi-trash-can-outline</v-icon
                   >
                 </template>
-                <span>{{ $t("delete") }}</span>
               </v-tooltip>
             </span>
           </td>
@@ -114,12 +131,12 @@ export default {
     showConfirmDialog: false,
     search: "",
     dialog: false,
-    leasing_data: [],
+    menu: [],
     initval: true,
     message: "",
     delete_id: null,
     google_icon: {
-      icon_name: "box_edit",
+      icon_name: "local_hospital",
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
@@ -132,30 +149,19 @@ export default {
     headers() {
       return [
         {
-          title: this.$t("enquiry"),
+          title: "Institution Name",
           align: "left",
           sortable: true,
-          key: "enquiry",
+          key: "title",
+        },
+
+        {
+          title: "Type",
+          key: "seq",
         },
         {
-          title: this.$t("store_type"),
-          key: "store_type",
-        },
-        {
-          title: this.$t("company_name"),
-          key: "company_name",
-        },
-        {
-          title: this.$t("contact_person"),
-          key: "contact_person",
-        },
-        {
-          title: this.$t("email"),
-          key: "email",
-        },
-        {
-          title: this.$t("mobile"),
-          key: "mobile",
+          title: "Address",
+          key: "seq",
         },
         {
           title: this.$t("action"),
@@ -193,7 +199,7 @@ export default {
       this.showConfirmDialog = false;
     },
     confirm() {
-      this.deleteLeasingData();
+      this.deleteMenu();
       this.showConfirmDialog = false;
     },
     deleteItem(deleteID) {
@@ -201,12 +207,10 @@ export default {
       this.showConfirmDialog = true;
     },
 
-    deleteLeasingData() {
+    deleteMenu() {
       this.initval = true;
       this.$axios
-        .post(
-          process.env.VUE_APP_API_URL_ADMIN + "delete-leasing/" + this.delete_id
-        )
+        .delete(import.meta.env.VITE_API_URL_ADMIN + "menu/" + this.delete_id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -232,9 +236,9 @@ export default {
 
     initialize() {
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-leasing_data")
+        .get(import.meta.env.VITE_API_URL_ADMIN + "menu")
         .then((res) => {
-          this.leasing_data = res.data.leasing;
+          this.menu = res.data.menu;
           this.initval = false;
         })
         .catch((err) => {

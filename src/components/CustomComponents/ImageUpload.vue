@@ -1,45 +1,37 @@
 <template>
   <div>
-    <content-loader v-if="loader"></content-loader>
-    <v-dialog v-model="dialogVisible" :max-width="1600" persistent>
+    <v-dialog v-model="dialogVisible" max-width="500px" persistent>
       <content-loader v-if="loader"></content-loader>
 
       <v-card>
-        <div class="d-flex justify-content-between">
-          <div>
-            <v-card-title>{{ $t("crop_image") }} </v-card-title>
-          </div>
-          <div class="btn_margin">
-            <v-btn color="success" @click="cropImage">{{ $t("upload") }}</v-btn>
-            <v-btn color="error" @click="cancelCrop" class="ml-2">{{
-              $t("cancel")
-            }}</v-btn>
-          </div>
-        </div>
+        <v-card-title>{{ $t("crop_image") }} </v-card-title>
         <v-card-text>
           <div class="cropper-container" ref="cropperContainer">
             <!-- Below one is porp can be used where we can define all the props in data and pass like below one -->
             <!-- :options="cropperOptions" -->
-            <!-- :min-container-width="250"
-              :min-container-height="180" -->
             <VueCropper
               ref="cropper"
-              :guides="true"
-              :view-mode="0"
-              drag-mode="move"
-              :min-canvas-width="0"
-              :min-canvas-height="0"
-              :cropBoxResizable="false"
-              :cropBoxMovable="true"
+              :dragMode="'none'"
               :src="selectedFile"
-              :zoomable="true"
-              alt="Source Image"
+              :view-mode="1"
+              cropBoxResizable="true"
+              cropBoxMovable="true"
+              :minCropBoxWidth="600"
+              :minCropBoxHeight="150"
+              autoCrop="true"
+              :img-style="{ width: '500px', height: '400px' }"
+              v-bind="$attrs"
               @crop="handleCrop"
-              :img-style="{ width: '800px', height: '500px' }"
               @ready="cropperReady"
             ></VueCropper>
           </div>
         </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="success" @click="cropImage">{{ $t("upload") }}</v-btn>
+          <v-btn color="error" @click="cancelCrop">{{ $t("cancel") }}</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
     <input
@@ -52,10 +44,10 @@
     />
   </div>
 </template>
+
 <script>
 import "cropperjs/dist/cropper.css";
 import VueCropper from "vue-cropperjs";
-import Compressor from "compressorjs";
 
 export default {
   name: "ImageUploadCropper",
@@ -65,11 +57,11 @@ export default {
   props: {
     resizewidth: {
       type: Number,
-      default: 200,
+      default: 0.3,
     },
     resizeheight: {
       type: Number,
-      default: 80,
+      default: 0.2,
     },
     folder: {
       type: String,
@@ -83,8 +75,9 @@ export default {
       message: "",
       dialogVisible: false,
       loader: false,
-      originalAspectRatio: 0,
+      //Below are the options that are there in Cropper
       cropperOptions: {
+        aspectRatio: 12 / 12,
         viewMode: 1,
         autoCropArea: 1,
         movable: false,
@@ -107,128 +100,50 @@ export default {
   },
   methods: {
     handleCrop() {
-      this.$nextTick(() => {
-        if (this.$refs.cropper) {
-          const croppedCanvas = this.$refs.cropper.getCroppedCanvas();
-          if (croppedCanvas) {
-            const canvas = document.createElement("canvas");
-            canvas.width = this.resizewidth;
-            canvas.height = this.resizeheight;
-            const ctx = canvas.getContext("2d");
-            ctx.drawImage(
-              croppedCanvas,
-              0,
-              0,
-              this.resizewidth,
-              this.resizeheight
-            );
-            this.imagedata = canvas.toDataURL();
-            // console.log("Cropped image data: ", this.imagedata);
-          }
-        } else {
-          console.log("Cropper instance is not initialized yet!");
-        }
-      });
-    },
-
-    cropperReady() {
-      this.$nextTick(() => {
-        this.adjustCropperCanvas();
-        this.loader = false;
-      });
-    },
-    adjustCropperCanvas() {
-      const containerData = this.$refs.cropper.getContainerData();
-      const imageData = this.$refs.cropper.getImageData();
-      const originalAspectRatio =
-        imageData.naturalWidth / imageData.naturalHeight;
-
-      let canvasData = {
-        width: containerData.width,
-        height: containerData.width / originalAspectRatio,
-      };
-
-      if (canvasData.height > containerData.height) {
-        canvasData.height = containerData.height;
-        canvasData.width = containerData.height * originalAspectRatio;
+      if (this.selectedFile && this.$refs.cropper) {
+        const croppedCanvas = this.$refs.cropper.getCroppedCanvas();
+        // Use the cropped canvas as needed
+        this.imagedata = croppedCanvas.toDataURL();
       }
-
-      canvasData.left = (containerData.width - canvasData.width) / 2;
-      canvasData.top = (containerData.height - canvasData.height) / 2;
-
-      this.$refs.cropper.setCanvasData(canvasData);
-
-      const cropBoxData = {
-        left: (containerData.width - this.resizewidth) / 2,
-        top: (containerData.height - this.resizeheight) / 2,
-        width: this.resizewidth,
-        height: this.resizeheight,
-      };
-
-      this.$refs.cropper.setCropBoxData(cropBoxData);
+    },
+    cropperReady() {
+      const cropper_data = this.$refs.cropper;
+      if (cropper_data) {
+        const cropBoxData = cropper_data.getCropBoxData();
+        const newWidth = cropBoxData.width * this.resizewidth; // Example: Reduce width by 20%
+        const newHeight = cropBoxData.height * this.resizeheight; // Example: Reduce height by 20%
+        cropper_data.setCropBoxData({
+          ...cropBoxData,
+          width: newWidth,
+          height: newHeight,
+        });
+      }
     },
 
     openFileInput() {
       this.$refs.fileInput.click();
     },
     onFileChange(event) {
-      this.loader = true; // Show loading indicator immediately
       const file = event.target.files[0];
-      if (!file) {
-        this.loader = false;
-        return;
-      }
       const filename = event.target.files[0].name;
-      const lastDot = filename.lastIndexOf(".");
-      const fileNameWithoutExt = filename.substring(0, lastDot);
-      const ext = filename.substring(lastDot + 1);
-      this.filename = fileNameWithoutExt;
-      this.extension = ext;
-      if (file.size > 6 * 1024 * 1024) {
-        // 5 MB threshold
-        alert(
-          "The file size is too large. Please upload an image that is 6MB or less."
-        );
-        this.loader = false;
-      } else if (file.size == 6 * 1024 * 1024) {
-        alert("The file size is too large.");
-        // this.compressAndLoadImage(file);
+      if (file) {
+        this.selectedFile = URL.createObjectURL(file);
+        console.log("all files are ", event.target.files[0]);
+        const lastDot = filename.lastIndexOf(".");
+        const fileNameWithoutExt = filename.substring(0, lastDot);
+        const ext = filename.substring(lastDot + 1);
+        console.log("FileName => " + fileNameWithoutExt);
+        this.filename = fileNameWithoutExt;
+        console.log("Extension => " + ext);
+        this.extension = ext;
+        this.dialogVisible = true;
       } else {
-        // alert("Uploaded successfully");
-        console.log("uploaded successfully");
-        this.loadImageDirectly(file);
+        this.selectedFile = null;
+        this.dialogVisible = false;
       }
-
-      event.target.value = "";
-    },
-    compressAndLoadImage(file) {
-      new Compressor(file, {
-        quality: 0,
-        success: (compressedResult) => {
-          this.prepareImageForCropper(compressedResult);
-        },
-        error: (err) => {
-          console.error("Compression error:", err.message);
-          this.loader = false;
-        },
-      });
-    },
-
-    loadImageDirectly(file) {
-      this.prepareImageForCropper(file);
-    },
-
-    prepareImageForCropper(file) {
-      this.selectedFile = URL.createObjectURL(file);
-
-      this.dialogVisible = true;
-      setTimeout(() => {
-        this.loader = false;
-      }, 1000);
     },
 
     cropImage() {
-      console.log(this.imagedata);
       if (this.imagedata) {
         this.upload(this.imagedata);
       }
@@ -283,10 +198,7 @@ export default {
 <style scoped>
 .cropper-container .cropper-view-box,
 .cropper-container .cropper-face {
-  min-width: 200px !important;
-  min-height: 10px !important;
-}
-.btn_margin {
-  margin: 10px 26px 0px 0px;
+  min-width: 200px !important; /* Set your desired minimum width here */
+  min-height: 10px !important; /* Set your desired minimum width here */
 }
 </style>

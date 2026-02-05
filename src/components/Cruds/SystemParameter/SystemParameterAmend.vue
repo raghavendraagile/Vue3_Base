@@ -1,9 +1,6 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div
-      class="my-3 p-0"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
-    >
+    <div class="container my-3 p-0">
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('create_system_parameter')"
@@ -14,21 +11,9 @@
     <div class="mb-3 mx-auto">
       <div class="card-body">
         <v-form ref="form" v-model="valid">
-          <v-row
-            class="px-6"
-            v-if="
-              system_params.parameter_name == 'APP_LOGO' ||
-              system_params.parameter_name == 'MALL_LOGO'
-            "
-          >
+          <v-row class="px-6" v-if="system_params.parameter_name == 'APP_LOGO'">
             <!-- :value="system_params.is_file_upload" -->
             <v-col md="6">
-              <!-- <v-checkbox
-                  class="larger"
-                  v-model="system_params.is_file_upload"
-                  @click="uploadImagestatus(system_params.is_file_upload)"
-                />
-                {{ $t("is_file_upload") }}       v-bind:label="$t("is_file_upload")" -->
               <v-checkbox
                 v-model="system_params.is_file_upload"
                 v-bind:label="$t('is_file_upload')"
@@ -41,7 +26,7 @@
           </v-row>
           <v-row class="px-6">
             <v-col cols="12" md="6">
-              <v-tooltip :text="this.$t('parameter_name')" location="bottom">
+              <v-tooltip :text="$t('parameter_name')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
                     v-on="on"
@@ -58,7 +43,7 @@
               </v-tooltip>
             </v-col>
             <v-col md="6" v-if="system_params.is_file_upload == false">
-              <v-tooltip :text="this.$t('parameter_value')" location="bottom">
+              <v-tooltip :text="$t('parameter_value')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
                     v-on="on"
@@ -75,26 +60,25 @@
               </v-tooltip>
             </v-col>
             <v-col
-              md="6"
+              md="2"
               v-if="
-                (system_params.is_file_upload == true &&
-                  system_params.parameter_name == 'APP_LOGO') ||
-                system_params.parameter_name == 'MALL_LOGO'
+                system_params.is_file_upload == true &&
+                system_params.parameter_name == 'APP_LOGO'
               "
+              style="display: flex; justify-content: center; text-align: center"
             >
               <div>
                 <div class="image-container">
                   <v-hover v-slot="{ isHovering, props }">
                     <div style="position: relative" v-bind="props">
                       <img
+                        v-if="system_params.parameter_value"
                         v-bind:style="
                           isHovering == true ? 'filter: blur(1px);' : ''
                         "
-                        v-if="system_params.parameter_value != null"
                         :src="envImagePath + system_params.parameter_value"
                         width="100"
-                        height="85
-                          "
+                        height="70"
                         alt
                       />
                       <img
@@ -104,6 +88,7 @@
                         v-else
                         src="@/assets/images/upload_image_default.png"
                         width="100"
+                        height="70"
                       />
                       <div v-show="isHovering" class="camera-icon">
                         <v-icon @click="uploadFile">mdi-camera</v-icon>
@@ -111,63 +96,43 @@
                     </div>
                   </v-hover>
                 </div>
-                <v-tooltip :text="this.$t('download')" location="bottom">
-                  <template v-slot:activator="{ props }">
-                    <a class="text-center pointer download_icon">
-                      <span
-                        ><v-icon
-                          v-if="
-                            (system_params.parameter_value &&
-                              system_params.parameter_name == 'APP_LOGO') ||
-                            (system_params.parameter_name == 'MALL_LOGO' &&
-                              system_params.is_file_upload == true)
-                          "
-                          v-bind="props"
-                          class="mr-2"
-                          @click="downloadImage(system_params.parameter_value)"
-                          >mdi mdi-download</v-icon
-                        ></span
-                      >
-                    </a>
-                  </template>
-                </v-tooltip>
-                <span
+                <div
                   v-if="
-                    (system_params.parameter_value &&
-                      system_params.parameter_name == 'APP_LOGO') ||
-                    (system_params.parameter_name == 'MALL_LOGO' &&
-                      system_params.is_file_upload == true)
+                    system_params.parameter_value &&
+                    system_params.parameter_name == 'APP_LOGO' &&
+                    system_params.is_file_upload == true
                   "
+                  class="py-2"
                 >
-                  <v-tooltip :text="this.$t('delete')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        v-on="on"
-                        v-bind="props"
-                        small
-                        class="mr-2 edit_btn icon_size delete_icon"
-                        @click="removeImage"
-                        >mdi mdi-trash-can-outline</v-icon
-                      >
-                    </template>
-                  </v-tooltip></span
-                >
+                  <a
+                    class="text-center pointer px-1"
+                    @click="downloadImage(system_params.parameter_value)"
+                  >
+                    <span><v-icon>mdi-download</v-icon></span>
+                  </a>
+                  <!-- <a
+                    class="px-1"
+                    @click="deleteImage()"
+                    style="cursor: pointer"
+                  >
+                    <v-icon color="red">mdi-delete-outline</v-icon>
+                  </a> -->
+                </div>
               </div>
               <br />
               <Imageupload
                 :folder="'user_profile'"
-                :resizewidth="400"
-                :resizeheight="150"
+                :resizewidth="0.4"
+                :resizeheight="0.1"
                 @uploaded_image="uploaded_image"
                 :upload_profile="uploadfile"
               />
-              <div class="dimension_text">400 : 150</div>
             </v-col>
           </v-row>
           <v-layout class="pt-3">
             <v-row class="px-6">
               <v-col md="12">
-                <v-tooltip :text="this.$t('description')" location="bottom">
+                <v-tooltip :text="$t('description')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <v-textarea
                       v-on="on"
@@ -192,13 +157,13 @@
         </v-form>
       </div>
       <div class="d-block mr-4 mt-3 pb-3 text-right">
-        <v-tooltip :text="this.$t('cancel')" location="bottom">
+        <v-tooltip :text="$t('cancel')" location="bottom">
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="d-inline-block mr-2">
               <v-btn
                 v-bind="props"
                 size="small"
-                @click="cancel"
+                @click="$router.go(-1)"
                 :disabled="isDisabled"
                 class="ma-1"
                 color="cancel"
@@ -207,23 +172,25 @@
             </div>
           </template>
         </v-tooltip>
-        <v-tooltip :text="this.$t('submit')" location="bottom">
+        <v-tooltip :text="$t('submit')" location="bottom">
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="d-inline-block">
               <v-btn
-                :disabled="
-                  system_params.parameter_value == '' ||
-                  system_params.parameter_value == null
-                    ? isSubmitDisabled == false
-                    : isSubmitDisabled == true
-                "
-                :loading="isDisabled"
+                :disabled="isDisabled"
                 @click="submit"
                 size="small"
                 class="mr-2"
                 color="success"
               >
                 {{ $t("submit") }}
+                <v-progress-circular
+                  v-if="isDisabled"
+                  indeterminate
+                  width="1"
+                  color="cancel"
+                  size="x-small"
+                  class="ml-2"
+                ></v-progress-circular>
               </v-btn>
             </div>
           </template>
@@ -245,14 +212,13 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
-    envImagePath: process.env.VUE_APP_IMAGE_PATH,
+    envImagePath: import.meta.env.VITE_IMAGE_PATH,
     valid: false,
     loader: false,
     file: "",
     isBtnLoading: false,
     showupload: "",
     isDisabled: false,
-    isSubmitDisabled: false,
     checkbox_value: false,
     system_params: {
       id: 0,
@@ -264,7 +230,6 @@ export default {
     noimagepreview: "",
     uploadfile: false,
     items: [],
-    sel_lang: "",
   }),
 
   computed: {
@@ -285,11 +250,7 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(
-              process.env.VUE_APP_API_URL_ADMIN +
-                "edit_system_params/" +
-                this.$route.query.slug
-            )
+            .get("edit_system_params/" + this.$route.query.slug)
             .then((res) => {
               this.system_params = res.data.systemparameter;
               this.loader = false;
@@ -297,20 +258,10 @@ export default {
         }
       },
     },
-    "$i18n.locale"(newLocale) {
-      if (newLocale === "ar") {
-        this.sel_lang = "ar";
-      } else {
-        ("");
-        this.sel_lang = "en";
-      }
-    },
   },
   methods: {
-    cancel() {
-      this.$router.push({
-        name: "system_parameter",
-      });
+    deleteImage() {
+      this.system_params.parameter_value = "";
     },
     uploaded_image(img_src) {
       this.system_params.parameter_value = img_src;
@@ -328,16 +279,17 @@ export default {
         this.isBtnLoading = true;
         // Form is valid, process
         this.$axios
-          .post(
-            process.env.VUE_APP_API_URL_ADMIN + "save_system_params",
-            this.system_params
-          )
+          .post("save_system_params", this.system_params)
           .then((res) => {
+            this.emitter.emit("app_image_update");
             this.btnloading = false;
             let app_image_url = res.data.systemparameter.image_full_url;
-            if (app_image_url && res.data.systemparameter.parameter_name && res.data.systemparameter.parameter_name == 'APP_LOGO') {
+            console.log("res data");
+            console.log(res.data.systemparameter);
+            if (app_image_url) {
               localStorageWrapper.setItem("App_Image_Url", app_image_url);
-              this.emitter.emit("app_image_update");
+              console.log("app_image_url inside");
+              console.log(app_image_url);
             }
             if (Array.isArray(res.data.message)) {
               this.array_data = res.data.message.toString();
@@ -389,13 +341,6 @@ export default {
     clear() {
       this.$refs.form.reset();
     },
-    removeImage() {
-      this.system_params.parameter_value = null;
-      this.isSubmitDisabled = false;
-      this.$router.push({
-        name: "system_parameter_amend",
-      });
-    },
   },
 };
 </script>
@@ -404,11 +349,13 @@ input.larger {
   width: 20px;
   height: 20px;
 }
-/* .image-container {
+.image-container {
   max-width: 110px;
-  border: 1px double black;
   border-radius: 3px;
-} */
+}
+.image-container :deep(img)  {
+  border: 3px dashed black;
+}
 .camera-icon {
   position: absolute;
   bottom: 20px;
@@ -430,18 +377,5 @@ input.larger {
 .image-width {
   border: 2px solid black;
   padding: 1px;
-}
-.delete_icon {
-  position: relative;
-  left: 83px;
-  bottom: 90px;
-}
-.download_icon {
-  position: relative;
-  left: 116px;
-  bottom: 52px;
-}
-.dimension_text {
-  text-align-last: start;
 }
 </style>

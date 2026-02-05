@@ -185,12 +185,7 @@ export default {
         this.btnloading = true;
         this.loader = true;
         this.$axios
-          .post(
-            process.env.VUE_APP_API_URL_ADMIN +
-              "reset_password?email=" +
-              this.userdata.email +
-              "&role=User"
-          )
+          .post("reset_password?email=" + this.userdata.email + "&role=User")
           .then((response) => {
             this.response = response.data;
             this.message = response.data.message;

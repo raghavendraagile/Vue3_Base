@@ -3,16 +3,16 @@
     <div
       flat
       color="white"
-      class="row py-5 pl-5 align-items-center component_app_bar position-relative"
-     v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]"
+      class="row my-3 align-items-center component_app_bar"
     >
-      <page-title
-        class="col-md-3"
-        :heading="$t('sytem_parameter')"
-        :google_icon="google_icon"
-      ></page-title>
       <div class="col-md-4">
-        <v-tooltip :text="this.$t('search')" location="bottom">
+        <page-title
+          :heading="$t('sytem_parameter')"
+          :google_icon="google_icon"
+        ></page-title>
+      </div>
+      <div class="col-md-4">
+        <v-tooltip :text="$t('search')" location="bottom">
           <template v-slot:activator="{ props }">
             <v-text-field
               rounded
@@ -29,19 +29,21 @@
           </template>
         </v-tooltip>
       </div>
-      <div class="add_new_button">
-        <v-tooltip :text="this.$t('add_new')" location="bottom">
-          <template v-slot:activator="{ props }">
-            <router-link
-              :to="{ name: 'system_parameter_amend' }"
-              style="color: white"
-            >
-              <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
-                $t("add_new")
-              }}</v-btn>
-            </router-link>
-          </template>
-        </v-tooltip>
+      <div class="col-md-4 d-flex justify-content-end">
+        <div class="my-3 mr-2">
+          <v-tooltip :text="$t('add_new')" location="bottom">
+            <template v-slot:activator="{ props }">
+              <router-link
+                :to="{ name: 'system_parameter_amend' }"
+                style="color: white"
+              >
+                <v-btn size="small" class="mb-2 create-btn" v-bind="props">{{
+                  $t("add_new")
+                }}</v-btn>
+              </router-link>
+            </template>
+          </v-tooltip>
+        </div>
       </div>
     </div>
 
@@ -50,38 +52,28 @@
       :items="systemparameter"
       :search="search"
       :loading="initval"
-      :items-per-page-text="$t('rows_per_page')"
-      v-bind:style="$route.params.lang == 'ar' ? 'direction:rtl' : ''"
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
-          <td>{{ props.item.selectable.parameter_name }}</td>
+          <td>{{ props.item.parameter_name }}</td>
           <td class="param-value">
-            {{ props.item.selectable.parameter_value }}
+            {{ props.item.parameter_value }}
           </td>
-          <td class="desc_div_overflow">
-            {{ props.item.selectable.description }}
-          </td>
+          <td class="desc_div_overflow">{{ props.item.description }}</td>
           <td class="text-center">
             <v-btn
               class="hover_shine btn mr-2"
               :disabled="isDisabled"
-              @click="updateSystemParameteStatus(props.item.selectable.id)"
+              @click="updateSystemParameteStatus(props.item.id)"
               size="small"
-              v-bind:color="[
-                props.item.selectable.status == 1 ? 'success' : 'warning',
-              ]"
+              v-bind:color="[props.item.status == 1 ? 'success' : 'warning']"
             >
-              <span
-                v-if="props.item.selectable.status == 1"
-                class="spanactivesize"
-                >{{ $t("active") }}</span
-              >
-              <span
-                v-if="props.item.selectable.status == 0"
-                class="spanactivesize"
-                >{{ $t("inactive") }}</span
-              >
+              <span v-if="props.item.status == 1" class="spanactivesize">{{
+                $t("active")
+              }}</span>
+              <span v-if="props.item.status == 0" class="spanactivesize">{{
+                $t("inactive")
+              }}</span>
             </v-btn>
           </td>
 
@@ -89,10 +81,10 @@
             <router-link
               :to="{
                 name: 'system_parameter_amend',
-                query: { slug: props.item.selectable.slug },
+                query: { slug: props.item.slug },
               }"
             >
-              <v-tooltip :text="this.$t('edit')" location="bottom">
+              <v-tooltip :text="$t('edit')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-icon
                     v-on="on"
@@ -104,8 +96,8 @@
                 </template>
               </v-tooltip>
             </router-link>
-            <span @click="deleteItem(props.item.selectable.id)">
-              <v-tooltip :text="this.$t('delete')" location="bottom">
+            <span @click="deleteItem(props.item.id)">
+              <v-tooltip :text="$t('delete')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-icon
                     class="delete_btn icon_size"
@@ -155,7 +147,38 @@ export default {
     status_id: null,
     isDisabled: false,
     initval: false,
-    sel_lang:"",
+    headers: [
+      {
+        title: "Name",
+        align: "left",
+        sortable: true,
+        key: "parameter_name",
+      },
+      {
+        title: "Value",
+        align: "left",
+        sortable: false,
+        key: "parameter_value",
+      },
+      {
+        title: "Description",
+        align: "left",
+        sortable: false,
+        key: "description",
+      },
+      {
+        title: "Status",
+        align: "center",
+        sortable: false,
+        key: "status",
+      },
+      {
+        title: "Actions",
+        key: "name",
+        align: "center",
+        sortable: false,
+      },
+    ],
     google_icon: {
       icon_name: "settings_suggest",
       color: "google_icon_gradient",
@@ -182,51 +205,6 @@ export default {
       },
     ],
   }),
-  computed: {
-    headers() {
-      return [
-        {
-          title: this.$t("name"),
-          align: "left",
-          sortable: true,
-          key: "parameter_name",
-        },
-        {
-          title: this.$t("value"),
-          align: "left",
-          sortable: false,
-          key: "parameter_value",
-        },
-        {
-          title: this.$t("description"),
-          align: "left",
-          sortable: false,
-          key: "description",
-        },
-        {
-          title: this.$t("status"),
-          align: "center",
-          sortable: false,
-          key: "status",
-        },
-        {
-          title: this.$t("actions"),
-          key: "actions", // Changed from "name" to "actions" for clarity
-          align: "center",
-          sortable: false,
-        },
-      ];
-    },
-  },
-watch:{
-   '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
-      }
-    }
-},
   mounted() {
     this.fetchSystemParameters();
   },
@@ -248,7 +226,7 @@ watch:{
     fetchSystemParameters() {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "getsystem_params")
+        .get("getsystem_params")
         .then((res) => {
           this.initval = false;
 
@@ -269,7 +247,7 @@ watch:{
     },
     deletesystemparameter(id) {
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "delete_system_params/" + id)
+        .post("delete_system_params/" + id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -297,12 +275,9 @@ watch:{
     },
     statusUpdate() {
       this.$axios
-        .post(
-          process.env.VUE_APP_API_URL_ADMIN + "update_system_param_status",
-          {
-            id: this.status_id,
-          }
-        )
+        .post("update_system_param_status", {
+          id: this.status_id,
+        })
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -312,7 +287,7 @@ watch:{
           if (res.data.status == "S") {
             this.$toast.success(this.array_data);
             this.fetchSystemParameters();
-            this.$eventBus.$emit("app_logo");
+            this.emitter.emit("app_image_update");
           } else if (res.data.status == "E") {
             this.$toast.error(this.array_data);
           }
@@ -371,7 +346,7 @@ watch:{
 };
 </script>
 <style scoped>
-.v-text-field /deep/ .v-input__slot {
+.v-text-field :deep(.v-input__slot) {
   min-height: 38px !important;
   width: 353px;
 }

@@ -119,7 +119,7 @@ export default {
   },
   computed: {
     excelldownloadtemplate() {
-      return process.env.VUE_APP_FILE_DOWNLOAD + "/countrystatecity.xlsx";
+      return import.meta.env.VITE_FILE_DOWNLOAD + "/countrystatecity.xlsx";
     },
   },
   watch: {
@@ -204,7 +204,7 @@ export default {
   font-size: 16px;
 }
 
-.erroralert /deep/ i {
+.erroralert :deep( i) {
   margin-top: 5px;
 }
 </style>

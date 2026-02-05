@@ -213,10 +213,7 @@ export default {
           this.fieldItem.email = this.userprofile.email;
           this.fieldItem.user_id = this.userprofile.id;
           this.$axios
-            .post(
-              process.env.VUE_APP_API_URL_ADMIN + "resetuserpassword",
-              this.fieldItem
-            )
+            .post("resetuserpassword", this.fieldItem)
             .then(
               (res) => {
                 if (Array.isArray(res.data.message)) {
@@ -272,13 +269,13 @@ export default {
 };
 </script>
 <style scoped>
-.arabicclass /deep/ .v-field {
+.arabicclass :deep(.v-field) {
   direction: rtl;
 }
 .arabicclass .emailclass {
   direction: rtl;
 }
-.arabicclass /deep/ .v-messages__message {
+.arabicclass :deep(.v-messages__message) {
   direction: rtl;
 }
 .arabicclass {

@@ -1,8 +1,7 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]">
+    <div class="p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']">
       <page-title
-         
         class="col-md-4 ml-2"
         :heading="$t('create_ammend_roles')"
         :google_icon="google_icon"
@@ -107,7 +106,7 @@ export default {
     valid: true,
     successmessage: "",
     message: "",
-    sel_lang :"",
+    sel_lang: "",
     file: "",
     loading: false,
     isBtnLoading: false,
@@ -136,12 +135,7 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(
-              process.env.VUE_APP_API_URL_ADMIN +
-                "roles/" +
-                this.$route.query.slug +
-                "/edit"
-            )
+            .get("roles/" + this.$route.query.slug + "/edit")
             .then((res) => {
               if (Array.isArray(res.data.message)) {
                 this.array_data = res.data.message.toString();
@@ -164,13 +158,14 @@ export default {
         }
       },
     },
-    '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
   methods: {
     cancel() {
@@ -186,7 +181,7 @@ export default {
         // Form is valid, process
         if (this.fieldItem.id == 0) {
           this.$axios
-            .post(process.env.VUE_APP_API_URL_ADMIN + "roles", this.fieldItem)
+            .post("roles", this.fieldItem)
             .then((res) => {
               if (Array.isArray(res.data.message)) {
                 this.array_data = res.data.message.toString();
@@ -213,10 +208,7 @@ export default {
             });
         } else {
           this.$axios
-            .patch(
-              process.env.VUE_APP_API_URL_ADMIN + "roles/" + this.fieldItem.id,
-              this.fieldItem
-            )
+            .patch("roles/" + this.fieldItem.id, this.fieldItem)
             .then((res) => {
               this.valid_error = false;
               this.btnloading = false;

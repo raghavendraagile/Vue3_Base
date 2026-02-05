@@ -216,7 +216,7 @@
 <script>
 export default {
   data: () => ({
-    envImagePath: process.env.VUE_APP_IMAGE_PATH,
+    envImagePath: import.meta.env.VUE_APP_IMAGE_PATH,
     initval: false,
     loader: false,
     user_details: [],
@@ -264,7 +264,7 @@ export default {
       this.loader = true;
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetchuserbyslug/" + slug)
+        .get( "fetchuserbyslug/" + slug)
         .then((res) => {
           this.loader = false;
           if (res.data.status == "S") {
@@ -334,7 +334,7 @@ export default {
   background-color: rgb(45, 45, 45) !important;
   color: white !important;
 }
-.checkbox_item /deep/ .v-input__details {
+.checkbox_item :deep(.v-input__details) {
   display: none;
 }
 .name_header {

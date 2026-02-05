@@ -6,7 +6,7 @@
         <div class="background">
           <div class="login-box-custom">
             <div class="d-flex flex-column">
-              <img src="../../assets/images/logo.png" />
+              <img src="../../assets/images/logo.png" class="logo" />
               <div class="w-100 d-flex" style="flex-direction: column">
                 <!-- <h4 class="mb-0">{{ $t("welcome_msg") }}</h4> -->
                 <div class="font-login">
@@ -35,7 +35,7 @@
             </div>
             <v-divider></v-divider>
             <div>
-              <v-form v-model="valid" class="w-100">
+              <v-form v-model="valid" class="w-100" ref="form">
                 <v-container>
                   <v-row>
                     <v-col cols="12" md="12" class="pb-0 pt-0">
@@ -50,7 +50,7 @@
                             v-model="userdata.email"
                             :rules="emailRules"
                             v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
-                            @keyup.enter="login"
+                            @keyup.enter="sendLoginOtp"
                             required
                             variant="outlined"
                             density="compact"
@@ -74,7 +74,7 @@
                             :rules="fieldRules"
                             :type="show1 ? 'text' : 'password'"
                             name="input-10-1"
-                            @keyup.enter="login"
+                            @keyup.enter="sendLoginOtp"
                             counter
                             v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
                             variant="outlined"
@@ -102,8 +102,8 @@
                               color="#fff"
                               small
                               class="btn-theme-blue w-100"
-                              @click="login"
-                              @keyup.enter="login"
+                              @click="sendLoginOtp"
+                              @keyup.enter="sendLoginOtp"
                               :disabled="!valid || btnloading"
                               >{{ $t("sign_in") }}
                             </v-btn>
@@ -151,9 +151,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
 import localStorageWrapper from "../../localStorageWrapper.js";
-// import { getToken, getMessaging } from "firebase/messaging";
 
 export default {
   name: "LoginPage",
@@ -163,7 +161,6 @@ export default {
       password: "",
       token_id: "",
     },
-    // firebase_vapid: process.env.VUE_APP_FIREBASE_VAPID_KEY,
     valid: false,
     show1: false,
     user: "",
@@ -178,11 +175,6 @@ export default {
     sel_lang: "en",
   }),
   computed: {
-    ...mapState({
-      userDetails: (state) => state.auth.userData,
-      isAuth: (state) => state.auth.isAuthenticated,
-    }),
-
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
     },
@@ -193,8 +185,6 @@ export default {
         (v) => /.+@.+/.test(v) || this.$t("email_valid"),
       ];
     },
-
-    // ...mapGetters(["errors"]),
   },
 
   mounted() {
@@ -202,25 +192,7 @@ export default {
     this.selectedLang();
   },
 
-  created() {
-    // if (window.location.protocol === "https:") {
-    //   const messaging = getMessaging();
-    //   getToken(messaging, { vapidKey: this.firebase_vapid })
-    //     .then((currentToken) => {
-    //       if (currentToken) {
-    //         console.log("token id", currentToken);
-    //         this.userdata.token_id = currentToken;
-    //       } else {
-    //         console.log(
-    //           "No registration token available. Request permission to generate one."
-    //         );
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log("An error occurred while retrieving token. ", err);
-    //     });
-    // }
-  },
+  created() {},
 
   methods: {
     setUserLang(lang) {
@@ -242,7 +214,7 @@ export default {
     },
     fetchAppImageUrl() {
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_image_url", {})
+        .get("fetch_image_url", {})
         .then((res) => {
           this.app_image_url = res.data.parameter_image;
           this.application_name = res.data.application_name;
@@ -266,31 +238,53 @@ export default {
           console.log("this error" + err);
         });
     },
-    ...mapActions("auth", ["loginRequest"]),
-    async login() {
-      this.loader = true;
-      this.show_error = false; // reset error
-      try {
-        // Wait for loginRequest to complete and update Vuex state
-        await this.loginRequest(this.userdata);
 
-        // Mark button as loading
+    sendLoginOtp() {
+      if (this.$refs.form.validate()) {
         this.btnloading = true;
+        this.loader = true;
+        this.$axios
+          .post(
+              "send_login_otp?email=" +
+              this.userdata.email +
+              "&role=User"
+          )
+          .then((response) => {
+            this.response = response.data;
+            this.message = response.data.message;
+            this.status = response.data.status;
+            if (this.status == "S") {
+              this.btnloading = true;
+              this.$toast.success(this.message);
+              if (this.userdata.email) {
+                localStorageWrapper.setItem("verifyemail", this.userdata.email);
+              }
+              localStorage.setItem("active_menu", "OTP Validation");
 
-        // Set default active menu
-        localStorage.setItem("active_menu", "Dashboard");
-
-        // Redirect to dashboard after login is successful
-        this.$router.push({ name: "dashboard" });
-      } catch (err) {
-        // Handle errors
-        this.error_message = err.response?.data?.message || "Login failed";
-        this.show_error = true;
-        console.error(err.response?.data?.message);
-      } finally {
-        // Stop loader and button loading
-        this.loader = false;
-        this.btnloading = false;
+              // Redirect to dashboard after login is successful
+              this.$router.push({
+                name: "login-otp-validation",
+                query: {
+                  userdata: JSON.stringify(this.userdata),
+                },
+              });
+              setTimeout(() => {
+                this.btnloading = false;
+                this.loader = false;
+              }, 500);
+            } else if (this.status == "E") {
+              this.$toast.error(this.message);
+              this.btnloading = false;
+              this.loader = false;
+            }
+          })
+          .catch((err) => {
+            this.btnloading = false;
+            this.loader = false;
+            this.error_message = err.response.data.message;
+            this.show_error = true;
+            console.log(err);
+          });
       }
     },
   },

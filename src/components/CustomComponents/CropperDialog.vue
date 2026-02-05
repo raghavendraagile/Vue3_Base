@@ -48,7 +48,8 @@ export default {
     dialog: {
       immediate: true,
       handler() {
-        this.dialogVisible = this.dialog;
+     
+        this.dialogVisible=this.dialog
       },
     },
   },
@@ -86,14 +87,10 @@ export default {
       }
     },
     upload() {
-      if (this.$refs.cropper) {
-        const croppedCanvas = this.$refs.cropper.getCroppedCanvas({
-          width: this.width,
-          height: this.height,
-        });
-      } else {
-        console.log("Cropper instance is not initialized yet!");
-      }
+      const croppedCanvas = this.$refs.cropper.getCroppedCanvas({
+        width: this.width,
+        height: this.height,
+      });
       croppedCanvas.toBlob((blob) => {
         const formData = new FormData();
         formData.append("image", blob, "croppedImage.jpg");

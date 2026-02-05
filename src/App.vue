@@ -255,23 +255,6 @@ import { apptheme } from "./store/apptheme.js";
 
 <script>
 import localStorageWrapper from "./localStorageWrapper.js";
-// import { getMessaging, onMessage } from "firebase/messaging";
-// import { initializeApp } from "firebase/app";
-// if (window.location.protocol === "https:") {
-//   const firebaseConfig = {
-//     apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
-//     authDomain: process.env.VUE_APP_FIREBASE_AUTHDOMAIN,
-//     projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
-//     storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
-//     messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
-//     appId: process.env.VUE_APP_FIREBASE_APP_ID,
-//     measurementId: process.env.VUE_APP_FIREBASE_MEASUREMENT_ID,
-//   };
-
-//   const app = initializeApp(firebaseConfig);
-//   console.log(app);
-//   var messaging = getMessaging();
-// }
 
 const default_layout = "default";
 import NavigationDrawer from "./Layout/NavigationDrawer.vue";
@@ -292,7 +275,7 @@ export default {
       user_id: "",
       notification_array: [],
       currentTheme: localStorage.getItem("theme-type"),
-      envImagePath: process.env.VUE_APP_IMAGE_PATH,
+      envImagePath: import.meta.env.VITE_IMAGE_PATH,
       displayedItems: [],
       loader: false,
       currentIndex: 0,
@@ -398,11 +381,7 @@ export default {
 
     shownotificationdialog() {
       this.$axios
-        .get(
-          process.env.VUE_APP_API_URL_ADMIN +
-            "seennotifications/" +
-            this.user_id
-        )
+        .get("seennotifications/" + this.user_id)
         .then((res) => {
           if (res.data.status == "S") {
             this.notification_count = 0;
@@ -420,11 +399,7 @@ export default {
       this.notification_array = [];
       this.notification_count = 0;
       this.$axios
-        .get(
-          process.env.VUE_APP_API_URL_ADMIN +
-            "fetchusernotifications/" +
-            this.user_id
-        )
+        .get("fetchusernotifications/" + this.user_id)
         .then((res) => {
           if (res.data.status == "S") {
             this.notification_array = res.data.notification;
@@ -487,7 +462,7 @@ export default {
   direction: rtl;
 }
 :global(.v-list-group--prepend .v-list-item--active) {
-  background: #e4e4e4;
+  background: #d4edfd;
 }
 :global(.rtl-page-title .v-checkbox-btn) {
   direction: rtl !important;

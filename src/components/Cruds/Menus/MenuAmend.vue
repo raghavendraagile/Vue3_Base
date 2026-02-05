@@ -6,7 +6,7 @@
     >
       <page-title
         class="col-md-4 ml-2"
-        :heading="$t('create_menu')"
+        heading="Create Menu"
         :google_icon="google_icon"
       ></page-title>
     </div>
@@ -197,7 +197,7 @@ export default {
 
   created() {
     this.$axios
-      .get(process.env.VUE_APP_API_URL_ADMIN + "parentmenus")
+      .get("parentmenus")
       .then((res) => {
         this.items = res.data;
         this.items.parentmenu = [
@@ -217,12 +217,7 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(
-              process.env.VUE_APP_API_URL_ADMIN +
-                "menu/" +
-                this.$route.query.slug +
-                "/edit"
-            )
+            .get("menu/" + this.$route.query.slug + "/edit")
             .then((res) => {
               if (res.data.status == "S") {
                 this.loader = false;
@@ -271,7 +266,7 @@ export default {
         if (this.fieldItem.id == 0) {
           this.isDisabled = true;
           this.$axios
-            .post(process.env.VUE_APP_API_URL_ADMIN + "menu", this.fieldItem)
+            .post("menu", this.fieldItem)
             .then((res) => {
               if (Array.isArray(res.data.message)) {
                 this.array_data = res.data.message.toString();
@@ -301,10 +296,7 @@ export default {
         } else {
           this.isDisabled = true;
           this.$axios
-            .patch(
-              process.env.VUE_APP_API_URL_ADMIN + "menu/" + this.fieldItem.id,
-              this.fieldItem
-            )
+            .patch("menu/" + this.fieldItem.id, this.fieldItem)
             .then((res) => {
               if (Array.isArray(res.data.message)) {
                 this.array_data = res.data.message.toString();

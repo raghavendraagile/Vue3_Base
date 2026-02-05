@@ -3,7 +3,7 @@
     <div
       flat
       color="white"
-      class="row py-5 pl-5 align-items-center component_app_bar position-relative"
+      class="row my-3 align-items-center component_app_bar position-relative"
       v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
     >
       <page-title
@@ -33,7 +33,7 @@
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link :to="{ name: 'user_creation' }" style="color: white">
-              <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
+              <v-btn size="small" class="mb-2 create-btn" v-bind="props">{{
                 $t("add_new")
               }}</v-btn>
             </router-link>
@@ -41,6 +41,7 @@
         </v-tooltip>
       </div>
     </div>
+
     <v-data-table
       :headers="headers"
       :items="allUsers"
@@ -52,32 +53,24 @@
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
           <td>
-            <span v-if="props.item.selectable.full_name">
-              {{ props.item.selectable.full_name }}</span
-            >
+            <span v-if="props.item.full_name"> {{ props.item.full_name }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span v-if="props.item.selectable.email">
-              {{ props.item.selectable.email }}</span
-            >
+            <span v-if="props.item.email"> {{ props.item.email }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span v-if="props.item.selectable.phone">
-              {{ props.item.selectable.phone }}</span
-            >
+            <span v-if="props.item.phone"> {{ props.item.phone }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span v-if="props.item.selectable.postcode">
-              {{ props.item.selectable.postcode }}</span
-            >
+            <span v-if="props.item.postcode"> {{ props.item.postcode }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span v-if="props.item.selectable.rolename">
-              {{ props.item.selectable.role.role_display_name }}</span
+            <span v-if="props.item.rolename">
+              {{ props.item.role.role_display_name }}</span
             >
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
@@ -86,28 +79,22 @@
               class="hover_shine btn mr-2"
               :disabled="isDisabled"
               size="small"
-              @click="changeStatus(props.item.selectable.id)"
-              v-bind:color="[
-                props.item.selectable.status == 1 ? 'success' : 'warning',
-              ]"
+              @click="changeStatus(props.item.id)"
+              v-bind:color="[props.item.status == 1 ? 'success' : 'warning']"
             >
-              <span
-                v-if="props.item.selectable.status == 1"
-                class="spanactivesize"
-                >{{ $t("active") }}</span
-              >
-              <span
-                v-if="props.item.selectable.status == 0"
-                class="spanactivesize"
-                >{{ $t("inactive") }}</span
-              >
+              <span v-if="props.item.status == 1" class="spanactivesize">{{
+                $t("active")
+              }}</span>
+              <span v-if="props.item.status == 0" class="spanactivesize">{{
+                $t("inactive")
+              }}</span>
             </v-btn>
           </td>
           <td>
             <router-link
               :to="{
                 name: 'user_creation',
-                query: { slug: props.item.selectable.slug },
+                query: { slug: props.item.slug },
               }"
             >
               <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -126,7 +113,7 @@
           <td>
             <v-btn
               size="small"
-              @click="redirectView(props.item.selectable.slug)"
+              @click="redirectView(props.item.slug)"
               :disabled="loading"
               class="ma-1"
               color="blue"
@@ -281,7 +268,7 @@ export default {
     },
     deleteConfirm(id) {
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "delete_draft_user/" + id)
+        .post("delete_draft_user/" + id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -314,11 +301,12 @@ export default {
     fetchUsers() {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetchuser")
+        .get("fetchuser")
         .then((res) => {
           this.allUsers = res.data.usersdata;
+          // console.log("this.allUsers");
+          // console.log(this.allUsers);
           this.allUsers = this.allUsers.filter((elem) => {
-            console.log("dsaasd", this.user);
             if (
               elem.id !== this.user.id &&
               elem.role.rolename !== "SuperUser"
@@ -330,7 +318,7 @@ export default {
         })
         .catch((err) => {
           this.$toast.error(this.$t("something_went_wrong"));
-          console.log(" error" + err);
+          console.log("error" + err);
         });
     },
     changeStatus(id) {
@@ -362,7 +350,7 @@ export default {
 
     statusUpdate() {
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "updateuserstatus", {
+        .post("updateuserstatus", {
           id: this.status_id,
         })
         .then((res) => {
@@ -392,11 +380,6 @@ export default {
 };
 </script>
 <style scoped>
-/* .v-text-field /deep/ .v-input__slot {
-  min-height: 38px !important;
-  width: 353px;
-} */
-
 .param-value {
   max-width: 200px;
   text-overflow: ellipsis;

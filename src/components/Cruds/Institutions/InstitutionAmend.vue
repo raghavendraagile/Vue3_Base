@@ -1,12 +1,10 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div
-      class="my-3 p-0"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
-    >
+    <div class="my-3 p-0">
+      <!-- v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']" -->
       <page-title
         class="col-md-4 ml-2"
-        :heading="$t('amend_store_code')"
+        heading="Create Menu"
         :google_icon="google_icon"
       ></page-title>
     </div>
@@ -15,92 +13,59 @@
       <div class="card-body">
         <v-form ref="form" v-model="valid">
           <v-row class="px-6">
-            <v-col cols="12" sm="4" md="4">
-              <v-tooltip :text="this.$t('shop_code')" location="bottom">
+            <v-col cols="12" sm="6" md="6">
+              <v-tooltip text="Institution Name" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
                     v-bind="props"
-                    v-model="fieldItem.shop_code"
+                    v-model="fieldItem.title"
                     :rules="fieldRules"
-                    v-bind:label="$t('shop_code')"
+                    label="Institution Name"
                     variant="outlined"
                     density="compact"
                     required
+                    counter="100"
+                    counter-value="100"
                     class="required_field"
-                    maxlength="1000"
+                    maxlength="100"
                     v-bind:class="[fieldRules ? 'form-group--error' : '']"
                   ></v-text-field>
                 </template>
               </v-tooltip>
             </v-col>
-            <v-col cols="12" sm="4" md="4">
-              <v-tooltip :text="this.$t('parent')" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-autocomplete
-                    :items="items"
-                    v-bind:label="$t('floor_no')"
-                    index="shortname"
-                    v-bind="props"
-                    item-value="shortname"
-                    variant="outlined"
-                    density="compact"
-                    item-title="shortname"
-                    v-model="fieldItem.floor_no"
-                    class="pr-2"
-                  >
-                  </v-autocomplete>
-                </template>
-              </v-tooltip>
-            </v-col>
-          </v-row>
-          <v-row class="px-6">
-            <v-col cols="12" sm="4" md="4">
-              <v-tooltip :text="this.$t('altitude')" location="bottom">
+            <v-col cols="12" sm="6" md="6">
+              <v-tooltip text="Institution Type" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
                     v-bind="props"
-                    v-model="fieldItem.altitude"
+                    v-model="fieldItem.title"
                     :rules="fieldRules"
-                    v-bind:label="$t('altitude')"
+                    label="Institution Type"
                     variant="outlined"
                     density="compact"
                     required
+                    counter="100"
+                    counter-value="100"
                     class="required_field"
-                    maxlength="1000"
+                    maxlength="100"
                     v-bind:class="[fieldRules ? 'form-group--error' : '']"
                   ></v-text-field>
                 </template>
               </v-tooltip>
             </v-col>
-            <v-col cols="12" sm="4" md="4">
-              <v-tooltip :text="this.$t('latitude')" location="bottom">
+            <v-col cols="12" sm="12" md="12">
+              <v-tooltip text="Institution Address" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
                     v-bind="props"
-                    v-model="fieldItem.latitude"
+                    v-model="fieldItem.title"
                     :rules="fieldRules"
-                    v-bind:label="$t('latitude')"
+                    label="Institution Address"
                     variant="outlined"
                     density="compact"
                     required
-                    class="required_field"
-                    maxlength="1000"
-                    v-bind:class="[fieldRules ? 'form-group--error' : '']"
-                  ></v-text-field>
-                </template>
-              </v-tooltip>
-            </v-col>
-            <v-col cols="12" sm="4" md="4">
-              <v-tooltip :text="this.$t('longitude')" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-text-field
-                    v-bind="props"
-                    v-model="fieldItem.longitude"
-                    :rules="fieldRules"
-                    v-bind:label="$t('longitude')"
-                    variant="outlined"
-                    density="compact"
-                    required
+                    counter="100"
+                    counter-value="100"
                     class="required_field"
                     maxlength="100"
                     v-bind:class="[fieldRules ? 'form-group--error' : '']"
@@ -174,52 +139,61 @@ export default {
     isDisabled: false,
     fieldItem: {
       id: 0,
-      shop_code: "",
-      floor_no: "",
-      altitude: 0,
-      latitude: "",
-      longitude: "",
+      title: "",
+      href: "",
+      parent_id: 0,
+      seq: "",
+      icon: "",
     },
     items: [],
+    empty_item: {
+      id: 0,
+      title: "None",
+    },
   }),
 
   computed: {
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
     },
+
+    numberRules() {
+      return [(v) => !!v || this.$t("number_required")];
+    },
   },
 
   created() {
     this.$axios
-      .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_lang_lookup", {
-        params: {
-          lookup_type: "FLOORS",
-        },
-      })
-      .then((response) => {
-        this.items = response.data.lookup_en;
+      .get(import.meta.env.VITE_API_URL_ADMIN + "parentmenus")
+      .then((res) => {
+        this.items = res.data;
+        this.items.parentmenu = [
+          { id: 0, title: "None" },
+          ...this.items.parentmenu,
+        ];
       })
       .catch((err) => {
         this.$toast.error(this.$t("something_went_wrong"));
-        console.log(err);
+        console.log("error", err);
       });
   },
   watch: {
-    "$route.query.id": {
+    "$route.query.slug": {
       immediate: true,
       handler() {
-        if (this.$route.query.id) {
+        if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
             .get(
-              process.env.VUE_APP_API_URL_ADMIN +
-                "view-store-code/" +
-                this.$route.query.id
+              import.meta.env.VITE_API_URL_ADMIN +
+                "menu/" +
+                this.$route.query.slug +
+                "/edit"
             )
             .then((res) => {
               if (res.data.status == "S") {
                 this.loader = false;
-                this.fieldItem = res.data.geo_measures;
+                this.fieldItem = res.data.menu;
               }
             })
             .catch((err) => {
@@ -243,43 +217,86 @@ export default {
   methods: {
     cancel() {
       this.$router.push({
-        name: "store-code",
+        name: "menus",
       });
+    },
+    NumbersOnly(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
     },
     submit() {
       if (this.$refs.form.validate() && this.valid) {
-        this.isDisabled = true;
-        this.$axios
-          .post(
-            process.env.VUE_APP_API_URL_ADMIN + "save-store-code",
-            this.fieldItem
-          )
-          .then((res) => {
-            if (Array.isArray(res.data.message)) {
-              this.array_data = res.data.message.toString();
-            } else {
-              this.array_data = res.data.message;
-            }
-            if (res.data.status == "S") {
-              this.$toast.success(this.array_data);
-              this.message = res.data.message;
-              this.$router.push({
-                name: "store-code",
-              });
-            } else if (res.data.status == "E") {
-              this.$toast.error(this.array_data);
+        if (this.fieldItem.id == 0) {
+          this.isDisabled = true;
+          this.$axios
+            .post(import.meta.env.VITE_API_URL_ADMIN + "menu", this.fieldItem)
+            .then((res) => {
+              if (Array.isArray(res.data.message)) {
+                this.array_data = res.data.message.toString();
+              } else {
+                this.array_data = res.data.message;
+              }
+              if (res.data.status == "S") {
+                this.$toast.success(this.array_data);
+                this.message = res.data.message;
+                this.$router.push({
+                  name: "menus",
+                });
+              } else if (res.data.status == "E") {
+                this.$toast.error(this.array_data);
+                this.isDisabled = false;
+              } else {
+                this.$toast.error(this.array_data);
+                this.isDisabled = false;
+              }
+            })
+            .catch((err) => {
               this.isDisabled = false;
-            } else {
-              this.$toast.error(this.array_data);
+              this.$toast.error(this.$t("something_went_wrong"));
               this.isDisabled = false;
-            }
-          })
-          .catch((err) => {
-            this.isDisabled = false;
-            this.$toast.error(this.$t("something_went_wrong"));
-            this.isDisabled = false;
-            console.log("error", err);
-          });
+              console.log("error", err);
+            });
+        } else {
+          this.isDisabled = true;
+          this.$axios
+            .patch(
+              import.meta.env.VITE_API_URL_ADMIN + "menu/" + this.fieldItem.id,
+              this.fieldItem
+            )
+            .then((res) => {
+              if (Array.isArray(res.data.message)) {
+                this.array_data = res.data.message.toString();
+              } else {
+                this.array_data = res.data.message;
+              }
+              if (res.data.status == "S") {
+                this.$toast.success(this.array_data);
+                this.message = res.data.message;
+                this.$router.push({
+                  name: "menus",
+                });
+              } else if (res.data.status == "E") {
+                this.isDisabled = false;
+                this.$toast.error(this.array_data);
+              } else {
+                this.$toast.error(this.array_data);
+              }
+            })
+            .catch((err) => {
+              this.isDisabled = false;
+              this.$toast.error(this.$t("something_went_wrong"));
+              console.log("error", err);
+            });
+        }
       }
     },
   },

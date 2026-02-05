@@ -3,15 +3,16 @@
     <div
       flat
       color="white"
-      class="row py-5 pl-5 align-items-center component_app_bar"
+      class="row my-3 align-items-center component_app_bar"
     >
-      <page-title
-        class="col-md-3"
-        :heading="$t('countries')"
-        :google_icon="google_icon"
-      ></page-title>
       <div class="col-md-4">
-        <v-tooltip :text="this.$t('search')" location="bottom">
+        <page-title
+          :heading="$t('countries')"
+          :google_icon="google_icon"
+        ></page-title>
+      </div>
+      <div class="col-md-4">
+        <v-tooltip :text="$t('search')" location="bottom">
           <template v-slot:activator="{ props }">
             <v-text-field
               rounded
@@ -28,197 +29,88 @@
           </template>
         </v-tooltip>
       </div>
-      <div class="add_new_button">
-        <v-tooltip :text="this.$t('add_new')" location="bottom">
-          <template v-slot:activator="{ props }">
-            <router-link
-              :to="{ name: 'countries_amend', query: { s_tab: tabs } }"
-              style="color: white"
-            >
-              <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
-                $t("add_new")
-              }}</v-btn>
-            </router-link>
-          </template>
-        </v-tooltip>
+      <div class="col-md-4 d-flex justify-content-end">
+        <div class="my-3 mr-2 add_new_button">
+          <v-tooltip :text="$t('add_new')" location="bottom">
+            <template v-slot:activator="{ props }">
+              <router-link :to="{ name: 'countries_amend' }">
+                <v-btn size="small" class="mb-2 create-btn" v-bind="props">{{
+                  $t("add_new")
+                }}</v-btn>
+              </router-link>
+            </template>
+          </v-tooltip>
+        </div>
       </div>
     </div>
-    <v-form ref="form" v-model="valid">
-      <excelupload
-        @ExcellRecieved="ExcellRecieved"
-        :response_data="response_data"
-      ></excelupload>
-    </v-form>
-    <v-tabs v-model="tabs" color="blue">
-      <v-tab :value="1" @click="checkUploadImage">
-        <span>{{ $t("english") }}</span>
-      </v-tab>
-      <v-tab :value="2" @click="checkUploadImage">
-        <span>{{ $t("arabic") }}</span>
-      </v-tab>
-    </v-tabs>
-    <v-window v-model="tabs">
-      <!-- ENGLISH TAB STARTS -->
-      <v-window-item :value="1">
-        <v-data-table
-          :headers="headers"
-          :items="countries_en"
-          :search="search"
-          :loading="initval"
-          :no-data-text="$t('no_data_available_en')"
-          :items-per-page-text="$t('rows_per_page_en')"
-        >
-          <template v-slot:item="props">
-            <tr class="vdatatable_tbody">
-              <td>{{ props.item.selectable.name }}</td>
-              <td>{{ props.item.selectable.mobile_code }}</td>
-              <td class="text-center px-0">
-                <router-link
-                  :to="{
-                    name: 'countries_amend',
-                    query: { slug: props.item.selectable.slug, s_tab: tabs },
-                  }"
-                >
-                  <v-tooltip :text="this.$t('edit_en')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        v-on="on"
-                        small
-                        class="mr-2 edit_btn icon_size"
-                        v-bind="props"
-                        >mdi-pencil-outline</v-icon
-                      >
-                    </template>
-                  </v-tooltip>
-                </router-link>
-                <router-link
-                  small
-                  class="mr-2"
-                  :to="{
-                    name: 'states',
-                    query: {
-                      countryslug: props.item.selectable.slug,
-                      s_tab: tabs,
-                    },
-                  }"
-                >
-                  <v-tooltip :text="this.$t('states_en')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        v-bind="props"
-                        class="mr-2 settings_icon icon_size"
-                        v-on="on"
-                        >mdi-sitemap</v-icon
-                      >
-                    </template>
-                    <span>{{ $t("states_en") }}</span>
-                  </v-tooltip>
-                </router-link>
-                <span @click="deleteItem(props.item.selectable.id)">
-                  <v-tooltip :text="this.$t('delete_en')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        class="delete_btn icon_size"
-                        v-bind="props"
-                        v-on="on"
-                        small
-                        type="button"
-                        >mdi-trash-can-outline</v-icon
-                      >
-                    </template>
-                  </v-tooltip>
-                </span>
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
-      </v-window-item>
-      <!-- ENGLISH TAB STOPS -->
-      <!-- ARABIC TAB STARTS -->
-      <v-window-item :value="2">
-        <v-data-table
-          :headers="headers_ar"
-          :items="countries_ar"
-          :search="search"
-          :loading="initval"
-          class="rtl-direction"
-          :no-data-text="$t('no_data_available_ar')"
-          :items-per-page-text="$t('rows_per_page_ar')"
-        >
-          <template v-slot:item="props">
-            <tr class="vdatatable_tbody">
-              <td>
-                {{
-                  props.item.selectable.name
-                    ? props.item.selectable.name
-                    : $t("not_appllicable")
-                }}
-              </td>
-              <td>{{ props.item.selectable.mobile_code }}</td>
-              <td class="text-center px-0">
-                <router-link
-                  :to="{
-                    name: 'countries_amend',
-                    query: { slug: props.item.selectable.slug, s_tab: tabs },
-                  }"
-                >
-                  <v-tooltip :text="this.$t('edit_ar')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        v-on="on"
-                        small
-                        class="mr-2 edit_btn icon_size"
-                        v-bind="props"
-                        >mdi-pencil-outline</v-icon
-                      >
-                    </template>
-                  </v-tooltip>
-                </router-link>
-                <router-link
-                  small
-                  class="ml-2"
-                  :to="{
-                    name: 'states',
-                    query: {
-                      countryslug: props.item.selectable.slug,
-                      s_tab: tabs,
-                    },
-                  }"
-                >
-                  <v-tooltip :text="this.$t('states_ar')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        v-bind="props"
-                        class="mr-2 settings_icon icon_size"
-                        v-on="on"
-                        >mdi-sitemap</v-icon
-                      >
-                    </template>
-                    <span>{{ $t("states_ar") }}</span>
-                  </v-tooltip>
-                </router-link>
-                <span @click="deleteItem(props.item.selectable.header_id)">
-                  <v-tooltip :text="this.$t('delete_ar')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        class="delete_btn icon_size"
-                        v-bind="props"
-                        v-on="on"
-                        small
-                        type="button"
-                        >mdi-trash-can-outline</v-icon
-                      >
-                    </template>
-                  </v-tooltip>
-                </span>
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
-      </v-window-item>
-    </v-window>
-    <!--  ARABIC TAB ENDS-->
-
+    <v-data-table
+      :headers="headers"
+      :items="countries"
+      :search="search"
+      :loading="initval"
+    >
+      <template v-slot:item="props">
+        <tr class="vdatatable_tbody">
+          <td>{{ props.item.name }}</td>
+          <td class="text-center px-0">
+            <router-link
+              :to="{
+                name: 'countries_amend',
+                query: { slug: props.item.slug },
+              }"
+            >
+              <v-tooltip :text="$t('edit')" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                    v-on="on"
+                    small
+                    class="mr-2 edit_btn icon_size"
+                    v-bind="props"
+                    >mdi-pencil-outline</v-icon
+                  >
+                </template>
+              </v-tooltip>
+            </router-link>
+            <router-link
+              small
+              class="mr-2"
+              :to="{
+                name: 'states',
+                query: {
+                  countryslug: props.item.slug,
+                },
+              }"
+            >
+              <v-tooltip :text="$t('states')" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                    v-bind="props"
+                    class="mr-2 settings_icon icon_size"
+                    v-on="on"
+                    >mdi-sitemap</v-icon
+                  >
+                </template>
+                <span>{{ $t("states") }}</span>
+              </v-tooltip>
+            </router-link>
+            <span @click="deleteItem(props.item.id)">
+              <v-tooltip :text="$t('delete')" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                    class="delete_btn icon_size"
+                    v-bind="props"
+                    v-on="on"
+                    small
+                    type="button"
+                    >mdi-trash-can-outline</v-icon
+                  >
+                </template>
+              </v-tooltip>
+            </span>
+          </td>
+        </tr>
+      </template>
+    </v-data-table>
     <ConfirmDialog
       :show="showdeleteDialog"
       :cancel="cancel"
@@ -230,116 +122,56 @@
 </template>
 
 <script>
-import excelupload from "../../CustomComponents/ExcelUpload.vue";
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
 export default {
   components: {
     PageTitle,
-    excelupload,
     ConfirmDialog,
   },
   data: () => ({
-    uploaded_file: null,
-    countries_en: [],
-    countries_ar: [],
-    response_data: "",
+    countries: [],
     showdeleteDialog: false,
     delete_id: null,
     status_id: null,
     isDisabled: false,
-    tabs: 1,
+    headers: [
+      {
+        title: "Name",
+        align: "left",
+        sortable: true,
+        key: "name",
+      },
+      {
+        title: "Actions",
+        key: "actions",
+        align: "center",
+        sortable: false,
+      },
+    ],
     google_icon: {
-      icon_name: "settings_suggest",
+      icon_name: "globe_asia",
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
     search: "",
+    valid_error: false,
+    valid_success: false,
+    successmessage: "",
     valid: false,
+    message: "",
     json_fields: [
       {
         label: "Name",
         field: "name",
       },
     ],
+    initval: true,
   }),
   mounted() {
     this.fetchcountries();
-    if (this.$route.query.s_tab) {
-      this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
-    }
-  },
-  computed: {
-    fieldRules() {
-      return [(v) => !!v || this.$t("field_required")];
-    },
-    headers() {
-      return [
-        {
-          title: this.$t("name_en"),
-          align: "left",
-          sortable: true,
-          key: "name",
-        },
-        {
-          title: this.$t("mobile_code_en"),
-          align: "left",
-          sortable: true,
-          key: "mobile_code",
-        },
-        {
-          title: this.$t("actions_en"),
-          // key: "name",
-          align: "center",
-          sortable: false,
-        },
-      ];
-    },
-    headers_ar() {
-      return [
-        {
-          title: this.$t("name_ar"),
-          align: "left",
-          sortable: true,
-          key: "name",
-        },
-        {
-          title: this.$t("mobile_code_ar"),
-          align: "left",
-          sortable: true,
-          key: "mobile_code",
-        },
-        {
-          title: this.$t("actions_ar"),
-          // key: "name",
-          align: "center",
-          sortable: false,
-        },
-      ];
-    },
   },
   methods: {
-    ExcellRecieved(file) {
-      this.uploaded_file = file;
-      if (this.uploaded_file) {
-        this.$axios
-          .post("/insert_country_template", {
-            file: this.uploaded_file,
-          })
-          .then((res) => {
-            this.response_data = res.data.status;
-            if (res.data.status == "S") {
-              this.fetchcountries();
-              this.loader = false;
-            } else {
-              // this.fetchcountries();
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    },
     cancel() {
       this.showdeleteDialog = false;
     },
@@ -350,13 +182,12 @@ export default {
     fetchcountries() {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch_countries")
+        .get("fetch_countries")
         .then((res) => {
           this.initval = false;
 
           // this.$toast.success(this.array_data);
-          this.countries_en = res.data.countries_en;
-          this.countries_ar = res.data.countries_ar;
+          this.countries = res.data.countries;
         })
         .catch((err) => {
           this.$toast.error(this.array_data);
@@ -372,7 +203,7 @@ export default {
     },
     deletecountries(id) {
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "delete_countries/" + id)
+        .post("delete_countries/" + id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -394,61 +225,14 @@ export default {
           console.log("this error" + err);
         });
     },
-
-    // PDF download
-    pdfgen: function (countries) {
-      var pdfMake = require("pdfmake/build/pdfmake.js");
-      if (pdfMake.vfs == undefined) {
-        var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
-      }
-      var docDefinition = {
-        content: [
-          { text: "System Parameter Report", style: "header" },
-          this._table(countries, [
-            "parameter_name",
-            "parameter_value",
-            "description",
-            "status",
-          ]),
-        ],
-      };
-
-      pdfMake.createPdf(docDefinition).download("System Parameter.pdf");
-    },
-
-    _table(data, cols) {
-      return {
-        table: {
-          headerRows: 1,
-          body: this._buildTableBody(data, cols),
-        },
-      };
-    },
-
-    _buildTableBody(data, cols) {
-      let body = [];
-      body.push(cols);
-      data.forEach(function (row) {
-        // reg obj doesn't have forEach
-        let dataRow = [];
-        cols.forEach(function (column) {
-          dataRow.push(row[column].toString());
-        });
-        body.push(dataRow);
-      });
-
-      return body;
-    },
   },
 };
 </script>
 <style scoped>
-.v-text-field /deep/ .v-input__slot {
+.v-text-field :deep(.v-input__slot) {
   min-height: 38px !important;
   width: 353px;
 }
-
 .param-value {
   max-width: 200px;
   text-overflow: ellipsis;
@@ -458,9 +242,5 @@ export default {
 
 .v-btn:not(.v-btn--round).v-size--small {
   min-width: 90px !important;
-}
-
-.erroralert /deep/ i {
-  margin-top: 5px;
 }
 </style>

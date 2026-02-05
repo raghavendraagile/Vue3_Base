@@ -330,11 +330,7 @@ export default {
       this.isdisabled = true;
       this.isbtnLoading = true;
       this.$axios
-        .post(
-          process.env.VUE_APP_API_URL_ADMIN +
-            "resend_otp_validate?email=" +
-            this.email
-        )
+        .post("resend_otp_validate?email=" + this.email)
         .then((response) => {
           this.response = response.data;
           this.message = response.data.message;
@@ -361,7 +357,7 @@ export default {
           this.isDisabled = true;
           this.isBtnLoading = true;
           this.$axios
-            .post(process.env.VUE_APP_API_URL_ADMIN + "resetpassword", {
+            .post("resetpassword", {
               otp: this.verification_code,
               email: this.email,
               password: this.new_password,
@@ -411,12 +407,7 @@ export default {
         this.isBtnLoading = true;
         this.loader = true;
         this.$axios
-          .post(
-            process.env.VUE_APP_API_URL_ADMIN +
-              "reset_password?email=" +
-              this.email +
-              "&role=User"
-          )
+          .post("reset_password?email=" + this.email + "&role=User")
           .then((response) => {
             console.log(response);
             this.response = response.data;
@@ -483,7 +474,7 @@ export default {
   display: flex;
   justify-content: end;
 }
-.show_icon /deep/ i {
+.show_icon :deep( i) {
   z-index: 1000;
 }
 .cancel-btn {

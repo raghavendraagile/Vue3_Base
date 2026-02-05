@@ -207,7 +207,7 @@ export default {
     PageTitle,
   },
   data: () => ({
-    envImagePath: process.env.VUE_APP_IMAGE_PATH,
+    envImagePath: import.meta.env.VITE_IMAGE_PATH,
     loader: false,
     profile_details: [],
     role_details: [],
@@ -227,11 +227,7 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(
-              process.env.VUE_APP_API_URL_ADMIN +
-                "fetchuserdatabyslug/" +
-                this.$route.query.slug
-            )
+            .get("fetchuserdatabyslug/" + this.$route.query.slug)
             .then((res) => {
               this.loader = false;
               if (res.data.status == "S") {
@@ -265,7 +261,7 @@ export default {
 };
 </script>
 <style scoped>
-.v-text-field /deep/ .v-input__slot {
+.v-text-field :deep(.v-input__slot) {
   min-height: 38px !important;
   width: 353px;
 }

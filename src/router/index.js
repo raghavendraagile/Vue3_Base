@@ -9,6 +9,18 @@ const routes = [
     component: () => import("../Admin/UserPages/LoginPage.vue"),
   },
   {
+    path: "/login-otp-validation",
+    name: "login-otp-validation",
+    meta: { layout: "userpages" },
+    component: () => import("../Admin/UserPages/LoginOtpValidation.vue"),
+  },
+   {
+    name: "not-found",
+    path: "/not-found",
+    meta: { layout: "userpages" },
+    component: () => import("../../src/components/PageNotFound.vue"),
+  },
+  {
     path: "/forgot_password",
     name: "forgot_password",
     meta: { layout: "userpages" },
@@ -217,327 +229,19 @@ const routes = [
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Profile/ProfileAmend.vue"),
   },
-  //Activity Log
   {
-    name: "activity_log",
-    path: "/activity_log",
+    path: "/institutions",
+    name: "institutions",
     beforeEnter: guardMyroute,
-    component: () => import("../components/Cruds/ActivityLog/ActivityLog.vue"),
-  },
-  //Notification
-  {
-    name: "notification",
-    path: "/notification",
-    beforeEnter: guardMyroute,
-    component: () =>
-      import("../components/Cruds/Notification/NotificationIndex.vue"),
+    component: () => import("../components/Cruds/Institutions/IndexPage.vue"),
   },
   {
-    name: "notification_amend",
-    path: "/notification_amend",
+    path: "/institution_amend",
+    name: "institutions_amend",
     beforeEnter: guardMyroute,
-    component: () =>
-      import("../components/Cruds/Notification/NotificationAmend.vue"),
-  },
-  {
-    name: "career_amend",
-    path: "/career_amend",
-    beforeEnter: guardMyroute,
-    component: () => import("../components/Cruds/Careers/CareerAmend.vue"),
-  },
-  {
-    name: "careers",
-    path: "/careers",
-    beforeEnter: guardMyroute,
-    component: () => import("../components/Cruds/Careers/IndexPage.vue"),
-  },
-  {
-    path: "/careers-review",
-    name: "careers-review",
-    beforeEnter: guardMyroute,
-    component: () => import("../components/Cruds/Careers/ReviewCareer.vue"),
-  },
-  {
-    name: "promotions_amend",
-    path: "/promotions_amend",
-    beforeEnter: guardMyroute,
-    component: () =>
-      import("../components/Cruds/Promotions_Offers/PromotionsAmend.vue"),
-  },
-  {
-    name: "events",
-    path: "/events",
-    beforeEnter: guardMyroute,
-    component: () => import("../components/Cruds/Events/IndexPage.vue"),
-  },
-  {
-    name: "events_amend",
-    path: "/events_amend",
-    beforeEnter: guardMyroute,
-    component: () => import("../components/Cruds/Events/EventsAmend.vue"),
-  },
-  {
-    path: "/events-review",
-    name: "events-review",
-    beforeEnter: guardMyroute,
-    component: () => import("../components/Cruds/Events/ReviewEvents.vue"),
-  },
-  {
-    name: "products",
-    path: "/products",
-    beforeEnter: guardMyroute,
-    component: () => import("../components/Cruds/Products/IndexPage.vue"),
-  },
-  {
-    name: "products_amend",
-    path: "/products_amend",
-    beforeEnter: guardMyroute,
-    component: () => import("../components/Cruds/Products/ProductsAmend.vue"),
-  },
-  {
-    name: "promotions_offers",
-    path: "/promotions_offers",
-    beforeEnter: guardMyroute,
-    component: () =>
-      import("../components/Cruds/Promotions_Offers/IndexPage.vue"),
-  },
-  {
-    path: "/promotions-review",
-    name: "promotions-review",
-    beforeEnter: guardMyroute,
-    component: () =>
-      import("../components/Cruds/Promotions_Offers/ReviewPromotions.vue"),
-  },
-  //Mall Timings
-  {
-    path: "/mall-timings",
-    name: "mall-timings",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () => import("../components/Cruds/MallTimings/IndexPage.vue"),
-  },
-  {
-    path: "/mall-timings-amend",
-    name: "mall-timings-amend",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () =>
-      import("../components/Cruds/MallTimings/MallTimingsAmend.vue"),
-  },
-  // E-Magazine
-  {
-    path: "/e-magazine",
-    name: "e-magazine",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () => import("../components/Cruds/EMagazine/IndexPage.vue"),
-  },
-  {
-    path: "/e-magazine-amend",
-    name: "e-magazine-amend",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () => import("../components/Cruds/EMagazine/EMagazineAmend.vue"),
-  },
-  {
-    path: "/e-magazine-review",
-    name: "e-magazine-review",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () =>
-      import("../components/Cruds/EMagazine/ReviewEMagazine.vue"),
-  },
-  // Reviews & Testimonials
-  {
-    path: "/reviews-testimonials",
-    name: "reviews-testimonials",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () => import("../components/Cruds/Testimonials/IndexPage.vue"),
-  },
-  {
-    path: "/view-reviews",
-    name: "view-reviews",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () => import("../components/Cruds/Testimonials/ViewReviews.vue"),
-  },
-  // Stores
-  {
-    path: "/stores",
-    name: "stores",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () => import("../components/Cruds/Stores/IndexPage.vue"),
-  },
-  {
-    path: "/stores-amend",
-    name: "stores-amend",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () => import("../components/Cruds/Stores/StoresAmend.vue"),
-  },
-  {
-    path: "/stores-review",
-    name: "stores-review",
-    beforeEnter: guardMyroute,
-    component: () => import("../components/Cruds/Stores/ReviewStores.vue"),
-  },
-  //categories
-  {
-    path: "/categories",
-    name: "categories",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () => import("../components/Cruds/Category/IndexPage.vue"),
-  },
-  {
-    path: "/categories-amend",
-    name: "categories-amend",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () => import("../components/Cruds/Category/CategoryAmend.vue"),
-  },
-  {
-    path: "/home-sliders",
-    name: "home-sliders",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () => import("../components/Cruds/HomeSlider/IndexPage.vue"),
-  },
-  {
-    path: "/home-slider-amend",
-    name: "home-slider-amend",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () =>
-      import("../components/Cruds/HomeSlider/HomeSliderAmend.vue"),
-  },
-  {
-    path: "/home-slider-review",
-    name: "home-slider-review",
-    beforeEnter: guardMyroute,
-    component: () => import("../components/Cruds/HomeSlider/ReviewSlider.vue"),
-  },
-  {
-    path: "/categories-review",
-    name: "categories-review",
-    beforeEnter: guardMyroute,
-    component: () => import("../components/Cruds/Category/ReviewCategory.vue"),
-  },
-  {
-    path: "/store-timings",
-    name: "store-timings",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () => import("../components/Cruds/StoreTimings/IndexPage.vue"),
-  },
-  {
-    path: "/store-timing-amend",
-    name: "store-timing-amend",
-    beforeEnter: guardMyroute,
-    component: () =>
-      import("../components/Cruds/StoreTimings/StoreTimingAmend.vue"),
+    component: () => import("../components/Cruds/Institutions/InstitutionAmend.vue"),
   },
   
-  {
-    path: "/store-timing-review",
-    name: "store-timing-review",
-    beforeEnter: guardMyroute,
-    component: () =>
-      import("../components/Cruds/StoreTimings/ReviewStoreTiming.vue"),
-  },
-  {
-    path: "/products-review",
-    name: "products-review",
-    beforeEnter: guardMyroute,
-    component: () => import("../components/Cruds/Products/ReviewProducts.vue"),
-  },
-
-  //
-  {
-    path: "/customer-newsletter",
-    name: "customer-newsletter",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () =>
-      import("../components/Cruds/CustomerNewsletter/IndexPage.vue"),
-  },
-
-  //MyStores
-  {
-    path: "/my_stores",
-    name: "my_stores",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () => import("../components/Cruds/MyStores/IndexPage.vue"),
-  },
-
-  {
-    path: "/preview_webapp/:page?",
-    name: "preview_webapp",
-    beforeEnter: guardMyroute,
-    meta: { layout: "userpages" },
-    component: () => import("../components/CustomComponents/PreviewWebapp.vue"),
-  },
-
-  //Page Builder
-  {
-    path: "/page-builder",
-    name: "page-builder",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () => import("../components/Cruds/PageBuilder/IndexPage.vue"),
-  },
-  {
-    path: "/page-builder-amend",
-    name: "page-builder-amend",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () =>
-      import("../components/Cruds/PageBuilder/PageBuilderAmend.vue"),
-  },
-  {
-    path: "/page-builder-review",
-    name: "page-builder-review",
-    beforeEnter: guardMyroute,
-    component: () =>
-      import("../components/Cruds/PageBuilder/ReviewPageBuilder.vue"),
-  },
-  {
-    name: "not-found",
-    path: "/not-found",
-    meta: { layout: "userpages" },
-    component: () => import("../../src/components/PageNotFound.vue"),
-  },
-  {
-    path: "/store-code",
-    name: "store-code",
-    beforeEnter: guardMyroute,
-    component: () =>
-      import("../components/Cruds/StoreCode/IndexPage.vue"),
-  },
-  {
-    path: "/store-code-amend",
-    name: "store-code-amend",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () => import("../components/Cruds/StoreCode/StoreCodeAmend.vue"),
-  },
-  {
-    path: "/leasing",
-    name: "leasing",
-    beforeEnter: guardMyroute,
-    component: () =>
-      import("../components/Cruds/Leasing/IndexPage.vue"),
-  },
-  {
-    path: "/leasing-amend",
-    name: "leasing-amend",
-    beforeEnter: guardMyroute,
-    // meta: { layout: "userpages" },
-    component: () => import("../components/Cruds/Leasing/LeasingAmend.vue"),
-  },
 ];
 
 const router = createRouter({
@@ -572,14 +276,10 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-
-
-
 function guardMyroute(to, from, next) {
   const isAuthenticated = store.getters["auth/authentication"];
   if (isAuthenticated) next();
   else next({ name: "login" });
 }
-
 
 export default router;

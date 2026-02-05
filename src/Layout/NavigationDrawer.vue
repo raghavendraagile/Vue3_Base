@@ -2,70 +2,79 @@
 import { navigation } from "../store/navigation.js";
 </script>
 <template>
-  <content-loader v-if="loader"></content-loader>
-  <v-navigation-drawer
-    v-model="navigation.drawer"
-    class="pa-0"
-    :location="sel_lang == 'ar' ? 'right' : 'left'"
-  >
-    <div
-      class="d-flex align-items-center justify-space-between pa-5 navigation-title"
-      elevation="3"
-      style="height: 64px; border-radius: 0px"
-    >
-      <div class="app-header__logo">
-        <div v-if="app_image_url">
-          <span>
-            <img v-bind:src="app_image_url" style="width: 65%" />
-          </span>
-        </div>
-        <div v-else-if="app_image_url == ''">
-          <span class="font-base-app text-center">
-            {{ application_name }}
-          </span>
-        </div>
-        <div v-else>
-          <span class="font-base-app text-center">
-            {{ application_name }}
-          </span>
-        </div>
-        <div>
-          <span class="font-base-app text-center"> PAF </span>
-        </div>
-      </div>
-      <v-btn
-        variant="text"
-        icon="mdi-close"
-        @click.stop="navigation.setDrawer(false)"
-      ></v-btn>
-    </div>
-    <v-list>
-      <v-list-group v-for="(item, i) in menuitems" :key="i">
-        <template v-slot:activator="{ props }">
-          <v-list-item
-            v-bind:class="[item.child == null ? 'sibebarvlistmenu' : '']"
-            class="v_list_menu_title"
-            :prepend-icon="item.icon"
-            v-bind="props"
-            :active="item.classactive"
-            color="blue"
-            @click="redirectTo(item.href, 'parent', item.child, i)"
-          >
-            <span class="text-left"> {{ item.title }}</span>
-          </v-list-item>
-        </template>
+  <div>
+    <content-loader v-if="loader"></content-loader>
 
-        <v-list-item
-          v-for="(child, i) in item.child"
-          :key="i"
-          @click="redirectTo(child.href, 'child', null, i)"
-          :title="child.title"
-          :value="child.title"
-          class="v_child_list_title"
-        ></v-list-item>
-      </v-list-group>
-    </v-list>
-  </v-navigation-drawer>
+    <v-navigation-drawer
+      v-model="navigation.drawer"
+      class="pa-0"
+      :location="sel_lang == 'ar' ? 'right' : 'left'"
+    >
+      <div
+        class="d-flex align-items-center justify-space-between pa-5 navigation-title"
+        elevation="3"
+        style="height: 64px; border-radius: 0px"
+      >
+        <div class="app-header__logo">
+          <div v-if="app_image_url">
+            <span>
+              <img v-bind:src="app_image_url" style="width: 100%" />
+            </span>
+          </div>
+          <div v-else-if="app_image_url == ''">
+            <span class="font-base-app text-center">
+              {{ application_name }}
+            </span>
+          </div>
+          <div v-else>
+            <span class="font-base-app text-center">
+              {{ application_name }}
+            </span>
+          </div>
+          <!-- <div>
+            <span class="font-base-app text-center">
+              <img
+                src="../assets/images/logo.png"
+                class="logo"
+                style="width: 168px; margin-right: 16px"
+              />
+            </span>
+          </div> -->
+        </div>
+        <v-btn
+          variant="text"
+          icon="mdi-close"
+          @click.stop="navigation.setDrawer(false)"
+        ></v-btn>
+      </div>
+      <v-list>
+        <v-list-group v-for="(item, i) in menuitems" :key="i">
+          <template v-slot:activator="{ props }">
+            <v-list-item
+              v-bind:class="[item.child == null ? 'sibebarvlistmenu' : '']"
+              class="v_list_menu_title"
+              :prepend-icon="item.icon"
+              v-bind="props"
+              :active="item.classactive"
+              color="blue"
+              @click="redirectTo(item.href, 'parent', item.child, i)"
+            >
+              <span class="text-left"> {{ item.title }}</span>
+            </v-list-item>
+          </template>
+
+          <v-list-item
+            v-for="(child, i) in item.child"
+            :key="i"
+            @click="redirectTo(child.href, 'child', null, i)"
+            :title="child.title"
+            :value="child.title"
+            class="v_child_list_title"
+          ></v-list-item>
+        </v-list-group>
+      </v-list>
+    </v-navigation-drawer>
+  </div>
 </template>
 <script>
 import localStorageWrapper from "../localStorageWrapper.js";
@@ -158,7 +167,7 @@ export default {
       this.loader = true;
       const lang = localStorage.getItem("pref_lang") || "en";
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "menutree", {
+        .post("menutree", {
           role: this.role_id,
           lang: lang,
         })

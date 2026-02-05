@@ -30,10 +30,9 @@ const mutations = {
 const actions = {
   loginRequest({ commit }, data) {
     // commit("setErrors", {}, { root: true });
-    console.log('inside login');
-    console.log(process.env.VUE_APP_API_URL_ADMIN);
+
     return axios
-      .post(process.env.VUE_APP_API_URL_ADMIN + "login", data)
+      .post(import.meta.env.VITE_API_URL_ADMIN + "login", data)
       .then((res) => {
         console.log('inside res');
         console.log(res);

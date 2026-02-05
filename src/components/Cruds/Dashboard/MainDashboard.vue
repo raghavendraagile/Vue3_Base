@@ -5,17 +5,19 @@
       :google_icon="google_icon"
     ></page-title>
     <content-loader v-if="loader"></content-loader>
+    <Comingsoon></Comingsoon>
   </div>
 </template>
 <script>
+import Comingsoon from "../../CustomComponents/ComingSoon.vue";
 import { mapGetters } from "vuex";
 export default {
-  components: {},
+  components: { Comingsoon },
   computed: {
     ...mapGetters("auth", ["loggedin"]),
   },
   data: () => ({
-    envImagePath: process.env.VUE_APP_IMAGE_PATH,
+    envImagePath: import.meta.env.VUE_APP_IMAGE_PATH,
     search: "",
     is_arabic: false,
     user: [],
@@ -92,58 +94,58 @@ export default {
           return "";
       }
     },
-    // fetchDashboard(userId, Role) {
-    //   this.loader = true;
-    //   if (Role == "SuperUser") {
-    //     this.$axios
-    //       .get(
-    //         process.env.VUE_APP_API_URL_ADMIN +
-    //           "fetchDashboardSuperUser/" +
-    //           userId
-    //       )
-    //       .then((res) => {
-    //         this.dashboard_count = res.data.count_dashboard;
-    //         this.loader = false;
-    //       })
-    //       .catch((err) => {
-    //         this.$toast.error(this.$t("something_went_wrong"));
-    //         this.initval = false;
-    //         console.log(err);
-    //       });
-    //   } else if (Role == "MallAdmin") {
-    //     this.$axios
-    //       .get(
-    //         process.env.VUE_APP_API_URL_ADMIN +
-    //           "fetchDashboardMallAdmin/" +
-    //           userId
-    //       )
-    //       .then((res) => {
-    //         this.dashboard_count = res.data.count_dashboard;
-    //         this.loader = false;
-    //       })
-    //       .catch((err) => {
-    //         this.$toast.error(this.$t("something_went_wrong"));
-    //         this.initval = false;
-    //         console.log(err);
-    //       });
-    //   } else {
-    //     this.$axios
-    //       .get(
-    //         process.env.VUE_APP_API_URL_ADMIN +
-    //           "fetchDashboardStoreAdmin/" +
-    //           userId
-    //       )
-    //       .then((res) => {
-    //         this.dashboard_count = res.data.count_dashboard;
-    //         this.loader = false;
-    //       })
-    //       .catch((err) => {
-    //         this.$toast.error(this.$t("something_went_wrong"));
-    //         this.initval = false;
-    //         console.log(err);
-    //       });
-    //   }
-    // },
+    fetchDashboard(userId, Role) {
+      this.loader = true;
+      if (Role == "SuperUser") {
+        this.$axios
+          .get(
+            
+              "fetchDashboardSuperUser/" +
+              userId
+          )
+          .then((res) => {
+            this.dashboard_count = res.data.count_dashboard;
+            this.loader = false;
+          })
+          .catch((err) => {
+            this.$toast.error(this.$t("something_went_wrong"));
+            this.initval = false;
+            console.log(err);
+          });
+      } else if (Role == "MallAdmin") {
+        this.$axios
+          .get(
+            
+              "fetchDashboardMallAdmin/" +
+              userId
+          )
+          .then((res) => {
+            this.dashboard_count = res.data.count_dashboard;
+            this.loader = false;
+          })
+          .catch((err) => {
+            this.$toast.error(this.$t("something_went_wrong"));
+            this.initval = false;
+            console.log(err);
+          });
+      } else {
+        this.$axios
+          .get(
+            
+              "fetchDashboardStoreAdmin/" +
+              userId
+          )
+          .then((res) => {
+            this.dashboard_count = res.data.count_dashboard;
+            this.loader = false;
+          })
+          .catch((err) => {
+            this.$toast.error(this.$t("something_went_wrong"));
+            this.initval = false;
+            console.log(err);
+          });
+      }
+    },
 
     route_to_page(page) {
       if (page == "Users") {
@@ -174,7 +176,7 @@ export default {
 };
 </script>
 <style scoped>
-.card /deep/ .v-card-item__prepend {
+.card :deep(.v-card-item__prepend) {
   padding-right: 0px;
 }
 

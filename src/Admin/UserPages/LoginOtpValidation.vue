@@ -77,7 +77,7 @@
                     <v-btn
                       size="small"
                       class="mt-3 mr-2"
-                      @click="requestpassword"
+                      @click="resendLoginOtp"
                       color="blue"
                       :disabled="isdisabled"
                       :loading="isbtnLoading"
@@ -111,7 +111,7 @@
             </v-tooltip>
 
             <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
+              <template v-slot:activator="{ props }">
                 <div v-on="on" class="d-inline-block">
                   <v-btn
                     :disabled="isDisabled || verification_code.length != 6"
@@ -122,7 +122,7 @@
                     color="green"
                     class="mr-2 secondary"
                     size="small"
-                    @click="registerUser"
+                    @click="verifyotp"
                   >
                     {{ $t("submit") }}
                   </v-btn>
@@ -139,11 +139,17 @@
 
 <script>
 import localStorageWrapper from "../../localStorageWrapper.js";
+import { mapActions, mapState } from "vuex";
 
 export default {
   components: {},
   data() {
     return {
+      userdata: {
+        email: "",
+        password: "",
+        token_id: "",
+      },
       token: null,
       emaildata: null,
       application_name: "",
@@ -173,9 +179,15 @@ export default {
       isbtnLoading: false,
       timecount: 60,
       loader: false,
+      show_error: false,
     };
   },
   computed: {
+    ...mapState({
+      userDetails: (state) => state.auth.userData,
+      isAuth: (state) => state.auth.isAuthenticated,
+    }),
+
     fieldRules() {
       return [(v) => (!!v && !!v.trim()) || this.$t("field_required")];
     },
@@ -218,6 +230,9 @@ export default {
   },
   created() {
     this.getAppImage();
+    if (this.$route.query.userdata) {
+      this.userdata = JSON.parse(this.$route.query.userdata);
+    }
   },
   methods: {
     getAppImage() {
@@ -242,56 +257,75 @@ export default {
         this.snackbar = true;
       }, 3500);
     },
-    registerUser() {
-      if (this.$refs.form.validate()) {
-        if (this.new_password != this.password_confirmation) {
-          this.status = "E";
-          this.message = "Confirm password is not matching with new password";
-        } else {
-          this.isDisabled = true;
-          this.isBtnLoading = true;
-          this.loader = true;
-          this.$axios
-            .post("registration_otp_validate", {
-              otp: this.verification_code,
-              email: this.email,
-            })
-            .then(
-              (response) => {
-                this.message = response.data.message;
-                this.status = response.data.status;
-                if (response.data.status == "S") {
-                  this.$toast.success(this.message);
 
-                  setTimeout(() => {
-                    this.$router.replace({ name: "login" });
-                    this.loader = false;
-                  }, 500);
+    ...mapActions("auth", ["loginRequest"]),
+    async login() {
+      this.loader = true;
+      this.show_error = false; // reset error
+      try {
+        // Wait for loginRequest to complete and update Vuex state
+        await this.loginRequest(this.userdata);
 
-                  //   localStorage.removeItem("verifyemail");
-                } else if (response.data.status == "E") {
-                  this.isDisabled = false;
-                  this.message = response.data.message;
-                  this.$toast.error(this.message);
-                  this.isDisabled = false;
-                  this.isBtnLoading = false;
-                  this.loader = false;
-                }
-              },
-              (error) => {
-                console.log(error);
-                this.$toast.error(this.$t("something_went_wrong"));
-                this.message = this.$t("too_many_request");
-                this.isBtnLoading = false;
-                this.isDisabled = false;
-                this.loader = false;
-                setTimeout(() => (this.isDisabled = false), 60000);
-              }
-            );
-        }
+        // Mark button as loading
+        this.btnloading = true;
+
+        // Set default active menu
+        localStorage.setItem("active_menu", "Dashboard");
+        // Redirect to dashboard after login is successful
+        this.$router.push({ name: "dashboard" });
+      } catch (err) {
+        // Handle errors
+        this.error_message = err.response?.data?.message || "Login failed";
+        this.show_error = true;
+        console.error(err.response?.data?.message);
+      } finally {
+        // Stop loader and button loading
+        this.loader = false;
+        this.btnloading = false;
       }
     },
-    requestpassword() {
+    verifyotp() {
+      if (this.$refs.form.validate()) {
+        this.isDisabled = true;
+        this.isBtnLoading = true;
+        this.loader = true;
+        this.$axios
+          .post("login_otp_validate", {
+            otp: this.verification_code,
+            email: this.email,
+          })
+          .then(
+            (response) => {
+              this.message = response.data.message;
+              this.status = response.data.status;
+              if (response.data.status == "S") {
+                this.$toast.success(this.message);
+                setTimeout(() => {
+                  this.loader = false;
+                  this.login();
+                }, 500);
+              } else if (response.data.status == "E") {
+                this.isDisabled = false;
+                this.message = response.data.message;
+                this.$toast.error(this.message);
+                this.isDisabled = false;
+                this.isBtnLoading = false;
+                this.loader = false;
+              }
+            },
+            (error) => {
+              console.log(error);
+              this.$toast.error(this.$t("something_went_wrong"));
+              this.message = this.$t("too_many_request");
+              this.isBtnLoading = false;
+              this.isDisabled = false;
+              this.loader = false;
+              setTimeout(() => (this.isDisabled = false), 60000);
+            }
+          );
+      }
+    },
+    resendLoginOtp() {
       this.timecount = 60;
       this.textvisible = true;
       setTimeout(() => (this.textvisible = false), 60000);
@@ -300,7 +334,10 @@ export default {
       this.isdisabled = true;
       this.isbtnLoading = true;
       this.$axios
-        .post("resend_otp_validate?email=" + this.email)
+        .post(
+            "resend_otp_validate?email=" +
+            this.email
+        )
         .then(
           (response) => {
             this.response = response.data;
@@ -325,7 +362,7 @@ export default {
           this.isdisabled = false;
           this.isbtnLoading = false;
           this.$toast.error("Something went wrong.");
-          console.log("error data requestpassword", err);
+          console.log("error data resendLoginOtp", err);
         });
     },
     cancel() {
@@ -368,4 +405,3 @@ export default {
   );
 }
 </style>
-

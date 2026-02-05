@@ -3,8 +3,8 @@
     <div
       flat
       color="white"
-      class="row py-5 pl-5 align-items-center component_app_bar position-relative"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]"
+      class="row my-3 align-items-center component_app_bar position-relative"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
     >
       <page-title
         class="col-md-3"
@@ -35,7 +35,7 @@
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link :to="{ name: 'roles_amend' }" style="color: white">
-              <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
+              <v-btn size="small" class="mb-2 create-btn" v-bind="props">{{
                 $t("add_new")
               }}</v-btn>
             </router-link>
@@ -54,15 +54,15 @@
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
-          <td>{{ props.item.selectable.rolename }}</td>
-          <td>{{ props.item.selectable.roledescription }}</td>
+          <td>{{ props.item.rolename }}</td>
+          <td>{{ props.item.roledescription }}</td>
           <td class="text-center px-0">
             <router-link
               small
               class="mr-2"
               :to="{
                 name: 'roles_amend',
-                query: { slug: props.item.selectable.slug },
+                query: { slug: props.item.slug },
               }"
             >
               <v-tooltip :text="this.$t('edit')" location="bottom">
@@ -79,9 +79,9 @@
               :to="{
                 name: 'roles_menu',
                 query: {
-                  slug: props.item.selectable.slug,
-                  id: props.item.selectable.id,
-                  name: props.item.selectable.rolename,
+                  slug: props.item.slug,
+                  id: props.item.id,
+                  name: props.item.rolename,
                 },
               }"
             >
@@ -115,7 +115,7 @@ export default {
       icon: "material-symbols-outlined",
     },
     roles: [],
-    sel_lang:""
+    sel_lang: "",
   }),
 
   computed: {
@@ -142,17 +142,18 @@ export default {
     },
   },
 
-    watch: {
-      dialog(val) {
+  watch: {
+    dialog(val) {
       val || this.close();
     },
-    '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
 
   created() {},
@@ -163,7 +164,7 @@ export default {
   methods: {
     deleteRole(role) {
       this.$axios
-        .delete(process.env.VUE_APP_API_URL_ADMIN + "roles/" + role.id)
+        .delete("roles/" + role.id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -189,7 +190,7 @@ export default {
     initialize() {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "roles")
+        .get("roles")
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();

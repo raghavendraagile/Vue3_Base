@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap");
 .v-btn.bg-primary {
   background-color: rgb(58, 58, 253) !important;
   color: white !important;
@@ -14,8 +15,8 @@
 }
 
 .app-name {
-  font-family: cursive;
-  color: #614f38;
+  font-family: "Roboto", sans-serif;
+  color: #033e89;
 }
 
 .navigation-title {
@@ -228,7 +229,7 @@
 }
 
 .login-box-custom {
-  width: 460px;
+  width: 400px;
   margin: 0px auto;
   background: #fff;
   padding: 20px;
@@ -266,13 +267,14 @@ label {
 }
 
 .btn-theme-blue {
-  background-color: #02518a !important;
+  background-color: #033e89 !important;
   color: #fff !important;
   width: 100% !important;
 }
 
 a {
   text-decoration: none;
+  color: #033e89;
 }
 
 .v-application {
@@ -367,8 +369,8 @@ input::placeholder {
 
 .font-base-app {
   font-weight: 600;
-  font-family: cursive;
-  color: #614f38;
+  font-family: "Roboto", sans-serif;
+  color: #033e89;
 }
 
 .req_field {
@@ -414,7 +416,7 @@ input::placeholder {
 }
 
 .dialog-header {
-  background: #614f38;
+  background: #033e89;
   color: white;
 }
 
@@ -491,15 +493,15 @@ input::placeholder {
   }
 }
 .v-list-item__content {
-  color: #624e37;
+  color: #033e89;
 }
 
 .v-tab.v-tab {
-  color: #624e37;
+  color: #033e89;
 }
 
 .v-list-item__prepend > .v-icon {
-  color: #614f38;
+  color: #033e89;
 }
 
 @media (orientation: landscape) {
@@ -528,5 +530,16 @@ input::placeholder {
   color: grey !important;
   pointer-events: none;
 }
-.v-container{padding:0px 16px}
-/*# sourceMappingURL=global.css.map */
+
+.v-list {
+  padding-top: 0px !important;
+}
+
+.create-btn {
+  background: #063c84 !important;
+  color: #fff !important;
+}
+
+.text-blue {
+  color: #033E89 !important;
+}/*# sourceMappingURL=global.css.map */

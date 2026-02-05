@@ -1,6 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div class="my-3 p-0" v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '',]"> 
+    <div
+      class="my-3 p-0"
+      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+    >
       <page-title
         class="col-md-4 ml-2"
         :heading="$t('assign_menu_accessto') + $route.query.name"
@@ -132,7 +135,7 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(process.env.VUE_APP_API_URL_ADMIN + "rolemenu")
+            .get("rolemenu")
             .then((res) => {
               if (Array.isArray(res.data.message)) {
                 this.array_data = res.data.message.toString();
@@ -154,13 +157,14 @@ export default {
         }
       },
     },
-    '$i18n.locale'(newLocale) {
-      if (newLocale === 'ar') {
-        this.sel_lang = 'ar';
-      } else {''
-        this.sel_lang = 'en';
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
       }
-    }
+    },
   },
   methods: {
     updateMenuAssignment(value, item) {
@@ -187,7 +191,7 @@ export default {
     selectedmenus(roleid) {
       this.loader = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "getmenuaccess/" + roleid)
+        .get("getmenuaccess/" + roleid)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -218,7 +222,7 @@ export default {
       this.isDisabled = true;
       this.loader = true;
       this.$axios
-        .post(process.env.VUE_APP_API_URL_ADMIN + "storemenuaccess", {
+        .post("storemenuaccess", {
           role_id: this.$route.query.id,
           role_access: this.selected,
         })
