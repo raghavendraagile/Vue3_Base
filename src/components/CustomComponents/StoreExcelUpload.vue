@@ -119,7 +119,7 @@
     },
     computed: {
       excelldownloadtemplate() {
-        return process.env.VUE_APP_FILE_DOWNLOAD + "/storesexcel.xlsx";
+        return  import.meta.env.VITE_FILE_DOWNLOAD + "/storesexcel.xlsx";
       },
     },
     watch: {

@@ -23,11 +23,11 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
+
 ```
 Vue3_Base
-├─ .browserslistrc
-├─ .eslintrc.js
-├─ babel.config.js
+├─ eslint.config.js
+├─ index.html
 ├─ jsconfig.json
 ├─ package.json
 ├─ public
@@ -46,7 +46,6 @@ Vue3_Base
 │  │  │  └─ site.webmanifest
 │  │  ├─ sample.pdf
 │  │  └─ xlsxicon.png
-│  ├─ index.html
 │  ├─ robots.txt
 │  └─ storesexcel.xlsx
 ├─ README.md
@@ -151,7 +150,6 @@ Vue3_Base
 │  ├─ localStorageWrapper.js
 │  ├─ LogoutTimer.vue
 │  ├─ main.js
-│  ├─ registerServiceWorker.js
 │  ├─ router
 │  │  └─ index.js
 │  ├─ store
@@ -163,6 +161,6 @@ Vue3_Base
 │  │  └─ navigation.js
 │  └─ views
 │     └─ NotFound.vue
-└─ vue.config.js
+└─ vite.config.mjs
 
 ```

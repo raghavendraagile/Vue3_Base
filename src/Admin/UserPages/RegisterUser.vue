@@ -318,7 +318,7 @@ export default {
     get_stores() {
       this.initval = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetch-reg-stores")
+        .get(import.meta.env.VITE_API_URL_ADMIN + "fetch-reg-stores")
         .then((response) => {
           console.log(response);
           this.stores_en = response.data.stores_en;
@@ -352,7 +352,7 @@ export default {
           this.isDisabled = true;
           this.$axios
             .post(
-              process.env.VUE_APP_API_URL_ADMIN + "register_user",
+              import.meta.env.VITE_API_URL_ADMIN + "register_user",
               this.users
             )
             .then((res) => {
@@ -385,7 +385,7 @@ export default {
     fetchRoles() {
       this.loader = true;
       this.$axios
-        .get(process.env.VUE_APP_API_URL_ADMIN + "fetchrole")
+        .get(import.meta.env.VITE_API_URL_ADMIN + "fetchrole")
         .then((response) => {
           this.loader = false;
           this.role_array = response.data.roles;
