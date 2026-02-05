@@ -1,9 +1,7 @@
 <template>
   <div class="mx-2 mt-3 p-0">
-    <div
-      class="my-3 p-0"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
-    >
+    <div class="my-3 p-0">
+      <!-- v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']" -->
       <page-title
         class="col-md-4 ml-2"
         heading="Create Menu"
@@ -16,32 +14,13 @@
         <v-form ref="form" v-model="valid">
           <v-row class="px-6">
             <v-col cols="12" sm="6" md="6">
-              <v-tooltip :text="this.$t('parent')" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-autocomplete
-                    :items="items.parentmenu"
-                    v-bind:label="$t('parent')"
-                    index="id"
-                    v-bind="props"
-                    item-value="id"
-                    variant="outlined"
-                    density="compact"
-                    item-text="title"
-                    v-model="fieldItem.parent_id"
-                    class="pr-2"
-                  >
-                  </v-autocomplete>
-                </template>
-              </v-tooltip>
-            </v-col>
-            <v-col cols="12" sm="6" md="6">
-              <v-tooltip :text="this.$t('title')" location="bottom">
+              <v-tooltip text="Institution Name" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
                     v-bind="props"
                     v-model="fieldItem.title"
                     :rules="fieldRules"
-                    v-bind:label="$t('title')"
+                    label="Institution Name"
                     variant="outlined"
                     density="compact"
                     required
@@ -54,54 +33,42 @@
                 </template>
               </v-tooltip>
             </v-col>
-          </v-row>
-          <v-row class="px-6">
-            <v-col cols="12" md="6" sm="6" class="pr-5">
-              <v-tooltip :text="this.$t('link')" location="bottom">
+            <v-col cols="12" sm="6" md="6">
+              <v-tooltip text="Institution Type" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
                     v-bind="props"
-                    v-model="fieldItem.href"
+                    v-model="fieldItem.title"
                     :rules="fieldRules"
-                    v-bind:label="$t('link')"
-                    required
-                    density="compact"
-                    class="required_field"
+                    label="Institution Type"
                     variant="outlined"
-                    maxlength="255"
+                    density="compact"
+                    required
+                    counter="100"
+                    counter-value="100"
+                    class="required_field"
+                    maxlength="100"
+                    v-bind:class="[fieldRules ? 'form-group--error' : '']"
                   ></v-text-field>
                 </template>
               </v-tooltip>
             </v-col>
-            <v-col sm="4" md="4">
-              <v-tooltip :text="this.$t('style')" location="bottom">
+            <v-col cols="12" sm="12" md="12">
+              <v-tooltip text="Institution Address" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
                     v-bind="props"
-                    v-model="fieldItem.icon"
-                    v-bind:label="$t('style')"
-                    required
+                    v-model="fieldItem.title"
+                    :rules="fieldRules"
+                    label="Institution Address"
                     variant="outlined"
                     density="compact"
-                    class="pr-2"
-                  ></v-text-field>
-                </template>
-              </v-tooltip>
-            </v-col>
-            <v-col md="2" sm="2">
-              <v-tooltip :text="this.$t('sequence')" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-text-field
-                    v-bind="props"
-                    v-model="fieldItem.seq"
-                    :rules="numberRules"
-                    maxlength="5"
-                    v-on:keypress="NumbersOnly"
-                    variant="outlined"
-                    density="compact"
-                    v-bind:label="$t('sequence')"
                     required
+                    counter="100"
+                    counter-value="100"
                     class="required_field"
+                    maxlength="100"
+                    v-bind:class="[fieldRules ? 'form-group--error' : '']"
                   ></v-text-field>
                 </template>
               </v-tooltip>
