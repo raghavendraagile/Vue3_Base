@@ -464,7 +464,7 @@ export default {
 .ql-tooltip {
   display: none !important;
 }
-.hide_quill_input >>> input {
+.hide_quill_input :deep(input)  {
   display: none !important;
 }
 .required_item {

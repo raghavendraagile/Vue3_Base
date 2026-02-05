@@ -831,7 +831,7 @@ export default {
 .mt-20 {
   margin-top: 20px;
 }
-.v-tabs >>> .v-tabs-bar {
+.v-tabs :deep(.v-tabs-bar)  {
   /* width: 157px; */
   border-right: 1px solid #dedede !important;
 }
@@ -839,7 +839,7 @@ export default {
 .theme--dark.v-toolbar.v-sheet {
   height: auto !important;
 }
-.v-toolbar >>> .v-toolbar__content {
+.v-toolbar :deep(.v-toolbar__content) {
   height: auto !important;
 }
 .v-tab {

@@ -353,7 +353,7 @@ input.larger {
   max-width: 110px;
   border-radius: 3px;
 }
-.image-container >>> img {
+.image-container :deep(img)  {
   border: 3px dashed black;
 }
 .camera-icon {
