@@ -43,7 +43,7 @@
     "vue3-otp-input": "^0.4.1",
     "vue3-quill": "^0.3.0",
     "vuejs3-datepicker": "^1.0.19",
-    "vuetify": "^3.3.4",
+    "vuetify": "^3.11.8",
     "vuex": "^4.0.2",
     "vuex-persistedstate": "^4.1.0",
     "xlsx": "^0.18.5"
