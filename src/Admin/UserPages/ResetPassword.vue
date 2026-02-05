@@ -214,7 +214,7 @@ export default {
           this.fieldItem.user_id = this.userprofile.id;
           this.$axios
             .post(
-              process.env.VUE_APP_API_URL_ADMIN + "resetuserpassword",
+            import.meta.env.VITE_API_URL_ADMIN + "resetuserpassword",
               this.fieldItem
             )
             .then(

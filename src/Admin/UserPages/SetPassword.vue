@@ -186,7 +186,7 @@ export default {
         this.loader = true;
         this.$axios
           .post(
-            process.env.VUE_APP_API_URL_ADMIN +
+              import.meta.env.VITE_API_URL_ADMIN +
               "reset_password?email=" +
               this.userdata.email +
               "&role=User"

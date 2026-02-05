@@ -253,7 +253,7 @@ export default {
           this.loader = true;
           this.$axios
             .post(
-              process.env.VUE_APP_API_URL_ADMIN + "registration_otp_validate",
+              import.meta.env.VITE_API_URL_ADMIN + "registration_otp_validate",
               {
                 otp: this.verification_code,
                 email: this.email,
@@ -304,7 +304,7 @@ export default {
       this.isbtnLoading = true;
       this.$axios
         .post(
-          process.env.VUE_APP_API_URL_ADMIN +
+          import.meta.env.VITE_API_URL_ADMIN +
             "resend_otp_validate?email=" +
             this.email
         )
