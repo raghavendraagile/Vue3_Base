@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap");
 .v-btn.bg-primary {
   background-color: rgb(58, 58, 253) !important;
   color: white !important;
@@ -14,7 +15,7 @@
 }
 
 .app-name {
-  font-family: cursive;
+  font-family: "Roboto", sans-serif;
   color: #033e89;
 }
 
@@ -273,6 +274,7 @@ label {
 
 a {
   text-decoration: none;
+  color: #033e89;
 }
 
 .v-application {
@@ -367,7 +369,7 @@ input::placeholder {
 
 .font-base-app {
   font-weight: 600;
-  font-family: cursive;
+  font-family: "Roboto", sans-serif;
   color: #033e89;
 }
 
@@ -536,4 +538,8 @@ input::placeholder {
 .create-btn {
   background: #063c84 !important;
   color: #fff !important;
+}
+
+.text-blue {
+  color: #033E89 !important;
 }/*# sourceMappingURL=global.css.map */

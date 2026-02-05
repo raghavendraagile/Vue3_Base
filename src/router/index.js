@@ -222,7 +222,14 @@ const routes = [
     name: "update-my-profile",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Profile/ProfileAmend.vue"),
-  }
+  },
+  {
+    path: "/institutions",
+    name: "institutions",
+    beforeEnter: guardMyroute,
+    component: () => import("../components/Cruds/Institutions/IndexPage.vue"),
+  },
+  
 ];
 
 const router = createRouter({

@@ -387,5 +387,6 @@
   "service_bookings": "Service Bookings",
   "booked": "Booked",
   "claims": "Claims",
-  "available": "Available"
+  "available": "Available",
+  "institutions": "Institutions"
 }

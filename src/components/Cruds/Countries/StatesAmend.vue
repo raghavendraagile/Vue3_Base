@@ -1,10 +1,7 @@
 <template>
   <div class="mx-2 mt-3 p-0">
     <div class="main-card mb-3 card">
-      <div
-        class="my-3 p-0"
-        v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
-      >
+      <div class="container my-3 p-0">
         <page-title
           class="col-md-4 ml-2"
           :heading="$t('create_state')"
@@ -13,125 +10,52 @@
       </div>
       <div class="card-body">
         <content-loader v-if="loader"></content-loader>
-        <v-tabs v-model="tabs" color="blue">
-          <v-tab :value="1" @click="checkUploadImage">
-            <span>{{ $t("english") }}</span>
-          </v-tab>
-          <v-tab :value="2" @click="checkUploadImage">
-            <span>{{ $t("arabic") }}</span>
-          </v-tab>
-        </v-tabs>
-        <v-alert
-          closable
-          close-label="Close Alert"
-          density="compact"
-          color="rgb(var(--v-theme-error))"
-          v-if="error_valid"
-          variant="tonal"
-          @click:close="error_valid = false"
-          class="my-3"
-          v-bind:class="[tabs == 1 ? '' : 'arabdirectionalert']"
-          :title="
-            tabs == 1 ? $t('validation_error_en') : $t('validation_error_ar')
-          "
-          :text="
-            tabs == 1
-              ? $t('please_fill_required_fields_en')
-              : $t('please_fill_required_fields_ar')
-          "
-        ></v-alert>
-        <v-window v-model="tabs">
-          <!-- ENGLISH TAB STARTS -->
-          <v-window-item :value="1">
-            <v-form ref="form" v-model="valid">
-              <v-row class="mx-auto mt-2" max-width="344">
-                <v-col cols="12" md="6">
-                  <v-tooltip :text="this.$t('country_en')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-text-field
-                        v-on="on"
-                        readonly="isReadOnly"
-                        v-model="country[0].name"
-                        v-bind:label="$t('country_en')"
-                        v-bind="props"
-                        variant="outlined"
-                        density="compact"
-                      ></v-text-field>
-                    </template>
-                  </v-tooltip>
-                </v-col>
-                <v-col md="6">
-                  <v-tooltip :text="this.$t('state_en')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-text-field
-                        v-on="on"
-                        v-model="state[0].name"
-                        :rules="fieldRules"
-                        v-bind:label="$t('state_en')"
-                        required
-                        v-bind="props"
-                        class="required_field"
-                        variant="outlined"
-                        density="compact"
-                      ></v-text-field>
-                    </template>
-                  </v-tooltip>
-                </v-col>
-              </v-row>
-            </v-form>
-          </v-window-item>
-          <!-- ENGLISH TAB STOPS -->
-          <!-- ARABIC TAB STARTS -->
-          <v-window-item :value="2">
-            <v-form ref="form" v-model="validAR">
-              <v-row class="mx-auto mt-2 arabdirection" max-width="344">
-                <v-col cols="12" md="6">
-                  <v-tooltip :text="this.$t('country_ar')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-text-field
-                        v-on="on"
-                        readonly="isReadOnly"
-                        v-model="country[1].name"
-                        v-bind:label="$t('country_ar')"
-                        v-bind="props"
-                        variant="outlined"
-                        density="compact"
-                      ></v-text-field>
-                    </template>
-                  </v-tooltip>
-                </v-col>
-                <v-col md="6">
-                  <v-tooltip :text="this.$t('state_ar')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-text-field
-                        v-on="on"
-                        v-model="state[1].name"
-                        :rules="fieldRules"
-                        v-bind:label="$t('state_ar')"
-                        required
-                        v-bind="props"
-                        class="required_field"
-                        variant="outlined"
-                        density="compact"
-                      ></v-text-field>
-                    </template>
-                  </v-tooltip>
-                </v-col>
-              </v-row>
-            </v-form>
-          </v-window-item>
-        </v-window>
-        <!--  ARABIC TAB ENDS-->
+        <v-form ref="form" v-model="valid">
+          <v-row class="mx-auto mt-2" max-width="344">
+            <v-col cols="12" md="6">
+              <v-tooltip :text="$t('country')" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-text-field
+                    v-on="on"
+                    readonly="isReadOnly"
+                    v-model="country.name"
+                    v-bind:label="$t('country')"
+                    v-bind="props"
+                    variant="outlined"
+                    density="compact"
+                  ></v-text-field>
+                </template>
+              </v-tooltip>
+            </v-col>
+            <v-col md="6">
+              <v-tooltip :text="$t('state')" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-text-field
+                    v-on="on"
+                    v-model="state.name"
+                    :rules="fieldRules"
+                    v-bind:label="$t('state')"
+                    required
+                    v-bind="props"
+                    class="required_field"
+                    variant="outlined"
+                    density="compact"
+                  ></v-text-field>
+                </template>
+              </v-tooltip>
+            </v-col>
+          </v-row>
+        </v-form>
       </div>
 
       <div class="d-block mr-4 mt-3 pb-3 text-right">
-        <v-tooltip :text="this.$t('cancel')" location="bottom">
+        <v-tooltip :text="$t('cancel')" location="bottom">
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="d-inline-block mr-2">
               <v-btn
                 v-bind="props"
                 size="small"
-                @click="cancel()"
+                @click="$router.go(-1)"
                 :disabled="loading"
                 class="ma-1"
                 color="cancel"
@@ -140,12 +64,12 @@
             </div>
           </template>
         </v-tooltip>
-        <v-tooltip :text="this.$t('submit')" location="bottom">
+        <v-tooltip :text="$t('submit')" location="bottom">
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="d-inline-block">
               <v-btn
                 :disabled="isBtnLoading"
-                @click="presubmitvalidation"
+                @click="submit"
                 size="small"
                 class="mr-2"
                 color="success"
@@ -177,44 +101,22 @@ export default {
       icon: "material-symbols-outlined",
     },
     envPath: process.env.VUE_APP_IMAGE_DOWNLOAD_URL,
-    valid: false,
-    validAR: false,
-    error_valid: false,
+    valid: true,
     loader: false,
     file: "",
     isBtnLoading: false,
     showupload: "",
     isDisabled: false,
     checkbox_value: false,
-    country_slug: "",
-    sel_lang: "",
-    state: [
-      {
-        id: 0,
-        name: "",
-        lang: "en",
-        country_id: null,
-      },
-      {
-        id: 0,
-        name: "",
-        lang: "ar",
-        country_id: null,
-      },
-    ],
-    country: [
-      {
-        id: 0,
-        name: "",
-      },
-      {
-        id: 0,
-        name: "",
-      },
-    ],
+    state: {
+      id: 0,
+      name: "",
+      country_id: 0,
+    },
+    country: "",
+    country_array: [],
     noimagepreview: "",
     items: [],
-    tabs: 1,
   }),
 
   computed: {
@@ -242,23 +144,16 @@ export default {
             )
             .then((res) => {
               this.country = res.data.countries;
-              for (let i = 0; i < 2; i++) {
-                this.state[i].country_id = res.data.countries[0].header_id;
-              }
-              this.country_slug = this.$route.query.countryslug;
-
+              this.state.country_id = res.data.countries.id;
               this.loader = false;
             });
         }
       },
     },
-
     "$route.query.slug": {
       immediate: true,
       handler() {
         if (this.$route.query.slug) {
-          this.valid = true;
-          this.validAR = true;
           this.loader = true;
           this.$axios
             .get(
@@ -267,31 +162,13 @@ export default {
                 this.$route.query.slug
             )
             .then((res) => {
-              this.country = res.data.country;
-              this.state = res.data.state;
-              this.country_slug = this.country[0].slug;
+              this.state = res.data.states;
+              console.log("this.state");
+              console.log(res.data.states.country.name);
+              this.state.country_id = res.data.states.id;
+              this.country = res.data.states.country;
               this.loader = false;
             });
-        }
-      },
-    },
-    "$i18n.locale"(newLocale) {
-      if (newLocale === "ar") {
-        this.sel_lang = "ar";
-      } else {
-        ("");
-        this.sel_lang = "en";
-      }
-    },
-    "$route.query.s_tab": {
-      immediate: true,
-      handler() {
-        if (this.$route.query.s_tab) {
-          if (this.$route.query.s_tab == 1) {
-            this.tabs = 1;
-          } else {
-            this.tabs = 2;
-          }
         }
       },
     },
@@ -302,39 +179,8 @@ export default {
 
       // Do whatever you need with the file, liek reading it with FileReader
     },
-    presubmitvalidation() {
-      if (this.tabs == 1) {
-        if (
-          this.$refs.form.validate() &&
-          this.valid == true &&
-          this.validAR == true
-        ) {
-          this.error_valid = false;
-          this.submit();
-        } else {
-          if (this.valid == true) {
-            this.error_valid = true;
-            this.tabs = 2;
-          }
-        }
-      } else {
-        if (
-          this.$refs.form.validate() &&
-          this.validAR == true &&
-          this.valid == true
-        ) {
-          this.error_valid = false;
-          this.submit();
-        } else {
-          if (this.validAR == true) {
-            this.error_valid = true;
-            this.tabs = 1;
-          }
-        }
-      }
-    },
     submit() {
-      if (this.validAR == true && this.valid == true) {
+      if (this.$refs.form.validate() && this.valid == true) {
         this.isDisabled = true;
         this.isBtnLoading = true;
         // Form is valid, process
@@ -353,8 +199,7 @@ export default {
               this.$router.push({
                 name: "states",
                 query: {
-                  countryslug: this.country_slug,
-                  s_tab: this.tabs,
+                  countryslug: this.country.slug,
                 },
               });
             } else if (res.data.status == "E") {
@@ -369,19 +214,12 @@ export default {
           .catch((err) => {
             console.log(err);
           });
+      } else {
+        //alert("Form is Invalid");
       }
     },
     clear() {
       this.$refs.form.reset();
-    },
-    cancel() {
-      this.$router.push({
-        name: "states",
-        query: {
-          countryslug: this.country_slug,
-          s_tab: this.tabs,
-        },
-      });
     },
   },
 };
@@ -403,8 +241,5 @@ input.larger {
 .image-width {
   border: 2px solid black;
   padding: 1px;
-}
-.arabdirection /deep/ .v-field {
-  direction: rtl;
 }
 </style>
