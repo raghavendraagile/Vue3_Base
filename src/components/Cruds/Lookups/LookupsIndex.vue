@@ -4,16 +4,16 @@
     <div
       flat
       color="white"
-      class="row my-3 align-items-center component_app_bar position-relative"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+      class="row my-3 align-items-center component_app_bar"
     >
-      <page-title
-        class="col-md-3"
-        :heading="$t('lookups')"
-        :google_icon="google_icon"
-      ></page-title>
       <div class="col-md-4">
-        <v-tooltip :text="this.$t('search')" location="bottom">
+        <page-title
+          :heading="$t('lookups')"
+          :google_icon="google_icon"
+        ></page-title>
+      </div>
+      <div class="col-md-4">
+        <v-tooltip :text="$t('search')" location="bottom">
           <template v-slot:activator="{ props }">
             <v-text-field
               rounded
@@ -30,275 +30,117 @@
           </template>
         </v-tooltip>
       </div>
-      <div class="add_new_button">
-        <v-tooltip :text="this.$t('add_new')" location="bottom">
-          <template v-slot:activator="{ props }">
-            <router-link
-              :to="{ name: 'lookups_amend', query: { s_tab: tabs } }"
-              style="color: white"
-            >
-              <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
-                $t("add_new")
-              }}</v-btn>
-            </router-link>
-          </template>
-        </v-tooltip>
+      <div class="col-md-4 d-flex justify-content-end">
+        <div class="my-3 mr-2">
+          <v-tooltip :text="$t('add_new')" location="bottom">
+            <template v-slot:activator="{ props }">
+              <router-link :to="{ name: 'lookups_amend' }" style="color: white">
+                <v-btn size="small" class="mb-2 create-btn" v-bind="props">{{
+                  $t("add_new")
+                }}</v-btn>
+              </router-link>
+            </template>
+          </v-tooltip>
+        </div>
       </div>
     </div>
-    <v-tabs v-model="tabs" color="blue">
-      <v-tab :value="1" @click="checkUploadImage">
-        <span>{{ $t("english") }}</span>
-      </v-tab>
-      <v-tab :value="2" @click="checkUploadImage">
-        <span>{{ $t("arabic") }}</span>
-      </v-tab>
-    </v-tabs>
-    <v-window v-model="tabs">
-      <!-- ENGLISH TAB STARTS -->
-      <v-window-item :value="1">
-        <v-data-table
-          :headers="headers_en"
-          :items="lookup_en"
-          :search="search"
-          :loading="initval"
-          :no-data-text="$t('no_data_available')"
-          :items-per-page-text="$t('rows_per_page_en')"
-        >
-          <template v-slot:item="props">
-            <tr class="vdatatable_tbody">
-              <td>
-                <div class="text-truncate" style="max-width: 160px">
-                  {{
-                    props.item.selectable.shortname
-                      ? props.item.selectable.shortname
-                      : $t("not_appllicable")
-                  }}
-                </div>
-              </td>
-              <td>
-                <div class="text-truncate" style="max-width: 160px">
-                  {{
-                    props.item.selectable.longname
-                      ? props.item.selectable.longname
-                      : $t("not_appllicable")
-                  }}
-                </div>
-              </td>
-              <td>
-                <v-btn
-                  class="hover_shine btn mr-2"
-                  :disabled="isDisabled"
-                  @click="updateLookupsStatus(props.item.selectable.header_id)"
-                  size="small"
-                  v-bind:color="[
-                    props.item.selectable.status == 1 ? 'success' : 'warning',
-                  ]"
-                >
-                  <span
-                    v-if="props.item.selectable.status == 1"
-                    class="spanactivesize"
-                    >{{ $t("active_en") }}</span
-                  >
-                  <span
-                    v-if="props.item.selectable.status == 0"
-                    class="spanactivesize"
-                    >{{ $t("inactive_en") }}</span
-                  >
-                </v-btn>
-              </td>
-              <td class="text-center px-0">
-                <router-link
-                  small
-                  :to="{
-                    name: 'lookups_amend',
-                    query: { slug: props.item.selectable.slug, s_tab: tabs },
-                  }"
-                >
-                  <v-tooltip :text="this.$t('edit_en')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        v-bind="props"
-                        small
-                        class="mr-2 edit_btn icon_size"
-                        v-on="on"
-                        >mdi-pencil-outline</v-icon
-                      >
-                    </template>
-                  </v-tooltip>
-                </router-link>
-                <router-link
-                  small
-                  class="mr-2"
-                  :to="{
-                    name: 'child_lookup',
-                    query: {
-                      slug: props.item.selectable.slug,
-                      s_tab: tabs,
-                      parentname: props.item.selectable.shortname,
-                    },
-                  }"
-                >
-                  <v-tooltip
-                    :text="this.$t('child_lookup_en')"
-                    location="bottom"
-                  >
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        v-bind="props"
-                        class="mr-2 settings_icon icon_size"
-                        v-on="on"
-                        >mdi-sitemap</v-icon
-                      >
-                    </template>
-                    <span>{{ $t("child_lookup_en") }}</span>
-                  </v-tooltip>
-                </router-link>
-                <span @click="deleteItem(props.item.selectable.header_id)">
-                  <v-tooltip :text="this.$t('delete_en')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        v-bind="props"
-                        class="delete_btn icon_size"
-                        v-on="on"
-                        small
-                        type="button"
-                        >mdi-trash-can-outline</v-icon
-                      >
-                    </template>
-                    <span>{{ $t("delete_en") }}</span>
-                  </v-tooltip>
-                </span>
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
-      </v-window-item>
-      <!-- ENGLISH TAB STOPS -->
-      <!-- ARABIC TAB STARTS -->
-      <v-window-item :value="2">
-        <v-data-table
-          :headers="headers_ar"
-          :items="lookup_ar"
-          :search="search"
-          :loading="initval"
-          class="rtl-direction"
-          :no-data-text="$t('no_data_available')"
-          :items-per-page-text="$t('rows_per_page_ar')"
-        >
-          <template v-slot:item="props">
-            <tr class="vdatatable_tbody">
-              <td>
-                <div class="text-truncate" style="max-width: 160px">
-                  {{
-                    props.item.selectable.shortname
-                      ? props.item.selectable.shortname
-                      : $t("not_appllicable")
-                  }}
-                </div>
-              </td>
-              <td>
-                <div class="text-truncate" style="max-width: 160px">
-                  {{
-                    props.item.selectable.longname
-                      ? props.item.selectable.longname
-                      : $t("not_appllicable")
-                  }}
-                </div>
-              </td>
-              <td>
-                <v-btn
-                  class="hover_shine btn mr-2"
-                  :disabled="isDisabled"
-                  @click="updateLookupsStatus(props.item.selectable.header_id)"
-                  size="small"
-                  v-bind:color="[
-                    props.item.selectable.status == 1 ? 'success' : 'warning',
-                  ]"
-                >
-                  <span
-                    v-if="props.item.selectable.status == 1"
-                    class="spanactivesize"
-                    >{{ $t("active_ar") }}</span
-                  >
-                  <span
-                    v-if="props.item.selectable.status == 0"
-                    class="spanactivesize"
-                    >{{ $t("inactive_ar") }}</span
-                  >
-                </v-btn>
-              </td>
-              <td class="text-center px-0">
-                <router-link
-                  small
-                  :to="{
-                    name: 'lookups_amend',
-                    query: { slug: props.item.selectable.slug, s_tab: tabs },
-                  }"
-                >
-                  <v-tooltip :text="this.$t('edit_ar')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        v-bind="props"
-                        small
-                        class="mr-2 edit_btn icon_size"
-                        v-on="on"
-                        >mdi-pencil-outline</v-icon
-                      >
-                    </template>
-                  </v-tooltip>
-                </router-link>
-                <router-link
-                  small
-                  class="mr-2"
-                  :to="{
-                    name: 'child_lookup',
-                    query: {
-                      slug: props.item.selectable.slug,
-                      s_tab: tabs,
-                      parentname: props.item.selectable.shortname,
-                    },
-                  }"
-                >
-                  <v-tooltip
-                    :text="this.$t('child_lookup_ar')"
-                    location="bottom"
-                  >
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        v-bind="props"
-                        class="mr-2 settings_icon icon_size"
-                        v-on="on"
-                        >mdi-sitemap</v-icon
-                      >
-                    </template>
-                    <span>{{ $t("child_lookup_ar") }}</span>
-                  </v-tooltip>
-                </router-link>
-                <span
-                  @click="deleteItem(props.item.selectable.header_id)"
-                  class="mr-2"
-                >
-                  <v-tooltip :text="this.$t('delete_ar')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        v-bind="props"
-                        class="delete_btn icon_size"
-                        v-on="on"
-                        small
-                        type="button"
-                        >mdi-trash-can-outline</v-icon
-                      >
-                    </template>
-                    <span>{{ $t("delete_ar") }}</span>
-                  </v-tooltip>
-                </span>
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
-      </v-window-item>
-    </v-window>
 
+    <v-data-table
+      :headers="headers"
+      :items="lookup"
+      :search="search"
+      :loading="initval"
+    >
+      <template v-slot:item="props">
+        <tr class="vdatatable_tbody">
+          <td>
+            <div class="text-truncate" style="max-width: 160px">
+              {{ props.item.shortname }}
+            </div>
+          </td>
+          <td>
+            <div class="text-truncate" style="max-width: 160px">
+              {{ props.item.longname }}
+            </div>
+          </td>
+          <td>
+            <v-btn
+              class="hover_shine btn mr-2"
+              :disabled="isDisabled"
+              @click="updateLookupsStatus(props.item.id)"
+              size="small"
+              v-bind:color="[props.item.status == 1 ? 'success' : 'warning']"
+            >
+              <span v-if="props.item.status == 1" class="spanactivesize">{{
+                $t("active")
+              }}</span>
+              <span v-if="props.item.status == 0" class="spanactivesize">{{
+                $t("inactive")
+              }}</span>
+            </v-btn>
+          </td>
+          <td class="text-center px-0">
+            <router-link
+              small
+              :to="{
+                name: 'lookups_amend',
+                query: { slug: props.item.slug },
+              }"
+            >
+              <v-tooltip :text="$t('edit')" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                    v-bind="props"
+                    small
+                    class="mr-2 edit_btn icon_size"
+                    v-on="on"
+                    >mdi-pencil-outline</v-icon
+                  >
+                </template>
+              </v-tooltip>
+            </router-link>
+            <router-link
+              small
+              class="mr-2"
+              :to="{
+                name: 'child_lookup',
+                query: {
+                  slug: props.item.slug,
+                  parentname: props.item.shortname,
+                },
+              }"
+            >
+              <v-tooltip :text="$t('child_look_ups')" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                    v-bind="props"
+                    class="mr-2 settings_icon icon_size"
+                    v-on="on"
+                    >mdi-sitemap</v-icon
+                  >
+                </template>
+                <span>{{ $t("child_look_ups") }}</span>
+              </v-tooltip>
+            </router-link>
+            <span @click="deleteItem(props.item.id)">
+              <v-tooltip :text="$t('delete')" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                    v-bind="props"
+                    class="delete_btn icon_size"
+                    v-on="on"
+                    small
+                    type="button"
+                    >mdi-trash-can-outline</v-icon
+                  >
+                </template>
+                <span>{{ $t("delete") }}</span>
+              </v-tooltip>
+            </span>
+          </td>
+        </tr>
+      </template>
+    </v-data-table>
     <ConfirmDialog
       :show="showStatusDialog"
       :cancel="cancelStatus"
@@ -331,10 +173,33 @@ export default {
     showStatusDialog: false,
     delete_id: null,
     status_id: null,
-    lookup_en: [],
-    lookup_ar: [],
     isDisabled: false,
-    tabs: 1,
+    headers: [
+      {
+        title: "Shortname",
+        align: "left",
+        sortable: true,
+        key: "shortname",
+      },
+      {
+        title: "Longname",
+        align: "left",
+        sortable: false,
+        key: "longname",
+      },
+      {
+        title: "Status",
+        align: "left",
+        sortable: false,
+        key: "status",
+      },
+      {
+        title: "Actions",
+        key: "name",
+        align: "center",
+        sortable: false,
+      },
+    ],
     google_icon: {
       icon_name: "settings_suggest",
       color: "google_icon_gradient",
@@ -361,81 +226,9 @@ export default {
         field: "status",
       },
     ],
-    sel_lang: "",
   }),
   mounted() {
     this.initialize();
-    if (this.$route.query.s_tab) {
-      this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
-    }
-  },
-  watch: {
-    "$i18n.locale"(newLocale) {
-      if (newLocale === "ar") {
-        this.sel_lang = "ar";
-      } else {
-        ("");
-        this.sel_lang = "en";
-      }
-    },
-  },
-  computed: {
-    headers_en() {
-      return [
-        {
-          title: this.$t("shortname_en"),
-          align: "left",
-          sortable: true,
-          key: "shortname",
-        },
-        {
-          title: this.$t("longname_en"),
-          align: "left",
-          sortable: false,
-          key: "longname",
-        },
-        {
-          title: this.$t("status_en"),
-          align: "left",
-          sortable: false,
-          key: "status",
-        },
-        {
-          title: this.$t("action_en"),
-          key: "name",
-          align: "center",
-          sortable: false,
-        },
-      ];
-    },
-    headers_ar() {
-      return [
-        {
-          title: this.$t("shortname_ar"),
-          align: "left",
-          sortable: true,
-          key: "shortname",
-        },
-        {
-          title: this.$t("longname_ar"),
-          align: "left",
-          sortable: false,
-          key: "longname",
-        },
-        {
-          title: this.$t("status_ar"),
-          align: "left",
-          sortable: false,
-          key: "status",
-        },
-        {
-          title: this.$t("action_ar"),
-          key: "name",
-          align: "center",
-          sortable: false,
-        },
-      ];
-    },
   },
   methods: {
     cancel() {
@@ -468,7 +261,7 @@ export default {
             this.$toast.success(this.array_data);
             this.initialize();
           } else if (res.data.status == "E") {
-            this.$toast.success(this.array_data);
+            this.$toast.error(this.array_data);
           } else {
             this.$toast.error(this.array_data);
             this.initialize();
@@ -518,8 +311,7 @@ export default {
           }
           if (res.data.status == "S") {
             this.initval = false;
-            this.lookup_en = res.data.lookup_en;
-            this.lookup_ar = res.data.lookup_ar;
+            this.lookup = res.data.lookups;
           } else if (res.data.status == "E") {
             this.initval = false;
             this.$toast.error(this.array_data);

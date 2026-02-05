@@ -4,6 +4,7 @@ import { navigation } from "../store/navigation.js";
 <template>
   <div>
     <content-loader v-if="loader"></content-loader>
+
     <v-navigation-drawer
       v-model="navigation.drawer"
       class="pa-0"
@@ -17,7 +18,7 @@ import { navigation } from "../store/navigation.js";
         <div class="app-header__logo">
           <div v-if="app_image_url">
             <span>
-              <img v-bind:src="app_image_url" style="width: 65%" />
+              <img v-bind:src="app_image_url" style="width: 100%" />
             </span>
           </div>
           <div v-else-if="app_image_url == ''">
@@ -30,7 +31,7 @@ import { navigation } from "../store/navigation.js";
               {{ application_name }}
             </span>
           </div>
-          <div>
+          <!-- <div>
             <span class="font-base-app text-center">
               <img
                 src="../assets/images/logo.png"
@@ -38,7 +39,7 @@ import { navigation } from "../store/navigation.js";
                 style="width: 168px; margin-right: 16px"
               />
             </span>
-          </div>
+          </div> -->
         </div>
         <v-btn
           variant="text"

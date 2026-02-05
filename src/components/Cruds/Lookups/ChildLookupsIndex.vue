@@ -3,8 +3,7 @@
     <div
       flat
       color="white"
-      class="row py-5 pl-5 align-items-center component_app_bar"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
+      class="row my-3 align-items-center component_app_bar"
     >
       <page-title
         class="col-md-3"
@@ -12,7 +11,7 @@
         :google_icon="google_icon"
       ></page-title>
       <div class="col-md-4">
-        <v-tooltip :text="this.$t('search')" location="bottom">
+        <v-tooltip :text="$t('search')" location="bottom">
           <template v-slot:activator="{ props }">
             <v-text-field
               rounded
@@ -30,30 +29,28 @@
         </v-tooltip>
       </div>
       <div class="add_new_button">
-        <v-tooltip :text="this.$t('add_new')" location="bottom">
+        <v-tooltip :text="$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link
               :to="{
                 name: 'child_lookups_amend',
                 query: {
                   parentslug: $route.query.slug,
-                  s_tab: tabs,
                 },
               }"
               style="color: white"
             >
-              <v-btn size="small" class="mb-2 green_btn_color" v-bind="props">{{
+              <v-btn size="small" class="mb-2 create-btn" v-bind="props">{{
                 $t("add_new")
               }}</v-btn>
             </router-link>
-          </template> </v-tooltip
-        >&nbsp;
-        <v-tooltip :text="this.$t('back')" location="bottom">
+          </template>
+        </v-tooltip>
+        <v-tooltip :text="$t('back')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link
               :to="{
                 name: 'lookups',
-                query: { s_tab: this.tabs },
               }"
               style="color: white"
             >
@@ -69,208 +66,82 @@
         </v-tooltip>
       </div>
     </div>
-    <div
-      class="px-4 d-flex justify-content-between"
-      v-if="parent_lookup.length > 0"
-    >
-      <div class="parent-name">
-        {{ $t("parent_lookup_en") }} : {{ parent_lookup[0].longname }}
-      </div>
-      <div class="rtl-direction parent-name">
-        {{ $t("parent_lookup_ar") }} : {{ parent_lookup[1].longname }}
-      </div>
+    <div class="ml-4">
+      <h4>{{ $t("lookup_name") }} : {{ this.$route.query.parentname }}</h4>
     </div>
-    <v-tabs v-model="tabs" color="blue">
-      <v-tab :value="1" @click="checkUploadImage">
-        <span>{{ $t("english") }}</span>
-      </v-tab>
-      <v-tab :value="2" @click="checkUploadImage">
-        <span>{{ $t("arabic") }}</span>
-      </v-tab>
-    </v-tabs>
-    <v-window v-model="tabs">
-      <!-- ENGLISH TAB STARTS -->
-      <v-window-item :value="1">
-        <v-data-table
-          :headers="headers_en"
-          :items="lookups_en"
-          :search="search"
-          :loading="initval"
-          :no-data-text="$t('no_data_available')"
-          :items-per-page-text="$t('rows_per_page_en')"
-        >
-          <template v-slot:item="props">
-            <tr class="vdatatable_tbody">
-              <td>
-                <div class="text-truncate" style="max-width: 160px">
-                  {{ props.item.selectable.shortname }}
-                </div>
-              </td>
-              <td>
-                <div class="text-truncate" style="max-width: 160px">
-                  {{ props.item.selectable.longname }}
-                </div>
-              </td>
-              <td>{{ props.item.selectable.seq }}</td>
-              <td>
-                <v-btn
-                  class="hover_shine btn mr-2"
-                  :disabled="isDisabled"
-                  @click="updateLookupsStatus(props.item.selectable.header_id)"
-                  size="small"
-                  v-bind:color="[
-                    props.item.selectable.status == 1 ? 'success' : 'warning',
-                  ]"
-                >
-                  <span
-                    v-if="props.item.selectable.status == 1"
-                    class="spanactivesize"
-                    >{{ $t("active_en") }}</span
+    <v-data-table
+      :headers="headers"
+      :items="lookup"
+      :search="search"
+      :loading="initval"
+    >
+      <template v-slot:item="props">
+        <tr class="vdatatable_tbody">
+          <td>
+            <div class="text-truncate" style="max-width: 160px">
+              {{ props.item.shortname }}
+            </div>
+          </td>
+          <td>
+            <div class="text-truncate" style="max-width: 160px">
+              {{ props.item.longname }}
+            </div>
+          </td>
+          <td>
+            <v-btn
+              class="hover_shine btn mr-2"
+              :disabled="isDisabled"
+              @click="updateLookupsStatus(props.item.id)"
+              size="small"
+              v-bind:color="[props.item.status == 1 ? 'success' : 'warning']"
+            >
+              <span v-if="props.item.status == 1" class="spanactivesize">{{
+                $t("active")
+              }}</span>
+              <span v-if="props.item.status == 0" class="spanactivesize">{{
+                $t("inactive")
+              }}</span>
+            </v-btn>
+          </td>
+          <td class="text-center px-0">
+            <router-link
+              small
+              :to="{
+                name: 'child_lookups_amend',
+                query: { slug: props.item.slug },
+              }"
+            >
+              <v-tooltip :text="$t('add_new')" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                    small
+                    class="mr-2 edit_btn icon_size"
+                    v-on="on"
+                    v-bind="props"
+                    >mdi-pencil-outline</v-icon
                   >
-                  <span
-                    v-if="props.item.selectable.status == 0"
-                    class="spanactivesize"
-                    >{{ $t("inactive_en") }}</span
+                </template>
+                <span>{{ $t("edit") }}</span>
+              </v-tooltip>
+            </router-link>
+            <span @click="deleteItem(props.item.id)">
+              <v-tooltip :text="$t('delete')" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                    class="delete_btn icon_size"
+                    v-on="on"
+                    small
+                    v-bind="props"
+                    type="button"
+                    >mdi-trash-can-outline</v-icon
                   >
-                </v-btn>
-              </td>
-              <td class="text-center px-0">
-                <router-link
-                  small
-                  :to="{
-                    name: 'child_lookups_amend',
-                    query: { slug: props.item.selectable.slug, s_tab: tabs },
-                  }"
-                >
-                  <v-tooltip :text="this.$t('edit_en')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        small
-                        class="mr-2 edit_btn icon_size"
-                        v-on="on"
-                        v-bind="props"
-                        >mdi-pencil-outline</v-icon
-                      >
-                    </template>
-                    <span>{{ $t("edit_en") }}</span>
-                  </v-tooltip>
-                </router-link>
-                <span @click="deleteItem(props.item.selectable.header_id)">
-                  <v-tooltip :text="this.$t('delete_en')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        class="delete_btn icon_size"
-                        v-on="on"
-                        small
-                        v-bind="props"
-                        type="button"
-                        >mdi-trash-can-outline</v-icon
-                      >
-                    </template>
-                  </v-tooltip>
-                </span>
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
-      </v-window-item>
-      <!-- ENGLISH TAB STOPS -->
-      <!-- ARABIC TAB STARTS -->
-      <v-window-item :value="2">
-        <v-data-table
-          :headers="headers_ar"
-          :items="lookups_ar"
-          :search="search"
-          :loading="initval"
-          class="rtl-direction"
-          :no-data-text="$t('no_data_available')"
-          :items-per-page-text="$t('rows_per_page_ar')"
-        >
-          <template v-slot:item="props">
-            <tr class="vdatatable_tbody">
-              <td>
-                <div class="text-truncate" style="max-width: 160px">
-                  {{
-                    props.item.selectable.shortname
-                      ? props.item.selectable.shortname
-                      : $t("not_appllicable")
-                  }}
-                </div>
-              </td>
-              <td>
-                <div class="text-truncate" style="max-width: 160px">
-                  {{
-                    props.item.selectable.longname
-                      ? props.item.selectable.longname
-                      : $t("not_appllicable")
-                  }}
-                </div>
-              </td>
-              <td>{{ props.item.selectable.seq }}</td>
-              <td>
-                <v-btn
-                  class="hover_shine btn mr-2"
-                  :disabled="isDisabled"
-                  @click="updateLookupsStatus(props.item.selectable.header_id)"
-                  size="small"
-                  v-bind:color="[
-                    props.item.selectable.status == 1 ? 'success' : 'warning',
-                  ]"
-                >
-                  <span
-                    v-if="props.item.selectable.status == 1"
-                    class="spanactivesize"
-                    >{{ $t("active_ar") }}</span
-                  >
-                  <span
-                    v-if="props.item.selectable.status == 0"
-                    class="spanactivesize"
-                    >{{ $t("inactive_ar") }}</span
-                  >
-                </v-btn>
-              </td>
-              <td class="text-center px-0">
-                <router-link
-                  small
-                  :to="{
-                    name: 'child_lookups_amend',
-                    query: { slug: props.item.selectable.slug, s_tab: tabs },
-                  }"
-                >
-                  <v-tooltip :text="this.$t('edit_ar')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        small
-                        class="mr-2 edit_btn icon_size"
-                        v-on="on"
-                        v-bind="props"
-                        >mdi-pencil-outline</v-icon
-                      >
-                    </template>
-                    <span>{{ $t("edit_ar") }}</span>
-                  </v-tooltip>
-                </router-link>
-                <span @click="deleteItem(props.item.selectable.header_id)">
-                  <v-tooltip :text="this.$t('delete_ar')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        class="delete_btn icon_size"
-                        v-on="on"
-                        small
-                        v-bind="props"
-                        type="button"
-                        >mdi-trash-can-outline</v-icon
-                      >
-                    </template>
-                  </v-tooltip>
-                </span>
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
-      </v-window-item>
-    </v-window>
-    <!--  ARABIC TAB ENDS-->
+                </template>
+              </v-tooltip>
+            </span>
+          </td>
+        </tr>
+      </template>
+    </v-data-table>
     <ConfirmDialog
       :show="showStatusDialog"
       :cancel="cancelStatus"
@@ -297,14 +168,38 @@ export default {
     ConfirmDialog,
   },
   data: () => ({
-    lookups_en: [],
-    lookups_ar: [],
-    tabs: 1,
+    lookup: [],
     showdeleteDialog: false,
     showStatusDialog: false,
     delete_id: null,
     status_id: null,
     isDisabled: false,
+    headers: [
+      {
+        title: "Shortname",
+        align: "left",
+        sortable: true,
+        key: "shortname",
+      },
+      {
+        title: "Longname",
+        align: "left",
+        sortable: false,
+        key: "longname",
+      },
+      {
+        title: "Status",
+        align: "left",
+        sortable: false,
+        key: "status",
+      },
+      {
+        title: "Actions",
+        key: "name",
+        align: "center",
+        sortable: false,
+      },
+    ],
     google_icon: {
       icon_name: "settings_suggest",
       color: "google_icon_gradient",
@@ -317,79 +212,21 @@ export default {
     initval: false,
     valid: false,
     message: "",
-    parent_lookup: [],
-    sel_lang: "",
+    json_fields: [
+      {
+        label: "Shortname",
+        field: "shortname",
+      },
+      {
+        label: "Longname",
+        field: "longname",
+      },
+      {
+        label: "Status",
+        field: "status",
+      },
+    ],
   }),
-  computed: {
-    headers_en() {
-      return [
-        {
-          title: this.$t("shortname_en"),
-          align: "left",
-          sortable: true,
-          key: "shortname",
-        },
-        {
-          title: this.$t("longname_en"),
-          align: "left",
-          sortable: false,
-          key: "longname",
-        },
-        {
-          title: this.$t("sequence_en"),
-          align: "left",
-          sortable: false,
-          key: "seq",
-        },
-        {
-          title: this.$t("status_en"),
-          align: "left",
-          sortable: false,
-          key: "status",
-        },
-        {
-          title: this.$t("action_en"),
-          key: "name",
-          align: "center",
-          sortable: false,
-        },
-      ];
-    },
-    headers_ar() {
-      return [
-        {
-          title: this.$t("shortname_ar"),
-          align: "left",
-          sortable: true,
-          key: "shortname",
-        },
-        {
-          title: this.$t("longname_ar"),
-          align: "left",
-          sortable: false,
-          key: "longname",
-        },
-        {
-          title: this.$t("sequence_ar"),
-          align: "left",
-          sortable: false,
-          key: "seq",
-        },
-        {
-          title: this.$t("status_ar"),
-          align: "left",
-          sortable: false,
-          key: "status",
-        },
-        {
-          title: this.$t("action_ar"),
-          key: "name",
-          align: "center",
-          sortable: false,
-        },
-      ];
-    },
-  },
   watch: {
     "$route.query.slug": {
       immediate: true,
@@ -399,28 +236,7 @@ export default {
         }
       },
     },
-    "$i18n.locale"(newLocale) {
-      if (newLocale === "ar") {
-        this.sel_lang = "ar";
-      } else {
-        ("");
-        this.sel_lang = "en";
-      }
-    },
-    "$route.query.s_tab": {
-      immediate: true,
-      handler() {
-        if (this.$route.query.s_tab) {
-          if (this.$route.query.s_tab == 1) {
-            this.tabs = 1;
-          } else {
-            this.tabs = 2;
-          }
-        }
-      },
-    },
   },
-
   mounted() {},
   methods: {
     cancel() {
@@ -450,18 +266,18 @@ export default {
           }
           if (res.data.status == "S") {
             this.$toast.success(this.array_data);
+            this.initialize();
+            this.$eventBus.$emit("app_logo");
           } else if (res.data.status == "E") {
             this.$toast.error(this.array_data);
           } else {
             this.$toast.error(this.array_data);
+            this.initialize();
           }
         })
         .catch((err) => {
           this.$toast.error(this.array_data);
           console.log("this error" + err);
-        })
-        .finally(() => {
-          this.initialize();
         });
     },
     deleteLookup(id) {
@@ -492,10 +308,11 @@ export default {
         .get(
           process.env.VUE_APP_API_URL_ADMIN +
             "lookupdata/" +
-            this.$route.query.slug
+            this.$route.query.parentname
         )
         .then((res) => {
           this.initval = false;
+          this.lookup = res.data.lookups;
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
           } else {
@@ -503,9 +320,7 @@ export default {
           }
           if (res.data.status == "S") {
             this.initval = false;
-            this.lookups_en = res.data.lookups_en;
-            this.lookups_ar = res.data.lookups_ar;
-            this.parent_lookup = res.data.parent_lookup;
+            this.lookup = res.data.lookups;
           } else if (res.data.status == "E") {
             this.initval = false;
           } else {
@@ -595,10 +410,5 @@ export default {
 
 .v-btn:not(.v-btn--round).v-size--small {
   min-width: 90px !important;
-}
-
-.parent-name {
-  font-size: 18px;
-  font-weight: 500;
 }
 </style>

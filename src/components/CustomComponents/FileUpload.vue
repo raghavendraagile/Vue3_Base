@@ -3,7 +3,7 @@
     <div v-for="(document, index) in documents" :key="document.id">
       <div class="row">
         <div class="col-md-4 col-sm-4">
-          <v-tooltip :text="this.$t('file_name')" location="bottom">
+          <v-tooltip :text="$t('file_name')" location="bottom">
             <template v-slot:activator="{ props }">
               <v-text-field :disabled="is_disabled" v-bind="props" variant="outlined" maxlength="100" density="compact"
                 :error="errorName" :error-messages="errorNameMessage" @keyup="clearNameErrors" v-model="document.doc_name"
@@ -13,7 +13,7 @@
           </v-tooltip>
         </div>
         <div class="col-md-3 col-sm-4">
-          <v-tooltip :text="this.$t('expiry_date')" location="bottom">
+          <v-tooltip :text="$t('expiry_date')" location="bottom">
             <template v-slot:activator="{ props }">
               <DatePicker :disable_field="is_disabled" v-bind="props" v-model="document.doc_date"
                 :label="$t('expiry_date')" :stored_date="document.doc_date" :array_index="index" dense
@@ -24,7 +24,7 @@
         <!-- @change="emitData()" -->
         <div class="col-md-4 col-sm-4">
           <div class="row pt-2" v-if="document.doc_url">
-            <v-tooltip :text="this.$t('show_file')" location="bottom">
+            <v-tooltip :text="$t('show_file')" location="bottom">
               <template v-slot:activator="{ props }">
                 <div class="col-md-1">
                   <a :href="doc_path + document.doc_url" download><v-icon v-bind="props">mdi mdi-file</v-icon></a>
@@ -37,7 +37,7 @@
               </template>
             </v-tooltip>
             <div class="col-md-1">
-              <v-tooltip :text="this.$t('remove_file')" location="bottom" v-if="is_disabled != true">
+              <v-tooltip :text="$t('remove_file')" location="bottom" v-if="is_disabled != true">
                 <template v-slot:activator="{ props }">
                   <v-icon v-bind="props" @click="removeUploadedFile(index)" size="small">mdi-close</v-icon>
                 </template>
@@ -45,7 +45,7 @@
             </div>
           </div>
           <div v-else>
-            <v-tooltip :text="this.$t('upload_file')" location="bottom">
+            <v-tooltip :text="$t('upload_file')" location="bottom">
               <template v-slot:activator="{ props }">
                 <v-file-input :disabled="is_disabled" v-bind="props" show-size :label="$t('file_input')" outlined
                   :rules="fileRules" :error="errorUpload" :error-messages="errorUploadMessage" @input="clearUploadErrors"
