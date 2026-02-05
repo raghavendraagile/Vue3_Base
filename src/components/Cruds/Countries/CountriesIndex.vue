@@ -150,7 +150,7 @@ export default {
       },
     ],
     google_icon: {
-      icon_name: "settings_suggest",
+      icon_name: "globe_asia",
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
@@ -182,7 +182,7 @@ export default {
     fetchcountries() {
       this.initval = true;
       this.$axios
-        .get(import.meta.env.VUE_APP_API_URL_ADMIN + "fetch_countries")
+        .get(import.meta.env.VITE_API_URL_ADMIN + "fetch_countries")
         .then((res) => {
           this.initval = false;
 
@@ -203,7 +203,7 @@ export default {
     },
     deletecountries(id) {
       this.$axios
-        .post(import.meta.env.VUE_APP_API_URL_ADMIN + "delete_countries/" + id)
+        .post(import.meta.env.VITE_API_URL_ADMIN + "delete_countries/" + id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();

@@ -212,7 +212,7 @@ export default {
       this.initval = true;
       this.$axios
         .get(
-          import.meta.env.VUE_APP_API_URL_ADMIN +
+          import.meta.env.VITE_API_URL_ADMIN +
             "fetch_cities?countryname=" +
             this.countryname +
             "&statename=" +
@@ -239,7 +239,7 @@ export default {
     },
     deletecities(id) {
       this.$axios
-        .post(import.meta.env.VUE_APP_API_URL_ADMIN + "delete_cities/" + id)
+        .post(import.meta.env.VITE_API_URL_ADMIN + "delete_cities/" + id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
