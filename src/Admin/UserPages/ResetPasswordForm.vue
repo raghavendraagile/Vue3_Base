@@ -331,7 +331,7 @@ export default {
       this.isbtnLoading = true;
       this.$axios
         .post(
-          process.env.VUE_APP_API_URL_ADMIN +
+          import.meta.env.VITE_API_URL_ADMIN +
             "resend_otp_validate?email=" +
             this.email
         )
@@ -361,7 +361,7 @@ export default {
           this.isDisabled = true;
           this.isBtnLoading = true;
           this.$axios
-            .post(process.env.VUE_APP_API_URL_ADMIN + "resetpassword", {
+            .post(import.meta.env.VITE_API_URL_ADMIN + "resetpassword", {
               otp: this.verification_code,
               email: this.email,
               password: this.new_password,
@@ -412,7 +412,7 @@ export default {
         this.loader = true;
         this.$axios
           .post(
-            process.env.VUE_APP_API_URL_ADMIN +
+            import.meta.env.VITE_API_URL_ADMIN +
               "reset_password?email=" +
               this.email +
               "&role=User"

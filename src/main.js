@@ -1,67 +1,84 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
-import "../src/assets/css/global.css";
+import "./assets/css/global.css";
+
 import { createI18n } from "vue-i18n";
 import { languages, defaultLocale } from "./assets/i18n/index.js";
+
 import PageTitle from "./components/CustomComponents/PageTitle.vue";
 import ContentLoader from "./components/CustomComponents/ContentLoader.vue";
+
 import AxiosPlugin from "./axios-plugin.js";
-import Toaster from "@meforma/vue-toaster";
+
 import moment from "moment";
 import VOtpInput from "vue3-otp-input";
-import Vue3IconPicker from 'vue3-icon-picker';
-import 'vue3-icon-picker/dist/style.css';
+import Vue3IconPicker from "vue3-icon-picker";
+import "vue3-icon-picker/dist/style.css";
 
-// import FlashMessage from './vue-flash-message';
+import Vue3FormWizard from "vue3-form-wizard";
+import "vue3-form-wizard/dist/style.css";
 
-//import translations
-const messages = Object.assign(languages);
+import { dateMixin } from "./dateMixin.js";
+import mitt from "mitt";
 
-// configure i18n
-const i18n = createI18n({
-  locale: defaultLocale,
-  messages,
-});
-document.documentElement.lang = defaultLocale;
+import Toaster from '@meforma/vue-toaster'
 
-// Vuetify
+// ---------------- VUETIFY ----------------
 import "vuetify/styles";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import * as labsComponents from "vuetify/labs/components";
+import { aliases, mdi } from "vuetify/iconsets/mdi";
 
-import Vue3FormWizard from "vue3-form-wizard";
-import "vue3-form-wizard/dist/style.css";
-import { dateMixin } from "./dateMixin.js";
-
-import mitt from "mitt";
+// ---------------- EVENT BUS ----------------
 const emitter = mitt();
-const vuetify = createVuetify({
-  components: {
-    ...components,
-    ...labsComponents,
-  },
-  directives,
+
+// ---------------- I18N ----------------
+const i18n = createI18n({
+  legacy: false,
+  locale: defaultLocale,
+  messages: { ...languages },
 });
 
-const app = createApp(App)
-  .use(store)
-  .use(vuetify)
-  .use(router)
-  .use(AxiosPlugin)
-  .use(Toaster)
-  .use(moment)
-  .use(Vue3FormWizard)
-  .use(i18n)
-  .use(Vue3IconPicker, { name: 'IconPicker' });
+document.documentElement.lang = defaultLocale;
 
+// ---------------- VUETIFY SETUP ----------------
+const vuetify = createVuetify({
+  components: { ...components, ...labsComponents },
+  directives,
+  icons: {
+    defaultSet: "mdi",
+    aliases,
+    sets: { mdi },
+  },
+});
+
+// ---------------- APP INIT ----------------
+const app = createApp(App);
+
+app.use(store);
+app.use(router);
+app.use(vuetify);
+app.use(i18n);
+app.use(AxiosPlugin);
+app.use(Toaster);
+app.use(Vue3FormWizard);
+app.use(Vue3IconPicker, { name: "IconPicker" });
+
+// ---------------- GLOBAL PROPERTIES ----------------
+app.config.globalProperties.$moment = moment;
 app.config.globalProperties.emitter = emitter;
+
+// ---------------- GLOBAL COMPONENTS ----------------
 app.component("page-title", PageTitle);
 app.component("content-loader", ContentLoader);
-app.mixin(dateMixin);
 app.component("v-otp-input", VOtpInput);
+
+// ---------------- GLOBAL MIXINS ----------------
+app.mixin(dateMixin);
+
+// ---------------- MOUNT ----------------
 app.mount("#app");

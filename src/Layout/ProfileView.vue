@@ -70,7 +70,7 @@ import { apptheme } from "../store/apptheme.js";
                   />
                   <img
                     v-else
-                    src="@/assets/images/avatars/default.png"
+                    :src="default_src"
                     class="rounded-circle"
                     style="width: 100%"
                   />
@@ -149,15 +149,16 @@ import { apptheme } from "../store/apptheme.js";
 
 <script>
 import { mapActions } from "vuex";
+import defaultAvatar from "@/assets/images/avatars/default.png";
 export default {
   data: () => ({
-    envImagePath: process.env.VUE_APP_IMAGE_PATH,
+    envImagePath: import.meta.env.VITE_IMAGE_PATH,
     fav: true,
     user: [],
     menu: false,
     message: false,
     hints: true,
-    default_src: require("@/assets/images/avatars/default.png"),
+    default_src: defaultAvatar,
   }),
   mounted() {
     if (JSON.parse(localStorage.getItem("user_data"))) {
