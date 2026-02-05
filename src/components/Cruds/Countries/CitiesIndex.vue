@@ -212,8 +212,7 @@ export default {
       this.initval = true;
       this.$axios
         .get(
-          
-            "fetch_cities?countryname=" +
+          "fetch_cities?countryname=" +
             this.countryname +
             "&statename=" +
             this.statename
@@ -239,7 +238,7 @@ export default {
     },
     deletecities(id) {
       this.$axios
-        .post( "delete_cities/" + id)
+        .post("delete_cities/" + id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();

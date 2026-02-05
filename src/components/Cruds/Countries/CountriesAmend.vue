@@ -85,7 +85,7 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
-    envPath: import.meta.env.VUE_APP_IMAGE_DOWNLOAD_URL,
+    envPath: import.meta.env.VITE_IMAGE_PATH,
     valid: true,
     loader: false,
     file: "",
@@ -119,11 +119,7 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(
-              
-                "edit_countries/" +
-                this.$route.query.slug
-            )
+            .get("edit_countries/" + this.$route.query.slug)
             .then((res) => {
               console.log("CALLED IN ROUTE");
               console.log(res);
@@ -146,10 +142,7 @@ export default {
         this.isBtnLoading = true;
         // Form is valid, process
         this.$axios
-          .post(
-             "save_countries",
-            this.country
-          )
+          .post("save_countries", this.country)
           .then((res) => {
             this.btnloading = false;
             if (Array.isArray(res.data.message)) {

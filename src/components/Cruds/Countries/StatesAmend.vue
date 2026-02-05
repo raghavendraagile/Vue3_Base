@@ -100,7 +100,7 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
-    envPath: import.meta.env.VUE_APP_IMAGE_DOWNLOAD_URL,
+    envPath: import.meta.env.VITE_IMAGE_PATH,
     valid: true,
     loader: false,
     file: "",
@@ -137,11 +137,7 @@ export default {
         if (this.$route.query.countryslug) {
           this.loader = true;
           this.$axios
-            .get(
-              
-                "edit_countries/" +
-                this.$route.query.countryslug
-            )
+            .get("edit_countries/" + this.$route.query.countryslug)
             .then((res) => {
               this.country = res.data.countries;
               this.state.country_id = res.data.countries.id;
@@ -156,11 +152,7 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(
-              
-                "edit_states/" +
-                this.$route.query.slug
-            )
+            .get("edit_states/" + this.$route.query.slug)
             .then((res) => {
               this.state = res.data.states;
               console.log("this.state");
@@ -185,7 +177,7 @@ export default {
         this.isBtnLoading = true;
         // Form is valid, process
         this.$axios
-          .post( "save_states", this.state)
+          .post("save_states", this.state)
           .then((res) => {
             this.btnloading = false;
             if (Array.isArray(res.data.message)) {
