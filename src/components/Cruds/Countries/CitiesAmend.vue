@@ -155,7 +155,7 @@ export default {
           this.loader = true;
           this.$axios
             .get(
-              import.meta.env.VUE_APP_API_URL_ADMIN +
+              
                 "edit_countries/" +
                 this.$route.query.countryslug
             )
@@ -174,7 +174,7 @@ export default {
           this.loader = true;
           this.$axios
             .get(
-              import.meta.env.VUE_APP_API_URL_ADMIN +
+              
                 "edit_states/" +
                 this.$route.query.statesslug
             )
@@ -193,7 +193,7 @@ export default {
           this.loader = true;
           this.$axios
             .get(
-              import.meta.env.VUE_APP_API_URL_ADMIN +
+              
                 "edit_cities/" +
                 this.$route.query.slug
             )
@@ -222,7 +222,7 @@ export default {
         this.isBtnLoading = true;
         // Form is valid, process
         this.$axios
-          .post(import.meta.env.VUE_APP_API_URL_ADMIN + "save_cities", this.city)
+          .post( "save_cities", this.city)
           .then((res) => {
             if (Array.isArray(res.data.message)) {
               this.array_data = res.data.message.toString();

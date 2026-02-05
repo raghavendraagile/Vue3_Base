@@ -140,7 +140,7 @@ export default {
       this.initval = true;
 
       this.$axios
-        .get(import.meta.env.VUE_APP_API_URL_ADMIN + "emailtemplates")
+        .get( "emailtemplates")
         .then((res) => {
           this.email_templates = res.data?.email_templates || [];
         })
@@ -163,7 +163,7 @@ export default {
 
     confirm(id) {
       this.$axios
-        .delete(import.meta.env.VUE_APP_API_URL_ADMIN + "emailtemplates/" + id)
+        .delete( "emailtemplates/" + id)
         .then((res) => {
           const msg = Array.isArray(res.data.message)
             ? res.data.message.toString()

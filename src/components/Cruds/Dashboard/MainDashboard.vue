@@ -99,7 +99,7 @@ export default {
       if (Role == "SuperUser") {
         this.$axios
           .get(
-            import.meta.env.VUE_APP_API_URL_ADMIN +
+            
               "fetchDashboardSuperUser/" +
               userId
           )
@@ -115,7 +115,7 @@ export default {
       } else if (Role == "MallAdmin") {
         this.$axios
           .get(
-            import.meta.env.VUE_APP_API_URL_ADMIN +
+            
               "fetchDashboardMallAdmin/" +
               userId
           )
@@ -131,7 +131,7 @@ export default {
       } else {
         this.$axios
           .get(
-            import.meta.env.VUE_APP_API_URL_ADMIN +
+            
               "fetchDashboardStoreAdmin/" +
               userId
           )

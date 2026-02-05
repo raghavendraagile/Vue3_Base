@@ -264,7 +264,7 @@ export default {
       this.loader = true;
       this.initval = true;
       this.$axios
-        .get(import.meta.env.VUE_APP_API_URL_ADMIN + "fetchuserbyslug/" + slug)
+        .get( "fetchuserbyslug/" + slug)
         .then((res) => {
           this.loader = false;
           if (res.data.status == "S") {

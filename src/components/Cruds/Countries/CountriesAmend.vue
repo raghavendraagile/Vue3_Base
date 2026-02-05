@@ -120,7 +120,7 @@ export default {
           this.loader = true;
           this.$axios
             .get(
-              import.meta.env.VUE_APP_API_URL_ADMIN +
+              
                 "edit_countries/" +
                 this.$route.query.slug
             )
@@ -147,7 +147,7 @@ export default {
         // Form is valid, process
         this.$axios
           .post(
-            import.meta.env.VUE_APP_API_URL_ADMIN + "save_countries",
+             "save_countries",
             this.country
           )
           .then((res) => {

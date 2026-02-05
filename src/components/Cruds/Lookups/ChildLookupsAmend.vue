@@ -164,7 +164,7 @@ export default {
           this.loader = true;
           this.$axios
             .get(
-              import.meta.env.VUE_APP_API_URL_ADMIN +
+              
                 "lookups/" +
                 this.$route.query.slug +
                 "/edit"
