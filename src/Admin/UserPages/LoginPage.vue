@@ -6,7 +6,6 @@
         <div class="background">
           <div class="login-box-custom">
             <div class="d-flex flex-column">
-              <img src="../../assets/images/logo.png" class="logo" />
               <div class="w-100 d-flex" style="flex-direction: column">
                 <!-- <h4 class="mb-0">{{ $t("welcome_msg") }}</h4> -->
                 <div class="font-login">
@@ -244,11 +243,7 @@ export default {
         this.btnloading = true;
         this.loader = true;
         this.$axios
-          .post(
-              "send_login_otp?email=" +
-              this.userdata.email +
-              "&role=User"
-          )
+          .post("send_login_otp?email=" + this.userdata.email + "&role=User")
           .then((response) => {
             this.response = response.data;
             this.message = response.data.message;

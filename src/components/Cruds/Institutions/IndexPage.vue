@@ -33,7 +33,7 @@
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
             <router-link
-              :to="{ name: 'institutions_amend' }"
+              :to="{ name: 'institution_amend' }"
               style="color: white"
             >
               <v-btn size="small" class="mb-2 create-btn" v-bind="props">
@@ -44,10 +44,9 @@
         </v-tooltip>
       </div>
     </div>
-
     <v-data-table
       :headers="headers"
-      :items="menu"
+      :items="institutions"
       :search="search"
       :loading="initval"
       v-bind:no-data-text="$t('no_data_available')"
@@ -59,24 +58,22 @@
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
           <td>
-            <span v-if="props.item.title">{{ props.item.title }}</span>
+            <span v-if="props.item.name">{{ props.item.name }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span v-if="props.item.href">{{ props.item.href }}</span>
+            <span v-if="props.item.type">{{ props.item.type }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span v-if="props.item.parent_name">{{
-              props.item.parent_name
-            }}</span>
+            <span v-if="props.item.address">{{ props.item.address }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
 
           <td class="px-0 text-center">
             <router-link
               :to="{
-                name: 'menu_amend',
+                name: 'institution_amend',
                 query: { slug: props.item.slug },
               }"
             >
@@ -131,7 +128,7 @@ export default {
     showConfirmDialog: false,
     search: "",
     dialog: false,
-    menu: [],
+    institutions: [],
     initval: true,
     message: "",
     delete_id: null,
@@ -152,16 +149,16 @@ export default {
           title: "Institution Name",
           align: "left",
           sortable: true,
-          key: "title",
+          key: "name",
         },
 
         {
           title: "Type",
-          key: "seq",
+          key: "type",
         },
         {
           title: "Address",
-          key: "seq",
+          key: "address",
         },
         {
           title: this.$t("action"),
@@ -199,7 +196,7 @@ export default {
       this.showConfirmDialog = false;
     },
     confirm() {
-      this.deleteMenu();
+      this.deleteInstitution();
       this.showConfirmDialog = false;
     },
     deleteItem(deleteID) {
@@ -207,10 +204,12 @@ export default {
       this.showConfirmDialog = true;
     },
 
-    deleteMenu() {
+    deleteInstitution() {
       this.initval = true;
       this.$axios
-        .delete(import.meta.env.VITE_API_URL_ADMIN + "menu/" + this.delete_id)
+        .delete(
+          import.meta.env.VITE_API_URL_ADMIN + "institution/" + this.delete_id
+        )
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -236,9 +235,11 @@ export default {
 
     initialize() {
       this.$axios
-        .get(import.meta.env.VITE_API_URL_ADMIN + "menu")
+        .get("institution")
         .then((res) => {
-          this.menu = res.data.menu;
+          console.log("res.data");
+          console.log(res.data);
+          this.institutions = res.data.institutions;
           this.initval = false;
         })
         .catch((err) => {

@@ -13,7 +13,7 @@
     <content-loader v-if="loader"></content-loader>
     <div class="mb-3 mx-auto">
       <div class="card-body">
-        <v-list class="pl-16 role_list" color="#212529">
+        <v-list class="pl-3 role_list" color="#212529">
           <v-list-group v-for="(item, i) in items" :key="i">
             <template v-slot:activator="{ props }">
               <v-list-item
@@ -107,7 +107,7 @@
     </div>
   </div>
 </template>
-  
+
 <script>
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 export default {

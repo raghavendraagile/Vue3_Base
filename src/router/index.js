@@ -237,7 +237,7 @@ const routes = [
   },
   {
     path: "/institution_amend",
-    name: "institutions_amend",
+    name: "institution_amend",
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Institutions/InstitutionAmend.vue"),
   },
