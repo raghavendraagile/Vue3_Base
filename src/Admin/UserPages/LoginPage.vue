@@ -1,115 +1,49 @@
 <template>
   <v-app>
-    <content-loader v-if="loader"></content-loader>
-    <div>
-      <transition name="fade" mode="out-in" appear>
-        <div class="background">
-          <div class="login-box-custom">
-            <div class="d-flex flex-column">
-              <div class="w-100 d-flex" style="flex-direction: column">
-                <!-- <h4 class="mb-0">{{ $t("welcome_msg") }}</h4> -->
-                <div class="font-login">
-                  <div v-if="app_image_url">
-                    <span>
-                      <img
-                        class="custom-logo"
-                        v-bind:src="app_image_url"
-                        style="width: 130px"
-                      />
-                    </span>
-                  </div>
-                  <div v-else-if="app_image_url == ''">
-                    <span class="font-base-app text-center">
-                      {{ application_name }}
-                    </span>
-                  </div>
-                  <div v-else>
-                    <span class="font-base-app text-center">
-                      {{ application_name }}
-                    </span>
-                  </div>
-                </div>
-                <!-- <span class="font-sign-in-msg">{{ $t("sign_in_msg") }}</span> -->
-              </div>
-            </div>
-            <v-divider></v-divider>
-            <div>
-              <v-form v-model="valid" class="w-100" ref="form">
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" md="12" class="pb-0 pt-0">
-                      <label
-                        v-bind:class="[sel_lang == 'ar' ? 'text-right' : '']"
-                        >{{ $t("email") }}</label
-                      >
-                      <v-tooltip :text="$t('email')" location="bottom">
-                        <template v-slot:activator="{ props }">
-                          <v-text-field
-                            v-bind="props"
-                            v-model="userdata.email"
-                            :rules="emailRules"
-                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
-                            @keyup.enter="sendLoginOtp"
-                            required
-                            variant="outlined"
-                            density="compact"
-                          ></v-text-field>
-                        </template>
-                      </v-tooltip>
-                    </v-col>
-                    <v-col cols="12" md="12" class="pt-0">
-                      <label
-                        v-bind:class="[sel_lang == 'ar' ? 'text-right' : '']"
-                        >{{ $t("password") }}</label
-                      >
-                      <v-tooltip :text="$t('password')" location="bottom">
-                        <template v-slot:activator="{ props }">
-                          <v-text-field
-                            v-bind="props"
-                            v-model="userdata.password"
-                            :append-inner-icon="
-                              show1 ? 'mdi-eye' : 'mdi-eye-off'
-                            "
-                            :rules="fieldRules"
-                            :type="show1 ? 'text' : 'password'"
-                            name="input-10-1"
-                            @keyup.enter="sendLoginOtp"
-                            counter
-                            v-bind:class="[sel_lang == 'ar' ? 'rtl' : '']"
-                            variant="outlined"
-                            density="compact"
-                            @click:append-inner="show1 = !show1"
-                          ></v-text-field>
-                        </template>
-                      </v-tooltip>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      md="12"
-                      class="error_message pt-0"
-                      v-if="error_message && show_error"
-                      ><v-icon style="font-size: 18px" class="mr-1"
-                        >mdi mdi-close-circle-outline</v-icon
-                      >{{ error_message }}</v-col
-                    >
-                    <v-col cols="12" md="12" class="pt-0">
-                      <v-tooltip :text="this.$t('sign_in')" location="bottom">
-                        <template v-slot:activator="{ props }">
-                          <div v-bind="props" class="d-inline-block w-100">
-                            <v-btn
-                              variant="flat"
-                              color="#fff"
-                              small
-                              class="btn-theme-blue w-100"
-                              @click="sendLoginOtp"
-                              @keyup.enter="sendLoginOtp"
-                              :disabled="!valid || btnloading"
-                              >{{ $t("sign_in") }}
-                            </v-btn>
-                          </div>
-                        </template>
-                      </v-tooltip>
-                    </v-col>
+    <content-loader v-if="loader" />
+
+    <div class="background d-flex justify-center align-center">
+      <v-card class="pa-6 login-card" elevation="4">
+        <!-- ================= LOGO ================= -->
+        <div class="text-center mb-4">
+          <img v-if="app_image_url" :src="app_image_url" width="130" />
+          <h3 v-else>{{ application_name }}</h3>
+        </div>
+
+        <v-divider class="mb-4" />
+
+        <!-- ================= LOGIN FORM ==================== -->
+        <v-form v-if="step === 'login'" ref="form" v-model="valid">
+          <v-text-field
+            label="Email"
+            v-model="userdata.email"
+            :rules="emailRules"
+            density="compact"
+            variant="outlined"
+            @keyup.enter="sendLoginOtp"
+          />
+
+          <v-text-field
+            label="Password"
+            v-model="userdata.password"
+            :type="showPass ? 'text' : 'password'"
+            :append-inner-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append-inner="showPass = !showPass"
+            density="compact"
+            variant="outlined"
+            class="mt-3"
+            @keyup.enter="sendLoginOtp"
+          />
+
+          <v-btn
+            block
+            class="mt-4 btn-theme-blue"
+            :loading="btnloading"
+            :disabled="!valid"
+            @click="sendLoginOtp"
+          >
+            Sign In
+          </v-btn>                    
                     <a class="a-underline">
                       <p>
                         <router-link
@@ -122,213 +56,191 @@
                         </router-link>
                       </p>
                     </a>
-                  </v-row>
+        </v-form>
 
-                  <div class="divider" />
-                  <!-- <div class="d-flex align-items-center mt-5">
-                    <div>
-                      <h6 class="mb-0">
-                        {{ $t("no_account") }}
-                        <router-link
-                          :to="{
-                            name: 'register_user',
-                          }"
-                        >
-                          {{ $t("register_here") }}
-                        </router-link>
-                      </h6>
-                    </div>
-                  </div> -->
-                </v-container>
-              </v-form>
-            </div>
+        <!-- ================= OTP SECTION =================== -->
+        <div v-if="step === 'otp'" class="text-center">
+          <p class="mb-3">
+            OTP sent to <b>{{ userdata.email }}</b>
+          </p>
+
+          <v-otp-input
+            v-model:value="verification_code"
+            :num-inputs="6"
+            separator=" "
+            input-classes="otp-input"
+            :should-auto-focus="true"
+          />
+
+          <!-- TIMER -->
+          <div class="mt-3 grey--text">
+            <span v-if="timecount > 0"> Resend in {{ timecount }}s </span>
+
+            <v-btn v-else size="small" text @click="resendLoginOtp">
+              Resend OTP
+            </v-btn>
+          </div>
+
+          <div class="d-flex mt-4">
+            <v-btn small text @click="step = 'login'"> Back </v-btn>
+
+            <v-spacer />
+
+            <v-btn
+              color="green"
+              :loading="isBtnLoading"
+              :disabled="verification_code.length !== 6"
+              @click="verifyotp"
+            >
+              Submit
+            </v-btn>
           </div>
         </div>
-      </transition>
+      </v-card>
     </div>
   </v-app>
 </template>
 
 <script>
-import localStorageWrapper from "../../localStorageWrapper.js";
-
 export default {
-  name: "LoginPage",
-  data: () => ({
-    userdata: {
-      email: "",
-      password: "",
-      token_id: "",
-    },
-    valid: false,
-    show1: false,
-    user: "",
-    btnloading: false,
-    userprofile: "",
-    loader: false,
-    app_image_url: "",
-    application_name: "",
-    app_name: "",
-    error_message: "",
-    show_error: false,
-    sel_lang: "en",
-  }),
-  computed: {
-    fieldRules() {
-      return [(v) => !!v || this.$t("field_required")];
-    },
+  data() {
+    return {
+      step: "login",
 
+      userdata: {
+        email: "",
+        password: "",
+      },
+      verification_code: "",
+      valid: false,
+      loader: false,
+      btnloading: false,
+      isBtnLoading: false,
+      showPass: false,
+      app_image_url: "",
+      application_name: "",
+      timecount: 60,
+      timer: null,
+    };
+  },
+
+  computed: {
     emailRules() {
       return [
-        (v) => !!v || this.$t("email_required"),
-        (v) => /.+@.+/.test(v) || this.$t("email_valid"),
+        (v) => !!v || "Email required",
+        (v) => /.+@.+/.test(v) || "Invalid email",
       ];
     },
   },
 
   mounted() {
-    this.fetchAppImageUrl();
-    this.selectedLang();
+    this.fetchAppImage();
   },
 
-  created() {},
-
   methods: {
-    setUserLang(lang) {
-      localStorage.setItem("pref_lang", lang);
-      this.$i18n.locale = lang;
-      let newRoute = {
-        name: this.$route.name,
-        params: { ...this.$route.params, lang: lang },
-      };
-      this.$router.push(newRoute);
-      this.selectedLang();
-    },
-    selectedLang() {
-      if (localStorage.getItem("pref_lang")) {
-        this.sel_lang = localStorage.getItem("pref_lang");
-      } else {
-        this.sel_lang = "en";
-      }
-    },
-    fetchAppImageUrl() {
-      this.$axios
-        .get("fetch_image_url", {})
-        .then((res) => {
-          this.app_image_url = res.data.parameter_image;
-          this.application_name = res.data.application_name;
-          localStorageWrapper.setItem(
-            "Application_Name",
-            this.application_name
-          );
+    startTimer() {
+      clearInterval(this.timer); // stop old timer if exists
 
-          if (this.app_image_url != null) {
-            localStorageWrapper.setItem(
-              "App_Image_Url",
-              this.app_image_url.image_full_url
-            );
-            this.app_image_url = localStorage.getItem("App_Image_Url");
+      this.timer = setInterval(() => {
+        if (this.timecount > 0) {
+          this.timecount--;
+        } else {
+          clearInterval(this.timer);
+        }
+      }, 1000);
+    },
+
+    /* ================= FETCH APP LOGO ================= */
+    fetchAppImage() {
+      this.$axios.get("fetch_image_url").then((res) => {
+        this.application_name = res.data.application_name;
+        if (res.data.parameter_image) {
+          this.app_image_url = res.data.parameter_image.image_full_url;
+        }
+      });
+    },
+
+    /* ================= SEND OTP ================= */
+    sendLoginOtp() {
+      if (!this.$refs.form.validate()) return;
+
+      this.loader = true;
+      this.btnloading = true;
+
+      this.$axios
+        .post(`send_login_otp?email=${this.userdata.email}&password=${this.userdata.password}&role=User`)
+        .then((res) => {
+          if (res.data.status === "S") {
+            this.$toast.success(res.data.message);
+            this.step = "otp";
+            this.timecount = 60;
+            this.startTimer();
           } else {
-            localStorageWrapper.removeItem("App_Image_Url");
-            this.app_image_url = "";
+            this.$toast.error(res.data.message);
           }
         })
-        .catch((err) => {
-          console.log("this error" + err);
+        .catch(err => {
+          if (err.response) {
+            if (err.response.status === 429) {
+              this.$toast.error("Too many attempts. Please try again after 2 minutes.");
+            } else {
+              this.$toast.error(err.response.data.message || "Something went wrong");
+            }
+          } else {
+            this.$toast.error("Network error");
+          }
+        })
+        .finally(() => {
+          this.loader = false;
+          this.btnloading = false;
         });
     },
 
-    sendLoginOtp() {
-      if (this.$refs.form.validate()) {
-        this.btnloading = true;
-        this.loader = true;
-        this.$axios
-          .post("send_login_otp?email=" + this.userdata.email + "&role=User")
-          .then((response) => {
-            this.response = response.data;
-            this.message = response.data.message;
-            this.status = response.data.status;
-            if (this.status == "S") {
-              this.btnloading = true;
-              this.$toast.success(this.message);
-              if (this.userdata.email) {
-                localStorageWrapper.setItem("verifyemail", this.userdata.email);
-              }
-              localStorage.setItem("active_menu", "OTP Validation");
+    /* ================= VERIFY OTP ================= */
+    verifyotp() {
+      this.loader = true;
+      this.isBtnLoading = true;
 
-              // Redirect to dashboard after login is successful
-              this.$router.push({
-                name: "login-otp-validation",
-                query: {
-                  userdata: JSON.stringify(this.userdata),
-                },
-              });
-              setTimeout(() => {
-                this.btnloading = false;
-                this.loader = false;
-              }, 500);
-            } else if (this.status == "E") {
-              this.$toast.error(this.message);
-              this.btnloading = false;
-              this.loader = false;
-            }
-          })
-          .catch((err) => {
-            this.btnloading = false;
-            this.loader = false;
-            this.error_message = err.response.data.message;
-            this.show_error = true;
-            console.log(err);
-          });
-      }
+      this.$axios
+        .post("login_otp_validate", {
+          otp: this.verification_code,
+          email: this.userdata.email,
+        })
+        .then(async (res) => {
+          if (res.data.status === "S") {
+            await this.$store.dispatch("auth/loginRequest", this.userdata);
+            this.$router.push({ name: "dashboard" });
+          } else {
+            this.$toast.error(res.data.message);
+          }
+        })
+        .finally(() => {
+          this.loader = false;
+          this.isBtnLoading = false;
+        });
+    },
+
+    /* ================= RESEND OTP ================= */
+    resendLoginOtp() {
+      this.timecount = 60;
+      this.startTimer();
+      this.$axios.post(`resend_otp_validate?email=${this.userdata.email}`);
+      this.$toast.success("OTP resent");
     },
   },
 };
 </script>
 
 <style scoped>
-.v-messages__message,
-.v-text-field--is-booted .error--text {
-  color: red;
+
+.login-card {
+  width: 410px;
+  border-radius: 12px;
 }
 
-.font-login {
-  font-size: 35px;
-  color: black;
-}
-
-.d-flex {
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-}
-
-.h-120 {
-  height: 120%;
-}
-
-.font-sign-in-msg {
-  font-size: 1.175rem;
-  font-weight: normal;
-}
-.error_message {
-  color: red;
-  font-style: italic;
-}
-.lang_option {
-  font-size: 14px;
-  margin: 10px 10px;
-  color: grey;
-}
-.lang_option:hover {
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.1s;
-  color: black;
-}
-.selected {
-  font-weight: bold;
-  color: black;
+.otp-input {
+  width: 45px !important;
+  height: 45px;
+  font-size: 18px;
 }
 </style>
