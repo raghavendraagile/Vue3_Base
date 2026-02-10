@@ -142,6 +142,7 @@
                             v-bind:label="$t('password')"
                             variant="outlined"
                             density="compact"
+                            hide-details="auto"
                             required
                           ></v-text-field>
                         </template>
@@ -166,6 +167,7 @@
                             ]"
                             v-bind:label="$t('confirm_password')"
                             required
+                            hide-details="auto"
                             @keyup.enter="resetPassword"
                             variant="outlined"
                             density="compact"
@@ -264,13 +266,21 @@ export default {
       return [(v) => !!v || this.$t("field_required")];
     },
     passwordRules() {
-      return [(v) => v.length >= 8 || this.$t("password_length")];
+      return [
+        (v) => !!v || "Password required",
+        (v) => v.length >= 12 || "Minimum 12 characters required",
+        (v) => /[A-Z]/.test(v) || "At least 1 uppercase letter required",
+        (v) =>
+          /[a-zA-Z0-9]/.test(v) || "At least 1 alphanumeric character required",
+        (v) => /\d/.test(v) || "At least 1 number required",
+      ];
     },
 
     emailRules() {
       return [
-        (v) => !!v || this.$t("email_required"),
-        (v) => /.+@.+/.test(v) || this.$t("email_valid"),
+        (v) => !!v || "Email is required",
+        (v) =>
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || "Enter a valid email address",
       ];
     },
 

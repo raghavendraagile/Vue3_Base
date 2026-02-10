@@ -21,6 +21,7 @@
             density="compact"
             variant="outlined"
             @keyup.enter="sendLoginOtp"
+            hide-details="auto"
           />
 
           <v-text-field
@@ -32,6 +33,8 @@
             density="compact"
             variant="outlined"
             class="mt-3"
+            hide-details="auto"
+            :rules="passwordRules"
             @keyup.enter="sendLoginOtp"
           />
 
@@ -43,19 +46,19 @@
             @click="sendLoginOtp"
           >
             Sign In
-          </v-btn>                    
-                    <a class="a-underline">
-                      <p>
-                        <router-link
-                          :to="{
-                            name: 'forgot_password',
-                          }"
-                        >
-                          <!-- <router-link to="/forgot_password"> -->
-                          {{ $t("recoverpassword") }}
-                        </router-link>
-                      </p>
-                    </a>
+          </v-btn>
+          <a class="a-underline">
+            <p>
+              <router-link
+                :to="{
+                  name: 'forgot_password',
+                }"
+              >
+                <!-- <router-link to="/forgot_password"> -->
+                {{ $t("recoverpassword") }}
+              </router-link>
+            </p>
+          </a>
         </v-form>
 
         <!-- ================= OTP SECTION =================== -->
@@ -128,8 +131,19 @@ export default {
   computed: {
     emailRules() {
       return [
-        (v) => !!v || "Email required",
-        (v) => /.+@.+/.test(v) || "Invalid email",
+        (v) => !!v || "Email is required",
+        (v) =>
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || "Enter a valid email address",
+      ];
+    },
+    passwordRules() {
+      return [
+        (v) => !!v || "Password required",
+        (v) => v.length >= 12 || "Minimum 12 characters required",
+        (v) => /[A-Z]/.test(v) || "At least 1 uppercase letter required",
+        (v) =>
+          /[a-zA-Z0-9]/.test(v) || "At least 1 alphanumeric character required",
+        (v) => /\d/.test(v) || "At least 1 number required",
       ];
     },
   },
@@ -190,23 +204,23 @@ export default {
           localStorage.setItem("active_menu", "Dashboard");
           this.$router.push({ name: "dashboard" });
         }
-      } 
-
-      // ================= COMMON ERROR HANDLING =================
-      catch (err) {
+      } catch (err) {
+        // ================= COMMON ERROR HANDLING =================
         if (err.response) {
           if (err.response.status === 429) {
-            this.$toast.error("Too many attempts. Please try again after 2 minutes.");
+            this.$toast.error(
+              "Too many attempts. Please try again after 2 minutes."
+            );
           } else {
-            this.$toast.error(err.response.data.message || "Something went wrong");
+            this.$toast.error(
+              err.response.data.message || "Something went wrong"
+            );
           }
         } else {
           this.$toast.error("Network error");
         }
-      } 
-
-      // ================= COMMON LOADER STOP =================
-      finally {
+      } finally {
+        // ================= COMMON LOADER STOP =================
         this.loader = false;
         this.btnloading = false;
       }
@@ -247,7 +261,6 @@ export default {
 </script>
 
 <style scoped>
-
 .login-card {
   width: 410px;
   border-radius: 12px;
