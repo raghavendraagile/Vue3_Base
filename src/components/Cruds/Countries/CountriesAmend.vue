@@ -12,7 +12,7 @@
         <content-loader v-if="loader"></content-loader>
         <v-form ref="form" v-model="valid">
           <v-row class="mx-auto" max-width="344">
-            <v-col md="6">
+            <v-col md="4">
               <v-tooltip :text="$t('name')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
@@ -25,6 +25,41 @@
                     class="required_field"
                     variant="outlined"
                     density="compact"
+                  ></v-text-field>
+                </template>
+              </v-tooltip>
+            </v-col>
+            <v-col md="4">
+              <v-tooltip :text="$t('mobile_code')" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-text-field
+                    v-on="on"
+                    v-model="country.mobile_code"
+                    :rules="fieldRules"
+                    v-bind:label="$t('mobile_code')"
+                    required
+                    v-bind="props"
+                    class="required_field"
+                    variant="outlined"
+                    density="compact"
+                  ></v-text-field>
+                </template>
+              </v-tooltip>
+            </v-col>
+            <v-col md="4">
+              <v-tooltip :text="$t('country_code')" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-text-field
+                    v-on="on"
+                    v-model="country.country_code"
+                    :rules="countryCodeRules"
+                    v-bind:label="$t('country_code')"
+                    required
+                    v-bind="props"
+                    class="required_field"
+                    variant="outlined"
+                    density="compact"
+                    @input="country.country_code = country.country_code.toUpperCase()"
                   ></v-text-field>
                 </template>
               </v-tooltip>
@@ -96,9 +131,16 @@ export default {
     country: {
       id: 0,
       name: "",
+      country_code: "",
+      mobile_code: "",
     },
     noimagepreview: "",
     items: [],
+    countryCodeRules: [
+      v => !!v || "Country code is required",
+      v => /^[A-Za-z]+$/.test(v) || "Only letters allowed",
+      v => v.length === 2 || "Must be exactly 2 characters"
+    ]
   }),
 
   computed: {

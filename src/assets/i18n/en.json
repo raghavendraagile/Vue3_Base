@@ -388,5 +388,9 @@
   "booked": "Booked",
   "claims": "Claims",
   "available": "Available",
-  "institutions": "Institutions"
+  "institutions": "Institutions",
+  "whitelisted": "Whitelisted",
+  "is_whitelisted": "Is Whitelisted",
+  "blacklisted": "Blacklisted",
+  "country_code": "Country Code"
 }
