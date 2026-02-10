@@ -121,6 +121,7 @@ export default {
       application_name: "",
       timecount: 60,
       timer: null,
+      login_otp_enabled: 0,
     };
   },
 
@@ -154,6 +155,7 @@ export default {
     fetchAppImage() {
       this.$axios.get("fetch_image_url").then((res) => {
         this.application_name = res.data.application_name;
+        this.login_otp_enabled = res.data.login_otp_enabled.status;
         if (res.data.parameter_image) {
           this.app_image_url = res.data.parameter_image.image_full_url;
         }
@@ -161,15 +163,20 @@ export default {
     },
 
     /* ================= SEND OTP ================= */
-    sendLoginOtp() {
+    async sendLoginOtp() {
       if (!this.$refs.form.validate()) return;
 
       this.loader = true;
       this.btnloading = true;
 
-      this.$axios
-        .post(`send_login_otp?email=${this.userdata.email}&password=${this.userdata.password}&role=User`)
-        .then((res) => {
+      try {
+        // ================= OTP FLOW =================
+        const otpEnabled = Number(this.login_otp_enabled) === 1;
+        if (otpEnabled) {
+          const res = await this.$axios.post(
+            `send_login_otp?email=${this.userdata.email}&password=${this.userdata.password}&role=User`
+          );
+
           if (res.data.status === "S") {
             this.$toast.success(res.data.message);
             this.step = "otp";
@@ -178,24 +185,32 @@ export default {
           } else {
             this.$toast.error(res.data.message);
           }
-        })
-        .catch(err => {
-          if (err.response) {
-            if (err.response.status === 429) {
-              this.$toast.error("Too many attempts. Please try again after 2 minutes.");
-            } else {
-              this.$toast.error(err.response.data.message || "Something went wrong");
-            }
-          } else {
-            this.$toast.error("Network error");
-          }
-        })
-        .finally(() => {
-          this.loader = false;
-          this.btnloading = false;
-        });
-    },
+        } else {
+          await this.$store.dispatch("auth/loginRequest", this.userdata);
+          localStorage.setItem("active_menu", "Dashboard");
+          this.$router.push({ name: "dashboard" });
+        }
+      } 
 
+      // ================= COMMON ERROR HANDLING =================
+      catch (err) {
+        if (err.response) {
+          if (err.response.status === 429) {
+            this.$toast.error("Too many attempts. Please try again after 2 minutes.");
+          } else {
+            this.$toast.error(err.response.data.message || "Something went wrong");
+          }
+        } else {
+          this.$toast.error("Network error");
+        }
+      } 
+
+      // ================= COMMON LOADER STOP =================
+      finally {
+        this.loader = false;
+        this.btnloading = false;
+      }
+    },
     /* ================= VERIFY OTP ================= */
     verifyotp() {
       this.loader = true;
