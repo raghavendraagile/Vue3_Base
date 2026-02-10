@@ -14,51 +14,57 @@
 
         <!-- ================= LOGIN FORM ==================== -->
         <v-form v-if="step === 'login'" ref="form" v-model="valid">
+
+          <div class="form-label">Email Address</div>
           <v-text-field
-            label="Email"
             v-model="userdata.email"
             :rules="emailRules"
+            placeholder="you@example.com"
             density="compact"
             variant="outlined"
             @keyup.enter="sendLoginOtp"
             hide-details="auto"
+            class="styled-field"
+            prepend-inner-icon="mdi-email-outline"
           />
 
+          <div class="form-label mt-4">Password</div>
           <v-text-field
-            label="Password"
             v-model="userdata.password"
             :type="showPass ? 'text' : 'password'"
-            :append-inner-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+            :append-inner-icon="showPass ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
             @click:append-inner="showPass = !showPass"
+            placeholder="••••••••••••"
             density="compact"
             variant="outlined"
-            class="mt-3"
             hide-details="auto"
             :rules="passwordRules"
             @keyup.enter="sendLoginOtp"
+            class="styled-field"
+            prepend-inner-icon="mdi-lock-outline"
           />
+
+          <div class="d-flex justify-end mt-1 mb-1">
+            <router-link
+              :to="{ name: 'forgot_password' }"
+              class="forgot-link"
+            >
+              {{ $t("recoverpassword") }}
+            </router-link>
+          </div>
 
           <v-btn
             block
-            class="mt-4 btn-theme-blue"
+            class="mt-3 sign-in-btn"
             :loading="btnloading"
             :disabled="!valid"
             @click="sendLoginOtp"
+            height="44"
           >
-            Sign In
+            <span class="btn-text">Sign In</span>
+            <v-icon class="ml-2" size="18">mdi-arrow-right</v-icon>
           </v-btn>
-          <a class="a-underline">
-            <p>
-              <router-link
-                :to="{
-                  name: 'forgot_password',
-                }"
-              >
-                <!-- <router-link to="/forgot_password"> -->
-                {{ $t("recoverpassword") }}
-              </router-link>
-            </p>
-          </a>
+
         </v-form>
 
         <!-- ================= OTP SECTION =================== -->
@@ -129,7 +135,7 @@ export default {
   },
 
   computed: {
-    emailRules() {
+    emailRules() { 
       return [
         (v) => !!v || "Email is required",
         (v) =>
@@ -270,5 +276,94 @@ export default {
   width: 45px !important;
   height: 45px;
   font-size: 18px;
+}
+
+/* ===== NEW FORM STYLES (v-form only) ===== */
+
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.styled-field :deep(.v-field) {
+  border-radius: 10px;
+  background: #f9fafb;
+  transition: box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.styled-field :deep(.v-field--focused) {
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.styled-field :deep(.v-field__outline) {
+  color: #e5e7eb;
+}
+
+.styled-field :deep(.v-field--focused .v-field__outline) {
+  color: #3b82f6;
+}
+
+.styled-field :deep(.v-field__prepend-inner .v-icon) {
+  color: #9ca3af;
+  font-size: 18px;
+}
+
+.styled-field :deep(.v-field--focused .v-field__prepend-inner .v-icon) {
+  color: #3b82f6;
+}
+
+.styled-field :deep(input::placeholder) {
+  color: #d1d5db;
+  font-size: 14px;
+}
+
+.forgot-link {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #3b82f6;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: color 0.15s;
+}
+
+.forgot-link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.sign-in-btn {
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%) !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.sign-in-btn:hover:not(:disabled) {
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+  transform: translateY(-1px);
+}
+
+.sign-in-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.sign-in-btn:disabled {
+  background: linear-gradient(135deg, #9ca3af 0%, #d1d5db 100%) !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+}
+
+.btn-text {
+  font-size: 14px;
 }
 </style>
