@@ -245,11 +245,11 @@ const router = createRouter({
 
 // var isAuthenticated = store.getters["auth/authentication"];
 router.beforeEach((to, from, next) => {
-  console.log('to');
-  console.log(to);
+  // console.log('to');
+  // console.log(to);
   const isAuthenticated = store.getters["auth/authentication"];
   // const isAuthenticated=true;
-  console.log("isAuthenticated", isAuthenticated, "to.name:", to.name);
+  // console.log("isAuthenticated", isAuthenticated, "to.name:", to.name);
   if (to.matched.length === 0) {
     next("/not-found");
     return;
