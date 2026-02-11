@@ -249,7 +249,8 @@ export default {
         "ArrowRight",
         "Tab",
         "Home",
-        "End",
+        "End"
+        
       ];
 
       // Allow control/navigation keys
@@ -273,7 +274,14 @@ export default {
         const before = value.substring(0, selectionStart);
         const after = value.substring(selectionEnd);
 
-        this.action.action_name = before + e.key.toUpperCase() + after;
+        const newValue = before + e.key.toUpperCase() + after;
+        this.action.action_name = newValue;
+
+        // Restore cursor position
+        this.$nextTick(() => {
+          const pos = selectionStart + 1; // after inserted char
+          input.setSelectionRange(pos, pos);
+        });
 
         return;
       }
