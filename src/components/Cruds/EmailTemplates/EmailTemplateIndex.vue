@@ -28,7 +28,7 @@
       <!-- ADD BUTTON -->
       <div class="add_new_button">
         <router-link
-          :to="{ name: 'email_template_amend', query: { s_tab: tabs } }"
+          :to="{ name: 'email_template_amend' }"
         >
           <v-btn size="small" class="green_btn_color">
             {{ $t("add_new") }}
@@ -52,7 +52,7 @@
             <router-link
               :to="{
                 name: 'email_template_amend',
-                query: { slug: item.slug, s_tab: tabs },
+                query: { slug: item.slug },
               }"
             >
               <v-icon class="mr-2">mdi-pencil-outline</v-icon>
@@ -90,8 +90,6 @@ export default {
       search: "",
       email_templates: [],
       initval: true,
-      tabs: 1,
-
       showConfirmDialog: false,
       delete_id: null,
 
@@ -125,10 +123,6 @@ export default {
 
   mounted() {
     this.fetchEmailTemplates();
-
-    if (this.$route.query.s_tab) {
-      this.tabs = this.$route.query.s_tab == 1 ? 1 : 2;
-    }
   },
 
   methods: {

@@ -77,12 +77,14 @@
               <v-tooltip :text="$t('body')" location="top">
                 <template v-slot:activator="{ props }">
                   <div v-bind="props">
-                    <quill-editor
+                    <QuillEditor
+                      theme="snow"
+                      contentType="html"
+                      v-model:content="fieldItem.template_body"
                       class="hide_quill_input"
                       v-bind:id="
                         quill_item == true ? 'quill_item' : 'quill_item_border'
                       "
-                      v-model:value="fieldItem.template_body"
                       @blur="onEditorBlur($event)"
                       @focus="onEditorFocus($event)"
                       @ready="onEditorReady($event)"
@@ -108,14 +110,16 @@
               <v-tooltip :text="$t('signature')" location="top">
                 <template v-slot:activator="{ props }">
                   <div v-bind="props">
-                    <quill-editor
+                    <QuillEditor
                       class="hide_quill_input"
+                      theme="snow"
+                      contentType="html"
+                      v-model:content="fieldItem.template_signature"
                       v-bind:id="
                         quill_sign == true
                           ? 'quill_item1'
                           : 'quill_item_border1'
                       "
-                      v-model:value="fieldItem.template_signature"
                       v-bind:label="$t('body')"
                       @change="onEditorChangeSignature($event)"
                       @blur="onEditorBlurSign($event)"
@@ -180,13 +184,13 @@
 </template>
   
 <script>
-import { quillEditor } from "vue3-quill";
+import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 export default {
   components: {
     PageTitle,
-    quillEditor,
+    QuillEditor,
   },
   setup() {
     // const onEditorBlur = (quill) => {

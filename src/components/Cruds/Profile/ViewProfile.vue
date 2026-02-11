@@ -177,9 +177,9 @@
             </div>
           </v-col>
           <v-col md="3" sm="3">
-            <div class="field_label">{{ $t("phone_number") }}</div>
-            <div class="field_value" v-if="profile_details.phone">
-              {{ profile_details.phone }}
+            <div class="field_label">{{ $t("mobile") }}</div>
+            <div class="field_value" v-if="profile_details.mobile">
+              {{ profile_details.mobile }}
             </div>
             <div v-else>
               {{ $t("not_applicable") }}
