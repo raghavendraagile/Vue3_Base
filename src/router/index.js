@@ -235,6 +235,18 @@ const routes = [
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Institutions/InstitutionAmend.vue"),
   },
+  {
+    path: "/action_master",
+    name: "action_master",
+    beforeEnter: guardMyroute,
+    component: () => import("../components/Cruds/ActionMaster/ActionMasterIndex.vue"),
+  },
+  {
+    path: "/action_master_amend",
+    name: "action_master_amend",
+    beforeEnter: guardMyroute,
+    component: () => import("../components/Cruds/ActionMaster/ActionMasterAmend.vue"),
+  },
   
 ];
 
@@ -243,13 +255,30 @@ const router = createRouter({
   routes,
 });
 
-// var isAuthenticated = store.getters["auth/authentication"];
+// ---- GLOBAL SAFE ROUTER HANDLER ----
+const originalPush = router.push;
+const originalReplace = router.replace;
+
+router.push = function (location) {
+  return originalPush.call(this, location).catch((error) => {
+    if (error.message && error.message.includes("No match")) {
+      return originalPush.call(this, { name: "not-found" });
+    }
+    return Promise.reject(error);
+  });
+};
+
+router.replace = function (location) {
+  return originalReplace.call(this, location).catch((error) => {
+    if (error.message && error.message.includes("No match")) {
+      return originalReplace.call(this, { name: "not-found" });
+    }
+    return Promise.reject(error);
+  });
+};
+
 router.beforeEach((to, from, next) => {
-  // console.log('to');
-  // console.log(to);
   const isAuthenticated = store.getters["auth/authentication"];
-  // const isAuthenticated=true;
-  // console.log("isAuthenticated", isAuthenticated, "to.name:", to.name);
   if (to.matched.length === 0) {
     next("/not-found");
     return;

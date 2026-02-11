@@ -9,6 +9,7 @@ import { languages, defaultLocale } from "./assets/i18n/index.js";
 
 import PageTitle from "./components/CustomComponents/PageTitle.vue";
 import ContentLoader from "./components/CustomComponents/ContentLoader.vue";
+import ConfirmationDialog from "./components/CustomComponents/ConfirmationDialog.vue";
 
 import AxiosPlugin from "./axios-plugin.js";
 
@@ -32,6 +33,7 @@ import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import * as labsComponents from "vuetify/labs/components";
 import { aliases, mdi } from "vuetify/iconsets/mdi";
+
 
 // ---------------- EVENT BUS ----------------
 const emitter = mitt();
@@ -76,7 +78,7 @@ app.config.globalProperties.emitter = emitter;
 app.component("page-title", PageTitle);
 app.component("content-loader", ContentLoader);
 app.component("v-otp-input", VOtpInput);
-
+app.component("confirmation-dialog", ConfirmationDialog);
 // ---------------- GLOBAL MIXINS ----------------
 app.mixin(dateMixin);
 
