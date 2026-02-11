@@ -23,7 +23,7 @@ import "vue3-form-wizard/dist/style.css";
 import { dateMixin } from "./dateMixin.js";
 import mitt from "mitt";
 
-import Toaster from '@meforma/vue-toaster'
+import Toaster from '@meforma/vue-toaster';
 
 // ---------------- VUETIFY ----------------
 import "vuetify/styles";

@@ -112,6 +112,7 @@
 </template>
 
 <script>
+import localStorageWrapper from "../../localStorageWrapper.js";
 export default {
   data() {
     return {
@@ -180,6 +181,7 @@ export default {
         if (res.data.parameter_image) {
           this.app_image_url = res.data.parameter_image.image_full_url;
         }
+
         localStorageWrapper.setItem("App_Image_Url", this.app_image_url);
         localStorageWrapper.setItem("App_Name", this.application_name);
       });

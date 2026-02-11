@@ -536,6 +536,8 @@ export default {
 .font-login {
   font-size: 35px;
   color: #1a1f36;
+  display: flex;
+  justify-content: center;
 }
 
 .font-base-app {
