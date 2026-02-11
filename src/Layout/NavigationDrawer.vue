@@ -5,10 +5,7 @@ import { navigation } from "../store/navigation.js";
   <div>
     <content-loader v-if="loader"></content-loader>
 
-    <v-navigation-drawer
-      v-model="navigation.drawer"
-      class="pa-0"
-    >
+    <v-navigation-drawer v-model="navigation.drawer" class="pa-0">
       <div
         class="d-flex align-items-center justify-space-between pa-5 navigation-title"
         elevation="3"
@@ -137,8 +134,8 @@ export default {
       } else {
         this.app_image_url = "";
       }
-      if (localStorageWrapper.getItem("Application_Name")) {
-        this.application_name = localStorageWrapper.getItem("Application_Name");
+      if (localStorageWrapper.getItem("App_Name")) {
+        this.application_name = localStorageWrapper.getItem("App_Name");
       } else {
         this.application_name = "";
       }
@@ -156,9 +153,11 @@ export default {
       if (classvalue == "parent" && childvalue != null) {
         return;
       } else {
-        this.$router.push({
-          name: route,
-        });
+        if (this.$router.hasRoute(route)) {
+          this.$router.push({ name: route });
+        } else {
+          this.$router.push({ name: "not-found" });
+        }
       }
     },
 

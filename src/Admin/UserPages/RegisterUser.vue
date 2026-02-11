@@ -336,8 +336,8 @@ export default {
       } else {
         this.app_image_url = "";
       }
-      if (localStorageWrapper.getItem("Application_Name")) {
-        this.application_name = localStorageWrapper.getItem("Application_Name");
+      if (localStorageWrapper.getItem("App_Name")) {
+        this.application_name = localStorageWrapper.getItem("App_Name");
       } else {
         this.application_name = "";
       }
