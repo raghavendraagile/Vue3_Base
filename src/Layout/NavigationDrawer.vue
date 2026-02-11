@@ -8,7 +8,6 @@ import { navigation } from "../store/navigation.js";
     <v-navigation-drawer
       v-model="navigation.drawer"
       class="pa-0"
-      :location="sel_lang == 'ar' ? 'right' : 'left'"
     >
       <div
         class="d-flex align-items-center justify-space-between pa-5 navigation-title"

@@ -5,6 +5,7 @@
     <div class="background d-flex justify-center align-center">
       <v-card class="pa-6 login-card" elevation="4">
         <!-- ================= LOGO ================= -->
+        <!-- ---{{app_image_url}} -->
         <div class="text-center mb-4">
           <img v-if="app_image_url" :src="app_image_url" width="130" />
           <h3 v-else>{{ application_name }}</h3>
@@ -179,6 +180,8 @@ export default {
         if (res.data.parameter_image) {
           this.app_image_url = res.data.parameter_image.image_full_url;
         }
+        localStorageWrapper.setItem("App_Image_Url", this.app_image_url);
+        localStorageWrapper.setItem("App_Name", this.application_name);
       });
     },
 
