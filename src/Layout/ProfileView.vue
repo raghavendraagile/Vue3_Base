@@ -42,104 +42,57 @@ import { apptheme } from "../store/apptheme.js";
       </template>
 
       <v-card
-        min-width="300"
-        v-bind:style="
-          apptheme.theme_type == 'theme-dark'
-            ? 'box-shadow: 0px 0px 4px white;background:black;'
-            : 'box-shadow: 0px 0px 4px grey;'
-        "
-        style="margin-top: 18px"
+        min-width="320"
+        class="profile-menu-card"
+        :class="apptheme.theme_type === 'theme-dark' ? 'dark' : ''"
       >
-        <v-list
-          v-bind:class="apptheme.theme_type == 'theme-dark' ? 'card-bg' : ''"
-        >
-          <div class="container d-flex justify-content-center p-0 m-0">
-            <div
-              class="card p-3"
-              v-bind:class="
-                apptheme.theme_type == 'theme-dark' ? 'card-bg' : ''
-              "
-            >
-              <div class="d-flex align-items-flex-start">
-                <div class="profile-image">
-                  <img
-                    v-if="user.image_url != null"
-                    :src="envImagePath + user.image_url"
-                    class="rounded-circle profile_display"
-                    style="width: 86%"
-                  />
-                  <img
-                    v-else
-                    :src="default_src"
-                    class="rounded-circle"
-                    style="width: 100%"
-                  />
-                </div>
+        <!-- HEADER -->
+        <div class="profile-menu-header">
+          <p class="profile-menu-label">Signed in as</p>
 
-                <div class="ml-3 w-100 profile-data">
-                  <h4 class="mb-0 mt-0 ml-2">
-                    <span
-                      v-if="user"
-                      v-bind:class="
-                        apptheme.theme_type == 'theme-dark' ? 'text-white' : ''
-                      "
-                      >{{ user.salutation }} {{ user.name }}
-                      {{ user.lastname }}</span
-                    >
-                  </h4>
-                  <span class="ml-2" style="color: #918f8f"
-                    >Role: {{ user.rolename }}</span
-                  >
-                  <div>
-                    <div class="mt-2 d-flex justify-content-between rounded">
-                      <v-tooltip :text="$t('my_profile')" location="bottom">
-                        <template v-slot:activator="{ props }">
-                          <router-link
-                            :to="{
-                              name: 'view-my-profile',
-                              query: {
-                                slug: user.slug,
-                                from: 'amend',
-                              },
-                            }"
-                          >
-                            <a class="w-100 ml-2 list-menus" v-bind="props">
-                              {{ $t("my_profile") }}
-                            </a>
-                          </router-link>
-                        </template>
-                      </v-tooltip>
-                    </div>
-                    <div class="mt-2 d-flex justify-content-between rounded">
-                      <v-tooltip :text="$t('reset_password')" location="bottom">
-                        <template v-slot:activator="{ props }">
-                          <div @click="resetPasswordRedirect()">
-                            <a class="w-100 ml-2 list-menus" v-bind="props">
-                              {{ $t("reset_password") }}
-                            </a>
-                          </div>
-                        </template>
-                      </v-tooltip>
-                    </div>
-                    <div class="mt-2 d-flex justify-content-between rounded">
-                      <v-tooltip :text="$t('logout')" location="bottom">
-                        <template v-slot:activator="{ props }">
-                          <span>
-                            <a
-                              v-bind="props"
-                              class="w-100 ml-2 list-menus"
-                              @click="logoutUser"
-                            >
-                              {{ $t("logout") }}
-                            </a>
-                          </span>
-                        </template>
-                      </v-tooltip>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="profile-menu-user">
+            <v-avatar
+              size="36"
+              :image="
+                user.image_url ? envImagePath + user.image_url : default_src
+              "
+            />
+            <span class="profile-menu-email">
+              {{ user.email }}
+            </span>
+          </div>
+        </div>
+
+        <!-- MENU ITEMS -->
+        <v-list class="profile-menu-list">
+          <!-- Profile -->
+          <router-link
+            :to="{
+              name: 'view-my-profile',
+              query: { slug: user.slug, from: 'amend' },
+            }"
+            class="profile-menu-item"
+          >
+            <span class="accent blue"></span>
+            <v-icon size="20" color="primary">mdi-account</v-icon>
+            <span class="text">My Profile</span>
+            <v-icon size="16">mdi-chevron-right</v-icon>
+          </router-link>
+
+          <!-- Reset Password -->
+          <div class="profile-menu-item" @click="resetPasswordRedirect">
+            <span class="accent blue"></span>
+            <v-icon size="20" color="primary">mdi-lock-reset</v-icon>
+            <span class="text">Reset Password</span>
+            <v-icon size="16">mdi-chevron-right</v-icon>
+          </div>
+
+          <!-- Logout -->
+          <div class="profile-menu-item logout" @click="logoutUser">
+            <span class="accent red"></span>
+            <v-icon size="20" color="error">mdi-logout</v-icon>
+            <span class="text">Logout</span>
+            <v-icon size="16">mdi-chevron-right</v-icon>
           </div>
         </v-list>
       </v-card>
@@ -215,87 +168,102 @@ export default {
 </script>
 
 <style scoped>
-.profile-card:hover {
-  cursor: pointer;
-}
-.profile-image {
-  width: 30%;
-}
-.profile-image > img {
-  border: 1px solid #e3e2e2;
-  background: #f5f2f2;
-}
-.profile-data {
-  width: 70%;
-}
-body {
-  background-color: #b3e5fc;
-  border-radius: 10px;
+.profile-menu-card {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08),
+    0 15px 15px -6px rgba(0, 0, 0, 0.06);
 }
 
-.card {
-  width: 400px;
-  border: none;
-  border-radius: 10px;
-
-  background-color: #fff;
-}
-
-.stats {
-  background: #f2f5f8 !important;
-
-  color: #000 !important;
-}
-a:hover {
-  cursor: pointer;
-}
-.articles {
-  font-size: 10px;
-  color: #a1aab9;
-}
-.number1 {
-  font-weight: 500;
-}
-.followers {
-  font-size: 10px;
-  color: #a1aab9;
-}
-.number2 {
-  font-weight: 500;
-}
-.rating {
-  font-size: 10px;
-  color: #a1aab9;
-}
-.number3 {
-  font-weight: 500;
-}
-.profile_display {
-  height: 43% !important;
-}
-.card-bg {
-  background: #2d2d2d;
-}
-
-.text-white {
+/* HEADER */
+.profile-menu-header {
+  padding: 16px;
+  background: linear-gradient(135deg, #1e40af, #2563eb);
   color: white;
 }
-.image-size {
-  font-size: 45px;
-}
-.defalut_src:hover {
-  cursor: pointer;
+
+.profile-menu-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  opacity: 0.8;
 }
 
-.list-menus:hover {
-  transform: translateY(20px);
-  font-weight: bold;
-  color: rgb(77, 77, 253);
+.profile-menu-user {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+  gap: 10px;
 }
-@media only screen and (max-width: 600px) {
-  .user_name {
-    font-size: 13px;
-    white-space: normal;
-  }
+
+.profile-menu-email {
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* LIST */
+.profile-menu-list {
+  padding: 6px 0;
+}
+
+/* ITEM */
+.profile-menu-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.profile-menu-item:hover {
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.profile-menu-item.logout:hover {
+  background: rgba(220, 38, 38, 0.08);
+  color: #dc2626;
+}
+
+/* TEXT */
+.profile-menu-item .text {
+  flex: 1;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* ACCENT BAR */
+.profile-menu-item .accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  border-radius: 0 4px 4px 0;
+}
+
+.profile-menu-item:hover .accent {
+  opacity: 1;
+}
+
+.accent.blue {
+  background: #2563eb;
+}
+
+.accent.red {
+  background: #dc2626;
+}
+
+/* DARK MODE */
+.profile-menu-card.dark {
+  background: #1f1f1f;
+  color: white;
 }
 </style>

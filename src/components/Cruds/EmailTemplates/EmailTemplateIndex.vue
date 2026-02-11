@@ -1,9 +1,8 @@
 <template>
   <div class="main-20">
-
     <!-- HEADER -->
     <div
-      class="row py-5 pl-5 align-items-center component_app_bar position-relative"
+      class="row my-3 align-items-center component_app_bar position-relative"
       :class="[sel_lang === 'ar' ? 'rtl-page-title' : '']"
     >
       <page-title
@@ -76,7 +75,6 @@
       :title="$t('confirm')"
       :description="$t('delete_confirmation')"
     />
-
   </div>
 </template>
 
@@ -110,19 +108,17 @@ export default {
   computed: {
     headers() {
       return [
-        { title: this.$t("name_en"), key: "template_name" },
-        { title: this.$t("subject_en"), key: "template_subject" },
-        { title: this.$t("action_en"), key: "action", align: "center" },
+        { title: this.$t("name"), key: "template_name" },
+        { title: this.$t("subject"), key: "template_subject" },
+        { title: this.$t("action"), key: "action", align: "center" },
       ];
     },
 
     filteredTemplates() {
       if (!this.search) return this.email_templates;
 
-      return this.email_templates.filter(t =>
-        t.template_name
-          ?.toLowerCase()
-          .includes(this.search.toLowerCase())
+      return this.email_templates.filter((t) =>
+        t.template_name?.toLowerCase().includes(this.search.toLowerCase())
       );
     },
   },
@@ -140,7 +136,7 @@ export default {
       this.initval = true;
 
       this.$axios
-        .get( "emailtemplates")
+        .get("emailtemplates")
         .then((res) => {
           this.email_templates = res.data?.email_templates || [];
         })
@@ -163,7 +159,7 @@ export default {
 
     confirm(id) {
       this.$axios
-        .delete( "emailtemplates/" + id)
+        .delete("emailtemplates/" + id)
         .then((res) => {
           const msg = Array.isArray(res.data.message)
             ? res.data.message.toString()

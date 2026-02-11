@@ -145,8 +145,9 @@ export default {
 
     emailRules() {
       return [
-        (v) => !!v || this.$t("email_required"),
-        (v) => /.+@.+/.test(v) || this.$t("email_valid"),
+        (v) => !!v || "Email is required",
+        (v) =>
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || "Enter a valid email address",
       ];
     },
 

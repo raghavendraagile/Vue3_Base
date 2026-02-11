@@ -8,19 +8,10 @@
             md="12"
             class="h-120 d-flex bg-transparent justify-content-center align-items-center"
           >
-            <v-card>
+            <v-card class="card-wrapper">
               <b-col lg="9" md="10" sm="12" class="mx-3 p-3 v-card">
-                <div
-                  style="
-                    display: flex;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                  "
-                >
-                  <!-- <img src="../../assets/images/TradieSafe_logo.png" /> -->
-                  <div class="w-100 d-flex" style="flex-direction: column">
-                    <h4 class="mb-0"></h4>
+                <div class="card-header-section">
+                  <div class="brand-area">
                     <div class="font-login">
                       <div v-if="app_image_url">
                         <span>
@@ -41,38 +32,51 @@
                         </span>
                       </div>
                     </div>
-                    <span class="font-sign-in-msg">{{
-                      $t("reset_password")
-                    }}</span>
+                    <div class="page-title-row">
+                      <div class="title-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                      </div>
+                      <span class="font-sign-in-msg">{{ $t("reset_password") }}</span>
+                    </div>
                   </div>
                 </div>
 
-                <v-divider></v-divider>
+                <div class="divider-line"></div>
+
                 <div class="card-body">
-                  <div
-                    style="color: red"
-                    class="v-messages__message"
-                    v-if="status == 'E'"
-                  >
-                    {{ message }}
-                  </div>
-                  <div style="color: green" v-if="status == 'S'">
-                    {{ message }}
-                  </div>
+                  <transition name="slide-fade">
+                    <div class="alert-error" v-if="status == 'E'">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                      </svg>
+                      {{ message }}
+                    </div>
+                  </transition>
+                  <transition name="slide-fade">
+                    <div class="alert-success" v-if="status == 'S'">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      {{ message }}
+                    </div>
+                  </transition>
                 </div>
+
                 <v-form autocomplete="off" ref="form" v-model="valid">
-                  <div class="otptimer-align test-start mb-5">
-                    <i>
-                      <span style="color: grey" class="form-group">
-                        {{ $t("email") }} :
-                        <span>{{ email }}</span>
-                      </span>
-                    </i>
+                  <div class="email-display-row mb-5">
+                    <div class="email-label">{{ $t("email") }}</div>
+                    <div class="email-value">{{ email }}</div>
                   </div>
 
-                  <div class="form-group" style="margin-left: -10px">
+                  <div class="form-group otp-section">
+                    <div class="section-label">Verification Code</div>
                     <div class="position-relative" style="max-width: 440px">
-                      <div style="display: flex; flex-direction: row">
+                      <div class="otp-row">
                         <v-otp-input
                           ref="otpInput"
                           v-model:value="verification_code"
@@ -93,11 +97,12 @@
                       </v-overlay>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <span v-show="textvisible">
+
+                  <div class="form-group resend-section">
+                    <span v-show="textvisible" class="countdown-row">
+                      <span class="countdown-dot"></span>
                       <span class="time_data">
-                        {{ $t("resend_code_format") }} {{ timecount }}
-                        {{ $t("seconds") }}
+                        {{ $t("resend_code_format") }} <strong>{{ timecount }}</strong> {{ $t("seconds") }}
                       </span>
                     </span>
 
@@ -108,30 +113,32 @@
                       >
                         <template v-slot:activator="{ props }">
                           <div class="d-inline-block">
-                            <v-btn
+                            <v-chip
                               small
-                              color="blue"
-                              size="small"
-                              plain
+                              label
+                              color="primary"
+                              size="x-small"
                               @click="requestpassword"
                               v-bind="props"
                               :disabled="isdisabled"
                               :loading="isbtnLoading"
                               v-show="btnvisible"
-                              >{{ $t("resend_code") }}
-                            </v-btn>
+                              class="resend-btn"
+                              ><v-icon icon="mdi-email-sync-outline" start></v-icon>{{ $t("resend_code") }}
+                            </v-chip>
                           </div>
                         </template>
                       </v-tooltip>
                     </div>
                   </div>
-                  <div class="row">
+
+                  <div class="row password-fields">
                     <div class="col-md-12 mt-5 pb-2">
                       <v-tooltip :text="this.$t('password')" location="bottom">
                         <template v-slot:activator="{ props }">
                           <v-text-field
                             v-bind="props"
-                            class="required_field show_icon"
+                            class="required_field show_icon styled-input"
                             :append-inner-icon="
                               show2 ? 'mdi-eye' : 'mdi-eye-off'
                             "
@@ -142,6 +149,7 @@
                             v-bind:label="$t('password')"
                             variant="outlined"
                             density="compact"
+                            hide-details="auto"
                             required
                           ></v-text-field>
                         </template>
@@ -152,7 +160,7 @@
                         <template v-slot:activator="{ props }">
                           <v-text-field
                             v-bind="props"
-                            class="required_field show_icon"
+                            class="required_field show_icon styled-input"
                             :append-inner-icon="
                               show1 ? 'mdi-eye' : 'mdi-eye-off'
                             "
@@ -166,6 +174,7 @@
                             ]"
                             v-bind:label="$t('confirm_password')"
                             required
+                            hide-details="auto"
                             @keyup.enter="resetPassword"
                             variant="outlined"
                             density="compact"
@@ -175,7 +184,8 @@
                     </div>
                   </div>
                 </v-form>
-                <div class="d-flex" style="float: right">
+
+                <div class="action-row">
                   <v-tooltip :text="this.$t('cancel')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <div class="d-inline-block">
@@ -204,6 +214,7 @@
                           size="small"
                           color="green"
                           v-bind="props"
+                          class="submit-btn"
                           >{{ $t("submit") }}
                         </v-btn>
                       </div>
@@ -264,17 +275,23 @@ export default {
       return [(v) => !!v || this.$t("field_required")];
     },
     passwordRules() {
-      return [(v) => v.length >= 8 || this.$t("password_length")];
+      return [
+        (v) => !!v || "Password required",
+        (v) => v.length >= 12 || "Minimum 12 characters required",
+        (v) => /[A-Z]/.test(v) || "At least 1 uppercase letter required",
+        (v) =>
+          /[a-zA-Z0-9]/.test(v) || "At least 1 alphanumeric character required",
+        (v) => /\d/.test(v) || "At least 1 number required",
+      ];
     },
 
     emailRules() {
       return [
-        (v) => !!v || this.$t("email_required"),
-        (v) => /.+@.+/.test(v) || this.$t("email_valid"),
+        (v) => !!v || "Email is required",
+        (v) =>
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || "Enter a valid email address",
       ];
     },
-
-    // ...mapGetters(["errors"]),
   },
 
   mounted() {
@@ -352,7 +369,6 @@ export default {
           this.message = this.$t("password_not_match");
           this.isDisabled = false;
           this.isBtnLoading = false;
-          // this.$vuetify.goTo(0);
         } else {
           this.isDisabled = true;
           this.isBtnLoading = true;
@@ -392,6 +408,9 @@ export default {
         }
       }
     },
+    // handleOnChange(resp) {
+
+    // },
     handleOnComplete(resp) {
       this.loading = true;
       setTimeout(() => {
@@ -443,67 +462,348 @@ export default {
 </script>
 
 <style scoped>
-.v-messages__message,
-.v-text-field--is-booted .error--text {
-  color: red;
-}
-.font-login {
-  font-size: 35px;
-  color: black;
+/* ── Page Background ── */
+.gradient-custom {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f4ff 0%, #e8edf8 40%, #dde4f0 100%);
+  position: relative;
 }
 
+.gradient-custom::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 20%, rgba(99, 130, 220, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 85% 80%, rgba(130, 99, 180, 0.10) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.form_alignment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 32px 16px;
+}
+
+.h-120 {
+  height: auto;
+  min-height: 100vh;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Card ── */
+.card-wrapper {
+  border-radius: 20px !important;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.07),
+    0 20px 60px -10px rgba(80, 100, 180, 0.18) !important;
+  overflow: hidden;
+  background: #ffffff !important;
+  border: 1px solid rgba(200, 210, 240, 0.6) !important;
+  transition: box-shadow 0.3s ease;
+}
+
+.card-wrapper:hover {
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.08),
+    0 28px 70px -12px rgba(80, 100, 180, 0.24) !important;
+}
+
+.v-card {
+  padding: 10px;
+  background: #ffffff;
+}
+
+/* ── Header ── */
+.card-header-section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.brand-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.font-login {
+  font-size: 35px;
+  color: #1a1f36;
+  display: flex;
+  justify-content: center;
+}
+
+.font-base-app {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #1a1f36;
+  font-family: 'Georgia', serif;
+}
+
+.page-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.title-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #4f6ef7, #7c3aed);
+  border-radius: 8px;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.font-sign-in-msg {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #374151;
+  letter-spacing: -0.2px;
+}
+
+/* ── Divider ── */
+.divider-line {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(79, 110, 247, 0.25), transparent);
+  margin: 20px 0 8px;
+}
+
+/* ── Alert Banners ── */
+.alert-error,
+.alert-success {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.alert-error {
+  background: rgba(239, 68, 68, 0.08);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.alert-success {
+  background: rgba(34, 197, 94, 0.08);
+  color: #16a34a;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+/* ── Email Display ── */
+.email-display-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8faff;
+  border: 1px solid #e2e8f7;
+  border-radius: 10px;
+  padding: 10px 16px;
+}
+
+.email-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+}
+
+.email-value {
+  font-size: 0.9rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+/* ── OTP Section ── */
+.otp-section {
+  margin-top: 4px;
+}
+
+.section-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 10px;
+}
+
+.otp-row {
+  display: flex;
+  flex-direction: row;
+}
+
+:deep(.otp-input) {
+  width: 44px !important;
+  height: 48px !important;
+  border: 2px solid #d1d9f0 !important;
+  border-radius: 10px !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  color: #1a1f36 !important;
+  background: #f8faff !important;
+  text-align: center !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease !important;
+  outline: none !important;
+}
+
+:deep(.otp-input:focus) {
+  border-color: #4f6ef7 !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.12) !important;
+}
+
+/* ── Resend Section ── */
+.resend-section {
+  margin-top: 5px;
+}
+
+.countdown-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.countdown-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4f6ef7;
+  animation: pulse 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.75); }
+}
+
+.time_data {
+  font-size: 0.82rem;
+  color: #6b7280;
+}
+
+.time_data strong {
+  color: #4f6ef7;
+  font-weight: 700;
+}
+
+.Resendbtn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.resend-btn {
+  font-size: 0.8rem !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+/* ── Password Fields ── */
+.password-fields .col-md-12 {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.show_icon :deep(i) {
+  z-index: 1000;
+}
+
+:deep(.v-text-field.styled-input .v-field) {
+  border-radius: 10px;
+}
+
+:deep(.v-text-field.styled-input .v-field--focused .v-field__outline) {
+  color: #4f6ef7;
+}
+
+:deep(.v-messages__message) {
+  color: #dc2626;
+  font-size: 0.78rem;
+}
+
+/* ── Action Row ── */
+.action-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f2f8;
+}
+
+.cancel-btn {
+  color: #6b7280 !important;
+  background: #f3f4f8 !important;
+  border-radius: 8px !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+  border: 1px solid #e2e4ed !important;
+  transition: background 0.2s ease, color 0.2s ease !important;
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background: #e8eaf0 !important;
+  color: #374151 !important;
+}
+
+.submit-btn {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-weight: 600 !important;
+  padding: 0 20px !important;
+}
+
+/* ── d-flex override ── */
 .d-flex {
   display: flex !important;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  background: transparent;
 }
-.h-120 {
-  height: 120%;
-}
-.font-sign-in-msg {
-  font-size: 1.175rem;
-  font-weight: normal;
-}
-.time_data {
-  width: 232px;
-  margin-left: 0px;
-}
-.Resendbtn {
-  margin-left: -7px;
-  display: flex;
-  justify-content: end;
-}
-.show_icon :deep( i) {
-  z-index: 1000;
-}
-.cancel-btn {
-  color: white;
-  margin-right: 9px !important;
-}
-.gradient-custom {
-  /* fallback for old browsers */
-  background: #beb1c0 !important;
 
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(
-    to bottom right,
-    rgb(231, 221, 232),
-    rgb(188, 166, 169)
-  );
+/* ── Transitions ── */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
 
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(
-    to bottom right,
-    rgb(215, 204, 216),
-    rgb(227, 223, 223)
-  );
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
 }
-.test-start {
-  text-align: start;
+.slide-fade-leave-active {
+  transition: all 0.2s ease;
 }
-.form_alignment {
-  display: flex;
-  justify-content: center;
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
 }
 </style>

@@ -4,7 +4,7 @@
       <!-- v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']" -->
       <page-title
         class="col-md-4 ml-2"
-        heading="Create Menu"
+        heading="Create Institution"
         :google_icon="google_icon"
       ></page-title>
     </div>
@@ -13,12 +13,12 @@
       <div class="card-body">
         <v-form ref="form" v-model="valid">
           <v-row class="px-6">
-            <v-col cols="12" sm="6" md="6">
+            <v-col cols="12" sm="6" md="6" class="pb-0">
               <v-tooltip text="Institution Name" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
                     v-bind="props"
-                    v-model="fieldItem.title"
+                    v-model="institution.name"
                     :rules="fieldRules"
                     label="Institution Name"
                     variant="outlined"
@@ -33,12 +33,12 @@
                 </template>
               </v-tooltip>
             </v-col>
-            <v-col cols="12" sm="6" md="6">
+            <v-col cols="12" sm="6" md="6" class="pb-0">
               <v-tooltip text="Institution Type" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
                     v-bind="props"
-                    v-model="fieldItem.title"
+                    v-model="institution.type"
                     :rules="fieldRules"
                     label="Institution Type"
                     variant="outlined"
@@ -58,7 +58,7 @@
                 <template v-slot:activator="{ props }">
                   <v-text-field
                     v-bind="props"
-                    v-model="fieldItem.title"
+                    v-model="institution.address"
                     :rules="fieldRules"
                     label="Institution Address"
                     variant="outlined"
@@ -126,7 +126,7 @@ export default {
   components: { PageTitle },
   data: () => ({
     google_icon: {
-      icon_name: "edit_note",
+      icon_name: "domain_add",
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
@@ -137,13 +137,11 @@ export default {
     disabled: false,
     loading: false,
     isDisabled: false,
-    fieldItem: {
+    institution: {
       id: 0,
-      title: "",
-      href: "",
-      parent_id: 0,
-      seq: "",
-      icon: "",
+      name: "",
+      type: "",
+      address: "",
     },
     items: [],
     empty_item: {
@@ -162,21 +160,7 @@ export default {
     },
   },
 
-  created() {
-    this.$axios
-      .get(import.meta.env.VITE_API_URL_ADMIN + "parentmenus")
-      .then((res) => {
-        this.items = res.data;
-        this.items.parentmenu = [
-          { id: 0, title: "None" },
-          ...this.items.parentmenu,
-        ];
-      })
-      .catch((err) => {
-        this.$toast.error(this.$t("something_went_wrong"));
-        console.log("error", err);
-      });
-  },
+  created() {},
   watch: {
     "$route.query.slug": {
       immediate: true,
@@ -184,16 +168,11 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get(
-              import.meta.env.VITE_API_URL_ADMIN +
-                "menu/" +
-                this.$route.query.slug +
-                "/edit"
-            )
+            .get("institution/" + this.$route.query.slug + "/edit")
             .then((res) => {
               if (res.data.status == "S") {
                 this.loader = false;
-                this.fieldItem = res.data.menu;
+                this.institution = res.data.institution;
               }
             })
             .catch((err) => {
@@ -217,28 +196,18 @@ export default {
   methods: {
     cancel() {
       this.$router.push({
-        name: "menus",
+        name: "institutions",
       });
-    },
-    NumbersOnly(evt) {
-      evt = evt ? evt : window.event;
-      var charCode = evt.which ? evt.which : evt.keyCode;
-      if (
-        charCode > 31 &&
-        (charCode < 48 || charCode > 57) &&
-        charCode !== 46
-      ) {
-        evt.preventDefault();
-      } else {
-        return true;
-      }
     },
     submit() {
       if (this.$refs.form.validate() && this.valid) {
-        if (this.fieldItem.id == 0) {
+        if (this.institution.id == 0) {
           this.isDisabled = true;
           this.$axios
-            .post(import.meta.env.VITE_API_URL_ADMIN + "menu", this.fieldItem)
+            .post(
+              import.meta.env.VITE_API_URL_ADMIN + "institution",
+              this.institution
+            )
             .then((res) => {
               if (Array.isArray(res.data.message)) {
                 this.array_data = res.data.message.toString();
@@ -249,7 +218,7 @@ export default {
                 this.$toast.success(this.array_data);
                 this.message = res.data.message;
                 this.$router.push({
-                  name: "menus",
+                  name: "institutions",
                 });
               } else if (res.data.status == "E") {
                 this.$toast.error(this.array_data);
@@ -269,8 +238,10 @@ export default {
           this.isDisabled = true;
           this.$axios
             .patch(
-              import.meta.env.VITE_API_URL_ADMIN + "menu/" + this.fieldItem.id,
-              this.fieldItem
+              import.meta.env.VITE_API_URL_ADMIN +
+                "institution/" +
+                this.institution.id,
+              this.institution
             )
             .then((res) => {
               if (Array.isArray(res.data.message)) {
@@ -282,7 +253,7 @@ export default {
                 this.$toast.success(this.array_data);
                 this.message = res.data.message;
                 this.$router.push({
-                  name: "menus",
+                  name: "institutions",
                 });
               } else if (res.data.status == "E") {
                 this.isDisabled = false;

@@ -1,6 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 // light theme
 $bg-theme-light: #fff;
 $color-theme-light: #222;
@@ -26,7 +25,7 @@ $color-theme-dark: #fff;
 }
 
 .app-name {
-  font-family: "Roboto", sans-serif;
+  font-family: "Montserrat", sans-serif !important;
   color: #033e89;
 }
 .navigation-title {
@@ -40,6 +39,7 @@ $color-theme-dark: #fff;
   body {
     background-color: $bg-theme-light !important;
     color: $color-theme-light !important;
+    font-family: "Montserrat", sans-serif !important;
   }
 
   .app-name {
@@ -397,7 +397,7 @@ input::placeholder {
 
 .font-base-app {
   font-weight: 600;
-  font-family: "Roboto", sans-serif;
+  font-family: "Roboto", sans-serif !important;
   color: #033e89;
 }
 

@@ -52,6 +52,30 @@
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
           <td>{{ props.item.name }}</td>
+          <td>{{ props.item.mobile_code }}</td>
+          <td>{{ props.item.country_code }}</td>
+          <td class="text-center">
+            <v-btn
+              class="hover_shine btn mr-2"
+              :disabled="isDisabled"
+              @click="updateCountryStatus(props.item.id)"
+              size="small"
+              v-bind:color="[
+                props.item.is_whitelisted == 1 ? 'success' : 'warning',
+              ]"
+            >
+              <span
+                v-if="props.item.is_whitelisted == 1"
+                class="spanactivesize"
+                >{{ $t("whitelisted") }}</span
+              >
+              <span
+                v-if="props.item.is_whitelisted == 0"
+                class="spanactivesize"
+                >{{ $t("blacklisted") }}</span
+              >
+            </v-btn>
+          </td>
           <td class="text-center px-0">
             <router-link
               :to="{
@@ -118,6 +142,13 @@
       v-bind:title="$t('confirm')"
       v-bind:description="$t('delete_record')"
     />
+    <ConfirmDialog
+      :show="showStatusDialog"
+      :cancel="cancelStatus"
+      :confirm="confirmStatus"
+      v-bind:title="$t('confirm')"
+      v-bind:description="$t('status_change')"
+    />
   </div>
 </template>
 
@@ -132,23 +163,10 @@ export default {
   data: () => ({
     countries: [],
     showdeleteDialog: false,
+    showStatusDialog: false,
     delete_id: null,
     status_id: null,
     isDisabled: false,
-    headers: [
-      {
-        title: "Name",
-        align: "left",
-        sortable: true,
-        key: "name",
-      },
-      {
-        title: "Actions",
-        key: "actions",
-        align: "center",
-        sortable: false,
-      },
-    ],
     google_icon: {
       icon_name: "globe_asia",
       color: "google_icon_gradient",
@@ -170,6 +188,42 @@ export default {
   }),
   mounted() {
     this.fetchcountries();
+  },
+  computed: {
+    headers() {
+      return [
+        {
+          title: this.$t("name"),
+          align: "left",
+          sortable: true,
+          key: "name",
+        },
+        {
+          title: this.$t("mobile_code"),
+          align: "left",
+          sortable: true,
+          key: "mobile_code",
+        },
+        {
+          title: this.$t("country_code"),
+          align: "left",
+          sortable: true,
+          key: "country_code",
+        },
+        {
+          title: this.$t("is_whitelisted"),
+          align: "center",
+          sortable: true,
+          key: "is_whitelisted",
+        },
+        {
+          title: this.$t("actions"),
+          key: "actions",
+          align: "center",
+          sortable: false,
+        },
+      ];
+    },
   },
   methods: {
     cancel() {
@@ -222,6 +276,39 @@ export default {
         })
         .catch((err) => {
           this.$toast.error(this.array_data);
+          console.log("this error" + err);
+        });
+    },
+    cancelStatus() {
+      this.showStatusDialog = false;
+    },
+    confirmStatus() {
+      this.statusUpdate();
+      this.showStatusDialog = false;
+    },
+    updateCountryStatus(id) {
+      this.status_id = id;
+      this.showStatusDialog = true;
+    },
+    statusUpdate() {
+      this.$axios
+        .post("update_country_status", {
+          id: this.status_id,
+        })
+        .then((res) => {
+          if (Array.isArray(res.data.message)) {
+            this.array_data = res.data.message.toString();
+          } else {
+            this.array_data = res.data.message;
+          }
+          if (res.data.status == "S") {
+            this.$toast.success(this.array_data);
+            this.fetchcountries();
+          } else if (res.data.status == "E") {
+            this.$toast.error(this.array_data);
+          }
+        })
+        .catch((err) => {
           console.log("this error" + err);
         });
     },
