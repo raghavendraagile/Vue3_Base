@@ -204,8 +204,7 @@ export default {
         if (this.institution.id == 0) {
           this.isDisabled = true;
           this.$axios
-            .post(
-              import.meta.env.VITE_API_URL_ADMIN + "institution",
+            .post("institution",
               this.institution
             )
             .then((res) => {
@@ -238,7 +237,6 @@ export default {
           this.isDisabled = true;
           this.$axios
             .patch(
-              import.meta.env.VITE_API_URL_ADMIN +
                 "institution/" +
                 this.institution.id,
               this.institution

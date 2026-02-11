@@ -207,8 +207,7 @@ export default {
     deleteInstitution() {
       this.initval = true;
       this.$axios
-        .delete(
-          import.meta.env.VITE_API_URL_ADMIN + "institution/" + this.delete_id
+        .delete("institution/" + this.delete_id
         )
         .then((res) => {
           if (Array.isArray(res.data.message)) {

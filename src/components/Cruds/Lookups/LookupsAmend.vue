@@ -125,7 +125,6 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
-    envPath: import.meta.env.VITE_API_URL_ADMIN,
     valid: false,
     loader: false,
     file: "",
