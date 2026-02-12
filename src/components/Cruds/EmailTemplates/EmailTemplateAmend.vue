@@ -26,6 +26,7 @@
                     v-model="fieldItem.template_type_id"
                     :rules="fieldRules1"
                     :items="mode_items"
+                    class="required_field"
                     outlined
                     required
                     dense
@@ -42,6 +43,7 @@
                     maxlength="100"
                     v-model="fieldItem.template_name"
                     :rules="fieldRules"
+                    class="required_field"
                     v-bind:label="$t('name')"
                     required
                     variant="outlined"
@@ -60,6 +62,7 @@
                     v-model="fieldItem.template_subject"
                     :rules="fieldRules"
                     maxlength="100"
+                    class="required_field"
                     v-bind:label="$t('subject')"
                     required
                     variant="outlined"
@@ -81,7 +84,7 @@
                       theme="snow"
                       contentType="html"
                       v-model:content="fieldItem.template_body"
-                      class="hide_quill_input"
+                      class="hide_quill_input, required_field"
                       v-bind:id="
                         quill_item == true ? 'quill_item' : 'quill_item_border'
                       "
@@ -111,7 +114,7 @@
                 <template v-slot:activator="{ props }">
                   <div v-bind="props">
                     <QuillEditor
-                      class="hide_quill_input"
+                      class="hide_quill_input, required_field"
                       theme="snow"
                       contentType="html"
                       v-model:content="fieldItem.template_signature"
