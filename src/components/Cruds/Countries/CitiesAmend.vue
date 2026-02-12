@@ -116,14 +116,11 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
-    envPath: import.meta.env.VITE_IMAGE_PATH,
     valid: true,
     loader: false,
     file: "",
     isBtnLoading: false,
-    showupload: "",
     isDisabled: false,
-    checkbox_value: false,
     city: {
       id: 0,
       name: "",
@@ -132,17 +129,11 @@ export default {
     },
     country: "",
     state: "",
-    noimagepreview: "",
-    items: [],
   }),
 
   computed: {
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
-    },
-
-    numberRules() {
-      return [(v) => !!v || this.$t("number_required")];
     },
   },
 
@@ -199,11 +190,6 @@ export default {
     },
   },
   methods: {
-    onFileChanged(e) {
-      this.selectedFile = e.target.files[0];
-
-      // Do whatever you need with the file, liek reading it with FileReader
-    },
     submit() {
       if (this.$refs.form.validate() && this.valid == true) {
         this.isDisabled = true;

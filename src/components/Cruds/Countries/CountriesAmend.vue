@@ -59,7 +59,9 @@
                     class="required_field"
                     variant="outlined"
                     density="compact"
-                    @input="country.country_code = country.country_code.toUpperCase()"
+                    @input="
+                      country.country_code = country.country_code.toUpperCase()
+                    "
                   ></v-text-field>
                 </template>
               </v-tooltip>
@@ -120,36 +122,26 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
-    envPath: import.meta.env.VITE_IMAGE_PATH,
     valid: true,
     loader: false,
-    file: "",
     isBtnLoading: false,
-    showupload: "",
     isDisabled: false,
-    checkbox_value: false,
     country: {
       id: 0,
       name: "",
       country_code: "",
       mobile_code: "",
     },
-    noimagepreview: "",
-    items: [],
     countryCodeRules: [
-      v => !!v || "Country code is required",
-      v => /^[A-Za-z]+$/.test(v) || "Only letters allowed",
-      v => v.length === 2 || "Must be exactly 2 characters"
-    ]
+      (v) => !!v || "Country code is required",
+      (v) => /^[A-Za-z]+$/.test(v) || "Only letters allowed",
+      (v) => v.length === 2 || "Must be exactly 2 characters",
+    ],
   }),
 
   computed: {
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
-    },
-
-    numberRules() {
-      return [(v) => !!v || this.$t("number_required")];
     },
   },
 
@@ -173,11 +165,6 @@ export default {
     },
   },
   methods: {
-    onFileChanged(e) {
-      this.selectedFile = e.target.files[0];
-
-      // Do whatever you need with the file, liek reading it with FileReader
-    },
     submit() {
       if (this.$refs.form.validate() && this.valid == true) {
         this.isDisabled = true;
