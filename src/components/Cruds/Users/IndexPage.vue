@@ -65,7 +65,7 @@
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span v-if="props.item.phone"> {{ props.item.phone }}</span>
+            <span v-if="props.item.mobile"> {{ props.item.mobile }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
