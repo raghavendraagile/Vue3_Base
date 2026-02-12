@@ -10,6 +10,7 @@ import { languages, defaultLocale } from "./assets/i18n/index.js";
 import PageTitle from "./components/CustomComponents/PageTitle.vue";
 import ContentLoader from "./components/CustomComponents/ContentLoader.vue";
 import ConfirmationDialog from "./components/CustomComponents/ConfirmationDialog.vue";
+import NoDataFound from "./components/CustomComponents/NoDataFound.vue";
 
 import AxiosPlugin from "./axios-plugin.js";
 
@@ -79,6 +80,7 @@ app.component("page-title", PageTitle);
 app.component("content-loader", ContentLoader);
 app.component("v-otp-input", VOtpInput);
 app.component("confirmation-dialog", ConfirmationDialog);
+app.component("no-data-found", NoDataFound);
 // ---------------- GLOBAL MIXINS ----------------
 app.mixin(dateMixin);
 

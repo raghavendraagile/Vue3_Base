@@ -140,8 +140,8 @@ export default {
       return [
         (v) => !!v || this.$t("field_required"),
         (v) =>
-          /^[A-Z0-9_]+$/.test(v) ||
-          "Only uppercase letters, numbers and underscore allowed",
+          /^[A-Z0-9 ]+$/.test(v) ||
+          "Only uppercase letters, numbers and spaces allowed",
       ];
     },
   },
@@ -240,7 +240,12 @@ export default {
       const input = e.target;
       const value = this.action.action_name || "";
 
-      const allowedPattern = /^[A-Z0-9_]$/;
+      // Allow Ctrl/Cmd shortcuts (Copy, Paste, Cut, Select All)
+      if (e.ctrlKey || e.metaKey) {
+        return;
+      }
+
+      const allowedPattern = /^[A-Z0-9 ]$/;
 
       const controlKeys = [
         "Backspace",
@@ -249,25 +254,38 @@ export default {
         "ArrowRight",
         "Tab",
         "Home",
-        "End"
-        
+        "End",
       ];
 
-      // Allow control/navigation keys
       if (controlKeys.includes(e.key)) return;
 
-      // Get cursor and selection
       const selectionStart = input.selectionStart;
       const selectionEnd = input.selectionEnd;
       const hasSelection = selectionStart !== selectionEnd;
 
-      // If no selection and already 30 chars → block
+      // Max 30 characters
       if (!hasSelection && value.length >= 30) {
         e.preventDefault();
         return;
       }
 
-      // Convert lowercase to uppercase
+      // Prevent multiple consecutive spaces
+      if (e.key === " ") {
+        const before = value.substring(0, selectionStart);
+        const after = value.substring(selectionEnd);
+
+        if (
+          before.length === 0 || // leading space
+          before.endsWith(" ") || // double space before
+          after.startsWith(" ") // double space after
+        ) {
+          e.preventDefault();
+        }
+
+        return;
+      }
+
+      // Convert lowercase → uppercase
       if (/^[a-z]$/.test(e.key)) {
         e.preventDefault();
 
@@ -277,16 +295,15 @@ export default {
         const newValue = before + e.key.toUpperCase() + after;
         this.action.action_name = newValue;
 
-        // Restore cursor position
         this.$nextTick(() => {
-          const pos = selectionStart + 1; // after inserted char
+          const pos = selectionStart + 1;
           input.setSelectionRange(pos, pos);
         });
 
         return;
       }
 
-      // Block invalid characters
+      // Block everything else
       if (!allowedPattern.test(e.key)) {
         e.preventDefault();
       }

@@ -247,6 +247,12 @@ const routes = [
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/ActionMaster/ActionMasterAmend.vue"),
   },
+  {
+    path: "/roles_assign",
+    name: "roles_assign",
+    beforeEnter: guardMyroute,
+    component: () => import("../components/Cruds/Roles/RolesAssign.vue"),
+  },
   
 ];
 
