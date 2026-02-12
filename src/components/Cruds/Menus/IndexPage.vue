@@ -1,5 +1,10 @@
 <template>
   <div>
+    <confirmation-dialog
+      ref="confirmationDialog"
+      :title="dialogTitle"
+      :message="dialogMessage"
+    ></confirmation-dialog>
     <div
       flat
       color="white"
@@ -124,10 +129,7 @@
 </template>
 
 <script>
-import PageTitle from "../../CustomComponents/PageTitle.vue";
-import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
 export default {
-  components: { PageTitle, ConfirmDialog },
   data: () => ({
     showConfirmDialog: false,
     search: "",
@@ -141,6 +143,8 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
+    dialogMessage: "",
+    dialogTitle: "",
   }),
 
   computed: {
@@ -199,22 +203,22 @@ export default {
   },
 
   methods: {
-    cancel() {
-      this.showConfirmDialog = false;
-    },
-    confirm() {
-      this.deleteMenu();
-      this.showConfirmDialog = false;
-    },
-    deleteItem(deleteID) {
-      this.delete_id = deleteID;
-      this.showConfirmDialog = true;
+    showConfirmation(title, message) {
+      this.dialogTitle = title;
+      this.dialogMessage = message;
+      return this.$refs.confirmationDialog.open();
     },
 
-    deleteMenu() {
+    async deleteItem(deleteID) {
+      const result = await this.showConfirmation(
+        "Confirm",
+        "Are you sure you want to delete this menu ?"
+      );
+
+      if (!result) return;
       this.initval = true;
       this.$axios
-        .delete("menu/" + this.delete_id)
+        .delete("menu/" + deleteID)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
