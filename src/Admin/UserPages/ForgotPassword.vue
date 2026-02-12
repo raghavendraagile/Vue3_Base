@@ -4,109 +4,75 @@
     <div>
       <transition name="fade" mode="out-in" appear>
         <div class="background">
-          <div class="login-box-custom">
-            <div
-              style="
-                display: flex;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-              "
-            >
-              <!-- <img src="../../assets/images/TradieSafe_logo.png" /> -->
-              <div class="w-100 d-flex" style="flex-direction: column">
-                <h4 class="mb-0"></h4>
-                <div class="font-login">
-                  <div v-if="app_image_url">
-                    <span>
-                      <img v-bind:src="app_image_url" style="width: 130px" />
-                    </span>
-                  </div>
-                  <div v-else-if="app_image_url == ''">
-                    <span class="font-base-app text-center">
-                      {{ application_name }}
-                    </span>
-                  </div>
-                  <div v-else>
-                    <span class="font-base-app text-center">
-                      {{ application_name }}
-                    </span>
-                  </div>
-                </div>
-                <span class="font-sign-in-msg">{{
-                  $t("forgot_password")
-                }}</span>
-              </div>
+          <div class="login-box-custom pa-6">
+            <!-- ================= LOGO ================= -->
+            <div class="text-center mb-4">
+              <img v-if="app_image_url" :src="app_image_url" width="130" />
+              <h3 v-else>{{ application_name }}</h3>
             </div>
 
-            <v-divider></v-divider>
-            <div>
-              <v-form ref="form" v-model="valid" class="w-100">
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" md="12">
-                      <v-tooltip :text="this.$t('email')" location="bottom">
-                        <template v-slot:activator="{ props }">
-                          <v-text-field
-                            v-model="userdata.email"
-                            v-bind="props"
-                            v-bind:class="[this.sel_lang == 'ar' ? 'rtl' : '']"
-                            :rules="[...fieldRules, ...emailRules]"
-                            v-bind:label="$t('email')"
-                            @keyup.enter="requestResetPassword"
-                            required
-                            variant="outlined"
-                            density="compact"
-                          ></v-text-field>
-                        </template>
-                      </v-tooltip>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      md="12"
-                      class="error_message pt-0"
-                      v-if="error_message && show_error"
-                      ><v-icon style="font-size: 18px" class="mr-1"
-                        >mdi mdi-close-circle-outline</v-icon
-                      >{{ error_message }}</v-col
-                    >
-                  </v-row>
-                  <div class="divider" />
-                  <div class="d-flex align-items-center mt-2">
-                    <div class="ml-auto w-100">
-                      <v-tooltip bottom>
-                        <template v-slot:activator="{ on }">
-                          <div v-on="on" class="d-inline-block w-100">
-                            <v-btn
-                              :disabled="
-                                btnloading || valid == false || !userdata.email
-                              "
-                              class="btn-theme-blue w-100"
-                              small
-                              @click="requestResetPassword"
-                              >{{ $t("submit") }}
-                            </v-btn>
-                          </div>
-                        </template>
-                        <span>{{ $t("submit") }}</span>
-                      </v-tooltip>
-                    </div>
-                  </div>
-                </v-container>
-                <div class="row text-center">
-                  <div :disabled="isDisabled" class="col-md-12">
-                    <div class="f-13 mr-4 text-end">
-                      <router-link to="/" class="a-underline">
-                        <v-icon style="font-size: 18px" color="#0d6efd"
-                          >mdi mdi-keyboard-return</v-icon
-                        >
-                        {{ $t("sign_in") }}
-                      </router-link>
-                    </div>
-                  </div>
-                </div>
-              </v-form>
+            <v-divider class="mb-4" />
+
+            <!-- ================= TITLE ================= -->
+            <div class="section-label text-center mb-3">
+              {{ $t("forgot_password") }}
             </div>
+
+            <!-- ================= FORM ================= -->
+            <v-form ref="form" v-model="valid">
+              <!-- EMAIL -->
+              <div class="form-label">
+                {{ $t("email") }}
+              </div>
+
+              <v-text-field
+                v-model="userdata.email"
+                :rules="[...fieldRules, ...emailRules]"
+                :class="[
+                  sel_lang == 'ar' ? 'rtl styled-field' : 'styled-field',
+                ]"
+                density="compact"
+                variant="outlined"
+                hide-details="auto"
+                prepend-inner-icon="mdi-email-outline"
+                :placeholder="$t('email')"
+                @keyup.enter="requestResetPassword"
+              />
+
+              <!-- ERROR MESSAGE -->
+              <div
+                v-if="error_message && show_error"
+                class="error_message mt-2"
+              >
+                <v-icon size="16" class="mr-1">
+                  mdi-close-circle-outline
+                </v-icon>
+                {{ error_message }}
+              </div>
+
+              <!-- SUBMIT BUTTON -->
+              <v-btn
+                block
+                class="mt-4 sign-in-btn"
+                :loading="btnloading"
+                :disabled="btnloading || valid == false || !userdata.email"
+                height="44"
+                @click="requestResetPassword"
+              >
+                <span class="btn-text">
+                  {{ $t("submit") }}
+                </span>
+                <v-icon class="ml-2" size="18"> mdi-arrow-right </v-icon>
+              </v-btn>
+
+              <!-- BACK TO LOGIN -->
+              <div class="text-center mt-4">
+                <router-link to="/" class="forgot-link">
+                  <v-icon size="16" class="mr-1"> mdi-keyboard-return </v-icon>
+                  {{ $t("sign_in") }}
+                </router-link>
+              </div>
+            </v-form>
           </div>
         </div>
       </transition>
@@ -253,4 +219,125 @@ export default {
   color: red;
   font-style: italic;
 }
+/* ===== CARD STYLE (applied inside login-box-custom) ===== */
+
+.login-box-custom {
+  width: 410px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== LABEL SYSTEM ===== */
+
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* ===== INPUT STYLE ===== */
+
+.styled-field :deep(.v-field) {
+  border-radius: 10px;
+  background: #f9fafb;
+  transition: box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.styled-field :deep(.v-field--focused) {
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.styled-field :deep(.v-field__outline) {
+  color: #e5e7eb;
+}
+
+.styled-field :deep(.v-field--focused .v-field__outline) {
+  color: #3b82f6;
+}
+
+.styled-field :deep(.v-field__prepend-inner .v-icon) {
+  color: #9ca3af;
+  font-size: 18px;
+}
+
+.styled-field :deep(.v-field--focused .v-field__prepend-inner .v-icon) {
+  color: #3b82f6;
+}
+
+.styled-field :deep(input::placeholder) {
+  color: #d1d5db;
+  font-size: 14px;
+}
+
+/* ===== BUTTON ===== */
+
+.sign-in-btn {
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%) !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.sign-in-btn:hover:not(:disabled) {
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+  transform: translateY(-1px);
+}
+
+.sign-in-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.sign-in-btn:disabled {
+  background: linear-gradient(135deg, #9ca3af 0%, #d1d5db 100%) !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+}
+
+.btn-text {
+  font-size: 14px;
+}
+
+/* ===== LINK ===== */
+
+.forgot-link {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #3b82f6;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: color 0.15s;
+}
+
+.forgot-link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* ===== ERROR ===== */
+
+.error_message {
+  color: #dc2626;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+}
+
 </style>
