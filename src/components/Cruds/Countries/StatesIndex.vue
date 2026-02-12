@@ -151,7 +151,6 @@ export default {
   data: () => ({
     states: [],
     selected_country_details: [],
-    isDisabled: false,
     headers: [
       {
         title: "Name",
@@ -172,7 +171,6 @@ export default {
       icon: "material-symbols-outlined",
     },
     search: "",
-    valid: false,
     message: "",
     countryname: "",
     initval: true,
@@ -198,7 +196,7 @@ export default {
       this.dialogMessage = message;
       return this.$refs.confirmationDialog.open();
     },
-    
+
     fetchstates() {
       this.initval = true;
       this.$axios
@@ -214,7 +212,7 @@ export default {
           console.log(" error" + err);
         });
     },
-    
+
     async deletestate(id) {
       const result = await this.showConfirmation(
         "Confirm",
@@ -244,52 +242,6 @@ export default {
           this.$toast.error(this.array_data);
           console.log("this error" + err);
         });
-    },
-
-    // PDF download
-    pdfgen: function (states) {
-      var pdfMake = require("pdfmake/build/pdfmake.js");
-      if (pdfMake.vfs == undefined) {
-        var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
-      }
-      var docDefinition = {
-        content: [
-          { text: "System Parameter Report", style: "header" },
-          this._table(states, [
-            "parameter_name",
-            "parameter_value",
-            "description",
-            "status",
-          ]),
-        ],
-      };
-
-      pdfMake.createPdf(docDefinition).download("System Parameter.pdf");
-    },
-
-    _table(data, cols) {
-      return {
-        table: {
-          headerRows: 1,
-          body: this._buildTableBody(data, cols),
-        },
-      };
-    },
-
-    _buildTableBody(data, cols) {
-      let body = [];
-      body.push(cols);
-      data.forEach(function (row) {
-        // reg obj doesn't have forEach
-        let dataRow = [];
-        cols.forEach(function (column) {
-          dataRow.push(row[column].toString());
-        });
-        body.push(dataRow);
-      });
-
-      return body;
     },
   },
 };
