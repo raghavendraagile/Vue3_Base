@@ -1,5 +1,10 @@
 <template>
   <div class="main-20">
+    <confirmation-dialog
+      ref="confirmationDialog"
+      :title="dialogTitle"
+      :message="dialogMessage"
+    ></confirmation-dialog>
     <!-- HEADER -->
     <div
       class="row my-3 align-items-center component_app_bar position-relative"
@@ -27,9 +32,7 @@
 
       <!-- ADD BUTTON -->
       <div class="add_new_button">
-        <router-link
-          :to="{ name: 'email_template_amend' }"
-        >
+        <router-link :to="{ name: 'email_template_amend' }">
           <v-btn size="small" class="green_btn_color">
             {{ $t("add_new") }}
           </v-btn>
@@ -58,35 +61,22 @@
               <v-icon class="mr-2">mdi-pencil-outline</v-icon>
             </router-link>
 
-            <v-icon color="error" @click="deleteItem(item.id)">
+            <v-icon color="error" @click="deleteEmailTemplate(item.id)">
               mdi-trash-can-outline
             </v-icon>
           </td>
         </tr>
       </template>
     </v-data-table>
-
-    <!-- CONFIRM DIALOG -->
-    <ConfirmDialog
-      :show="showConfirmDialog"
-      :cancel="cancel"
-      :confirm="confirm"
-      :id="delete_id"
-      :title="$t('confirm')"
-      :description="$t('delete_confirmation')"
-    />
   </div>
 </template>
 
 <script>
-import PageTitle from "../../CustomComponents/PageTitle.vue";
-import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
-
 export default {
-  components: { PageTitle, ConfirmDialog },
-
   data() {
     return {
+      dialogMessage: "",
+      dialogTitle: "",
       search: "",
       email_templates: [],
       initval: true,
@@ -98,8 +88,6 @@ export default {
         color: "google_icon_gradient",
         icon: "material-symbols-outlined",
       },
-
-      sel_lang: "",
     };
   },
 
@@ -126,6 +114,11 @@ export default {
   },
 
   methods: {
+    showConfirmation(title, message) {
+      this.dialogTitle = title;
+      this.dialogMessage = message;
+      return this.$refs.confirmationDialog.open();
+    },
     fetchEmailTemplates() {
       this.initval = true;
 
@@ -142,16 +135,13 @@ export default {
         });
     },
 
-    deleteItem(id) {
-      this.delete_id = id;
-      this.showConfirmDialog = true;
-    },
+    async deleteEmailTemplate(id) {
+      const result = await this.showConfirmation(
+        "Confirm",
+        "Are you sure you want to delete this email template ?"
+      );
 
-    cancel() {
-      this.showConfirmDialog = false;
-    },
-
-    confirm(id) {
+      if (!result) return;
       this.$axios
         .delete("emailtemplates/" + id)
         .then((res) => {

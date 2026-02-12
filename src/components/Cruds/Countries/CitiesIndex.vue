@@ -1,5 +1,10 @@
 <template>
   <div class="main-20">
+    <confirmation-dialog
+      ref="confirmationDialog"
+      :title="dialogTitle"
+      :message="dialogMessage"
+    ></confirmation-dialog>
     <div
       flat
       color="white"
@@ -101,7 +106,7 @@
                 </template>
               </v-tooltip>
             </router-link>
-            <span @click="deleteItem(props.item.id)">
+            <span @click="deletecity(props.item.id)">
               <v-tooltip :text="$t('delete')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-icon
@@ -119,25 +124,14 @@
         </tr>
       </template>
     </v-data-table>
-    <ConfirmDialog
-      :show="showdeleteDialog"
-      :cancel="cancel"
-      :confirm="confirm"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('delete_record')"
-    />
   </div>
 </template>
 
 <script>
-import PageTitle from "../../CustomComponents/PageTitle.vue";
-import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
 export default {
-  components: {
-    PageTitle,
-    ConfirmDialog,
-  },
   data: () => ({
+    dialogMessage: "",
+  dialogTitle: "",
     cities: [],
     selected_country_details: [],
     showdeleteDialog: false,
@@ -201,12 +195,10 @@ export default {
     this.fetchcities();
   },
   methods: {
-    cancel() {
-      this.showdeleteDialog = false;
-    },
-    confirm(id) {
-      this.deleteConfirm(id);
-      this.showdeleteDialog = false;
+    showConfirmation(title, message) {
+      this.dialogTitle = title;
+      this.dialogMessage = message;
+      return this.$refs.confirmationDialog.open();
     },
     fetchcities() {
       this.initval = true;
@@ -229,14 +221,13 @@ export default {
           console.log(" error" + err);
         });
     },
-    deleteConfirm() {
-      this.deletecities(this.delete_id);
-    },
-    deleteItem($id) {
-      this.delete_id = $id;
-      this.showdeleteDialog = true;
-    },
-    deletecities(id) {
+    async deletecity(id) {
+      const result = await this.showConfirmation(
+        "Confirm",
+        "Are you sure you want to delete this city ?"
+      );
+      if (!result) return;
+
       this.$axios
         .post("delete_cities/" + id)
         .then((res) => {

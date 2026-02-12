@@ -1,5 +1,10 @@
 <template>
   <div class="main-20">
+    <confirmation-dialog
+    ref="confirmationDialog"
+    :title="dialogTitle"
+    :message="dialogMessage"
+  ></confirmation-dialog>
     <div
       flat
       color="white"
@@ -58,7 +63,7 @@
             <v-btn
               class="hover_shine btn mr-2"
               :disabled="isDisabled"
-              @click="updateCountryStatus(props.item.id)"
+              @click="statusUpdate(props.item.id)"
               size="small"
               v-bind:color="[
                 props.item.is_whitelisted == 1 ? 'success' : 'warning',
@@ -117,7 +122,7 @@
                 <span>{{ $t("states") }}</span>
               </v-tooltip>
             </router-link>
-            <span @click="deleteItem(props.item.id)">
+            <span @click="deletecountry(props.item.id)">
               <v-tooltip :text="$t('delete')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-icon
@@ -135,37 +140,15 @@
         </tr>
       </template>
     </v-data-table>
-    <ConfirmDialog
-      :show="showdeleteDialog"
-      :cancel="cancel"
-      :confirm="confirm"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('delete_record')"
-    />
-    <ConfirmDialog
-      :show="showStatusDialog"
-      :cancel="cancelStatus"
-      :confirm="confirmStatus"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('status_change')"
-    />
   </div>
 </template>
 
 <script>
-import PageTitle from "../../CustomComponents/PageTitle.vue";
-import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
 export default {
-  components: {
-    PageTitle,
-    ConfirmDialog,
-  },
   data: () => ({
+    dialogMessage: "",
+    dialogTitle: "",
     countries: [],
-    showdeleteDialog: false,
-    showStatusDialog: false,
-    delete_id: null,
-    status_id: null,
     isDisabled: false,
     google_icon: {
       icon_name: "globe_asia",
@@ -173,17 +156,8 @@ export default {
       icon: "material-symbols-outlined",
     },
     search: "",
-    valid_error: false,
-    valid_success: false,
-    successmessage: "",
     valid: false,
     message: "",
-    json_fields: [
-      {
-        label: "Name",
-        field: "name",
-      },
-    ],
     initval: true,
   }),
   mounted() {
@@ -226,13 +200,12 @@ export default {
     },
   },
   methods: {
-    cancel() {
-      this.showdeleteDialog = false;
+    showConfirmation(title, message) {
+      this.dialogTitle = title;
+      this.dialogMessage = message;
+      return this.$refs.confirmationDialog.open();
     },
-    confirm(id) {
-      this.deleteConfirm(id);
-      this.showdeleteDialog = false;
-    },
+    
     fetchcountries() {
       this.initval = true;
       this.$axios
@@ -248,14 +221,14 @@ export default {
           console.log(" error" + err);
         });
     },
-    deleteConfirm() {
-      this.deletecountries(this.delete_id);
-    },
-    deleteItem($id) {
-      this.delete_id = $id;
-      this.showdeleteDialog = true;
-    },
-    deletecountries(id) {
+
+    async deletecountry(id) {
+      const result = await this.showConfirmation(
+        "Confirm",
+        "Are you sure you want to delete this country ?"
+      );
+      if (!result) return;
+
       this.$axios
         .post("delete_countries/" + id)
         .then((res) => {
@@ -279,21 +252,16 @@ export default {
           console.log("this error" + err);
         });
     },
-    cancelStatus() {
-      this.showStatusDialog = false;
-    },
-    confirmStatus() {
-      this.statusUpdate();
-      this.showStatusDialog = false;
-    },
-    updateCountryStatus(id) {
-      this.status_id = id;
-      this.showStatusDialog = true;
-    },
-    statusUpdate() {
+    async statusUpdate(id) {
+      const result = await this.showConfirmation(
+        "Confirm",
+        "Are you sure you want to update the status of this country ?"
+      );
+      if (!result) return;
+
       this.$axios
         .post("update_country_status", {
-          id: this.status_id,
+          id: id,
         })
         .then((res) => {
           if (Array.isArray(res.data.message)) {
