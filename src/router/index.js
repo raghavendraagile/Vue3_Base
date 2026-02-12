@@ -253,7 +253,18 @@ const routes = [
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Roles/RolesAssign.vue"),
   },
-  
+  {
+    path: "/documents",
+    name: "documents",
+    beforeEnter: guardMyroute,
+    component: () => import("../components/Cruds/Documents/IndexPage.vue"),
+  },
+  {
+    path: "/documents_amend",
+    name: "documents_amend",
+    beforeEnter: guardMyroute,
+    component: () => import("../components/Cruds/Documents/DocumentsAmend.vue"),
+  },
 ];
 
 const router = createRouter({
