@@ -1,10 +1,10 @@
 <template>
   <div class="main-20">
     <confirmation-dialog
-    ref="confirmationDialog"
-    :title="dialogTitle"
-    :message="dialogMessage"
-  ></confirmation-dialog>
+      ref="confirmationDialog"
+      :title="dialogTitle"
+      :message="dialogMessage"
+    ></confirmation-dialog>
     <div
       flat
       color="white"
@@ -156,7 +156,6 @@ export default {
       icon: "material-symbols-outlined",
     },
     search: "",
-    valid: false,
     message: "",
     initval: true,
   }),
@@ -205,7 +204,7 @@ export default {
       this.dialogMessage = message;
       return this.$refs.confirmationDialog.open();
     },
-    
+
     fetchcountries() {
       this.initval = true;
       this.$axios

@@ -135,7 +135,6 @@ export default {
       dialogMessage: "",
       dialogTitle: "",
       user: null,
-
       permissions: [],
     };
   },

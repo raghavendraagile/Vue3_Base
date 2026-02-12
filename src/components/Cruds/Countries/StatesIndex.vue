@@ -151,9 +151,6 @@ export default {
   data: () => ({
     states: [],
     selected_country_details: [],
-    showdeleteDialog: false,
-    delete_id: null,
-    status_id: null,
     isDisabled: false,
     headers: [
       {
@@ -175,18 +172,9 @@ export default {
       icon: "material-symbols-outlined",
     },
     search: "",
-    valid_error: false,
-    valid_success: false,
-    successmessage: "",
     valid: false,
     message: "",
     countryname: "",
-    json_fields: [
-      {
-        label: "Name",
-        field: "name",
-      },
-    ],
     initval: true,
     dialogMessage: "",
     dialogTitle: "",

@@ -174,25 +174,9 @@ export default {
       icon: "material-symbols-outlined",
     },
     search: "",
-    valid_error: false,
-    valid_success: false,
-    successmessage: "",
     valid: false,
     message: "",
-    json_fields: [
-      {
-        label: "Name",
-        field: "parameter_name",
-      },
-      {
-        label: "Value",
-        field: "parameter_value",
-      },
-      {
-        label: "Description",
-        field: "description",
-      },
-    ],
+  
   }),
   mounted() {
     this.fetchSystemParameters();

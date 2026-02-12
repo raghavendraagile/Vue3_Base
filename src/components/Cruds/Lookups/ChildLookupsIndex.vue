@@ -156,10 +156,6 @@ export default {
     dialogMessage: "",
     dialogTitle: "",
     lookup: [],
-    showdeleteDialog: false,
-    showStatusDialog: false,
-    delete_id: null,
-    status_id: null,
     isDisabled: false,
     headers: [
       {
@@ -193,26 +189,9 @@ export default {
       icon: "material-symbols-outlined",
     },
     search: "",
-    valid_error: false,
-    valid_success: false,
-    successmessage: "",
     initval: false,
     valid: false,
     message: "",
-    json_fields: [
-      {
-        label: "Shortname",
-        field: "shortname",
-      },
-      {
-        label: "Longname",
-        field: "longname",
-      },
-      {
-        label: "Status",
-        field: "status",
-      },
-    ],
   }),
   watch: {
     "$route.query.slug": {

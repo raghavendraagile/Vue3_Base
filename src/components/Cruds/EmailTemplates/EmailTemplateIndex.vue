@@ -80,8 +80,6 @@ export default {
       search: "",
       email_templates: [],
       initval: true,
-      showConfirmDialog: false,
-      delete_id: null,
 
       google_icon: {
         icon_name: "dynamic_feed",
@@ -157,9 +155,6 @@ export default {
         })
         .catch(() => {
           this.$toast.error(this.$t("something_went_wrong"));
-        })
-        .finally(() => {
-          this.showConfirmDialog = false;
         });
     },
   },

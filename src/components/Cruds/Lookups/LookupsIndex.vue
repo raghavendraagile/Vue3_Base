@@ -146,20 +146,6 @@
         </tr>
       </template>
     </v-data-table>
-    <ConfirmDialog
-      :show="showStatusDialog"
-      :cancel="cancelStatus"
-      :confirm="confirmStatus"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('status_change')"
-    />
-    <ConfirmDialog
-      :show="showdeleteDialog"
-      :cancel="cancel"
-      :confirm="confirm"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('delete_record')"
-    />
   </div>
 </template>
 
@@ -169,11 +155,7 @@ export default {
     dialogMessage: "",
     dialogTitle: "",
     lookup: [],
-    showdeleteDialog: false,
     loader: false,
-    showStatusDialog: false,
-    delete_id: null,
-    status_id: null,
     isDisabled: false,
     headers: [
       {
@@ -207,26 +189,8 @@ export default {
       icon: "material-symbols-outlined",
     },
     search: "",
-    valid_error: false,
-    valid_success: false,
-    successmessage: "",
-    valid: false,
     initval: false,
     message: "",
-    json_fields: [
-      {
-        label: "Shortname",
-        field: "shortname",
-      },
-      {
-        label: "Longname",
-        field: "longname",
-      },
-      {
-        label: "Status",
-        field: "status",
-      },
-    ],
   }),
   mounted() {
     this.initialize();

@@ -1,10 +1,14 @@
 <template>
   <div>
+    <confirmation-dialog
+      ref="confirmationDialog"
+      :title="dialogTitle"
+      :message="dialogMessage"
+    ></confirmation-dialog>
     <div
       flat
       color="white"
       class="row my-3 align-items-center component_app_bar position-relative"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
     >
       <page-title
         class="col-md-3"
@@ -123,40 +127,17 @@
         </tr>
       </template>
     </v-data-table>
-    <ConfirmDialog
-      :show="showStatusDialog"
-      :cancel="cancelStatus"
-      :confirm="confirmStatus"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('status_change')"
-    />
-    <ConfirmDialog
-      :show="showConfirmDialog"
-      :cancel="cancel"
-      :confirm="confirm"
-      :id="delete_id"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('delete_confirmation')"
-    />
   </div>
 </template>
 
 <script>
-import PageTitle from "../../CustomComponents/PageTitle.vue";
-import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
 export default {
-  components: {
-    PageTitle,
-    ConfirmDialog,
-  },
   data: () => ({
+    dialogMessage: "",
+    dialogTitle: "",
     allUsers: [],
     initval: false,
-    status_id: null,
     isDisabled: false,
-    showConfirmDialog: false,
-    delete_id: "",
-    sel_lang: "",
     google_icon: {
       icon_name: "group",
       color: "google_icon_gradient",
@@ -176,18 +157,10 @@ export default {
     console.log("asdasd", this.user);
   },
   mounted() {
-    this.selectedLang();
     this.fetchUsers();
   },
   watch: {
-    "$i18n.locale"(newLocale) {
-      if (newLocale === "ar") {
-        this.sel_lang = "ar";
-      } else {
-        ("");
-        this.sel_lang = "en";
-      }
-    },
+   
   },
   computed: {
     headers() {
@@ -243,8 +216,10 @@ export default {
   },
 
   methods: {
-    selectedLang() {
-      this.sel_lang = localStorage.getItem("pref_lang") || "en";
+    showConfirmation(title, message) {
+      this.dialogTitle = title;
+      this.dialogMessage = message;
+      return this.$refs.confirmationDialog.open();
     },
     redirectView(slug) {
       this.$router.push({
@@ -255,18 +230,13 @@ export default {
         },
       });
     },
-    cancel() {
-      this.showConfirmDialog = false;
-    },
-    confirm(id) {
-      this.deleteConfirm(id);
-      this.showConfirmDialog = false;
-    },
-    deleteItem(template_id) {
-      this.delete_id = template_id;
-      this.showConfirmDialog = true;
-    },
-    deleteConfirm(id) {
+    async deleteConfirm(id) {
+      const result = await this.showConfirmation(
+        "Confirm",
+        "Are you sure you want to delete this user ?"
+      );
+
+      if (!result) return;
       this.$axios
         .post("delete_draft_user/" + id)
         .then((res) => {
@@ -289,14 +259,6 @@ export default {
           this.$toast.error(this.$t("something_went_wrong"));
           console.log("this error" + err);
         });
-    },
-    cancelStatus() {
-      this.showStatusDialog = false;
-    },
-    confirmStatus() {
-      this.initval = true;
-      this.showStatusDialog = false;
-      this.statusUpdate();
     },
     fetchUsers() {
       this.initval = true;
@@ -321,10 +283,6 @@ export default {
           console.log("error" + err);
         });
     },
-    changeStatus(id) {
-      this.status_id = id;
-      this.showStatusDialog = true;
-    },
     routereditusers(slug, empno, role) {
       if (role) {
         return;
@@ -348,10 +306,16 @@ export default {
       }
     },
 
-    statusUpdate() {
+    async changeStatus(id) {
+      const result = await this.showConfirmation(
+        "Confirm",
+        "Are you sure you want to change the status of this user ?"
+      );
+
+      if (!result) return;
       this.$axios
         .post("updateuserstatus", {
-          id: this.status_id,
+          id: id,
         })
         .then((res) => {
           if (Array.isArray(res.data.message)) {
@@ -372,7 +336,7 @@ export default {
           }
         })
         .catch((err) => {
-          this.$toast.success(this.$t("something_went_wrong"));
+          this.$toast.error(this.$t("something_went_wrong"));
           console.log("this error" + err);
         });
     },

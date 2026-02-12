@@ -9,7 +9,6 @@
       flat
       color="white"
       class="row my-3 align-items-center component_app_bar position-relative"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
     >
       <page-title
         class="col-md-3"
@@ -117,14 +116,6 @@
         </tr>
       </template>
     </v-data-table>
-    <ConfirmDialog
-      :show="showConfirmDialog"
-      :cancel="cancel"
-      :confirm="confirm"
-      :id="delete_id"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('delete_confirmation')"
-    />
   </div>
 </template>
 
@@ -137,7 +128,6 @@ export default {
     menu: [],
     initval: true,
     message: "",
-    delete_id: null,
     google_icon: {
       icon_name: "menu",
       color: "google_icon_gradient",
@@ -185,14 +175,7 @@ export default {
     dialog(val) {
       val || this.close();
     },
-    "$i18n.locale"(newLocale) {
-      if (newLocale === "ar") {
-        this.sel_lang = "ar";
-      } else {
-        ("");
-        this.sel_lang = "en";
-      }
-    },
+    
   },
 
   created() {
