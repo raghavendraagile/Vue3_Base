@@ -59,10 +59,7 @@
                     rows="2"
                     v-model="lookup.description"
                     v-bind="props"
-                    :rules="fieldRules"
                     v-bind:label="$t('description')"
-                    required
-                    class="required_field"
                     variant="outlined"
                     maxlength="100"
                     counter="true"
@@ -230,6 +227,11 @@ export default {
           })
           .catch((err) => {
             console.log(err);
+            this.$toast.error(err.response.data.errordata || this.$t("something_went_wrong"));
+          })
+          .finally(() => {
+            this.isBtnLoading = false;
+            this.isDisabled = false;
           });
       } else {
         //alert("Form is Invalid");
