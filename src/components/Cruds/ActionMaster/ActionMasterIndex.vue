@@ -4,6 +4,7 @@
     :title="dialogTitle"
     :message="dialogMessage"
   ></confirmation-dialog>
+
   <div class="main-20">
     <div
       flat
@@ -31,8 +32,10 @@
           </template>
         </v-tooltip>
       </div>
-
-      <div class="col-md-4 d-flex justify-content-end">
+      <div
+        class="col-md-4 d-flex justify-content-end"
+        v-if="hasPermission('ADD ACTION MASTER')"
+      >
         <v-tooltip text="Add New" location="bottom">
           <template #activator="{ props }">
             <v-btn
@@ -131,14 +134,40 @@ export default {
 
       dialogMessage: "",
       dialogTitle: "",
+      user: null,
+
+      permissions: [],
     };
   },
 
   mounted() {
+    this.user = JSON.parse(localStorage.getItem("user_data"));
+    this.loadPermissions(this.user.role_id);
     this.fetchActions();
   },
 
   methods: {
+    async loadPermissions(roleId) {
+
+      try {
+        const res = await this.$axios.get("check_action_permission", {
+          params: {
+            role_id: roleId,
+          },
+        });
+
+        if (res.data.status === "S") {
+          this.permissions = res.data.permissions;
+        }
+      } catch (error) {
+        this.permissions = [];
+      }
+    },
+
+    hasPermission(actionName) {
+      return this.permissions.includes(actionName);
+    },
+
     showConfirmation(title, message) {
       this.dialogTitle = title;
       this.dialogMessage = message;
