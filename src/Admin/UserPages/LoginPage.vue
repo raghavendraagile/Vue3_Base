@@ -15,7 +15,6 @@
 
         <!-- ================= LOGIN FORM ==================== -->
         <v-form v-if="step === 'login'" ref="form" v-model="valid">
-
           <div class="form-label">Email Address</div>
           <v-text-field
             v-model="userdata.email"
@@ -33,7 +32,9 @@
           <v-text-field
             v-model="userdata.password"
             :type="showPass ? 'text' : 'password'"
-            :append-inner-icon="showPass ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+            :append-inner-icon="
+              showPass ? 'mdi-eye-outline' : 'mdi-eye-off-outline'
+            "
             @click:append-inner="showPass = !showPass"
             placeholder="••••••••••••"
             density="compact"
@@ -46,10 +47,7 @@
           />
 
           <div class="d-flex justify-end mt-1 mb-1">
-            <router-link
-              :to="{ name: 'forgot_password' }"
-              class="forgot-link"
-            >
+            <router-link :to="{ name: 'forgot_password' }" class="forgot-link">
               {{ $t("recoverpassword") }}
             </router-link>
           </div>
@@ -65,38 +63,63 @@
             <span class="btn-text">Sign In</span>
             <v-icon class="ml-2" size="18">mdi-arrow-right</v-icon>
           </v-btn>
-
         </v-form>
 
         <!-- ================= OTP SECTION =================== -->
-        <div v-if="step === 'otp'" class="text-center">
-          <p class="mb-3">
-            OTP sent to <b>{{ userdata.email }}</b>
-          </p>
-
-          <v-otp-input
-            v-model:value="verification_code"
-            :num-inputs="6"
-            separator=" "
-            input-classes="otp-input"
-            :should-auto-focus="true"
-          />
-
-          <!-- TIMER -->
-          <div class="mt-3 grey--text">
-            <span v-if="timecount > 0"> Resend in {{ timecount }}s </span>
-
-            <v-btn v-else size="small" text @click="resendLoginOtp">
-              Resend OTP
-            </v-btn>
+        <div v-if="step === 'otp'" class="otp-wrapper">
+          <div class="otp-header text-center">
+            <div class="section-label">Verification Code</div>
+            <div class="otp-subtext">
+              OTP sent to <strong>{{ userdata.email }}</strong>
+            </div>
           </div>
 
-          <div class="d-flex mt-4">
-            <v-btn small text @click="step = 'login'"> Back </v-btn>
+          <div class="otp-input-row">
+            <v-otp-input
+              v-model:value="verification_code"
+              :num-inputs="6"
+              separator=" "
+              input-classes="otp-input"
+              :should-auto-focus="true"
+            />
+          </div>
+
+          <!-- TIMER -->
+          <div class="resend-section">
+            <div v-if="timecount > 0" class="countdown-row">
+              <span class="countdown-dot"></span>
+              <span class="time_data">
+                Resend in <strong>{{ timecount }}</strong
+                >s
+              </span>
+            </div>
+
+            <div v-else class="resend-btn-wrapper">
+              <v-btn
+                variant="text"
+                size="small"
+                class="resend-btn"
+                @click="resendLoginOtp"
+              >
+                Resend OTP
+              </v-btn>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <v-btn
+              size="small"
+              class="cancel-btn"
+              variant="outlined"
+              @click="step = 'login'"
+            >
+              Back
+            </v-btn>
 
             <v-spacer />
 
             <v-btn
+              class="submit-btn"
               color="green"
               :loading="isBtnLoading"
               :disabled="verification_code.length !== 6"
@@ -137,7 +160,7 @@ export default {
   },
 
   computed: {
-    emailRules() { 
+    emailRules() {
       return [
         (v) => !!v || "Email is required",
         (v) =>
@@ -371,4 +394,126 @@ export default {
 .btn-text {
   font-size: 14px;
 }
+/* ── OTP WRAPPER ── */
+.otp-wrapper {
+  margin-top: 12px;
+}
+
+.otp-header {
+  margin-bottom: 16px;
+}
+
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 6px;
+}
+
+.otp-subtext {
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+/* ── OTP INPUT STYLE (Premium Style) ── */
+:deep(.otp-input) {
+  width: 44px !important;
+  height: 48px !important;
+  border: 2px solid #d1d9f0 !important;
+  border-radius: 10px !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  color: #1a1f36 !important;
+  background: #f8faff !important;
+  text-align: center !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease !important;
+  outline: none !important;
+}
+
+:deep(.otp-input:focus) {
+  border-color: #4f6ef7 !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.12) !important;
+}
+
+.otp-input-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+/* ── Countdown ── */
+.resend-section {
+  margin-bottom: 18px;
+}
+
+.countdown-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.countdown-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4f6ef7;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.time_data {
+  font-size: 0.82rem;
+  color: #6b7280;
+}
+
+.time_data strong {
+  color: #4f6ef7;
+  font-weight: 700;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.75); }
+}
+
+/* ── Resend Button ── */
+.resend-btn-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.resend-btn {
+  font-size: 0.82rem !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-weight: 500 !important;
+  color: #4f6ef7 !important;
+}
+
+/* ── Action Row ── */
+.action-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f2f8;
+}
+
+.cancel-btn {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+}
+
+.submit-btn {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  padding: 0 20px !important;
+}
+
 </style>
