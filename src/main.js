@@ -7,26 +7,14 @@ import "./assets/css/global.css";
 import { createI18n } from "vue-i18n";
 import { languages, defaultLocale } from "./assets/i18n/index.js";
 
-import PageTitle from "./components/CustomComponents/PageTitle.vue";
-import ContentLoader from "./components/CustomComponents/ContentLoader.vue";
-import ConfirmationDialog from "./components/CustomComponents/ConfirmationDialog.vue";
-import NoDataFound from "./components/CustomComponents/NoDataFound.vue";
-import DocumentUpload from "./components/CustomComponents/DocumentUpload.vue";
-
 import AxiosPlugin from "./axios-plugin.js";
 
 import moment from "moment";
-import VOtpInput from "vue3-otp-input";
-import Vue3IconPicker from "vue3-icon-picker";
-import "vue3-icon-picker/dist/style.css";
-
-import Vue3FormWizard from "vue3-form-wizard";
-import "vue3-form-wizard/dist/style.css";
 
 import { dateMixin } from "./dateMixin.js";
 import mitt from "mitt";
 
-import Toaster from '@meforma/vue-toaster';
+import Toaster from "@meforma/vue-toaster";
 
 // ---------------- VUETIFY ----------------
 import "vuetify/styles";
@@ -36,6 +24,8 @@ import * as directives from "vuetify/directives";
 import * as labsComponents from "vuetify/labs/components";
 import { aliases, mdi } from "vuetify/iconsets/mdi";
 
+// ---------------- GLOBAL COMPONENTS ----------------
+import GlobalComponents from "./global-components";
 
 // ---------------- EVENT BUS ----------------
 const emitter = mitt();
@@ -69,20 +59,14 @@ app.use(vuetify);
 app.use(i18n);
 app.use(AxiosPlugin);
 app.use(Toaster);
-app.use(Vue3FormWizard);
-app.use(Vue3IconPicker, { name: "IconPicker" });
+
+// Register all global components from plugin
+app.use(GlobalComponents);
 
 // ---------------- GLOBAL PROPERTIES ----------------
 app.config.globalProperties.$moment = moment;
 app.config.globalProperties.emitter = emitter;
 
-// ---------------- GLOBAL COMPONENTS ----------------
-app.component("page-title", PageTitle);
-app.component("content-loader", ContentLoader);
-app.component("v-otp-input", VOtpInput);
-app.component("confirmation-dialog", ConfirmationDialog);
-app.component("no-data-found", NoDataFound);
-app.component("document-upload", DocumentUpload);
 // ---------------- GLOBAL MIXINS ----------------
 app.mixin(dateMixin);
 
