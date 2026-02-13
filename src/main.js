@@ -7,11 +7,11 @@ import "./assets/css/global.css";
 import { createI18n } from "vue-i18n";
 import { languages, defaultLocale } from "./assets/i18n/index.js";
 
-import AxiosPlugin from "./axios-plugin.js";
+import AxiosPlugin from "./plugins/axios-plugin.js";
 
 import moment from "moment";
 
-import { dateMixin } from "./dateMixin.js";
+import { dateMixin } from "./plugins/dateMixin.js";
 import mitt from "mitt";
 
 import Toaster from "@meforma/vue-toaster";

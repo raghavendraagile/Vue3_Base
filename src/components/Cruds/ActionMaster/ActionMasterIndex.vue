@@ -1,11 +1,10 @@
 <template>
-  <confirmation-dialog
-    ref="confirmationDialog"
-    :title="dialogTitle"
-    :message="dialogMessage"
-  ></confirmation-dialog>
-
   <div class="main-20">
+    <confirmation-dialog
+      ref="confirmationDialog"
+      :title="dialogTitle"
+      :message="dialogMessage"
+    ></confirmation-dialog>
     <div
       flat
       color="white"
@@ -147,7 +146,6 @@ export default {
 
   methods: {
     async loadPermissions(roleId) {
-
       try {
         const res = await this.$axios.get("check_action_permission", {
           params: {
