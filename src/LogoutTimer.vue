@@ -104,7 +104,7 @@ export default {
       warningInterval: null,
 
       inactiveTime: 30 * 60 * 1000,   // 30 minutes total session in ms
-      warningBefore: 5 * 60 * 1000,     // show popup 5 minutes before logout
+      warningBefore: 2 * 60 * 1000,     // show popup 2 minutes before logout
 
       remainingTime: 0,
       warningCountdown: 0,
