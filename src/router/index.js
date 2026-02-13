@@ -286,6 +286,7 @@ router.push = function (location) {
 };
 
 router.replace = function (location) {
+  
   return originalReplace.call(this, location).catch((error) => {
     if (error.message && error.message.includes("No match")) {
       return originalReplace.call(this, { name: "not-found" });

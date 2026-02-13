@@ -7,70 +7,65 @@ import { apptheme } from "./store/apptheme.js";
   <v-app>
     <content-loader v-if="c_loader"></content-loader>
 
-    <div id="app" v-bind:class="apptheme.theme_type">
-      <v-card>
-        <v-layout>
+    <div id="app" :class="apptheme.theme_type" class="layout-wrapper">
+      <v-card class="app-container">
+        <!-- DEFAULT ADMIN LAYOUT -->
+        <NavigationDrawer
+          :key="componentKey"
+          v-if="isReady && layout === 'default-layout'"
+          :sel_lang="sel_lang"
+        />
 
-          <NavigationDrawer
-            :key="componentKey"
-            v-if="isReady && layout === 'default-layout'"
-            :sel_lang="sel_lang"
-          ></NavigationDrawer>
+        <v-app-bar
+          v-if="isReady && layout === 'default-layout'"
+          color="white"
+          elevation="3"
+          style="border-radius: 0px"
+          :style="sel_lang == 'ar' ? 'direction:rtl' : ''"
+        >
+          <template v-slot:prepend>
+            <v-app-bar-nav-icon
+              v-show="navigation.drawer === false"
+              @click="navigation.setDrawer(!navigation.drawer)"
+            />
 
-          <v-app-bar
-            color="white"
-            elevation="3"
-            style="border-radius: 0px"
-            v-if="isReady && layout === 'default-layout'"
-            v-bind:style="sel_lang == 'ar' ? 'direction:rtl' : ''"
-          >
-            <template v-slot:prepend>
-              <v-app-bar-nav-icon
-                v-show="navigation.drawer === false"
-                @click="navigation.setDrawer(!navigation.drawer)"
-              ></v-app-bar-nav-icon>
+            <div v-show="navigation.drawer === false">
+              <div class="font-login text-center">
+                <div v-if="app_image_url">
+                  <img :src="app_image_url" style="width: 150px" />
+                </div>
 
-              <div v-show="navigation.drawer === false">
-                <div class="font-login text-center">
-                  <div v-if="app_image_url">
-                    <span>
-                      <img v-bind:src="app_image_url" style="width: 150px" />
-                    </span>
-                  </div>
-
-                  <div v-else-if="app_image_url == ''">
-                    <span class="font-base-app text-center">
-                      {{ application_name }}
-                    </span>
-                  </div>
-
-                  <div v-else>
-                    <span class="font-base-app text-center">
-                      {{ application_name }}
-                    </span>
-                  </div>
+                <div v-else>
+                  <span class="font-base-app text-center">
+                    {{ application_name }}
+                  </span>
                 </div>
               </div>
-            </template>
+            </div>
+          </template>
 
-            <v-spacer></v-spacer>
-            <ProfileView @getuserdetails="fetchUserdetails"></ProfileView>
-          </v-app-bar>
+          <v-spacer></v-spacer>
+          <ProfileView @getuserdetails="fetchUserdetails" />
+        </v-app-bar>
 
-          <v-main style="min-height: 100vh">
-            <!-- Add transition -->
-            <router-view v-slot="{ Component }">
-              <transition name="fade" mode="out-in">
-                <component :is="Component" />
-              </transition>
-            </router-view>
-          </v-main>
+        <!-- USERPAGES HEADER -->
+        <header-page v-if="$route.meta.layout === 'userpages'" />
 
-        </v-layout>
+        <!-- MAIN CONTENT (SCROLLABLE AREA) -->
+        <v-main class="main-content">
+          <router-view v-slot="{ Component }">
+            <transition name="fade" mode="out-in">
+              <component :is="Component" />
+            </transition>
+          </router-view>
+        </v-main>
+
+        <!-- USERPAGES FOOTER -->
+        <footer-page v-if="$route.meta.layout === 'userpages'" />
       </v-card>
     </div>
 
-    <LogoutTimer></LogoutTimer>
+    <LogoutTimer />
   </v-app>
 </template>
 
@@ -105,8 +100,6 @@ export default {
       itemsPerPage: 5,
       sel_lang: "",
       c_loader: false,
-
-      // NEW (prevents layout flash)
       isReady: false,
     };
   },
@@ -118,7 +111,6 @@ export default {
   },
 
   created() {
-    // Wait until router fully resolves
     this.$router.isReady().then(() => {
       this.isReady = true;
     });
@@ -186,6 +178,24 @@ export default {
 </script>
 
 <style scoped>
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* existing styles untouched */
+
 nav {
   padding: 30px;
 }
@@ -214,7 +224,6 @@ nav a.router-link-exact-active {
   padding-left: 10px;
 }
 
-/* Transition animation */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.25s ease;
