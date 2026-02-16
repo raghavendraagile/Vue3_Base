@@ -1,12 +1,8 @@
 <template>
   <div class="top-bar-wrapper">
     <div class="top-bar-container">
-      
       <!-- LEFT: LOGO -->
-      <div 
-        class="logo"
-        @click="$router.push('/')"
-      >
+      <div class="logo" @click="$router.push('/')">
         <img src="@/assets/images/headericon.png" alt="ePAF Logo" />
       </div>
 
@@ -19,19 +15,14 @@
           Register →
         </button>
 
-        <button
-          class="btn-filled"
-          @click="$router.push({ name: 'login' })"
-        >
+        <button class="btn-filled" @click="$router.push({ name: 'login' })">
           Login →
         </button>
       </div>
-
     </div>
   </div>
 </template>
 <style scoped>
-
 /* OUTER WRAPPER */
 .top-bar-wrapper {
   width: 100%;
@@ -113,5 +104,4 @@
     font-size: 13px;
   }
 }
-
 </style>

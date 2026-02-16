@@ -54,6 +54,28 @@
                 </template>
               </v-tooltip>
             </v-col>
+            <v-col cols="12" sm="4" md="4" class="pb-0">
+              <v-tooltip text="Group" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-autocomplete
+                    v-bind:label="$t('group')"
+                    item-value="shortname"
+                    item-title="longname"
+                    density="compact"
+                    variant="outlined"
+                    v-bind="props"
+                    index="id"
+                    v-model="documents.group"
+                    class="required_field"
+                    :rules="fieldRules"
+                    :items="doc_group"
+                    outlined
+                    required
+                    dense
+                  ></v-autocomplete>
+                </template>
+              </v-tooltip>
+            </v-col>
             <v-col cols="12" sm="4" md="4">
               <document-upload
                 v-model="documents.file"
@@ -143,10 +165,12 @@ export default {
     loading: false,
     isDisabled: false,
     doc_category: [],
+    doc_group: [],
     documents: {
       id: 0,
       title: "",
       category: "",
+      group: "",
       description: "",
       file: {},
     },
@@ -186,6 +210,7 @@ export default {
                   id: d.id,
                   title: d.title,
                   category: d.category,
+                  group: d.group,
                   description: d.description,
 
                   // VERY IMPORTANT — normalize file
@@ -231,6 +256,19 @@ export default {
         })
         .then((response) => {
           this.doc_category = response.data.lookup_details;
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+        });
+      this.$axios
+        .get("fetchlookup", {
+          params: {
+            lookup_type: "DOCUMENT_GROUP",
+          },
+        })
+        .then((response) => {
+          this.doc_group = response.data.lookup_details;
         })
         .catch((err) => {
           this.$toast.error(this.$t("something_went_wrong"));
