@@ -394,5 +394,6 @@
   "blacklisted": "Blacklisted",
   "country_code": "Country Code",
   "edit_action": "Edit Action",
-  "create_action": "Create Action"
+  "create_action": "Create Action",
+  "group": "Group"
 }
