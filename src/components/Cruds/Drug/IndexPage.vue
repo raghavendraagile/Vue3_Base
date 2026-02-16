@@ -7,7 +7,7 @@
     >
       <page-title
         class="col-md-3"
-        heading="Documents"
+        heading="Drug"
         :google_icon="google_icon"
       ></page-title>
       <div class="col-md-4">
@@ -31,7 +31,7 @@
       <div class="add_new_button">
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
-            <router-link :to="{ name: 'documents_amend' }" style="color: white">
+            <router-link :to="{ name: 'drug_amend' }" style="color: white">
               <v-btn size="small" class="mb-2 create-btn" v-bind="props">
                 {{ $t("add_new") }}
               </v-btn>
@@ -42,7 +42,7 @@
     </div>
     <v-data-table
       :headers="headers"
-      :items="documents"
+      :items="drug"
       :search="search"
       :loading="initval"
       v-bind:no-data-text="$t('no_data_available')"
@@ -53,28 +53,37 @@
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
           <td>
-            <span v-if="props.item.title">{{ props.item.title }}</span>
+            <span v-if="props.item.drug_name">{{ props.item.drug_name }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span v-if="props.item.category">{{ props.item.category }}</span>
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
-          <td>
-            <span v-if="props.item.group">{{ props.item.group }}</span>
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
-          <td>
-            <span v-if="props.item.description">{{
-              props.item.description
+            <span v-if="props.item.capsule_strength">{{
+              props.item.capsule_strength
             }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
-
+          <td>
+            <span v-if="props.item.capsules_per_cyle">{{
+              props.item.capsules_per_cyle
+            }}</span>
+            <span v-else>{{ $t("not_appllicable") }}</span>
+          </td>
+          <td>
+            <span v-if="props.item.number_of_cycles">{{
+              props.item.number_of_cycles
+            }}</span>
+            <span v-else>{{ $t("not_appllicable") }}</span>
+          </td>
+          <td>
+            <span v-if="props.item.total_capsules">{{
+              props.item.total_capsules
+            }}</span>
+            <span v-else>{{ $t("not_appllicable") }}</span>
+          </td>
           <td class="px-0 text-center">
             <router-link
               :to="{
-                name: 'documents_amend',
+                name: 'drug_amend',
                 query: { slug: props.item.slug },
               }"
             >
@@ -122,14 +131,14 @@ export default {
   data: () => ({
     search: "",
     dialog: false,
-    documents: [],
+    drug: [],
     initval: true,
     message: "",
     delete_id: null,
     dialogMessage: "",
     dialogTitle: "",
     google_icon: {
-      icon_name: "library_books",
+      icon_name: "medication_liquid",
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
@@ -142,22 +151,26 @@ export default {
     headers() {
       return [
         {
-          title: "Title",
+          title: "Drug Name",
           align: "left",
           sortable: true,
           key: "title",
         },
         {
-          title: "Category",
-          key: "category",
+          title: "Capsule Strength",
+          key: "capsule_strength",
         },
         {
-          title: "Group",
-          key: "group",
+          title: "Capsules Per Cyle",
+          key: "capsules_per_cyle",
         },
         {
-          title: "Description",
-          key: "description",
+          title: "Num of Cycles",
+          key: "number_of_cycles",
+        },
+        {
+          title: "Total Capsules",
+          key: "total_capsules",
         },
         {
           title: this.$t("action"),
@@ -172,14 +185,6 @@ export default {
   watch: {
     dialog(val) {
       val || this.close();
-    },
-    "$i18n.locale"(newLocale) {
-      if (newLocale === "ar") {
-        this.sel_lang = "ar";
-      } else {
-        ("");
-        this.sel_lang = "en";
-      }
     },
   },
 
@@ -200,10 +205,10 @@ export default {
     async deleteItem(deleteId) {
       const result = await this.showConfirmation(
         "Confirm",
-        "Are you sure you want to delete this Document ?"
+        "Are you sure you want to delete this Drug ?"
       );
       if (!result) return;
-      this.$axios.delete(`documents/${deleteId}`).then((res) => {
+      this.$axios.delete(`drug/${deleteId}`).then((res) => {
         this.$toast.success(res.data.message);
         this.initialize();
       });
@@ -211,11 +216,11 @@ export default {
 
     initialize() {
       this.$axios
-        .get("fetch_documents")
+        .get("fetch_drug")
         .then((res) => {
           console.log("res.data");
           console.log(res.data);
-          this.documents = res.data.documents;
+          this.drug = res.data.drug;
           this.initval = false;
         })
         .catch((err) => {
