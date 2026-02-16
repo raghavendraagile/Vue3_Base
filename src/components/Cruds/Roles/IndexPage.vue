@@ -77,7 +77,7 @@
             <router-link
               class="mr-2"
               :to="{
-                name: 'roles_menu',
+                name: 'roles_assign',
                 query: {
                   slug: props.item.slug,
                   id: props.item.id,
@@ -91,7 +91,7 @@
                     >mdi-cog</v-icon
                   >
                 </template>
-                <span>{{ $t("assign_menus_role") }}</span>
+                <span>Assign menus/actions to role</span>
               </v-tooltip>
             </router-link>
           </td>

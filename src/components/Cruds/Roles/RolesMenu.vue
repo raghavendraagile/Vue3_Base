@@ -1,86 +1,134 @@
 <template>
-  <div class="mx-2 mt-3 p-0">
-    <div
-      class="my-3 p-0"
-      v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']"
-    >
-      <page-title
-        class="col-md-4 ml-2"
-        :heading="$t('assign_menu_accessto') + $route.query.name"
-        :google_icon="google_icon"
-      ></page-title>
-    </div>
-    <content-loader v-if="loader"></content-loader>
-    <div class="mb-3 mx-auto">
-      <div class="card-body">
-        <v-list class="pl-3 role_list" color="#212529">
-          <v-list-group v-for="(item, i) in items" :key="i">
-            <template v-slot:activator="{ props }">
-              <v-list-item
-                active="false"
-                v-bind:class="[
-                  item.children.length < 1 ? 'sibebarvlistmenu' : '',
-                ]"
-                class="v_list_menu_title role_list_item"
-                style="display: flex; justify-content: start"
-                v-bind="props"
-              >
-                <div>
+  <div class="role-menu-wrapper">
+    <content-loader v-if="loader" />
+
+    <v-card v-else class="menu-card" elevation="2">
+      <v-card-text class="pa-4">
+        <!-- Search Field -->
+        <div style="max-width: 380px">
+          <v-text-field
+            v-model="search"
+            placeholder="Search menu..."
+            prepend-inner-icon="mdi-magnify"
+            density="compact"
+            variant="outlined"
+            hide-details
+            clearable
+            class="mb-3"
+          />
+        </div>
+
+        <!-- Tree List -->
+        <v-list v-model:opened="opened" density="compact" class="role-tree">
+          <template v-for="(item, i) in filteredItems" :key="i">
+            <!-- IF HAS CHILDREN -->
+            <v-list-group
+              v-if="item.children && item.children.length > 0"
+              :value="item.id"
+              class="tree-parent"
+            >
+              <template #activator="{ props }">
+                <v-list-item v-bind="props" class="tree-parent-item">
                   <v-checkbox
                     v-if="selected.includes(item.id)"
                     :model-value="true"
                     @click.stop="updateMenuAssignment(false, item)"
                     :label="item.name"
-                  ></v-checkbox>
+                    density="compact"
+                    hide-details
+                    class="ma-0 pa-0"
+                  />
+
                   <v-checkbox
                     v-else
                     :model-value="false"
                     @click.stop="updateMenuAssignment(true, item)"
                     :label="item.name"
-                  ></v-checkbox>
-                </div>
-              </v-list-item>
-            </template>
+                    density="compact"
+                    hide-details
+                    class="ma-0 pa-0"
+                  />
+                </v-list-item>
+              </template>
 
-            <v-list-item
-              v-for="(child, i) in item.children"
-              :key="i"
-              :value="child.name"
-              class="v_child_list_title role_list_child_item"
-            >
+              <!-- Children -->
+              <v-list-item
+                v-for="(child, j) in item.children"
+                :key="j"
+                class="tree-child-item"
+              >
+                <v-checkbox
+                  v-if="selected.includes(child.id)"
+                  :model-value="true"
+                  @click.stop="updateMenuAssignment(false, child)"
+                  :label="child.name"
+                  density="compact"
+                  hide-details
+                  class="ma-0 pa-0"
+                />
+
+                <v-checkbox
+                  v-else
+                  :model-value="false"
+                  @click.stop="updateMenuAssignment(true, child)"
+                  :label="child.name"
+                  density="compact"
+                  hide-details
+                  class="ma-0 pa-0"
+                />
+              </v-list-item>
+            </v-list-group>
+
+            <!-- IF NO CHILDREN -->
+            <v-list-item v-else class="tree-parent-item no-arrow-item">
               <v-checkbox
-                v-if="selected.includes(child.id)"
+                v-if="selected.includes(item.id)"
                 :model-value="true"
-                @click.stop="updateMenuAssignment(false, child)"
-                :label="child.name"
-              ></v-checkbox>
+                @click.stop="updateMenuAssignment(false, item)"
+                :label="item.name"
+                density="compact"
+                hide-details
+                class="ma-0 pa-0"
+              />
+
               <v-checkbox
                 v-else
                 :model-value="false"
-                @click.stop="updateMenuAssignment(true, child)"
-                :label="child.name"
-              ></v-checkbox>
+                @click.stop="updateMenuAssignment(true, item)"
+                :label="item.name"
+                density="compact"
+                hide-details
+                class="ma-0 pa-0"
+              />
             </v-list-item>
-          </v-list-group>
+          </template>
         </v-list>
-      </div>
-      <div class="d-block mr-4 mt-3 text-right pb-3">
-        <v-tooltip :text="this.$t('cancel')" location="bottom">
+      </v-card-text>
+
+      <v-divider />
+
+      <!-- Footer -->
+      <div class="menu-footer">
+        <!-- Cancel -->
+        <v-tooltip :text="$t('cancel')" location="bottom">
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="d-inline-block mr-2">
               <v-btn
                 v-bind="props"
                 size="small"
                 @click="$router.go(-1)"
-                :disabled="loading"
+                :disabled="isDisabled"
                 class="ma-1"
                 color="cancel"
-                >{{ $t("cancel") }}</v-btn
               >
+                {{ $t("cancel") }}
+              </v-btn>
             </div>
           </template>
         </v-tooltip>
-        <v-tooltip :text="this.$t('submit')" location="bottom">
+
+        <!-- Submit -->
+        <v-tooltip :text="$t('submit')" location="bottom">
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="d-inline-block">
               <v-btn
@@ -91,27 +139,29 @@
                 color="success"
               >
                 {{ $t("submit") }}
+
                 <v-progress-circular
                   v-if="isDisabled"
                   indeterminate
                   width="1"
-                  color="cancel"
                   size="x-small"
                   class="ml-2"
-                ></v-progress-circular>
+                />
               </v-btn>
             </div>
           </template>
         </v-tooltip>
       </div>
-    </div>
+    </v-card>
   </div>
 </template>
 
 <script>
 import PageTitle from "../../CustomComponents/PageTitle.vue";
+
 export default {
   components: { PageTitle },
+
   data: () => ({
     google_icon: {
       icon_name: "edit_note",
@@ -120,6 +170,8 @@ export default {
     },
     selected: [],
     items: [],
+    opened: [],
+    search: "",
     message: "",
     isBtnLoading: false,
     isDisabled: false,
@@ -127,7 +179,34 @@ export default {
     isChecked: [],
   }),
 
-  mounted() {},
+  computed: {
+    filteredItems() {
+      if (!this.search) return this.items;
+
+      const searchLower = this.search.toLowerCase();
+
+      return this.items
+        .map((item) => {
+          const filteredChildren = (item.children || []).filter((child) =>
+            child.name.toLowerCase().includes(searchLower)
+          );
+
+          if (
+            item.name.toLowerCase().includes(searchLower) ||
+            filteredChildren.length > 0
+          ) {
+            return {
+              ...item,
+              children: filteredChildren,
+            };
+          }
+
+          return null;
+        })
+        .filter(Boolean);
+    },
+  },
+
   watch: {
     "$route.query.slug": {
       immediate: true,
@@ -142,8 +221,14 @@ export default {
               } else {
                 this.array_data = res.data.message;
               }
+
               if (res.data.status == "S") {
                 this.items = res.data.menu;
+
+                this.opened = this.items
+                  .filter((item) => item.children && item.children.length > 0)
+                  .map((item) => item.id);
+
                 this.selectedmenus(this.$route.query.id);
               } else {
                 this.$toast.error(this.array_data);
@@ -152,24 +237,17 @@ export default {
             .catch((err) => {
               this.loader = false;
               this.$toast.error(this.$t("something_went_wrong"));
-              console.log("this error" + err);
+              console.log(err);
             });
         }
       },
     },
-    "$i18n.locale"(newLocale) {
-      if (newLocale === "ar") {
-        this.sel_lang = "ar";
-      } else {
-        ("");
-        this.sel_lang = "en";
-      }
-    },
   },
+
   methods: {
     updateMenuAssignment(value, item) {
       if (value === true) {
-        if (item.children.length == 0) {
+        if (!item.children || item.children.length == 0) {
           this.selected.push(item.id);
         } else {
           this.selected.push(item.id);
@@ -178,7 +256,7 @@ export default {
           });
         }
       } else {
-        if (item.children.length == 0) {
+        if (!item.children || item.children.length == 0) {
           this.selected = this.selected.filter((menu) => menu !== item.id);
         } else {
           this.selected = this.selected.filter((menu) => menu !== item.id);
@@ -188,85 +266,91 @@ export default {
         }
       }
     },
+
     selectedmenus(roleid) {
       this.loader = true;
       this.$axios
         .get("getmenuaccess/" + roleid)
         .then((res) => {
-          if (Array.isArray(res.data.message)) {
-            this.array_data = res.data.message.toString();
-          } else {
-            this.array_data = res.data.message;
-          }
           if (res.data.status == "S") {
-            // this.selected = res.data.selected_menu;
             this.selected = JSON.parse(JSON.stringify(res.data.selected_menu));
-            this.selected1 = res.data.selected_menu;
-            this.loader = false;
-          } else if (res.data.status == "E") {
-            this.loader = false;
-            console.log("error_message", this.array_data);
-          } else {
-            this.loader = false;
-            console.log("error_message", this.array_data);
           }
+          this.loader = false;
         })
-        .catch((err) => {
+        .catch(() => {
           this.loader = false;
           this.$toast.error(this.$t("something_went_wrong"));
-          console.log("this error" + err);
         });
     },
 
     save() {
       this.isDisabled = true;
       this.loader = true;
+
       this.$axios
         .post("storemenuaccess", {
           role_id: this.$route.query.id,
           role_access: this.selected,
         })
         .then((res) => {
-          if (Array.isArray(res.data.message)) {
-            this.array_data = res.data.message.toString();
-          } else {
-            this.array_data = res.data.message;
-          }
           this.loader = false;
+
           if (res.data.status == "S") {
             this.emitter.emit("fetchAssignedMenus");
-            this.message = res.data.message;
-            this.$toast.success(this.message);
-            this.$router.push({
-              name: "roles",
-            });
+            this.$toast.success(res.data.message);
+            this.$router.push({ name: "roles" });
           } else {
             this.isDisabled = false;
             this.$toast.error(this.$t("something_went_wrong"));
           }
         })
-        .catch((err) => {
+        .catch(() => {
           this.isDisabled = false;
           this.$toast.error(this.$t("something_went_wrong"));
-          console.log("error", err);
         });
     },
   },
 };
 </script>
+
 <style scoped>
-.checkboxmenuaccess {
+.role-menu-wrapper {
+  padding: 16px;
+}
+
+.menu-card {
+  border-radius: 14px;
+}
+
+.role-tree {
+  padding-left: 4px;
+}
+
+.tree-parent-item {
+  min-height: 36px !important;
+  border-radius: 8px;
+  transition: 0.2s ease;
+}
+
+.tree-parent-item:hover {
+  background: #f5f5f5;
+}
+
+.tree-child-item {
+  padding-left: 32px !important;
+  min-height: 34px !important;
+  border-radius: 6px;
+  transition: 0.2s ease;
+}
+
+.tree-child-item:hover {
+  background: #fafafa;
+}
+
+.menu-footer {
   display: flex;
-  /* flex: 0 0 auto !important; */
-  max-height: 55px !important;
-}
-
-.menuaccessitemname {
-  margin-top: 16px;
-}
-
-.checkbox-value {
-  display: flex !important;
-  justify-content: flex-start !important;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 16px;
 }
 </style>

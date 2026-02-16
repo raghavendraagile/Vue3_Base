@@ -1,5 +1,10 @@
 <template>
   <div class="main-20">
+    <confirmation-dialog
+      ref="confirmationDialog"
+      :title="dialogTitle"
+      :message="dialogMessage"
+    ></confirmation-dialog>
     <div
       flat
       color="white"
@@ -120,7 +125,7 @@
                 <span>{{ $t("city") }}</span>
               </v-tooltip>
             </router-link>
-            <span @click="deleteItem(props.item.id)">
+            <span @click="deletestate(props.item.id)">
               <v-tooltip :text="$t('delete')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-icon
@@ -138,31 +143,14 @@
         </tr>
       </template>
     </v-data-table>
-    <ConfirmDialog
-      :show="showdeleteDialog"
-      :cancel="cancel"
-      :confirm="confirm"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('delete_record')"
-    />
   </div>
 </template>
 
 <script>
-import PageTitle from "../../CustomComponents/PageTitle.vue";
-import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
 export default {
-  components: {
-    PageTitle,
-    ConfirmDialog,
-  },
   data: () => ({
     states: [],
     selected_country_details: [],
-    showdeleteDialog: false,
-    delete_id: null,
-    status_id: null,
-    isDisabled: false,
     headers: [
       {
         title: "Name",
@@ -183,19 +171,11 @@ export default {
       icon: "material-symbols-outlined",
     },
     search: "",
-    valid_error: false,
-    valid_success: false,
-    successmessage: "",
-    valid: false,
     message: "",
     countryname: "",
-    json_fields: [
-      {
-        label: "Name",
-        field: "name",
-      },
-    ],
     initval: true,
+    dialogMessage: "",
+    dialogTitle: "",
   }),
   watch: {
     "$route.query.countryslug": {
@@ -211,21 +191,16 @@ export default {
     this.fetchstates();
   },
   methods: {
-    cancel() {
-      this.showdeleteDialog = false;
+    showConfirmation(title, message) {
+      this.dialogTitle = title;
+      this.dialogMessage = message;
+      return this.$refs.confirmationDialog.open();
     },
-    confirm(id) {
-      this.deleteConfirm(id);
-      this.showdeleteDialog = false;
-    },
+
     fetchstates() {
       this.initval = true;
       this.$axios
-        .get(
-          
-            "fetch_states?countryname=" +
-            this.countryname
-        )
+        .get("fetch_states?countryname=" + this.countryname)
         .then((res) => {
           this.initval = false;
           // this.$toast.success(this.array_data);
@@ -237,16 +212,16 @@ export default {
           console.log(" error" + err);
         });
     },
-    deleteConfirm() {
-      this.deletestates(this.delete_id);
-    },
-    deleteItem($id) {
-      this.delete_id = $id;
-      this.showdeleteDialog = true;
-    },
-    deletestates(id) {
+
+    async deletestate(id) {
+      const result = await this.showConfirmation(
+        "Confirm",
+        "Are you sure you want to delete this state ?"
+      );
+      if (!result) return;
+
       this.$axios
-        .post( "delete_states/" + id)
+        .post("delete_states/" + id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();
@@ -267,52 +242,6 @@ export default {
           this.$toast.error(this.array_data);
           console.log("this error" + err);
         });
-    },
-
-    // PDF download
-    pdfgen: function (states) {
-      var pdfMake = require("pdfmake/build/pdfmake.js");
-      if (pdfMake.vfs == undefined) {
-        var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
-      }
-      var docDefinition = {
-        content: [
-          { text: "System Parameter Report", style: "header" },
-          this._table(states, [
-            "parameter_name",
-            "parameter_value",
-            "description",
-            "status",
-          ]),
-        ],
-      };
-
-      pdfMake.createPdf(docDefinition).download("System Parameter.pdf");
-    },
-
-    _table(data, cols) {
-      return {
-        table: {
-          headerRows: 1,
-          body: this._buildTableBody(data, cols),
-        },
-      };
-    },
-
-    _buildTableBody(data, cols) {
-      let body = [];
-      body.push(cols);
-      data.forEach(function (row) {
-        // reg obj doesn't have forEach
-        let dataRow = [];
-        cols.forEach(function (column) {
-          dataRow.push(row[column].toString());
-        });
-        body.push(dataRow);
-      });
-
-      return body;
     },
   },
 };

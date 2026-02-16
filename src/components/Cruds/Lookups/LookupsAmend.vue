@@ -57,12 +57,9 @@
                     v-on="on"
                     rows="2"
                     v-model="lookup.description"
-                    :rules="fieldRules"
                     maxlength="100"
                     v-bind="props"
                     v-bind:label="$t('description')"
-                    required
-                    class="required_field"
                     variant="outlined"
                     counter="true"
                   ></v-textarea>
@@ -125,7 +122,6 @@ export default {
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
-    envPath: import.meta.env.VITE_API_URL_ADMIN,
     valid: false,
     loader: false,
     file: "",
@@ -210,10 +206,13 @@ export default {
           })
           .catch((err) => {
             console.log(err);
+            this.$toast.error(err.response.data.errordata || this.$t("something_went_wrong"));
+          })
+          .finally(() => {
+            this.isBtnLoading = false;
+            this.isDisabled = false;
           });
         this.loader = false;
-      } else {
-        //alert("Form is Invalid");
       }
     },
     clear() {

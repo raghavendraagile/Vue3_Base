@@ -1,5 +1,10 @@
 <template>
   <div class="main-20">
+    <confirmation-dialog
+      ref="confirmationDialog"
+      :title="dialogTitle"
+      :message="dialogMessage"
+    ></confirmation-dialog>
     <content-loader v-if="loader"></content-loader>
     <div
       flat
@@ -141,38 +146,16 @@
         </tr>
       </template>
     </v-data-table>
-    <ConfirmDialog
-      :show="showStatusDialog"
-      :cancel="cancelStatus"
-      :confirm="confirmStatus"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('status_change')"
-    />
-    <ConfirmDialog
-      :show="showdeleteDialog"
-      :cancel="cancel"
-      :confirm="confirm"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('delete_record')"
-    />
   </div>
 </template>
 
 <script>
-import PageTitle from "../../CustomComponents/PageTitle.vue";
-import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
 export default {
-  components: {
-    PageTitle,
-    ConfirmDialog,
-  },
   data: () => ({
+    dialogMessage: "",
+    dialogTitle: "",
     lookup: [],
-    showdeleteDialog: false,
     loader: false,
-    showStatusDialog: false,
-    delete_id: null,
-    status_id: null,
     isDisabled: false,
     headers: [
       {
@@ -206,50 +189,30 @@ export default {
       icon: "material-symbols-outlined",
     },
     search: "",
-    valid_error: false,
-    valid_success: false,
-    successmessage: "",
-    valid: false,
     initval: false,
     message: "",
-    json_fields: [
-      {
-        label: "Shortname",
-        field: "shortname",
-      },
-      {
-        label: "Longname",
-        field: "longname",
-      },
-      {
-        label: "Status",
-        field: "status",
-      },
-    ],
   }),
   mounted() {
     this.initialize();
   },
   methods: {
-    cancel() {
-      this.showdeleteDialog = false;
+    showConfirmation(title, message) {
+      this.dialogTitle = title;
+      this.dialogMessage = message;
+      return this.$refs.confirmationDialog.open();
     },
-    confirm(id) {
-      this.deleteConfirm(id);
-      this.showdeleteDialog = false;
-    },
-    confirmStatus() {
-      this.statusUpdate();
-      this.showStatusDialog = false;
-    },
-    cancelStatus() {
-      this.showStatusDialog = false;
-    },
-    statusUpdate() {
+
+    async updateLookupsStatus(status_id) {
+      const result = await this.showConfirmation(
+        "Confirm",
+        "Are you sure you want to update this lookup status ?"
+      );
+
+      if (!result) return;
       this.loader = true;
       this.$axios
         .post("update_lookups_status", {
-          id: this.status_id,
+          id: status_id,
         })
         .then((res) => {
           if (Array.isArray(res.data.message)) {
@@ -273,7 +236,13 @@ export default {
         });
       this.loader = false;
     },
-    deleteLookup(id) {
+    async deleteItem(id) {
+      const result = await this.showConfirmation(
+        "Confirm",
+        "Are you sure you want to delete this lookup ?"
+      );
+
+      if (!result) return;
       this.loader = true;
       this.$axios
         .post("delete_lookup/" + id)
@@ -329,24 +298,12 @@ export default {
       this.loader = false;
     },
 
-    deleteItem(item) {
-      this.delete_id = item;
-      this.showdeleteDialog = true;
-    },
-    deleteConfirm() {
-      this.deleteLookup(this.delete_id);
-    },
     close() {
       this.dialog = false;
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       }, 300);
-    },
-
-    updateLookupsStatus(id) {
-      this.status_id = id;
-      this.showStatusDialog = true;
     },
 
     // PDF download

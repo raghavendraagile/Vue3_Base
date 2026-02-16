@@ -1,10 +1,9 @@
 <template>
   <div class="mx-2 mt-3 p-0">
     <div class="my-3 p-0">
-      <!-- v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']" -->
       <page-title
         class="col-md-4 ml-2"
-        heading="Create Institution"
+        heading="Create Document"
         :google_icon="google_icon"
       ></page-title>
     </div>
@@ -13,14 +12,14 @@
       <div class="card-body">
         <v-form ref="form" v-model="valid">
           <v-row class="px-6">
-            <v-col cols="12" sm="6" md="6" class="pb-0">
-              <v-tooltip text="Institution Name" location="bottom">
+            <v-col cols="12" sm="4" md="4" class="pb-0">
+              <v-tooltip text="Title" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-text-field
                     v-bind="props"
-                    v-model="institution.name"
+                    v-model="documents.title"
                     :rules="fieldRules"
-                    label="Institution Name"
+                    label="Title"
                     variant="outlined"
                     density="compact"
                     required
@@ -33,43 +32,51 @@
                 </template>
               </v-tooltip>
             </v-col>
-            <v-col cols="12" sm="6" md="6" class="pb-0">
-              <v-tooltip text="Institution Type" location="bottom">
+            <v-col cols="12" sm="4" md="4" class="pb-0">
+              <v-tooltip text="Category" location="bottom">
                 <template v-slot:activator="{ props }">
-                  <v-text-field
-                    v-bind="props"
-                    v-model="institution.type"
-                    :rules="fieldRules"
-                    label="Institution Type"
-                    variant="outlined"
+                  <v-autocomplete
+                    v-bind:label="$t('category')"
+                    item-value="shortname"
+                    item-title="longname"
                     density="compact"
-                    required
-                    counter="100"
-                    counter-value="100"
+                    variant="outlined"
+                    v-bind="props"
+                    index="id"
+                    v-model="documents.category"
                     class="required_field"
-                    maxlength="100"
-                    v-bind:class="[fieldRules ? 'form-group--error' : '']"
-                  ></v-text-field>
+                    :rules="fieldRules"
+                    :items="doc_category"
+                    outlined
+                    required
+                    dense
+                  ></v-autocomplete>
                 </template>
               </v-tooltip>
+            </v-col>
+            <v-col cols="12" sm="4" md="4">
+              <document-upload
+                v-model="documents.file"
+                required
+                folder="Documents"
+                label="Document"
+              />
             </v-col>
             <v-col cols="12" sm="12" md="12">
-              <v-tooltip text="Institution Address" location="bottom">
+              <v-tooltip text="description" location="bottom">
                 <template v-slot:activator="{ props }">
-                  <v-text-field
+                  <v-textarea
                     v-bind="props"
-                    v-model="institution.address"
-                    :rules="fieldRules"
-                    label="Institution Address"
+                    rows="3"
+                    v-model="documents.description"
+                    label="Description"
                     variant="outlined"
                     density="compact"
-                    required
-                    counter="100"
-                    counter-value="100"
-                    class="required_field"
-                    maxlength="100"
+                    counter="500"
+                    counter-value="500"
+                    maxlength="500"
                     v-bind:class="[fieldRules ? 'form-group--error' : '']"
-                  ></v-text-field>
+                  ></v-textarea>
                 </template>
               </v-tooltip>
             </v-col>
@@ -121,9 +128,7 @@
 </template>
 
 <script>
-import PageTitle from "../../CustomComponents/PageTitle.vue";
 export default {
-  components: { PageTitle },
   data: () => ({
     google_icon: {
       icon_name: "domain_add",
@@ -137,11 +142,13 @@ export default {
     disabled: false,
     loading: false,
     isDisabled: false,
-    institution: {
+    doc_category: [],
+    documents: {
       id: 0,
-      name: "",
-      type: "",
-      address: "",
+      title: "",
+      category: "",
+      description: "",
+      file: {},
     },
     items: [],
     empty_item: {
@@ -159,7 +166,9 @@ export default {
       return [(v) => !!v || this.$t("number_required")];
     },
   },
-
+  mounted() {
+    this.fetchLookup();
+  },
   created() {},
   watch: {
     "$route.query.slug": {
@@ -168,11 +177,30 @@ export default {
         if (this.$route.query.slug) {
           this.loader = true;
           this.$axios
-            .get("institution/" + this.$route.query.slug + "/edit")
+            .get("documents/" + this.$route.query.slug)
             .then((res) => {
               if (res.data.status == "S") {
+                const d = res.data.documents;
+
+                this.documents = {
+                  id: d.id,
+                  title: d.title,
+                  category: d.category,
+                  description: d.description,
+
+                  // VERY IMPORTANT — normalize file
+                  file: d.file_path
+                    ? {
+                        file_name: d.file_name,
+                        file_path: d.file_path,
+                        file_type: d.file_type,
+                        file_size: d.file_size,
+                        mime: d.mime,
+                      }
+                    : {},
+                };
+
                 this.loader = false;
-                this.institution = res.data.institution;
               }
             })
             .catch((err) => {
@@ -194,19 +222,32 @@ export default {
     },
   },
   methods: {
+    fetchLookup() {
+      this.$axios
+        .get("fetchlookup", {
+          params: {
+            lookup_type: "DOCUMENT_CATEGORY",
+          },
+        })
+        .then((response) => {
+          this.doc_category = response.data.lookup_details;
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+        });
+    },
     cancel() {
       this.$router.push({
-        name: "institutions",
+        name: "documents",
       });
     },
     submit() {
       if (this.$refs.form.validate() && this.valid) {
-        if (this.institution.id == 0) {
+        if (this.documents.id == 0) {
           this.isDisabled = true;
           this.$axios
-            .post("institution",
-              this.institution
-            )
+            .post("create_document", this.documents)
             .then((res) => {
               if (Array.isArray(res.data.message)) {
                 this.array_data = res.data.message.toString();
@@ -217,7 +258,7 @@ export default {
                 this.$toast.success(this.array_data);
                 this.message = res.data.message;
                 this.$router.push({
-                  name: "institutions",
+                  name: "documents",
                 });
               } else if (res.data.status == "E") {
                 this.$toast.error(this.array_data);
@@ -236,11 +277,7 @@ export default {
         } else {
           this.isDisabled = true;
           this.$axios
-            .patch(
-                "institution/" +
-                this.institution.id,
-              this.institution
-            )
+            .patch("documents/" + this.documents.id, this.documents)
             .then((res) => {
               if (Array.isArray(res.data.message)) {
                 this.array_data = res.data.message.toString();
@@ -251,7 +288,7 @@ export default {
                 this.$toast.success(this.array_data);
                 this.message = res.data.message;
                 this.$router.push({
-                  name: "institutions",
+                  name: "documents",
                 });
               } else if (res.data.status == "E") {
                 this.isDisabled = false;

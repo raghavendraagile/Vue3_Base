@@ -27,7 +27,7 @@
                         item-title="longname"
                         v-model="profile_details.salutation"
                         :rules="fieldRules"
-                        :items="salutation_array_en"
+                        :items="salutation_array"
                         class="required_field"
                       ></v-autocomplete>
                     </template>
@@ -82,7 +82,7 @@
                         v-model="profile_details.gender"
                         :rules="fieldRules"
                         class="required_field"
-                        :items="gender_array_en"
+                        :items="gender_array"
                         v-bind="props"
                         variant="outlined"
                         density="compact"
@@ -132,56 +132,6 @@
                     <span>{{ $t("role") }}</span>
                   </v-tooltip>
                 </v-col>
-                <v-col
-                  cols="12"
-                  md="4"
-                  sm="4"
-                  lg="4"
-                  v-if="profile_details.role_id == 2"
-                >
-                  <v-tooltip :text="this.$t('title')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-autocomplete
-                        v-bind="props"
-                        v-model="profile_details.store_id"
-                        :disabled="profile_details.id > 0"
-                        v-bind:label="$t('store')"
-                        variant="outlined"
-                        density="compact"
-                        :items="malls_en"
-                        item-title="name"
-                        item-value="header_id"
-                        :rules="fieldRules"
-                        class="required_field"
-                      ></v-autocomplete>
-                    </template>
-                  </v-tooltip>
-                </v-col>
-                <v-col
-                  cols="12"
-                  md="4"
-                  sm="4"
-                  lg="4"
-                  v-if="profile_details.role_id == 3"
-                >
-                  <v-tooltip :text="this.$t('title')" location="bottom">
-                    <template v-slot:activator="{ props }">
-                      <v-autocomplete
-                        v-bind="props"
-                        v-model="profile_details.store_id"
-                        :disabled="profile_details.id > 0"
-                        v-bind:label="$t('store')"
-                        variant="outlined"
-                        density="compact"
-                        :items="stores_en"
-                        item-title="name"
-                        item-value="header_id"
-                        :rules="fieldRules"
-                        class="required_field"
-                      ></v-autocomplete>
-                    </template>
-                  </v-tooltip>
-                </v-col>
               </v-row>
               <v-row class="mt-1 px-4">
                 <v-col cols="12" md="5" sm="5" lg="5">
@@ -210,29 +160,28 @@
                         variant="outlined"
                         density="compact"
                         index="id"
-                        item-key="header_id"
-                        item-value="header_id"
+                        item-value="id"
                         item-title="mobile_code"
                         v-model="profile_details.mobile_code"
                         @update:model-value="
                           changeCountry(profile_details.mobile_code)
                         "
-                        :items="country_array_en"
+                        :items="country_array"
                       ></v-autocomplete>
                     </template>
                   </v-tooltip>
                 </v-col>
                 <v-col cols="12" md="4" lg="4" sm="4" px-2>
-                  <v-tooltip :text="$t('phone_number')" location="bottom">
+                  <v-tooltip :text="$t('mobile')" location="bottom">
                     <template v-slot:activator="{ props }">
                       <v-text-field
-                        v-bind:label="$t('phone_number')"
+                        v-bind:label="$t('mobile')"
                         :rules="phoneRules"
                         v-bind="props"
                         variant="outlined"
                         density="compact"
                         :maxlength="phonelength"
-                        v-model="profile_details.phone"
+                        v-model="profile_details.mobile"
                         @keypress="isNumber($event)"
                         required
                       ></v-text-field>
@@ -250,14 +199,13 @@
                         variant="outlined"
                         density="compact"
                         index="id"
-                        item-key="header_id"
-                        item-value="header_id"
+                        item-value="id"
                         item-title="name"
                         v-model="profile_details.country"
                         @update:model-value="
                           fetchStates(profile_details.country)
                         "
-                        :items="country_array_en"
+                        :items="country_array"
                       ></v-autocomplete>
                     </template>
                   </v-tooltip>
@@ -272,8 +220,7 @@
                         variant="outlined"
                         density="compact"
                         index="id"
-                        item-key="header_id"
-                        item-value="header_id"
+                        item-value="id"
                         item-title="name"
                         v-model="profile_details.state"
                         @update:model-value="
@@ -293,8 +240,7 @@
                         variant="outlined"
                         density="compact"
                         index="id"
-                        item-key="header_id"
-                        item-value="header_id"
+                        item-value="id"
                         item-title="name"
                         v-model="profile_details.city"
                         :items="city_array"
@@ -508,8 +454,6 @@ export default {
     loading: false,
     isDisabled: false,
     from_page: "",
-    stores_en: [],
-    malls_en: [],
     profile_details: {
       id: 0,
       salutation: null,
@@ -529,7 +473,7 @@ export default {
       address: "",
       description: "",
       role_id: null,
-      phone: "",
+      mobile: "",
       mobile_code: null,
       store_id: null,
     },
@@ -538,9 +482,9 @@ export default {
     uploadfile: false,
     phonelength: "10",
     role_array: [],
-    salutation_array_en: [],
-    gender_array_en: [],
-    country_array_en: [],
+    salutation_array: [],
+    gender_array: [],
+    country_array: [],
     state_array: [],
     city_array: [],
     sel_lang: "en",
@@ -579,8 +523,6 @@ export default {
   },
   mounted() {
     this.sel_lang = this.$i18n.locale;
-    this.get_stores();
-    this.get_malls();
     this.fetchRoles();
   },
   watch: {
@@ -622,37 +564,11 @@ export default {
     },
   },
   methods: {
-    changeCountry(header_id) {
-      this.profile_details.country = header_id;
+    changeCountry(id) {
+      this.profile_details.country = id;
       this.fetchStates(this.profile_details.country);
       this.profile_details.state = null;
       this.profile_details.city = null;
-    },
-    get_stores() {
-      this.initval = true;
-      this.$axios
-        .get("fetch-stores")
-        .then((response) => {
-          console.log(response);
-          this.stores_en = response.data.stores_en;
-          this.initval = false;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    get_malls() {
-      this.initval = true;
-      this.$axios
-        .get("fetch-malls")
-        .then((response) => {
-          console.log(response);
-          this.malls_en = response.data.malls_en;
-          this.initval = false;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     },
     isNumber(evt) {
       evt = evt ? evt : window.event;
@@ -675,7 +591,7 @@ export default {
         .get("fetch_countries")
         .then((response) => {
           console.log(response);
-          this.country_array_en = response.data.countries_en;
+          this.country_array = response.data.countries;
           this.initval = false;
         })
         .catch((err) => {
@@ -688,7 +604,7 @@ export default {
       this.$axios
         .get("fetch_states_name/" + country_id)
         .then((response) => {
-          this.state_array = response.data.states_en;
+          this.state_array = response.data.states;
           this.initval = false;
           this.city_array = [];
         })
@@ -702,7 +618,7 @@ export default {
         .get("fetch_cities_name/" + city_id)
         .then((response) => {
           console.log(response);
-          this.city_array = response.data.cities_en;
+          this.city_array = response.data.cities;
           this.initval = false;
         })
         .catch((err) => {
@@ -717,26 +633,26 @@ export default {
     },
     fetchlookup() {
       this.$axios
-        .get("fetch_lang_lookup", {
+        .get("fetchlookup", {
           params: {
             lookup_type: "SALUTATION",
           },
         })
         .then((response) => {
-          this.salutation_array_en = response.data.lookup_en;
+          this.salutation_array = response.data.lookup_details;
         })
         .catch((err) => {
           console.log(err);
         });
 
       this.$axios
-        .get("fetch_lang_lookup", {
+        .get("fetchlookup", {
           params: {
             lookup_type: "GENDER",
           },
         })
         .then((response) => {
-          this.gender_array_en = response.data.lookup_en;
+          this.gender_array = response.data.lookup_details;
         })
         .catch((err) => {
           console.log(err);

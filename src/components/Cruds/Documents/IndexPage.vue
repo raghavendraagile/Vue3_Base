@@ -1,10 +1,5 @@
 <template>
   <div>
-    <confirmation-dialog
-      ref="confirmationDialog"
-      :title="dialogTitle"
-      :message="dialogMessage"
-    ></confirmation-dialog>
     <div
       flat
       color="white"
@@ -12,7 +7,7 @@
     >
       <page-title
         class="col-md-3"
-        :heading="$t('menus')"
+        heading="Documents"
         :google_icon="google_icon"
       ></page-title>
       <div class="col-md-4">
@@ -36,7 +31,7 @@
       <div class="add_new_button">
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
-            <router-link :to="{ name: 'menu_amend' }" style="color: white">
+            <router-link :to="{ name: 'documents_amend' }" style="color: white">
               <v-btn size="small" class="mb-2 create-btn" v-bind="props">
                 {{ $t("add_new") }}
               </v-btn>
@@ -45,17 +40,15 @@
         </v-tooltip>
       </div>
     </div>
-
     <v-data-table
       :headers="headers"
-      :items="menu"
+      :items="documents"
       :search="search"
       :loading="initval"
       v-bind:no-data-text="$t('no_data_available')"
       :footer-props="{
         'items-per-page-text': $t('rows_per_page'),
       }"
-      v-bind:style="$route.params.lang == 'ar' ? 'direction:rtl' : ''"
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
@@ -64,24 +57,20 @@
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span v-if="props.item.href">{{ props.item.href }}</span>
+            <span v-if="props.item.category">{{ props.item.category }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span v-if="props.item.parent_name">{{
-              props.item.parent_name
+            <span v-if="props.item.description">{{
+              props.item.description
             }}</span>
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
-          <td>
-            <span v-if="props.item.seq">{{ props.item.seq }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
 
           <td class="px-0 text-center">
             <router-link
               :to="{
-                name: 'menu_amend',
+                name: 'documents_amend',
                 query: { slug: props.item.slug },
               }"
             >
@@ -116,25 +105,30 @@
         </tr>
       </template>
     </v-data-table>
+    <confirmation-dialog
+      ref="confirmationDialog"
+      :title="dialogTitle"
+      :message="dialogMessage"
+    ></confirmation-dialog>
   </div>
 </template>
 
 <script>
 export default {
   data: () => ({
-    showConfirmDialog: false,
     search: "",
     dialog: false,
-    menu: [],
+    documents: [],
     initval: true,
     message: "",
+    delete_id: null,
+    dialogMessage: "",
+    dialogTitle: "",
     google_icon: {
-      icon_name: "menu",
+      icon_name: "library_books",
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
-    dialogMessage: "",
-    dialogTitle: "",
   }),
 
   computed: {
@@ -144,22 +138,18 @@ export default {
     headers() {
       return [
         {
-          title: this.$t("title"),
+          title: "Title",
           align: "left",
           sortable: true,
           key: "title",
         },
         {
-          title: this.$t("link"),
-          key: "href",
+          title: "Category",
+          key: "category",
         },
         {
-          title: this.$t("parent"),
-          key: "parent_name",
-        },
-        {
-          title: this.$t("sequence"),
-          key: "seq",
+          title: "Description",
+          key: "description",
         },
         {
           title: this.$t("action"),
@@ -175,7 +165,14 @@ export default {
     dialog(val) {
       val || this.close();
     },
-    
+    "$i18n.locale"(newLocale) {
+      if (newLocale === "ar") {
+        this.sel_lang = "ar";
+      } else {
+        ("");
+        this.sel_lang = "en";
+      }
+    },
   },
 
   created() {
@@ -192,44 +189,25 @@ export default {
       return this.$refs.confirmationDialog.open();
     },
 
-    async deleteItem(deleteID) {
+    async deleteItem(deleteId) {
       const result = await this.showConfirmation(
         "Confirm",
-        "Are you sure you want to delete this menu ?"
+        "Are you sure you want to delete this Document ?"
       );
-
       if (!result) return;
-      this.initval = true;
-      this.$axios
-        .delete("menu/" + deleteID)
-        .then((res) => {
-          if (Array.isArray(res.data.message)) {
-            this.array_data = res.data.message.toString();
-          } else {
-            this.array_data = res.data.message;
-          }
-          if (res.data.status == "E") {
-            this.initval = false;
-            this.$toast.error(this.array_data);
-            this.initialize();
-          } else {
-            this.initval = false;
-            this.$toast.success(this.array_data);
-            this.initialize();
-          }
-        })
-        .catch((err) => {
-          this.initval = false;
-          this.$toast.error(this.$t("something_went_wrong"));
-          console.log(err);
-        });
+      this.$axios.delete(`documents/${deleteId}`).then((res) => {
+        this.$toast.success(res.data.message);
+        this.initialize();
+      });
     },
 
     initialize() {
       this.$axios
-        .get("menu")
+        .get("fetch_documents")
         .then((res) => {
-          this.menu = res.data.menu;
+          console.log("res.data");
+          console.log(res.data);
+          this.documents = res.data.documents;
           this.initval = false;
         })
         .catch((err) => {

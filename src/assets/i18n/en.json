@@ -392,5 +392,7 @@
   "whitelisted": "Whitelisted",
   "is_whitelisted": "Is Whitelisted",
   "blacklisted": "Blacklisted",
-  "country_code": "Country Code"
+  "country_code": "Country Code",
+  "edit_action": "Edit Action",
+  "create_action": "Create Action"
 }

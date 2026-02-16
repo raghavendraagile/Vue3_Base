@@ -1,11 +1,15 @@
 <template>
   <div>
+    <confirmation-dialog
+      ref="confirmationDialog"
+      :title="dialogTitle"
+      :message="dialogMessage"
+    ></confirmation-dialog>
     <div
       flat
       color="white"
       class="row my-3 align-items-center component_app_bar position-relative"
     >
-      <!-- v-bind:class="[sel_lang == 'ar' ? 'rtl-page-title' : '']" -->
       <page-title
         class="col-md-3"
         heading="Institutions"
@@ -108,22 +112,11 @@
         </tr>
       </template>
     </v-data-table>
-    <ConfirmDialog
-      :show="showConfirmDialog"
-      :cancel="cancel"
-      :confirm="confirm"
-      :id="delete_id"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('delete_confirmation')"
-    />
   </div>
 </template>
 
 <script>
-import PageTitle from "../../CustomComponents/PageTitle.vue";
-import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
 export default {
-  components: { PageTitle, ConfirmDialog },
   data: () => ({
     showConfirmDialog: false,
     search: "",
@@ -131,12 +124,13 @@ export default {
     institutions: [],
     initval: true,
     message: "",
-    delete_id: null,
     google_icon: {
       icon_name: "local_hospital",
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
+    dialogMessage: "",
+    dialogTitle: "",
   }),
 
   computed: {
@@ -174,14 +168,7 @@ export default {
     dialog(val) {
       val || this.close();
     },
-    "$i18n.locale"(newLocale) {
-      if (newLocale === "ar") {
-        this.sel_lang = "ar";
-      } else {
-        ("");
-        this.sel_lang = "en";
-      }
-    },
+    
   },
 
   created() {
@@ -192,24 +179,23 @@ export default {
   },
 
   methods: {
-    cancel() {
-      this.showConfirmDialog = false;
-    },
-    confirm() {
-      this.deleteInstitution();
-      this.showConfirmDialog = false;
-    },
-    deleteItem(deleteID) {
-      this.delete_id = deleteID;
-      this.showConfirmDialog = true;
+    showConfirmation(title, message) {
+      this.dialogTitle = title;
+      this.dialogMessage = message;
+      return this.$refs.confirmationDialog.open();
     },
 
-    deleteInstitution() {
+    async deleteItem(deleteID) {
+      const result = await this.showConfirmation(
+        "Confirm",
+        "Are you sure you want to delete this Institution ?"
+      );
+
+      if (!result) return;
+      this.delete_id = deleteID;
       this.initval = true;
       this.$axios
-        .delete(
-          import.meta.env.VITE_API_URL_ADMIN + "institution/" + this.delete_id
-        )
+        .delete("institution/" + this.delete_id)
         .then((res) => {
           if (Array.isArray(res.data.message)) {
             this.array_data = res.data.message.toString();

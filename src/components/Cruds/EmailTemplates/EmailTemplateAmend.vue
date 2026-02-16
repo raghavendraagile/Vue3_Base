@@ -26,6 +26,7 @@
                     v-model="fieldItem.template_type_id"
                     :rules="fieldRules1"
                     :items="mode_items"
+                    class="required_field"
                     outlined
                     required
                     dense
@@ -42,6 +43,7 @@
                     maxlength="100"
                     v-model="fieldItem.template_name"
                     :rules="fieldRules"
+                    class="required_field"
                     v-bind:label="$t('name')"
                     required
                     variant="outlined"
@@ -60,6 +62,7 @@
                     v-model="fieldItem.template_subject"
                     :rules="fieldRules"
                     maxlength="100"
+                    class="required_field"
                     v-bind:label="$t('subject')"
                     required
                     variant="outlined"
@@ -77,12 +80,14 @@
               <v-tooltip :text="$t('body')" location="top">
                 <template v-slot:activator="{ props }">
                   <div v-bind="props">
-                    <quill-editor
-                      class="hide_quill_input"
+                    <QuillEditor
+                      theme="snow"
+                      contentType="html"
+                      v-model:content="fieldItem.template_body"
+                      class="hide_quill_input, required_field"
                       v-bind:id="
                         quill_item == true ? 'quill_item' : 'quill_item_border'
                       "
-                      v-model:value="fieldItem.template_body"
                       @blur="onEditorBlur($event)"
                       @focus="onEditorFocus($event)"
                       @ready="onEditorReady($event)"
@@ -108,14 +113,16 @@
               <v-tooltip :text="$t('signature')" location="top">
                 <template v-slot:activator="{ props }">
                   <div v-bind="props">
-                    <quill-editor
-                      class="hide_quill_input"
+                    <QuillEditor
+                      class="hide_quill_input, required_field"
+                      theme="snow"
+                      contentType="html"
+                      v-model:content="fieldItem.template_signature"
                       v-bind:id="
                         quill_sign == true
                           ? 'quill_item1'
                           : 'quill_item_border1'
                       "
-                      v-model:value="fieldItem.template_signature"
                       v-bind:label="$t('body')"
                       @change="onEditorChangeSignature($event)"
                       @blur="onEditorBlurSign($event)"
@@ -180,13 +187,13 @@
 </template>
   
 <script>
-import { quillEditor } from "vue3-quill";
+import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import PageTitle from "../../CustomComponents/PageTitle.vue";
 export default {
   components: {
     PageTitle,
-    quillEditor,
+    QuillEditor,
   },
   setup() {
     // const onEditorBlur = (quill) => {

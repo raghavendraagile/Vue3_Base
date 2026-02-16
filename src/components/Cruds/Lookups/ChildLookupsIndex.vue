@@ -1,5 +1,10 @@
 <template>
   <div class="main-20">
+    <confirmation-dialog
+      ref="confirmationDialog"
+      :title="dialogTitle"
+      :message="dialogMessage"
+    ></confirmation-dialog>
     <div
       flat
       color="white"
@@ -91,7 +96,7 @@
             <v-btn
               class="hover_shine btn mr-2"
               :disabled="isDisabled"
-              @click="updateLookupsStatus(props.item.id)"
+              @click="statusUpdate(props.item.id)"
               size="small"
               v-bind:color="[props.item.status == 1 ? 'success' : 'warning']"
             >
@@ -124,7 +129,7 @@
                 <span>{{ $t("edit") }}</span>
               </v-tooltip>
             </router-link>
-            <span @click="deleteItem(props.item.id)">
+            <span @click="deleteLookup(props.item.id)">
               <v-tooltip :text="$t('delete')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-icon
@@ -142,37 +147,15 @@
         </tr>
       </template>
     </v-data-table>
-    <ConfirmDialog
-      :show="showStatusDialog"
-      :cancel="cancelStatus"
-      :confirm="confirmStatus"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('status_change')"
-    />
-    <ConfirmDialog
-      :show="showdeleteDialog"
-      :cancel="cancel"
-      :confirm="confirm"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('delete_record')"
-    />
   </div>
 </template>
 
 <script>
-import PageTitle from "../../CustomComponents/PageTitle.vue";
-import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
 export default {
-  components: {
-    PageTitle,
-    ConfirmDialog,
-  },
   data: () => ({
+    dialogMessage: "",
+    dialogTitle: "",
     lookup: [],
-    showdeleteDialog: false,
-    showStatusDialog: false,
-    delete_id: null,
-    status_id: null,
     isDisabled: false,
     headers: [
       {
@@ -206,26 +189,9 @@ export default {
       icon: "material-symbols-outlined",
     },
     search: "",
-    valid_error: false,
-    valid_success: false,
-    successmessage: "",
     initval: false,
     valid: false,
     message: "",
-    json_fields: [
-      {
-        label: "Shortname",
-        field: "shortname",
-      },
-      {
-        label: "Longname",
-        field: "longname",
-      },
-      {
-        label: "Status",
-        field: "status",
-      },
-    ],
   }),
   watch: {
     "$route.query.slug": {
@@ -239,24 +205,21 @@ export default {
   },
   mounted() {},
   methods: {
-    cancel() {
-      this.showdeleteDialog = false;
+    showConfirmation(title, message) {
+      this.dialogTitle = title;
+      this.dialogMessage = message;
+      return this.$refs.confirmationDialog.open();
     },
-    confirm(id) {
-      this.deleteConfirm(id);
-      this.showdeleteDialog = false;
-    },
-    confirmStatus() {
-      this.statusUpdate();
-      this.showStatusDialog = false;
-    },
-    cancelStatus() {
-      this.showStatusDialog = false;
-    },
-    statusUpdate() {
+    async statusUpdate(id) {
+      const result = await this.showConfirmation(
+        "Confirm",
+        "Are you sure you want to update this lookup status ?"
+      );
+
+      if (!result) return;
       this.$axios
         .post("update_lookups_status", {
-          id: this.status_id,
+          id: id,
         })
         .then((res) => {
           if (Array.isArray(res.data.message)) {
@@ -267,12 +230,8 @@ export default {
           if (res.data.status == "S") {
             this.$toast.success(this.array_data);
             this.initialize();
-            this.$eventBus.$emit("app_logo");
           } else if (res.data.status == "E") {
             this.$toast.error(this.array_data);
-          } else {
-            this.$toast.error(this.array_data);
-            this.initialize();
           }
         })
         .catch((err) => {
@@ -280,7 +239,13 @@ export default {
           console.log("this error" + err);
         });
     },
-    deleteLookup(id) {
+    async deleteLookup(id) {
+      const result = await this.showConfirmation(
+        "Confirm",
+        "Are you sure you want to delete this action ?"
+      );
+
+      if (!result) return;
       this.$axios
         .post("delete_lookup/" + id)
         .then((res) => {
@@ -330,24 +295,12 @@ export default {
         });
     },
 
-    deleteItem(item) {
-      this.delete_id = item;
-      this.showdeleteDialog = true;
-    },
-    deleteConfirm() {
-      this.deleteLookup(this.delete_id);
-    },
     close() {
       this.dialog = false;
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       }, 300);
-    },
-
-    updateLookupsStatus(id) {
-      this.status_id = id;
-      this.showStatusDialog = true;
     },
 
     // PDF download

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 .v-btn.bg-primary {
   background-color: rgb(58, 58, 253) !important;
   color: white !important;
@@ -15,7 +15,7 @@
 }
 
 .app-name {
-  font-family: "Roboto", sans-serif;
+  font-family: "Montserrat", sans-serif !important;
   color: #033e89;
 }
 
@@ -29,6 +29,7 @@
 #app.theme-light body {
   background-color: #fff !important;
   color: #222 !important;
+  font-family: "Montserrat", sans-serif !important;
 }
 #app.theme-light .app-name {
   text-shadow: 1px 1px 1px #222;
@@ -369,7 +370,7 @@ input::placeholder {
 
 .font-base-app {
   font-weight: 600;
-  font-family: "Roboto", sans-serif;
+  font-family: "Roboto", sans-serif !important;
   color: #033e89;
 }
 

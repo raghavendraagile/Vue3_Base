@@ -1,5 +1,10 @@
 <template>
   <div class="main-20">
+    <confirmation-dialog
+      ref="confirmationDialog"
+      :title="dialogTitle"
+      :message="dialogMessage"
+    ></confirmation-dialog>
     <div
       flat
       color="white"
@@ -101,7 +106,7 @@
                 </template>
               </v-tooltip>
             </router-link>
-            <span @click="deleteItem(props.item.id)">
+            <span @click="deletecity(props.item.id)">
               <v-tooltip :text="$t('delete')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-icon
@@ -119,31 +124,16 @@
         </tr>
       </template>
     </v-data-table>
-    <ConfirmDialog
-      :show="showdeleteDialog"
-      :cancel="cancel"
-      :confirm="confirm"
-      v-bind:title="$t('confirm')"
-      v-bind:description="$t('delete_record')"
-    />
   </div>
 </template>
 
 <script>
-import PageTitle from "../../CustomComponents/PageTitle.vue";
-import ConfirmDialog from "../../CustomComponents/ConfirmDialog.vue";
 export default {
-  components: {
-    PageTitle,
-    ConfirmDialog,
-  },
   data: () => ({
+    dialogMessage: "",
+    dialogTitle: "",
     cities: [],
     selected_country_details: [],
-    showdeleteDialog: false,
-    delete_id: null,
-    status_id: null,
-    isDisabled: false,
     headers: [
       {
         title: "Name",
@@ -164,19 +154,9 @@ export default {
       icon: "material-symbols-outlined",
     },
     search: "",
-    valid_error: false,
-    valid_success: false,
-    successmessage: "",
-    valid: false,
     message: "",
     countryname: "",
     statename: "",
-    json_fields: [
-      {
-        label: "Name",
-        field: "name",
-      },
-    ],
     initval: true,
   }),
   watch: {
@@ -201,12 +181,10 @@ export default {
     this.fetchcities();
   },
   methods: {
-    cancel() {
-      this.showdeleteDialog = false;
-    },
-    confirm(id) {
-      this.deleteConfirm(id);
-      this.showdeleteDialog = false;
+    showConfirmation(title, message) {
+      this.dialogTitle = title;
+      this.dialogMessage = message;
+      return this.$refs.confirmationDialog.open();
     },
     fetchcities() {
       this.initval = true;
@@ -229,14 +207,13 @@ export default {
           console.log(" error" + err);
         });
     },
-    deleteConfirm() {
-      this.deletecities(this.delete_id);
-    },
-    deleteItem($id) {
-      this.delete_id = $id;
-      this.showdeleteDialog = true;
-    },
-    deletecities(id) {
+    async deletecity(id) {
+      const result = await this.showConfirmation(
+        "Confirm",
+        "Are you sure you want to delete this city ?"
+      );
+      if (!result) return;
+
       this.$axios
         .post("delete_cities/" + id)
         .then((res) => {
@@ -259,52 +236,6 @@ export default {
           this.$toast.error(this.array_data);
           console.log("this error" + err);
         });
-    },
-
-    // PDF download
-    pdfgen: function (cities) {
-      var pdfMake = require("pdfmake/build/pdfmake.js");
-      if (pdfMake.vfs == undefined) {
-        var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
-      }
-      var docDefinition = {
-        content: [
-          { text: "System Parameter Report", style: "header" },
-          this._table(cities, [
-            "parameter_name",
-            "parameter_value",
-            "description",
-            "status",
-          ]),
-        ],
-      };
-
-      pdfMake.createPdf(docDefinition).download("System Parameter.pdf");
-    },
-
-    _table(data, cols) {
-      return {
-        table: {
-          headerRows: 1,
-          body: this._buildTableBody(data, cols),
-        },
-      };
-    },
-
-    _buildTableBody(data, cols) {
-      let body = [];
-      body.push(cols);
-      data.forEach(function (row) {
-        // reg obj doesn't have forEach
-        let dataRow = [];
-        cols.forEach(function (column) {
-          dataRow.push(row[column].toString());
-        });
-        body.push(dataRow);
-      });
-
-      return body;
     },
   },
 };
