@@ -101,6 +101,15 @@
   color: white;
 }
 
+.theme-bg {
+  background: linear-gradient(90deg, #6c63ff, #7c4dff) !important;
+  color: white !important;
+}
+
+.theme-color {
+  color: linear-gradient(90deg, #6c63ff, #7c4dff) !important;
+}
+
 .page-header {
   margin-top: 2px;
   font-size: 22px;
@@ -543,4 +552,14 @@ input::placeholder {
 
 .text-blue {
   color: #033E89 !important;
+}
+
+.user-page-bg {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f6f4ec 0%, #f3e7c7 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
 }/*# sourceMappingURL=global.css.map */
