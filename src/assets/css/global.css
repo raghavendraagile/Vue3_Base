@@ -2,6 +2,9 @@
 :root {
   --theme-color: #6c63ff;
   --theme-gradient: linear-gradient(90deg, #6c63ff, #7c4dff);
+  --required-color: rgb(208, 1, 1);
+  --theme-header: 20px;
+  --theme-subheader: 16px;
 }
 
 .v-btn.bg-primary {
@@ -106,6 +109,14 @@
   color: white;
 }
 
+/* Required inside input */
+.field-required .v-label::before {
+  content: " * ";
+  color: var(--required-color);
+  font-weight: 700;
+  margin-left: 4px;
+}
+
 .theme-bg {
   background: var(--theme-gradient) !important;
   color: white !important;
@@ -113,6 +124,16 @@
 
 .theme-color {
   color: var(--theme-color) !important;
+}
+
+.theme-header {
+  font-size: var(--theme-header);
+  font-weight: 600;
+}
+
+.theme-subheader {
+  font-size: var(--theme-subheader);
+  font-weight: 600;
 }
 
 .page-header {
