@@ -1,69 +1,19 @@
 <template>
-  <v-container fluid class="page-wrapper background">
-    <div class="main-section">
-      <!-- Stats section -->
-      <stats-page :stats="stats" />
-      <!-- Stats section -->
-      <!-- Search Bar -->
-      <div class="search-wrapper">
-        <v-text-field
-          v-model="search"
-          placeholder="Search patient ID, prescriber name, initials or date of birth..."
-          append-inner-icon="mdi-magnify"
-          variant="solo"
-          flat
-          hide-details
-          density="comfortable"
-          class="search-field"
-        />
-      </div>
-      <!-- Data Table Card -->
-      <v-card class="table-card pa-4">
-        <v-data-table
-          :headers="headers"
-          :items="filteredItems"
-          item-key="id"
-          class="custom-table mt-3"
-          hide-default-footer
-        >
-          <template #item="{ item }">
-            <tr>
-              <td>
-                <a href="#">{{ item.id }}</a>
-              </td>
-              <td>{{ item.prescriber }}</td>
-              <td>{{ item.initials }}</td>
-              <td>{{ item.gender }}</td>
-              <td>{{ item.dob }}</td>
-              <td>{{ item.indication }}</td>
-              <td>{{ item.molecule }}</td>
-              <td>
-                <span
-                  :class="[
-                    'status-text',
-                    item.status === 'Submitted'
-                      ? 'status-submitted'
-                      : 'status-rejected',
-                  ]"
-                >
-                  {{ item.status }}
-                </span>
-              </td>
-              <td>
-                <v-btn icon size="x-small" class="pdf-btn">
-                  <v-icon size="18">mdi-arrow-down</v-icon>
-                </v-btn>
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
-      </v-card>
-    </div>
+  <v-container fluid class="page-wrapper">
+    <!-- Back section -->
+    <button class="btn-outline" @click="goBackToDetails()">Back</button>
+    <!-- Search Bar -->
+
+    <!-- Data Table Card -->
+    <v-card class="table-card pa-4">
+      <h2 class="heading">Registration Details</h2>
+      {{ selectedItem }}
+    </v-card>
   </v-container>
 </template>
 <script>
 export default {
-  name: "PatientsTable",
+  props: ["selectedItem"],
   data() {
     return {
       stats: [
@@ -72,52 +22,10 @@ export default {
         { label: "Overdue PAF", value: 7 },
         { label: "Rejected PAF", value: 0 },
       ],
-      search: "",
-      headers: [
-        { title: "Patient ID", key: "id" },
-        { title: "Prescriber", key: "prescriber" },
-        { title: "Initials", key: "initials" },
-        { title: "Gender", key: "gender" },
-        { title: "DOB", key: "dob" },
-        { title: "Indication", key: "indication" },
-        { title: "Molecule", key: "molecule" },
-        { title: "Status", key: "status" },
-        { title: "PDF", key: "pdf", sortable: false },
-      ],
-      items: [
-        {
-          id: "WCBPAC9708:12001",
-          prescriber: "Nikka Calma",
-          initials: "AC",
-          gender: "Female",
-          dob: "12/08/1997",
-          indication: "Multiple Myeloma",
-          molecule: "Linalidomide",
-          status: "Submitted",
-        },
-        {
-          id: "WCBPAC9709:12001",
-          prescriber: "Nikka Calma",
-          initials: "AB",
-          gender: "Male",
-          dob: "12/09/2000",
-          indication: "Relapsed & Refractory Multiple Myeloma",
-          molecule: "50mg - Thalidomide",
-          status: "Not submitted",
-        },
-      ],
     };
   },
 
-  computed: {
-    filteredItems() {
-      if (!this.search) return this.items;
-      const searchLower = this.search.toLowerCase();
-      return this.items.filter((item) =>
-        Object.values(item).join(" ").toLowerCase().includes(searchLower)
-      );
-    },
-  },
+  computed: {},
 
   mounted() {
     // You can fetch or initialize data here if needed
@@ -127,6 +35,13 @@ export default {
   created() {
     // Initialization logic here
     console.log("PatientsTable component created");
+  },
+  methods: {
+    goBackToDetails() {
+      // alert();
+      this.$emit("back", false);
+      // this.$router.push({ name: 'PatientDetails', params: { id: item.id } })
+    },
   },
 };
 </script>

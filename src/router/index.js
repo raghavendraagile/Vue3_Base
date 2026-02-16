@@ -210,6 +210,12 @@ const routes = [
     component: () => import("../Admin/UserPages/OtpValidation.vue"),
   },
   {
+    path: "/registration_list",
+    name: "registration_list",
+    meta: { layout: "userpages" },
+    component: () => import("../Admin/UserPages/RegistrationList.vue"),
+  },
+  {
     path: "/registration_details",
     name: "registration_details",
     meta: { layout: "userpages" },
