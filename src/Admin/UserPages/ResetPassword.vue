@@ -212,11 +212,12 @@ export default {
     passwordRules() {
       return [
         (v) => !!v || "Password required",
-        (v) => v.length >= 12 || "Minimum 12 characters required",
-        (v) => /[A-Z]/.test(v) || "At least 1 uppercase letter required",
-        (v) =>
-          /[a-zA-Z0-9]/.test(v) || "At least 1 alphanumeric character required",
+        (v) => v.length >= 12 || "Minimum length of 12 characters required",
+        (v) => /[A-Z]/.test(v) || "Minimum of 1 uppercase letter required",
         (v) => /\d/.test(v) || "At least 1 number required",
+        (v) =>
+          /[~!@#$%]/.test(v) ||
+          "At least 1 non-alphanumeric character (~!@#$%) required",
       ];
     },
   },
