@@ -1,4 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+:root {
+  --theme-color: #6c63ff;
+  --theme-gradient: linear-gradient(90deg, #6c63ff, #7c4dff);
+}
+
 .v-btn.bg-primary {
   background-color: rgb(58, 58, 253) !important;
   color: white !important;
@@ -99,6 +104,15 @@
 #app.theme-dark .v-table > .v-list-item {
   background: #222 !important;
   color: white;
+}
+
+.theme-bg {
+  background: var(--theme-gradient) !important;
+  color: white !important;
+}
+
+.theme-color {
+  color: var(--theme-color) !important;
 }
 
 .page-header {
@@ -543,6 +557,16 @@ input::placeholder {
 
 .text-blue {
   color: #033E89 !important;
+}
+
+.user-page-bg {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f6f4ec 0%, #f3e7c7 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .main-section {

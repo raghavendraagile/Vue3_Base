@@ -55,16 +55,6 @@
 }
 
 /* OUTLINE BUTTON (Register) */
-.btn-outline {
-  padding: 10px 22px;
-  border-radius: 30px;
-  border: 2px solid #6c63ff;
-  background: transparent;
-  color: #6c63ff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
 
 .btn-outline:hover {
   background: #6c63ff;
