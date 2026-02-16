@@ -6,6 +6,7 @@ import NoDataFound from "@/components/CustomComponents/NoDataFound.vue";
 import DocumentUpload from "@/components/CustomComponents/DocumentUpload.vue";
 import HeaderPage from "@/components/CustomComponents/HeaderPage.vue";
 import FooterPage from "@/components/CustomComponents/FooterPage.vue";
+import StatsPage from "@/components/CustomComponents/Stats.vue";
 
 // Third-party Components
 import VOtpInput from "vue3-otp-input";
@@ -20,5 +21,6 @@ export default {
     app.component("document-upload", DocumentUpload);
     app.component("header-page", HeaderPage);
     app.component("footer-page", FooterPage);
+    app.component("stats-page", StatsPage);
   },
 };

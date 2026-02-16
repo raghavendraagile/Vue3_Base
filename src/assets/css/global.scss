@@ -247,7 +247,7 @@ $color-theme-dark: #fff;
 
 /* Custom Css */
 .v-main > div {
-  margin: 9px;
+  margin: 0px;
   // box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
 }
@@ -307,7 +307,8 @@ label {
 
 a {
   text-decoration: none;
-  color: #033e89;
+  // color: #033e89;
+  color: #8764fe;
 }
 
 .v-application {
@@ -580,4 +581,56 @@ input::placeholder {
 .text-blue {
   color: #033E89 !important;
 }
+.main-section{width: 1300px;
+  margin: 0px auto;
+  background: #ffffff91;
+  padding: 21px 39px;
+  border-radius: 20px;}
+  .v-data-table-header__content{color: #7951ff;
+    font-weight: 600;}
+    // stats cards section
+    .stat-wrapper {
+      position: relative;
+      width: 240px;
+      height: 70px;
+      margin: 20px;
+    }
+    
+    .stat-label {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(90deg, #7b78ff, #8f8cff);
+      color: white;
+      padding: 4px 18px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      z-index: 2;
+    }
+    
+    .stat-pill {
+      width: 100%;
+      height: 60px;
+      border: 2px solid #7b78ff;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+    }
+    
+    .stat-value {
+      font-size: 22px;
+      font-weight: 600;
+      color: #7b78ff;
+    }
+    
+    // stats cards section
+    // Search bar css start
+    .v-input--density-comfortable .v-field--variant-solo{--v-input-control-height: 31px !important;}
+    .v-input--density-comfortable .v-field--no-label{--v-field-padding-bottom: 3px !important;--v-field-padding-top: -7px !important;}
+    
+    // Search bar css end
 //keyframes end

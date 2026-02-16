@@ -209,6 +209,12 @@ const routes = [
     meta: { layout: "userpages" },
     component: () => import("../Admin/UserPages/OtpValidation.vue"),
   },
+  {
+    path: "/registration_details",
+    name: "registration_details",
+    meta: { layout: "userpages" },
+    component: () => import("../Admin/UserPages/RegistrationDetails.vue"),
+  },
  
   //frontend user profile page
   {
