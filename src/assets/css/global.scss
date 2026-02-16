@@ -1,5 +1,12 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+// theme variables
+:root {
+  --theme-color: #6c63ff;
+  --theme-gradient: linear-gradient(90deg, #6c63ff, #7c4dff);
+}
+
 // light theme
 $bg-theme-light: #fff;
 $color-theme-light: #222;
@@ -136,11 +143,11 @@ $color-theme-dark: #fff;
 //dark theme end
 
 .theme-bg {
-  background: linear-gradient(90deg, #6c63ff, #7c4dff) !important;
+  background: var(--theme-gradient) !important;
   color: white !important;
 }
 .theme-color {
-  color: linear-gradient(90deg, #6c63ff, #7c4dff) !important;
+  color: var(--theme-color) !important;
 }
 
 .page-header {
