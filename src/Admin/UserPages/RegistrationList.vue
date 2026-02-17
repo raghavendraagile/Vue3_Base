@@ -1,5 +1,6 @@
 <template>
   <v-container fluid class="page-wrapper background">
+    <content-loader v-if="loader"></content-loader>
     <div class="main-section">
       <div>
         <!-- Stats section -->
@@ -25,6 +26,8 @@
             :headers="headers"
             :items="filteredItems"
             item-key="id"
+            :loading="initval"
+            loading-text="Loading data..."
             class="custom-table mt-3"
             hide-default-footer
           >
@@ -42,16 +45,14 @@
                 <td>{{ item.rolename }}</td>
                 <td>{{ item.description }}</td>
                 <td>
-                  <span
-                    :class="[
-                      'status-text',
-                      item.status === 'Submitted'
-                        ? 'status-submitted'
-                        : 'status-rejected',
-                    ]"
+                  <v-chip
+                    size="small"
+                    variant="flat"
+                    :color="item.status === 1 ? 'green' : 'red'"
+                    class="text-white"
                   >
-                    {{ item.status }}
-                  </span>
+                    {{ item.status == 1 ? "Approved" : "Rejected" }}
+                  </v-chip>
                 </td>
                 <td>
                   <v-btn icon size="x-small" class="pdf-btn">
@@ -86,6 +87,8 @@ export default {
       search: "",
       showDetails: false,
       reg_list: [],
+      loader: false,
+      initval: false,
       headers: [
         { title: "Patient ID", key: "id" },
         { title: "Prescriber", key: "prescriber" },
@@ -117,6 +120,7 @@ export default {
   },
   methods: {
     initialize() {
+      this.initval = true;
       this.$axios
         .get("fetch_reg_list")
         .then((res) => {
