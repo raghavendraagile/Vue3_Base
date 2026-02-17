@@ -1,7 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 :root {
   --theme-color: #6c63ff;
+  --theme-reject: #9f0505;
   --theme-gradient: linear-gradient(90deg, #6c63ff, #7c4dff);
+  --theme-gradient-disabled: linear-gradient(90deg, #b5b5b6, #b7b7b7);
   --required-color: rgb(208, 1, 1);
   --theme-header: 20px;
   --theme-subheader: 16px;
@@ -590,7 +592,7 @@ input::placeholder {
 }
 
 .main-section {
-  width: 1300px;
+  width: 95%;
   margin: 0px auto;
   background: rgba(255, 255, 255, 0.568627451);
   padding: 21px 39px;
@@ -637,7 +639,7 @@ input::placeholder {
 .stat-value {
   font-size: 22px;
   font-weight: 600;
-  color: #7b78ff;
+  color: var(--theme-color);
 }
 
 .v-input--density-comfortable .v-field--variant-solo {
@@ -649,26 +651,40 @@ input::placeholder {
   --v-field-padding-top: -7px !important;
 }
 
-.btn-outline {
-  padding: 10px 22px;
+.btn-outline,
+.btn-filled,
+.btn-reject,
+.btn-disabled {
+  padding: 6px 22px;
   border-radius: 30px;
-  border: 2px solid #6c63ff;
-  background: transparent;
-  color: #6c63ff;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
 }
 
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--theme-color);
+  color: var(--theme-color);
+}
+
 .btn-filled {
-  padding: 10px 22px;
-  border-radius: 30px;
   border: none;
-  background: linear-gradient(90deg, #6c63ff, #7c4dff);
+  background: var(--theme-gradient);
   color: white;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-reject {
+  border: none;
+  background: var(--theme-reject);
+  color: white;
+}
+
+.btn-disabled {
+  border: none;
+  background: var(--theme-gradient-disabled);
+  color: white;
+  cursor: not-allowed;
 }
 
 .heading {

@@ -1,6 +1,12 @@
 <template>
   <v-container fluid class="page-wrapper background">
+    <content-loader v-if="loader"></content-loader>
     <!-- Back section -->
+    <confirmation-dialog
+      ref="confirmationDialog"
+      :title="dialogTitle"
+      :message="dialogMessage"
+    ></confirmation-dialog>
 
     <div class="main-section">
       <button class="btn-outline" @click="goBackToDetails()">Back</button>
@@ -16,7 +22,7 @@
           <div class="d-flex">
             <div class="label">Prescriber :</div>
             <div class="label">
-              &nbsp;{{ reg_deatils.salutation }}. &nbsp;{{ reg_deatils.name }}
+              &nbsp;{{ reg_deatils.salutation }}.{{ reg_deatils.name }}
             </div>
           </div>
           <div class="d-flex">
@@ -24,7 +30,7 @@
             <div class="label">&nbsp;{{ reg_deatils.gender }}</div>
           </div>
           <div class="d-flex">
-            <div class="label">dob :</div>
+            <div class="label">Dob :</div>
             <div class="label">&nbsp;{{ reg_deatils.dob }}</div>
           </div>
           <div class="d-flex">
@@ -40,11 +46,20 @@
             <div class="label">&nbsp;{{ reg_deatils.status }}</div>
           </div>
           <div class="auth-buttons text-right">
-            <button class="btn-filled" @click="updateStatus(reg_deatils)">
+            <button
+              :class="reg_deatils.status == 1 ? 'btn-disabled' : 'btn-filled'"
+              :disabled="reg_deatils.status == 1"
+              @click="updateStatus(reg_deatils)"
+            >
               Approved
             </button>
 
-            <button class="btn-filled ml-2" @click="updateStatus(reg_deatils)">
+            <button
+              :class="reg_deatils.status == 0 ? 'btn-disabled' : 'btn-reject'"
+              :disabled="reg_deatils.status == 0"
+              class="ml-2"
+              @click="updateStatus(reg_deatils)"
+            >
               Reject
             </button>
           </div>
@@ -64,6 +79,9 @@ export default {
   data() {
     return {
       reg_deatils: [],
+      dialogMessage: "",
+      dialogTitle: "",
+      loader: false,
     };
   },
   watch: {
@@ -72,15 +90,7 @@ export default {
       handler() {
         if (this.$route.query.slug) {
           this.loader = true;
-          this.$axios
-            .get("fetch_regdetails_by_slug/" + this.$route.query.slug)
-            .then((res) => {
-              this.reg_deatils = res.data.reg_deatils;
-              this.loader = false;
-            })
-            .catch(() => {
-              this.loader = false;
-            });
+          this.getRegDetails();
         }
       },
     },
@@ -95,24 +105,45 @@ export default {
     // Initialization logic here
   },
   methods: {
-    goBackToDetails() {
-      this.$emit("back", false);
-      // this.$router.push({ name: 'PatientDetails', params: { id: item.id } })
+    showConfirmation(title, message) {
+      this.dialogTitle = title;
+      this.dialogMessage = message;
+      return this.$refs.confirmationDialog.open();
     },
-
-    updateStatus() {
+    getRegDetails() {
       this.loader = true;
-      this.isBtnLoading = true;
-
       this.$axios
-        .post("update_status", {
-          otp: this.verification_code,
-          email: this.userdata.email,
+        .get("fetch_regdetails_by_slug/" + this.$route.query.slug)
+        .then((res) => {
+          this.reg_deatils = res.data.reg_deatils;
+          this.loader = false;
+        })
+        .catch(() => {
+          this.loader = false;
+        });
+    },
+    goBackToDetails() {
+      // this.$emit("back", false);
+      this.$router.push({ name: "registration_list" });
+    },
+    async updateStatus(regObj) {
+      const result = await this.showConfirmation(
+        "Confirm",
+        "Are you sure you want to update the status ?"
+      );
+      if (!result) return;
+      this.loader = true;
+      this.$axios
+        .post("updateRegStatus", {
+          slug: regObj.slug,
         })
         .then(async (res) => {
+          console.log("res.data.status");
+          console.log(res.data.status);
           if (res.data.status === "S") {
-            await this.$store.dispatch("auth/loginRequest", this.userdata);
-            this.$router.push({ name: "dashboard" });
+            this.$toast.success(res.data.message);
+            // this.$router.push({ name: "registration_list" });
+            this.getRegDetails();
           } else {
             this.$toast.error(res.data.message);
           }
@@ -120,6 +151,10 @@ export default {
         .finally(() => {
           this.loader = false;
           this.isBtnLoading = false;
+        })
+        .catch((err) => {
+          this.$toast.error(res.data.message);
+          console.log("this error" + err);
         });
     },
   },
