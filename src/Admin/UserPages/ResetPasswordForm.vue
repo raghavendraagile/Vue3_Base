@@ -34,12 +34,30 @@
                     </div>
                     <div class="page-title-row">
                       <div class="title-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <rect
+                            x="3"
+                            y="11"
+                            width="18"
+                            height="11"
+                            rx="2"
+                            ry="2"
+                          ></rect>
                           <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                         </svg>
                       </div>
-                      <span class="font-sign-in-msg">{{ $t("reset_password") }}</span>
+                      <span class="font-sign-in-msg">{{
+                        $t("reset_password")
+                      }}</span>
                     </div>
                   </div>
                 </div>
@@ -49,7 +67,16 @@
                 <div class="card-body">
                   <transition name="slide-fade">
                     <div class="alert-error" v-if="status == 'E'">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
                         <circle cx="12" cy="12" r="10"></circle>
                         <line x1="12" y1="8" x2="12" y2="12"></line>
                         <line x1="12" y1="16" x2="12.01" y2="16"></line>
@@ -59,7 +86,16 @@
                   </transition>
                   <transition name="slide-fade">
                     <div class="alert-success" v-if="status == 'S'">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
                         <polyline points="20 6 9 17 4 12"></polyline>
                       </svg>
                       {{ message }}
@@ -102,7 +138,8 @@
                     <span v-show="textvisible" class="countdown-row">
                       <span class="countdown-dot"></span>
                       <span class="time_data">
-                        {{ $t("resend_code_format") }} <strong>{{ timecount }}</strong> {{ $t("seconds") }}
+                        {{ $t("resend_code_format") }}
+                        <strong>{{ timecount }}</strong> {{ $t("seconds") }}
                       </span>
                     </span>
 
@@ -124,7 +161,11 @@
                               :loading="isbtnLoading"
                               v-show="btnvisible"
                               class="resend-btn"
-                              ><v-icon icon="mdi-email-sync-outline" start></v-icon>{{ $t("resend_code") }}
+                              ><v-icon
+                                icon="mdi-email-sync-outline"
+                                start
+                              ></v-icon
+                              >{{ $t("resend_code") }}
                             </v-chip>
                           </div>
                         </template>
@@ -277,11 +318,12 @@ export default {
     passwordRules() {
       return [
         (v) => !!v || "Password required",
-        (v) => v.length >= 12 || "Minimum 12 characters required",
-        (v) => /[A-Z]/.test(v) || "At least 1 uppercase letter required",
-        (v) =>
-          /[a-zA-Z0-9]/.test(v) || "At least 1 alphanumeric character required",
+        (v) => v.length >= 12 || "Minimum length of 12 characters required",
+        (v) => /[A-Z]/.test(v) || "Minimum of 1 uppercase letter required",
         (v) => /\d/.test(v) || "At least 1 number required",
+        (v) =>
+          /[~!@#$%]/.test(v) ||
+          "At least 1 non-alphanumeric character (~!@#$%) required",
       ];
     },
 
@@ -473,9 +515,16 @@ export default {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse 60% 50% at 15% 20%, rgba(99, 130, 220, 0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 60% at 85% 80%, rgba(130, 99, 180, 0.10) 0%, transparent 60%);
+  background: radial-gradient(
+      ellipse 60% 50% at 15% 20%,
+      rgba(99, 130, 220, 0.12) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 50% 60% at 85% 80%,
+      rgba(130, 99, 180, 0.1) 0%,
+      transparent 60%
+    );
   pointer-events: none;
 }
 
@@ -498,8 +547,7 @@ export default {
 /* ── Card ── */
 .card-wrapper {
   border-radius: 20px !important;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.07),
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07),
     0 20px 60px -10px rgba(80, 100, 180, 0.18) !important;
   overflow: hidden;
   background: #ffffff !important;
@@ -508,8 +556,7 @@ export default {
 }
 
 .card-wrapper:hover {
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.08),
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08),
     0 28px 70px -12px rgba(80, 100, 180, 0.24) !important;
 }
 
@@ -545,7 +592,7 @@ export default {
   font-weight: 700;
   letter-spacing: -0.5px;
   color: #1a1f36;
-  font-family: 'Georgia', serif;
+  font-family: "Georgia", serif;
 }
 
 .page-title-row {
@@ -577,7 +624,12 @@ export default {
 /* ── Divider ── */
 .divider-line {
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(79, 110, 247, 0.25), transparent);
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(79, 110, 247, 0.25),
+    transparent
+  );
   margin: 20px 0 8px;
 }
 
@@ -692,8 +744,15 @@ export default {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.75); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.75);
+  }
 }
 
 .time_data {

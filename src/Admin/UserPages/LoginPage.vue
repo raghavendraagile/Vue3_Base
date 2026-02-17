@@ -170,11 +170,12 @@ export default {
     passwordRules() {
       return [
         (v) => !!v || "Password required",
-        (v) => v.length >= 12 || "Minimum 12 characters required",
-        (v) => /[A-Z]/.test(v) || "At least 1 uppercase letter required",
-        (v) =>
-          /[a-zA-Z0-9]/.test(v) || "At least 1 alphanumeric character required",
+        (v) => v.length >= 12 || "Minimum length of 12 characters required",
+        (v) => /[A-Z]/.test(v) || "Minimum of 1 uppercase letter required",
         (v) => /\d/.test(v) || "At least 1 number required",
+        (v) =>
+          /[~!@#$%]/.test(v) ||
+          "At least 1 non-alphanumeric character (~!@#$%) required",
       ];
     },
   },
@@ -475,8 +476,15 @@ export default {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.75); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.75);
+  }
 }
 
 /* ── Resend Button ── */
@@ -515,5 +523,4 @@ export default {
   font-weight: 600 !important;
   padding: 0 20px !important;
 }
-
 </style>
