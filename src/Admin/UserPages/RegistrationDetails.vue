@@ -75,8 +75,6 @@
           </div>
         </v-card>
       </div>
-      {{ accepted }}
-      <checkbox v-model="accepted" />
 
       <!-- <div v-else>
         <RegistrationDetails :selectedId="selectedId" @back="handleBackClick" />
@@ -95,7 +93,7 @@ export default {
       dialogMessage: "",
       dialogTitle: "",
       loader: false,
-      accepted: false,
+      // accepted: false,
     };
   },
   watch: {

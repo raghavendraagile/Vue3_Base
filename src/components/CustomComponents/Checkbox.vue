@@ -1,8 +1,7 @@
 <template>
-  <label class="ios-checkbox green d-flex align-end">
-    <input type="checkbox" v-model="localValue" required />
+  <label class="ios-checkbox green">
+    <input type="checkbox" v-model="model" :required="required" />
 
-    <!-- MUST be immediately after input -->
     <div class="checkbox-wrapper">
       <div class="checkbox-bg"></div>
 
@@ -18,7 +17,7 @@
       </svg>
     </div>
 
-    <span class="checkbox-label ml-2">I agree</span>
+    <span class="checkbox-label">{{ label }}</span>
   </label>
 </template>
 
@@ -26,10 +25,15 @@
 export default {
   name: "GreenCheckbox",
   props: {
-    modelValue: Boolean,
+    modelValue: {
+      type: Boolean,
+      required: true,
+    },
+    label: String,
+    required: Boolean,
   },
   computed: {
-    localValue: {
+    model: {
       get() {
         return this.modelValue;
       },
@@ -57,10 +61,14 @@ export default {
   --checkbox-bg: #dbeafe;
   --checkbox-border: #93c5fd;
   position: relative;
-  display: inline-block;
+  /* display: inline-block; */
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  max-width: 100%;
 }
 .ios-checkbox input {
   display: none;
@@ -71,6 +79,8 @@ export default {
   height: var(--checkbox-size);
   border-radius: 8px;
   transition: transform 0.2s ease;
+  flex-shrink: 0; /* 🔑 Prevent resize */
+  margin-top: 3px;
 }
 .checkbox-bg {
   position: absolute;
