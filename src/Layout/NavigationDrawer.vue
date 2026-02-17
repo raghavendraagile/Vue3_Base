@@ -77,6 +77,7 @@ import localStorageWrapper from "../localStorageWrapper.js";
 
 export default {
   props: ["sel_lang"],
+
   data() {
     return {
       drawer: true,
@@ -126,6 +127,7 @@ export default {
       }
     },
   },
+
   methods: {
     appImageUpdate() {
       if (localStorageWrapper.getItem("App_Image_Url") != null) {

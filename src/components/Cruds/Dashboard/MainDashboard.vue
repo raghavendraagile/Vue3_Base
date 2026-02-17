@@ -98,11 +98,7 @@ export default {
       this.loader = true;
       if (Role == "SuperUser") {
         this.$axios
-          .get(
-            
-              "fetchDashboardSuperUser/" +
-              userId
-          )
+          .get("fetchDashboardSuperUser/" + userId)
           .then((res) => {
             this.dashboard_count = res.data.count_dashboard;
             this.loader = false;
@@ -114,11 +110,7 @@ export default {
           });
       } else if (Role == "MallAdmin") {
         this.$axios
-          .get(
-            
-              "fetchDashboardMallAdmin/" +
-              userId
-          )
+          .get("fetchDashboardMallAdmin/" + userId)
           .then((res) => {
             this.dashboard_count = res.data.count_dashboard;
             this.loader = false;
@@ -130,11 +122,7 @@ export default {
           });
       } else {
         this.$axios
-          .get(
-            
-              "fetchDashboardStoreAdmin/" +
-              userId
-          )
+          .get("fetchDashboardStoreAdmin/" + userId)
           .then((res) => {
             this.dashboard_count = res.data.count_dashboard;
             this.loader = false;

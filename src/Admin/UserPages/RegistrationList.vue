@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="page-wrapper background">
     <div class="main-section">
-      <div v-if="!showDetails">
+      <div>
         <!-- Stats section -->
         <stats-page :stats="stats" />
         <!-- Stats section -->
@@ -18,6 +18,7 @@
             class="search-field"
           />
         </div>
+
         <!-- Data Table Card -->
         <v-card class="table-card pa-4">
           <v-data-table
@@ -34,12 +35,12 @@
                     item.id
                   }}</a>
                 </td>
-                <td>{{ item.prescriber }}</td>
-                <td>{{ item.initials }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.salutation }}</td>
                 <td>{{ item.gender }}</td>
                 <td>{{ item.dob }}</td>
-                <td>{{ item.indication }}</td>
-                <td>{{ item.molecule }}</td>
+                <td>{{ item.rolename }}</td>
+                <td>{{ item.description }}</td>
                 <td>
                   <span
                     :class="[
@@ -62,12 +63,9 @@
           </v-data-table>
         </v-card>
       </div>
-      <div v-else>
-        <RegistrationDetails
-          :selectedItem="selectedItem"
-          @back="handleBackClick"
-        />
-      </div>
+      <!-- <div v-else>
+        <RegistrationDetails :selectedId="selectedId" @back="handleBackClick" />
+      </div> -->
     </div>
   </v-container>
 </template>
@@ -78,7 +76,7 @@ export default {
   name: "PatientsTable",
   data() {
     return {
-      selectedItem: "",
+      selectedId: "",
       stats: [
         { label: "Total patients", value: 58 },
         { label: "Active patients", value: 9 },
@@ -87,7 +85,7 @@ export default {
       ],
       search: "",
       showDetails: false,
-
+      reg_list: [],
       headers: [
         { title: "Patient ID", key: "id" },
         { title: "Prescriber", key: "prescriber" },
@@ -99,106 +97,49 @@ export default {
         { title: "Status", key: "status" },
         { title: "PDF", key: "pdf", sortable: false },
       ],
-      items: [
-        {
-          id: "WCBPAC9801:12001",
-          prescriber: "Nikka Calma",
-          initials: "NC",
-          gender: "Female",
-          dob: "12/08/1998",
-          indication: "Multiple Myeloma",
-          molecule: "Lenalidomide 25mg",
-          status: "Submitted",
-        },
-        {
-          id: "WCBPAC9702:12002",
-          prescriber: "Arjun Rao",
-          initials: "AR",
-          gender: "Male",
-          dob: "21/04/1997",
-          indication: "Relapsed & Refractory Multiple Myeloma",
-          molecule: "Thalidomide 50mg",
-          status: "Not submitted",
-        },
-        {
-          id: "WCBPAC9903:12003",
-          prescriber: "Sneha Iyer",
-          initials: "SI",
-          gender: "Female",
-          dob: "05/11/1999",
-          indication: "Newly Diagnosed Multiple Myeloma",
-          molecule: "Bortezomib",
-          status: "Submitted",
-        },
-        {
-          id: "WCBPAC9604:12004",
-          prescriber: "Rahul Mehta",
-          initials: "RM",
-          gender: "Male",
-          dob: "18/02/1996",
-          indication: "Light Chain Multiple Myeloma",
-          molecule: "Carfilzomib",
-          status: "Rejected",
-        },
-        {
-          id: "WCBPAC0005:12005",
-          prescriber: "Priya Sharma",
-          initials: "PS",
-          gender: "Female",
-          dob: "30/09/2000",
-          indication: "Smoldering Multiple Myeloma",
-          molecule: "Ixazomib",
-          status: "Submitted",
-        },
-        {
-          id: "WCBPAC9506:12006",
-          prescriber: "Karthik N",
-          initials: "KN",
-          gender: "Male",
-          dob: "14/06/1995",
-          indication: "Plasma Cell Leukemia",
-          molecule: "Daratumumab",
-          status: "Not submitted",
-        },
-        {
-          id: "WCBPAC0107:12007",
-          prescriber: "Anita Desai",
-          initials: "AD",
-          gender: "Female",
-          dob: "09/01/2001",
-          indication: "Relapsed Multiple Myeloma",
-          molecule: "Pomalidomide",
-          status: "Submitted",
-        },
-      ],
     };
   },
 
   computed: {
     filteredItems() {
-      if (!this.search) return this.items;
+      if (!this.search) return this.reg_list;
       const searchLower = this.search.toLowerCase();
-      return this.items.filter((item) =>
+      return this.reg_list.filter((item) =>
         Object.values(item).join(" ").toLowerCase().includes(searchLower)
       );
     },
   },
 
-  mounted() {
-    // You can fetch or initialize data here if needed
-    console.log("PatientsTable component mounted");
-  },
+  mounted() {},
 
   created() {
-    // Initialization logic here
-    console.log("PatientsTable component created");
+    this.initialize();
   },
   methods: {
+    initialize() {
+      this.$axios
+        .get("fetch_reg_list")
+        .then((res) => {
+          console.log("res.data");
+          console.log(res.data.reg_list);
+          this.reg_list = res.data.reg_list;
+          this.initval = false;
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+          this.initval = false;
+        });
+    },
     goToDetailsPage(item) {
-      this.showDetails = true;
-      this.selectedItem = item;
-      // console.log("Clicked row:", item);
-      // this.$router.push({ name: 'PatientDetails', params: { id: item.id } })
+      console.log("item");
+      console.log(item.slug);
+      this.$router.push({
+        name: "registration_details",
+        query: { slug: item.slug },
+      });
+      // this.showDetails = true;
+      // this.selectedId = id;
     },
     handleBackClick(value) {
       this.showDetails = value;

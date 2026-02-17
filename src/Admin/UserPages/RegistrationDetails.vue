@@ -1,82 +1,101 @@
 <template>
-  <v-container fluid class="page-wrapper">
+  <v-container fluid class="page-wrapper background">
     <!-- Back section -->
-    <button class="btn-outline" @click="goBackToDetails()">Back</button>
+
+    <div class="main-section">
+      <button class="btn-outline" @click="goBackToDetails()">Back</button>
+      <div>
+        <!-- Search Bar -->
+        <!-- {{ reg_deatils }} -->
+        <v-card class="table-card pa-4 mt-4">
+          <h2 class="heading">Registration Details</h2>
+          <div class="d-flex">
+            <div class="label">Id :</div>
+            <div class="label">&nbsp;{{ reg_deatils.id }}</div>
+          </div>
+          <div class="d-flex">
+            <div class="label">Prescriber :</div>
+            <div class="label">
+              &nbsp;{{ reg_deatils.salutation }}. &nbsp;{{ reg_deatils.name }}
+            </div>
+          </div>
+          <div class="d-flex">
+            <div class="label">Gender :</div>
+            <div class="label">&nbsp;{{ reg_deatils.gender }}</div>
+          </div>
+          <div class="d-flex">
+            <div class="label">dob :</div>
+            <div class="label">&nbsp;{{ reg_deatils.dob }}</div>
+          </div>
+          <div class="d-flex">
+            <div class="label">Idendication :</div>
+            <div class="label">&nbsp;{{ reg_deatils.rolename }}</div>
+          </div>
+          <div class="d-flex">
+            <div class="label">Molecule :</div>
+            <div class="label">&nbsp;{{ reg_deatils.rolename }}</div>
+          </div>
+          <div class="d-flex">
+            <div class="label">Status :</div>
+            <div class="label">&nbsp;{{ reg_deatils.status }}</div>
+          </div>
+          <div class="auth-buttons text-right">
+            <button class="btn-filled" @click="updateStatus(reg_deatils)">
+              Approved
+            </button>
+
+            <button class="btn-filled ml-2" @click="updateStatus(reg_deatils)">
+              Reject
+            </button>
+          </div>
+        </v-card>
+      </div>
+      <!-- <div v-else>
+        <RegistrationDetails :selectedId="selectedId" @back="handleBackClick" />
+      </div> -->
+    </div>
     <!-- Search Bar -->
 
     <!-- Data Table Card -->
-    <v-card class="table-card pa-4 mt-4">
-      <h2 class="heading">Registration Details</h2>
-      <div class="d-flex">
-        <div class="label">Id :</div>
-        <div class="label">&nbsp;{{ selectedItem.id }}</div>
-      </div>
-      <div class="d-flex">
-        <div class="label">Prescriber :</div>
-        <div class="label">
-          &nbsp;{{ selectedItem.initials }}. &nbsp;{{ selectedItem.prescriber }}
-        </div>
-      </div>
-      <div class="d-flex">
-        <div class="label">Gender :</div>
-        <div class="label">&nbsp;{{ selectedItem.gender }}</div>
-      </div>
-      <div class="d-flex">
-        <div class="label">dob :</div>
-        <div class="label">&nbsp;{{ selectedItem.dob }}</div>
-      </div>
-      <div class="d-flex">
-        <div class="label">Idindication :</div>
-        <div class="label">&nbsp;{{ selectedItem.indication }}</div>
-      </div>
-      <div class="d-flex">
-        <div class="label">Molecule :</div>
-        <div class="label">&nbsp;{{ selectedItem.molecule }}</div>
-      </div>
-      <div class="d-flex">
-        <div class="label">Status :</div>
-        <div class="label">&nbsp;{{ selectedItem.status }}</div>
-      </div>
-      <div class="auth-buttons text-right">
-        <button class="btn-filled" @click="updateStatus(selectedItem)">
-          Approved
-        </button>
-
-        <button class="btn-filled ml-2" @click="updateStatus(selectedItem)">
-          Reject
-        </button>
-      </div>
-    </v-card>
   </v-container>
 </template>
 <script>
 export default {
-  props: ["selectedItem"],
   data() {
     return {
-      stats: [
-        { label: "Total patients", value: 58 },
-        { label: "Active patients", value: 9 },
-        { label: "Overdue PAF", value: 7 },
-        { label: "Rejected PAF", value: 0 },
-      ],
+      reg_deatils: [],
     };
   },
-
+  watch: {
+    "$route.query.slug": {
+      immediate: true,
+      handler() {
+        if (this.$route.query.slug) {
+          this.loader = true;
+          this.$axios
+            .get("fetch_regdetails_by_slug/" + this.$route.query.slug)
+            .then((res) => {
+              this.reg_deatils = res.data.reg_deatils;
+              this.loader = false;
+            })
+            .catch(() => {
+              this.loader = false;
+            });
+        }
+      },
+    },
+  },
   computed: {},
 
   mounted() {
-    // You can fetch or initialize data here if needed
-    console.log("PatientsTable component mounted");
+    console.log("Registration ID:", this.$route.query.slug);
   },
 
   created() {
     // Initialization logic here
-    console.log("PatientsTable component created");
   },
   methods: {
     goBackToDetails() {
-      // alert();
       this.$emit("back", false);
       // this.$router.push({ name: 'PatientDetails', params: { id: item.id } })
     },

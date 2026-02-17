@@ -1,5 +1,5 @@
 <template>
-  <div class="centered-container">
+  <div class="centered-container background">
     <span class="text-label">Coming soon</span>
   </div>
 </template>
