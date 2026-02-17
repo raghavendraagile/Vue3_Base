@@ -1,5 +1,6 @@
 <template>
   <div class="register-page pa-0">
+    <content-loader v-if="loading"></content-loader>
     <!-- Progress Header -->
     <div class="progress-wrapper">
       <div class="progress-content">
@@ -106,13 +107,12 @@
                     counter
                   />
                 </v-col>
-
                 <v-col cols="12" md="6">
                   <v-autocomplete
-                    v-model="form.hospital_name"
-                    :items="formattedHospitals"
-                    item-title="display"
-                    item-value="name"
+                    v-model="form.institution_id"
+                    :items="hospitals"
+                    item-title="name"
+                    item-value="id"
                     :rules="requiredRule"
                     density="compact"
                     variant="outlined"
@@ -122,7 +122,7 @@
                   />
                 </v-col>
 
-                <v-col cols="12" md="6" v-if="form.hospital_name">
+                <v-col cols="12" md="6" v-if="form.institution_id">
                   <div class="custom-field plain-wrapper">
                     <label class="plain-label">Hospital Address</label>
                     <div class="plain-value">
@@ -228,7 +228,9 @@
               <div class="form-actions">
                 <div class="mandatory-legend">
                   <span class="mandatory-star">* </span>
-                  <span class="theme-color">Symbol indicates a mandatory field</span>
+                  <span class="theme-color"
+                    >Symbol indicates a mandatory field</span
+                  >
                 </div>
 
                 <v-btn
@@ -301,7 +303,7 @@
                       <div class="custom-field plain-wrapper">
                         <label class="plain-label">Date</label>
                         <div class="plain-value">
-                          {{ form.signature_date }}
+                          {{ formatDate(form.signature_date) }}
                         </div>
                       </div>
                     </v-col>
@@ -316,6 +318,7 @@
                   class="btn-outline"
                   rounded="pill"
                   @click="goToPreviousStep"
+                  :disabled="btndisable"
                 >
                   ← Previous
                 </v-btn>
@@ -324,8 +327,9 @@
                   class="btn-filled theme-bg"
                   rounded="pill"
                   @click="submitForm"
+                  :disabled="btndisable"
                 >
-                  Submit
+                  Register
                 </v-btn>
               </div>
             </div>
@@ -363,6 +367,47 @@
               </v-btn>
             </v-card>
           </v-dialog>
+
+          <!-- SUCCESS DIALOG -->
+          <v-dialog
+            v-model="showSuccessDialog"
+            width="680"
+            persistent
+            scrim="rgba(0,0,0,0.65)"
+            transition="dialog-transition"
+          >
+            <v-card class="success-dialog-card text-center" elevation="6">
+              <!-- Icon Section -->
+              <div class="success-icon-wrapper">
+                <div class="success-circle">
+                  <v-icon size="48" class="success-icon"> mdi-check </v-icon>
+                </div>
+              </div>
+
+              <!-- Title -->
+              <h2 class="success-title">Registration is in Progress</h2>
+
+              <!-- Description -->
+              <p class="success-description">
+                Thank you for registering for the Pathfinder.<br />
+                A representative will validate your account and you will receive
+                an email confirmation within one working day.
+              </p>
+
+              <!-- Divider -->
+              <v-divider class="my-6"></v-divider>
+
+              <!-- Action Button -->
+              <v-btn
+                class="success-login-btn"
+                rounded="pill"
+                size="large"
+                @click="goToLogin()"
+              >
+                Go to Login
+              </v-btn>
+            </v-card>
+          </v-dialog>
         </v-card>
       </div>
     </div>
@@ -376,24 +421,9 @@ export default {
       step: 1,
       isFormValid: false,
       medicationError: false,
+      loading: false,
 
-      hospitals: [
-        {
-          code: "HSP001",
-          name: "City General Hospital",
-          address: "123 Main Street, Downtown, NY 10001",
-        },
-        {
-          code: "HSP002",
-          name: "Green Valley Medical Center",
-          address: "45 Sunset Blvd, Los Angeles, CA 90028",
-        },
-        {
-          code: "HSP003",
-          name: "Sunrise Community Clinic",
-          address: "78 Palm Drive, Miami, FL 33101",
-        },
-      ],
+      hospitals: [],
 
       medications: [
         "Lenalidomide",
@@ -407,7 +437,7 @@ export default {
         lastname: "",
         reg_no: "",
         job_title: "",
-        hospital_name: "",
+        institution_id: "",
         address: "",
         medications: [],
         email: "",
@@ -417,26 +447,41 @@ export default {
         signature_date: "",
       },
       confirmationError: false,
+      showSuccessDialog: false,
+      btndisable: false,
 
       medicationTerms: {
         Lenalidomide: [
           "I have read and understand the Lenalidomide Healthcare Professional Information Guide.",
           "I comply with all Pregnancy Prevention Programme requirements.",
+          "I confirm that lenalidomide treatment will be initiated and monitored under the supervision of a physician experienced in managing immunomodulatory agents.",
+          "I understand the maximum prescription lengths: 4 weeks for women of childbearing potential and 12 weeks for all other patients.",
+          "I acknowledge the need for a negative pregnancy test (sensitivity ≥25 mIU/mL) before starting treatment for women of childbearing potential.",
         ],
         "50mg - Thalidomide": [
           "I have read and understand the Thalidomide Healthcare Professional Information Guide.",
+          "I commit to counseling patients on contraception requirements, including at least one highly effective method during and after therapy.",
+          "I will register with the Pregnancy Prevention Programme platform if dispensing lenalidomide as a pharmacist.",
+          "I confirm that patients are capable of complying with the Pregnancy Prevention Programme requirements.",
         ],
         Pomalidomide: [
           "I have read and understand the Pomalidomide Healthcare Professional Information Guide.",
+          "I have reviewed the risks of second primary malignancies and other key safety information for lenalidomide use.",
         ],
         "100mg - Thalidomide Tablet": [
           "I have read and understand the Thalidomide Healthcare Professional Information Guide.",
+          "I will ensure a Prescription Authorisation Form is completed for each initial prescription and provided to the pharmacy.",
+          "I will provide patients with the Patient Brochure, Risk Awareness Form, and Patient Pocket Information Card.",
+          "I acknowledge the controlled distribution system and prescription limits for lenalidomide.",
         ],
       },
 
       confirmationChecks: {},
       showConfirmationDialog: false,
     };
+  },
+  mounted() {
+    this.fetchInstitutions();
   },
 
   watch: {
@@ -448,12 +493,9 @@ export default {
         this.form.signature = this.form.name + " " + this.form.lastname;
 
         // Set current date (DD / MM / YYYY)
-        const today = new Date();
-        const day = String(today.getDate()).padStart(2, "0");
-        const month = String(today.getMonth() + 1).padStart(2, "0");
-        const year = today.getFullYear();
+        const today = new Date().toISOString().substr(0, 10);
 
-        this.form.signature_date = `${day} / ${month} / ${year}`;
+        this.form.signature_date = today;
       }
     },
   },
@@ -466,13 +508,6 @@ export default {
     },
     progress() {
       return this.step === 1 ? 50 : 100;
-    },
-
-    formattedHospitals() {
-      return this.hospitals.map((h) => ({
-        ...h,
-        display: `${h.name} - ${h.code}`,
-      }));
     },
 
     //field rules
@@ -509,6 +544,19 @@ export default {
   },
 
   methods: {
+    async fetchInstitutions() {
+      try {
+        const res = await this.$axios.get("fetchactiveinstitutions");
+        console.log("res");
+        console.log(res);
+
+        if (res.data.status === "S") {
+          this.hospitals = res.data.institutions;
+        }
+      } catch (error) {
+        this.hospitals = [];
+      }
+    },
     initializeConfirmations() {
       this.form.medications.forEach((med) => {
         if (!this.confirmationChecks[med]) {
@@ -518,8 +566,8 @@ export default {
         }
       });
     },
-    populateAddress(name) {
-      const hospital = this.hospitals.find((h) => h.name === name);
+    populateAddress(id) {
+      const hospital = this.hospitals.find((h) => h.id === id);
       this.form.address = hospital ? hospital.address : "";
     },
 
@@ -533,7 +581,21 @@ export default {
       this.step = 2;
     },
     goToPreviousStep() {
+      this.resetConfirmation();
       this.step = 1;
+    },
+    resetConfirmation() {
+      // Clear all confirmation checks
+      this.confirmationChecks = {};
+
+      // Also reset error state if any
+      this.confirmationError = false;
+    },
+
+    goToLogin() {
+      this.btndisable = true;
+      this.showSuccessDialog = false;
+      this.$router.push({ name: "login" });
     },
 
     submitForm() {
@@ -543,7 +605,38 @@ export default {
       }
 
       this.confirmationError = false;
-      console.log("Final submission:", this.form);
+      this.loading = true;
+
+      const payload = {
+        name: this.form.name,
+        lastname: this.form.lastname,
+        reg_no: this.form.reg_no,
+        job_title: this.form.job_title,
+        institution_id: this.form.institution_id,
+        address: this.form.address,
+        medications: this.form.medications,
+        email: this.form.email,
+        password: this.form.password,
+        signature: this.form.signature,
+        signature_date: this.form.signature_date,
+      };
+
+      this.$axios
+        .post("prescriber_register", payload)
+        .then((res) => {
+          if (res.data.status == "E") {
+            this.$toast.error(res.data.message);
+            this.loading = false;
+          } else {
+            this.showSuccessDialog = true;
+            this.loading = false;
+          }
+        })
+        .catch((err) => {
+          this.$toast.error(
+            err?.response?.data?.message || "Something went wrong"
+          );
+        });
     },
 
     returnToSelection() {
@@ -556,9 +649,9 @@ export default {
 <style scoped>
 /* PAGE BACKGROUND */
 .register-page {
-  margin: 20px;
+  margin: 15px;
   padding-top: 40px;
-  width: 70vw;
+  width: 60vw;
 }
 
 /* PROGRESS BAR */
@@ -588,6 +681,8 @@ export default {
   border-radius: 28px;
   padding: 25px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+  height: 80vh;
+  overflow-y: auto;
 }
 
 /* HEADER */
@@ -815,7 +910,8 @@ export default {
 
 /* Soft pulse animation */
 @keyframes pulseStar {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -823,4 +919,128 @@ export default {
   }
 }
 
+.success-dialog {
+  border-radius: 28px;
+}
+
+.success-circle {
+  width: 110px;
+  height: 110px;
+  border: 3px solid #94c11f;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.success-title {
+  font-size: 32px;
+  font-weight: 500;
+  color: #4a4a4a;
+}
+
+.success-text {
+  font-size: 18px;
+  color: #6c6c6c;
+  line-height: 1.6;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.login-btn {
+  background-color: #0e5a74;
+  color: white;
+  min-width: 200px;
+  height: 50px;
+  font-size: 16px;
+}
+
+/* SUCCESS DIALOG CARD */
+.success-dialog-card {
+  border-radius: 32px;
+  padding: 60px 50px;
+  background: white;
+  animation: popIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Entrance Animation */
+@keyframes popIn {
+  0% {
+    transform: scale(0.85) translateY(40px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ICON WRAPPER */
+.success-icon-wrapper {
+  margin-bottom: 30px;
+}
+
+.success-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid var(--theme-color);
+  background: rgba(0, 0, 0, 0.02);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  animation: scalePulse 1.8s infinite ease-in-out;
+}
+
+.success-icon {
+  color: var(--theme-color);
+}
+
+/* Subtle pulse animation */
+@keyframes scalePulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* TITLE */
+.success-title {
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--theme-color);
+  margin-bottom: 18px;
+}
+
+/* DESCRIPTION */
+.success-description {
+  font-size: 16px;
+  color: #5f6368;
+  line-height: 1.7;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* LOGIN BUTTON */
+.success-login-btn {
+  background: var(--theme-gradient);
+  color: white;
+  font-weight: 600;
+  padding: 0 50px;
+  height: 52px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.success-login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
 </style>

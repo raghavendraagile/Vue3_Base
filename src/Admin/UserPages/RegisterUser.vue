@@ -102,4 +102,7 @@ export default {
     width: 100%;
   }
 }
+.user-page-bg{
+  align-items: flex-start;
+}
 </style>
