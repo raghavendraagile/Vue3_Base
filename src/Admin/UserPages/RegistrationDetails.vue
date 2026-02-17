@@ -5,9 +5,47 @@
     <!-- Search Bar -->
 
     <!-- Data Table Card -->
-    <v-card class="table-card pa-4">
+    <v-card class="table-card pa-4 mt-4">
       <h2 class="heading">Registration Details</h2>
-      {{ selectedItem }}
+      <div class="d-flex">
+        <div class="label">Id :</div>
+        <div class="label">&nbsp;{{ selectedItem.id }}</div>
+      </div>
+      <div class="d-flex">
+        <div class="label">Prescriber :</div>
+        <div class="label">
+          &nbsp;{{ selectedItem.initials }}. &nbsp;{{ selectedItem.prescriber }}
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="label">Gender :</div>
+        <div class="label">&nbsp;{{ selectedItem.gender }}</div>
+      </div>
+      <div class="d-flex">
+        <div class="label">dob :</div>
+        <div class="label">&nbsp;{{ selectedItem.dob }}</div>
+      </div>
+      <div class="d-flex">
+        <div class="label">Idindication :</div>
+        <div class="label">&nbsp;{{ selectedItem.indication }}</div>
+      </div>
+      <div class="d-flex">
+        <div class="label">Molecule :</div>
+        <div class="label">&nbsp;{{ selectedItem.molecule }}</div>
+      </div>
+      <div class="d-flex">
+        <div class="label">Status :</div>
+        <div class="label">&nbsp;{{ selectedItem.status }}</div>
+      </div>
+      <div class="auth-buttons text-right">
+        <button class="btn-filled" @click="updateStatus(selectedItem)">
+          Approved
+        </button>
+
+        <button class="btn-filled ml-2" @click="updateStatus(selectedItem)">
+          Reject
+        </button>
+      </div>
     </v-card>
   </v-container>
 </template>
@@ -41,6 +79,29 @@ export default {
       // alert();
       this.$emit("back", false);
       // this.$router.push({ name: 'PatientDetails', params: { id: item.id } })
+    },
+
+    updateStatus() {
+      this.loader = true;
+      this.isBtnLoading = true;
+
+      this.$axios
+        .post("update_status", {
+          otp: this.verification_code,
+          email: this.userdata.email,
+        })
+        .then(async (res) => {
+          if (res.data.status === "S") {
+            await this.$store.dispatch("auth/loginRequest", this.userdata);
+            this.$router.push({ name: "dashboard" });
+          } else {
+            this.$toast.error(res.data.message);
+          }
+        })
+        .finally(() => {
+          this.loader = false;
+          this.isBtnLoading = false;
+        });
     },
   },
 };

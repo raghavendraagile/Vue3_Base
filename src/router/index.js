@@ -212,13 +212,13 @@ const routes = [
   {
     path: "/registration_list",
     name: "registration_list",
-    meta: { layout: "userpages" },
+    beforeEnter: guardMyroute,
     component: () => import("../Admin/UserPages/RegistrationList.vue"),
   },
   {
     path: "/registration_details",
     name: "registration_details",
-    meta: { layout: "userpages" },
+    beforeEnter: guardMyroute,
     component: () => import("../Admin/UserPages/RegistrationDetails.vue"),
   },
  

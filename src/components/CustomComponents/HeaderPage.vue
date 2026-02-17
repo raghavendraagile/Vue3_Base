@@ -3,7 +3,17 @@
     <div class="top-bar-container">
       <!-- LEFT: LOGO -->
       <div class="logo" @click="$router.push('/')">
-        <img src="@/assets/images/headericon.png" alt="ePAF Logo" />
+        <!-- <img src="@/assets/images/headericon.png" alt="ePAF Logo" /> -->
+        <div v-if="app_image_url">
+          <span>
+            <img v-bind:src="app_image_url" style="width: 100%" />
+          </span>
+        </div>
+        <div v-else-if="app_image_url == ''">
+          <span class="font-base-app text-center">
+            {{ application_name }}
+          </span>
+        </div>
       </div>
 
       <!-- RIGHT: BUTTONS -->
@@ -22,6 +32,47 @@
     </div>
   </div>
 </template>
+<script>
+import localStorageWrapper from "../../../src/localStorageWrapper.js";
+
+export default {
+  data() {
+    return {
+      drawer: true,
+      loader: false,
+      user: [],
+      active_menu: "",
+      menuitems: [],
+      role_id: "",
+      app_image_url: "",
+      application_name: "",
+      app_name: "",
+
+      lang: "",
+    };
+  },
+  created() {
+    this.appImageUpdate();
+  },
+  mounted() {},
+  watch: {},
+  methods: {
+    appImageUpdate() {
+      if (localStorageWrapper.getItem("App_Image_Url") != null) {
+        this.app_image_url = localStorageWrapper.getItem("App_Image_Url");
+        this.app_name = localStorageWrapper.getItem("App_Name");
+      } else {
+        this.app_image_url = "";
+      }
+      if (localStorageWrapper.getItem("App_Name")) {
+        this.application_name = localStorageWrapper.getItem("App_Name");
+      } else {
+        this.application_name = "";
+      }
+    },
+  },
+};
+</script>
 <style scoped>
 /* OUTER WRAPPER */
 .top-bar-wrapper {

@@ -25,14 +25,14 @@
 }
 
 .navigation-title {
-  background-color: #fff !important;
+  background-color: rgba(255, 255, 255, 0.1176470588) !important;
   color: #222 !important;
 }
 
 #app.theme-light .v-navigation-drawer,
 #app.theme-light .v-toolbar__content,
 #app.theme-light body {
-  background-color: #fff !important;
+  background-color: rgba(255, 255, 255, 0.1176470588) !important;
   color: #222 !important;
   font-family: "Montserrat", sans-serif !important;
 }
@@ -72,7 +72,7 @@
   border-right: 1px solid #414141;
 }
 #app.theme-dark .app-name {
-  text-shadow: 0px 0px 1px #fff;
+  text-shadow: 0px 0px 1px rgba(255, 255, 255, 0.1176470588);
 }
 #app.theme-dark .profile-view-card {
   background-color: grey !important;
@@ -638,4 +638,19 @@ input::placeholder {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
+}
+
+.btn-filled {
+  padding: 10px 22px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(90deg, #6c63ff, #7c4dff);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.heading {
+  font-size: 20px;
 }/*# sourceMappingURL=global.css.map */

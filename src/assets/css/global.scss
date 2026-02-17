@@ -8,7 +8,7 @@
 }
 
 // light theme
-$bg-theme-light: #fff;
+$bg-theme-light: #ffffff1e;
 $color-theme-light: #222;
 
 // dark theme
@@ -672,4 +672,15 @@ input::placeholder {
       cursor: pointer;
       transition: all 0.25s ease;
     }
+    .btn-filled {
+      padding: 10px 22px;
+      border-radius: 30px;
+      border: none;
+      background: linear-gradient(90deg, #6c63ff, #7c4dff);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .heading{font-size: 20px;}
 //keyframes end
