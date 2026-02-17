@@ -54,7 +54,7 @@
 
           <v-btn
             block
-            class="mt-3 sign-in-btn"
+            class="mt-3 btn-filled"
             :loading="btnloading"
             :disabled="!valid"
             @click="sendLoginOtp"

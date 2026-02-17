@@ -18,16 +18,23 @@
 
       <!-- RIGHT: BUTTONS -->
       <div class="auth-buttons">
-        <button
-          class="btn-outline"
+        <v-btn
+          variant="outlined"
+          class="register-btn"
+          rounded="pill"
           @click="$router.push({ name: 'register_user' })"
         >
           Register →
-        </button>
+        </v-btn>
 
-        <button class="btn-filled" @click="$router.push({ name: 'login' })">
+        <v-btn
+          variant="filled"
+          class="btn-filled"
+          rounded="pill"
+          @click="$router.push({ name: 'login' })"
+        >
           Login →
-        </button>
+        </v-btn>
       </div>
     </div>
   </div>

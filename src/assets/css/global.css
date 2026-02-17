@@ -1,9 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 :root {
   --theme-color: #6c63ff;
-  --theme-reject: #9f0505;
+  --theme-green: linear-gradient(90deg, #17b434, #077e15);
+  --theme-reject: linear-gradient(90deg, #d83535, #a30606);
   --theme-gradient: linear-gradient(90deg, #6c63ff, #7c4dff);
+  --theme-gradient-orange: linear-gradient(90deg, #efc850, #af8403);
   --theme-gradient-disabled: linear-gradient(90deg, #b5b5b6, #b7b7b7);
+  --theme-gradient-approved: linear-gradient(90deg, #17b434, #077e15);
   --required-color: rgb(208, 1, 1);
   --theme-header: 20px;
   --theme-subheader: 16px;
@@ -654,37 +657,62 @@ input::placeholder {
 .btn-outline,
 .btn-filled,
 .btn-reject,
-.btn-disabled {
-  padding: 6px 22px;
+.btn-disabled, .btn-approved {
   border-radius: 30px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
+  text-transform: capitalize !important;
 }
 
 .btn-outline {
   background: transparent;
-  border: 2px solid var(--theme-color);
-  color: var(--theme-color);
+  border: 2px solid var(--theme-color) !important;
+  color: var(--theme-color) !important;
 }
 
 .btn-filled {
   border: none;
-  background: var(--theme-gradient);
-  color: white;
+  background: var(--theme-gradient) !important;
+  color: white !important;
 }
 
 .btn-reject {
   border: none;
-  background: var(--theme-reject);
-  color: white;
+  background: var(--theme-reject) !important;
+  color: white !important;
+}
+
+.btn-approved {
+  border: none;
+  background: var(--theme-gradient-approved) !important;
+  color: white !important;
 }
 
 .btn-disabled {
   border: none;
-  background: var(--theme-gradient-disabled);
-  color: white;
+  background: var(--theme-gradient-disabled) !important;
+  color: white !important;
   cursor: not-allowed;
+}
+
+.register-btn {
+  min-width: 260px;
+  height: 40px;
+  border: 2px solid var(--theme-color) !important;
+  color: var(--theme-color) !important;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease;
+}
+
+.status-approved {
+  background: var(--theme-green) !important;
+}
+
+.status-rejected {
+  background: var(--theme-reject) !important;
 }
 
 .heading {

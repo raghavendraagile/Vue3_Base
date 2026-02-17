@@ -9,7 +9,13 @@
     ></confirmation-dialog>
 
     <div class="main-section">
-      <button class="btn-outline" @click="goBackToDetails()">Back</button>
+      <v-btn
+        variant="outlined"
+        class="register-btn"
+        rounded="pill"
+        @click="goBackToDetails()"
+        >Back</v-btn
+      >
       <div>
         <!-- Search Bar -->
         <!-- {{ reg_deatils }} -->
@@ -31,7 +37,7 @@
           </div>
           <div class="d-flex">
             <div class="label">Dob :</div>
-            <div class="label">&nbsp;{{ reg_deatils.dob }}</div>
+            <div class="label">&nbsp;{{ formatDateTime(reg_deatils.dob) }}</div>
           </div>
           <div class="d-flex">
             <div class="label">Idendication :</div>
@@ -46,25 +52,32 @@
             <div class="label">&nbsp;{{ reg_deatils.status }}</div>
           </div>
           <div class="auth-buttons text-right">
-            <button
-              :class="reg_deatils.status == 1 ? 'btn-disabled' : 'btn-filled'"
+            <v-btn
+              small
+              rounded
+              :class="reg_deatils.status == 1 ? 'btn-disabled' : 'btn-approved'"
               :disabled="reg_deatils.status == 1"
               @click="updateStatus(reg_deatils)"
             >
               Approved
-            </button>
+            </v-btn>
 
-            <button
+            <v-btn
+              rounded
+              small
               :class="reg_deatils.status == 0 ? 'btn-disabled' : 'btn-reject'"
               :disabled="reg_deatils.status == 0"
               class="ml-2"
               @click="updateStatus(reg_deatils)"
             >
               Reject
-            </button>
+            </v-btn>
           </div>
         </v-card>
       </div>
+      {{ accepted }}
+      <checkbox v-model="accepted" />
+
       <!-- <div v-else>
         <RegistrationDetails :selectedId="selectedId" @back="handleBackClick" />
       </div> -->
@@ -82,6 +95,7 @@ export default {
       dialogMessage: "",
       dialogTitle: "",
       loader: false,
+      accepted: false,
     };
   },
   watch: {

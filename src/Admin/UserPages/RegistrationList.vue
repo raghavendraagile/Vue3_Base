@@ -41,14 +41,16 @@
                 <td>{{ item.name }}</td>
                 <td>{{ item.salutation }}</td>
                 <td>{{ item.gender }}</td>
-                <td>{{ item.dob }}</td>
+                <td>{{ formatDate(item.dob) }}</td>
                 <td>{{ item.rolename }}</td>
                 <td>{{ item.description }}</td>
                 <td>
                   <v-chip
                     size="small"
                     variant="flat"
-                    :color="item.status === 1 ? 'green' : 'red'"
+                    :class="
+                      item.status === 1 ? 'status-approved' : 'status-rejected'
+                    "
                     class="text-white"
                   >
                     {{ item.status == 1 ? "Approved" : "Rejected" }}
