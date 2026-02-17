@@ -55,12 +55,17 @@ export default {
   width: 100%;
   max-width: 1100px;
   padding: 40px;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .register-card {
   background: #f4f4f4;
   border-radius: 28px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+  width: inherit;
 }
 
 .register-title {
@@ -101,5 +106,8 @@ export default {
   .register-btn {
     width: 100%;
   }
+}
+.user-page-bg{
+  align-items: flex-start;
 }
 </style>
