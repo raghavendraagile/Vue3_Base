@@ -547,9 +547,7 @@ export default {
     async fetchInstitutions() {
       try {
         const res = await this.$axios.get("fetchactiveinstitutions");
-        console.log("res");
-        console.log(res);
-
+  
         if (res.data.status === "S") {
           this.hospitals = res.data.institutions;
         }
