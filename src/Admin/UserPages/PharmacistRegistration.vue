@@ -62,6 +62,8 @@
                     variant="outlined"
                     label="Pharmacist (or appointed deputy) First Name"
                     class="custom-field field-required"
+                    maxlength="30"
+                    counter
                   />
                 </v-col>
 
@@ -73,6 +75,8 @@
                     variant="outlined"
                     label="Pharmacist (or appointed deputy) Last Name"
                     class="custom-field field-required"
+                    maxlength="30"
+                    counter
                   />
                 </v-col>
 
@@ -84,6 +88,8 @@
                     variant="outlined"
                     label="GPhC / PSNI Registration Number"
                     class="custom-field field-required"
+                    maxlength="30"
+                    counter
                   />
                 </v-col>
                 <v-col cols="12" md="6">
@@ -102,13 +108,28 @@
                 </v-col>
 
                 <v-col cols="12" md="6">
-                  <v-text-field
+                  <!-- <v-text-field
                     v-model="form.phone_no"
                     :rules="requiredRule"
                     density="compact"
                     variant="outlined"
                     label="Phone Number"
                     class="custom-field field-required"
+                    maxlength="22"
+                    counter
+                  /> -->
+                  <v-text-field
+                    v-model="form.phone_no"
+                    :rules="[...requiredRule, ...phoneRules]"
+                    density="compact"
+                    variant="outlined"
+                    label="Phone Number"
+                    class="custom-field field-required"
+                    type="tel"
+                    inputmode="numeric"
+                    maxlength="22"
+                    counter
+                    @input="formatPhone"
                   />
                 </v-col>
 
@@ -186,6 +207,8 @@
                 variant="outlined"
                 label="Delivery Address (if different)"
                 class="custom-field"
+                maxlength="80"
+                counter
               />
 
               <v-text-field
@@ -194,6 +217,8 @@
                 variant="outlined"
                 label="Ordering Address (if different to delivery address)"
                 class="custom-field"
+                maxlength="80"
+                counter
               />
 
               <!-- Wholesaler -->
@@ -676,9 +701,26 @@ export default {
         (v) => v === this.form.password || "Passwords do not match",
       ];
     },
+    phoneRules() {
+      return [
+        (v) => !!v || "Phone number is required",
+        (v) => /^[0-9+\s()-]*$/.test(v) || "Only numbers and + - allowed",
+        (v) =>
+          v.replace(/\D/g, "").length >= 8 || "Enter a valid phone number",
+      ];
+    },
   },
 
   methods: {
+    formatPhone() {
+      if (!this.form.phone_no) return;
+
+      // Remove non-numeric except +
+      this.form.phone_no = this.form.phone_no
+        .replace(/[^0-9+]/g, "")
+        .substring(0, 15);
+    },
+
     fetchInstitutionList(type) {
       this.institutions = [];
       this.form.institution_id = null;
