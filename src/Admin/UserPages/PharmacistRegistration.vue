@@ -86,16 +86,18 @@
                     class="custom-field field-required"
                   />
                 </v-col>
-
                 <v-col cols="12" md="6">
                   <v-select
                     v-model="form.institution_type"
                     :items="institutionTypes"
+                    item-title="longname"
+                    item-value="shortname"
                     :rules="requiredRule"
                     density="compact"
                     variant="outlined"
                     label="Institution Type"
                     class="custom-field field-required"
+                    @update:modelValue="fetchInstitutionList"
                   />
                 </v-col>
 
@@ -554,23 +556,14 @@ export default {
       medicationError: false,
       roleError: false,
 
-      institutionTypes: ["Hospital", "Community Pharmacy", "Private Clinic"],
-      institutions: [
-        {
-          id: 1,
-          name: "Hospital A",
-        },
-        {
-          id: 2,
-          name: "Hospital B",
-        },
-      ],
+      institutionTypes: [],
+      institutions: [],
 
       medications: [
         "Lenalidomide",
         "50mg - Thalidomide",
         "Pomalidomide",
-        "100mg - Thalidomide Tablet",
+        "100mg - Thalidomide",
       ],
 
       form: {
@@ -630,6 +623,10 @@ export default {
     };
   },
 
+  mounted() {
+    this.fetchLookup();
+  },
+
   watch: {
     step(val) {
       if (val === 2) {
@@ -682,8 +679,42 @@ export default {
   },
 
   methods: {
+    fetchInstitutionList(type) {
+      this.institutions = [];
+      this.form.institution_id = null;
+      this.$axios
+        .get("fetch_institution_by_type", {
+          params: {
+            type: type,
+          },
+        })
+        .then((response) => {
+          this.institutions = response.data.institutions;
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+        });
+    },
+
+    fetchLookup() {
+      this.$axios
+        .get("fetchlookup", {
+          params: {
+            lookup_type: "INSTITUTION_TYPE",
+          },
+        })
+        .then((response) => {
+          this.institutionTypes = response.data.lookup_details;
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+        });
+    },
     goToLogin() {
       this.btndisable = true;
+      this.loading = true;
       this.showSuccessDialog = false;
       this.$router.push({ name: "login" });
     },
@@ -728,6 +759,7 @@ export default {
         medications: this.form.medications,
         signature: this.form.signature,
         signature_date: this.form.signature_date,
+        role: this.form.role,
       };
 
       this.$axios
@@ -772,7 +804,7 @@ export default {
 .register-page {
   margin: 15px;
   padding-top: 40px;
-  width: 60vw;
+  width: 70vw;
 }
 
 /* PROGRESS BAR */
