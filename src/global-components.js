@@ -10,6 +10,7 @@ import PrescriberRegistration from "@/Admin/UserPages/PrescriberRegistration.vue
 import PharmacistRegistration from "@/Admin/UserPages/PharmacistRegistration.vue";
 import StatsPage from "@/components/CustomComponents/Stats.vue";
 import Checkbox from "@/components/CustomComponents/Checkbox.vue";
+import Imageupload from "@/components/CustomComponents/ImageUpload.vue";
 
 // Third-party Components
 import VOtpInput from "vue3-otp-input";
@@ -28,5 +29,6 @@ export default {
     app.component("pharmacist-registration", PharmacistRegistration);
     app.component("stats-page", StatsPage);
     app.component("checkbox", Checkbox);
+    app.component("image-upload", Imageupload);
   },
 };
