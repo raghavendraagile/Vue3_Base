@@ -36,20 +36,22 @@
             <v-col cols="12" sm="6" md="6" class="pb-0">
               <v-tooltip text="Institution Type" location="bottom">
                 <template v-slot:activator="{ props }">
-                  <v-text-field
+                  <v-autocomplete
+                    label="Institution Type"
+                    item-value="shortname"
+                    item-title="shortname"
+                    density="compact"
+                    variant="outlined"
                     v-bind="props"
+                    index="id"
                     v-model="institution.type"
                     :rules="fieldRules"
-                    label="Institution Type"
-                    variant="outlined"
-                    density="compact"
-                    required
-                    counter="100"
-                    counter-value="100"
+                    :items="inst_types"
                     class="required_field"
-                    maxlength="100"
-                    v-bind:class="[fieldRules ? 'form-group--error' : '']"
-                  ></v-text-field>
+                    outlined
+                    required
+                    dense
+                  ></v-autocomplete>
                 </template>
               </v-tooltip>
             </v-col>
@@ -144,6 +146,7 @@ export default {
       address: "",
     },
     items: [],
+    inst_types: [],
     empty_item: {
       id: 0,
       title: "None",
@@ -160,7 +163,9 @@ export default {
     },
   },
 
-  created() {},
+  created() {
+    this.fetchLookup();
+  },
   watch: {
     "$route.query.slug": {
       immediate: true,
@@ -199,14 +204,28 @@ export default {
         name: "institutions",
       });
     },
+    fetchLookup() {
+      this.$axios
+        .get("fetchlookup", {
+          params: {
+            lookup_type: "INSTITUTION_TYPE",
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          this.inst_types = response.data.lookup_details;
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+        });
+    },
     submit() {
       if (this.$refs.form.validate() && this.valid) {
         if (this.institution.id == 0) {
           this.isDisabled = true;
           this.$axios
-            .post("institution",
-              this.institution
-            )
+            .post("institution", this.institution)
             .then((res) => {
               if (Array.isArray(res.data.message)) {
                 this.array_data = res.data.message.toString();
@@ -236,11 +255,7 @@ export default {
         } else {
           this.isDisabled = true;
           this.$axios
-            .patch(
-                "institution/" +
-                this.institution.id,
-              this.institution
-            )
+            .patch("institution/" + this.institution.id, this.institution)
             .then((res) => {
               if (Array.isArray(res.data.message)) {
                 this.array_data = res.data.message.toString();
