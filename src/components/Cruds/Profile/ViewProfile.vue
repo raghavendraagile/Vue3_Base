@@ -124,7 +124,7 @@
         </div>
 
         <!-- ================= PERSONAL DETAILS ================= -->
-        <div class="section-title mt-10">Personal details</div>
+        <div class="section-title mt-2">Personal details</div>
 
         <v-row class="mt-4">
           <v-col cols="12" md="4">
@@ -162,7 +162,7 @@
         </v-row>
 
         <!-- ================= REGISTERED HOSPITALS ================= -->
-        <div class="section-title mt-10">Registered hospitals</div>
+        <div class="section-title mt-2">Registered hospitals</div>
 
         <v-row class="mt-4">
           <!-- LEFT SIDE -->
@@ -214,9 +214,13 @@
         </v-row>
 
         <!-- ================= DRUG REGISTRATION DETAILS ================= -->
-        <div class="section-title mt-12">Drug registration details</div>
+        <div class="section-title mt-2">Drug registration details</div>
 
-        <v-row class="mt-6" v-for="(drug, index) in drugs" :key="index">
+        <v-row
+          class="mt-2 align-start"
+          v-for="(drug, index) in drugs"
+          :key="index"
+        >
           <v-col cols="12" md="4">
             <v-text-field
               label="Drug name"
