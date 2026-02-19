@@ -291,6 +291,18 @@ const routes = [
     beforeEnter: guardMyroute,
     component: () => import("../components/Cruds/Drug/DrugAmend.vue"),
   },
+  {
+    path: "/wholesaler_amend",
+    name: "wholesaler_amend",
+    beforeEnter: guardMyroute,
+    component: () => import("../components/Cruds/Wholesalers/WholesalerAmend.vue"),
+  },
+  {
+    path: "/wholesalers",
+    name: "wholesalers",
+    beforeEnter: guardMyroute,
+    component: () => import("../components/Cruds/Wholesalers/IndexPage.vue"),
+  },
 ];
 
 const router = createRouter({

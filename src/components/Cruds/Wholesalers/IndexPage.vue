@@ -1,5 +1,10 @@
 <template>
   <div>
+    <confirmation-dialog
+      ref="confirmationDialog"
+      :title="dialogTitle"
+      :message="dialogMessage"
+    ></confirmation-dialog>
     <div
       flat
       color="white"
@@ -7,7 +12,7 @@
     >
       <page-title
         class="col-md-3"
-        heading="Drug"
+        heading="Wholesalers"
         :google_icon="google_icon"
       ></page-title>
       <div class="col-md-4">
@@ -31,7 +36,10 @@
       <div class="add_new_button">
         <v-tooltip :text="this.$t('add_new')" location="bottom">
           <template v-slot:activator="{ props }">
-            <router-link :to="{ name: 'drug_amend' }" style="color: white">
+            <router-link
+              :to="{ name: 'wholesaler_amend' }"
+              style="color: white"
+            >
               <v-btn size="small" class="mb-2 create-btn" v-bind="props">
                 {{ $t("add_new") }}
               </v-btn>
@@ -42,23 +50,27 @@
     </div>
     <v-data-table
       :headers="headers"
-      :items="drug"
+      :items="wholesalers"
       :search="search"
       :loading="initval"
       v-bind:no-data-text="$t('no_data_available')"
       :footer-props="{
         'items-per-page-text': $t('rows_per_page'),
       }"
+      v-bind:style="$route.params.lang == 'ar' ? 'direction:rtl' : ''"
     >
       <template v-slot:item="props">
         <tr class="vdatatable_tbody">
           <td>
-            <span v-if="props.item.drug_name">{{ props.item.drug_name }}</span>
+            <span v-if="props.item.name">{{ props.item.name }}</span>
+            <span v-else>{{ $t("not_appllicable") }}</span>
+          </td>
+          <td>
+            <span v-if="props.item.email">{{ props.item.email }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
             <v-btn
-              v-if="props.item.status"
               class="hover_shine btn mr-2"
               :disabled="isDisabled"
               size="small"
@@ -67,18 +79,14 @@
               <span v-if="props.item.status == 1" class="spanactivesize">{{
                 $t("active")
               }}</span>
-              <span v-if="props.item.status == 0" class="spanactivesize">{{
-                $t("inactive")
-              }}</span>
+              <span v-else class="spanactivesize">{{ $t("inactive") }}</span>
             </v-btn>
-
-            <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
 
           <td class="px-0 text-center">
             <router-link
               :to="{
-                name: 'drug_amend',
+                name: 'wholesaler_amend',
                 query: { slug: props.item.slug },
               }"
             >
@@ -95,7 +103,7 @@
               </v-tooltip>
             </router-link>
 
-            <span @click="deleteItem(props.item.id)">
+            <!-- <span @click="deleteItem(props.item.id)">
               <v-tooltip :text="this.$t('delete')" location="bottom">
                 <template v-slot:activator="{ props }">
                   <v-icon
@@ -108,35 +116,30 @@
                   >
                 </template>
               </v-tooltip>
-            </span>
+            </span> -->
           </td>
         </tr>
       </template>
     </v-data-table>
-    <confirmation-dialog
-      ref="confirmationDialog"
-      :title="dialogTitle"
-      :message="dialogMessage"
-    ></confirmation-dialog>
   </div>
 </template>
 
 <script>
 export default {
   data: () => ({
+    showConfirmDialog: false,
     search: "",
     dialog: false,
-    drug: [],
+    wholesalers: [],
     initval: true,
     message: "",
-    delete_id: null,
-    dialogMessage: "",
-    dialogTitle: "",
     google_icon: {
-      icon_name: "medication_liquid",
+      icon_name: "local_hospital",
       color: "google_icon_gradient",
       icon: "material-symbols-outlined",
     },
+    dialogMessage: "",
+    dialogTitle: "",
   }),
 
   computed: {
@@ -146,16 +149,19 @@ export default {
     headers() {
       return [
         {
-          title: "Drug Name",
+          title: "Wholesaler Name",
           align: "left",
           sortable: true,
-          key: "title",
+          key: "name",
+        },
+        {
+          title: "Email",
+          key: "email",
         },
         {
           title: "Status",
           key: "status",
         },
-
         {
           title: this.$t("action"),
           key: "name",
@@ -186,25 +192,47 @@ export default {
       return this.$refs.confirmationDialog.open();
     },
 
-    async deleteItem(deleteId) {
+    async deleteItem(deleteID) {
       const result = await this.showConfirmation(
         "Confirm",
-        "Are you sure you want to delete this Drug ?"
+        "Are you sure you want to delete this Institution ?"
       );
+
       if (!result) return;
-      this.$axios.delete(`drug/${deleteId}`).then((res) => {
-        this.$toast.success(res.data.message);
-        this.initialize();
-      });
+      this.delete_id = deleteID;
+      this.initval = true;
+      this.$axios
+        .delete("wholesaler/" + this.delete_id)
+        .then((res) => {
+          if (Array.isArray(res.data.message)) {
+            this.array_data = res.data.message.toString();
+          } else {
+            this.array_data = res.data.message;
+          }
+          if (res.data.status == "E") {
+            this.initval = false;
+            this.$toast.error(this.array_data);
+            this.initialize();
+          } else {
+            this.initval = false;
+            this.$toast.success(this.array_data);
+            this.initialize();
+          }
+        })
+        .catch((err) => {
+          this.initval = false;
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+        });
     },
 
     initialize() {
       this.$axios
-        .get("fetch_drug")
+        .get("fetch_wholesalers")
         .then((res) => {
           console.log("res.data");
           console.log(res.data);
-          this.drug = res.data.drug;
+          this.wholesalers = res.data.wholesalers;
           this.initval = false;
         })
         .catch((err) => {
