@@ -73,6 +73,31 @@
             <span v-if="props.item.address">{{ props.item.address }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
+          <td>
+            <span v-if="props.item.contact_name">{{
+              props.item.contact_name
+            }}</span>
+            <span v-else>{{ $t("not_appllicable") }}</span>
+          </td>
+          <td>
+            <span v-if="props.item.contact_email">{{
+              props.item.contact_email
+            }}</span>
+            <span v-else>{{ $t("not_appllicable") }}</span>
+          </td>
+          <td>
+            <v-btn
+              class="hover_shine btn mr-2"
+              :disabled="isDisabled"
+              size="small"
+              v-bind:color="[props.item.status == 1 ? 'success' : 'warning']"
+            >
+              <span v-if="props.item.status == 1" class="spanactivesize">{{
+                $t("active")
+              }}</span>
+              <span v-else class="spanactivesize">{{ $t("inactive") }}</span>
+            </v-btn>
+          </td>
 
           <td class="px-0 text-center">
             <router-link
@@ -155,6 +180,18 @@ export default {
           key: "address",
         },
         {
+          title: "Contact Name",
+          key: "contact_name",
+        },
+        {
+          title: "Contact Email",
+          key: "contact_email",
+        },
+        {
+          title: "Status",
+          key: "status",
+        },
+        {
           title: this.$t("action"),
           key: "name",
           align: "center",
@@ -168,7 +205,6 @@ export default {
     dialog(val) {
       val || this.close();
     },
-    
   },
 
   created() {

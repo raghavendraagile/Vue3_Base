@@ -75,6 +75,43 @@
                 </template>
               </v-tooltip>
             </v-col>
+            <v-col cols="12" sm="6" md="6" class="pb-0">
+              <v-tooltip text="Contact Name" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-text-field
+                    v-bind="props"
+                    v-model="institution.contact_name"
+                    :rules="fieldRules"
+                    label="Contact Name"
+                    variant="outlined"
+                    density="compact"
+                    required
+                    counter="100"
+                    counter-value="100"
+                    class="required_field"
+                    maxlength="100"
+                    v-bind:class="[fieldRules ? 'form-group--error' : '']"
+                  ></v-text-field>
+                </template>
+              </v-tooltip>
+            </v-col>
+            <v-col cols="12" md="6" sm="6" lg="6">
+              <v-tooltip :text="$t('email')" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-text-field
+                    v-bind="props"
+                    variant="outlined"
+                    density="compact"
+                    v-model="institution.contact_email"
+                    :rules="emailRules"
+                    class="required_field mt_30"
+                    v-bind:label="$t('email')"
+                    required
+                    maxlength="100"
+                  ></v-text-field>
+                </template>
+              </v-tooltip>
+            </v-col>
           </v-row>
         </v-form>
       </div>
@@ -144,6 +181,8 @@ export default {
       name: "",
       type: "",
       address: "",
+      contact_name: "",
+      contact_email: "",
     },
     items: [],
     inst_types: [],
@@ -154,6 +193,15 @@ export default {
   }),
 
   computed: {
+    emailRules() {
+      return [
+        (v) => !!v || this.$t("email_required"),
+        (v) =>
+          !v ||
+          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+          this.$t("email_valid"),
+      ];
+    },
     fieldRules() {
       return [(v) => !!v || this.$t("field_required")];
     },
