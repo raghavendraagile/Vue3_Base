@@ -592,6 +592,7 @@ export default {
 
     goToLogin() {
       this.btndisable = true;
+      this.loading = true;
       this.showSuccessDialog = false;
       this.$router.push({ name: "login" });
     },
