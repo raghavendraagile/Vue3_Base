@@ -41,8 +41,6 @@ const actions = {
           commit("setUserData", res.data.user);
           commit("setAuthentication", true);
           // const parsedUserData = JSON.stringify(res.data.userdata);
-          console.log('res.data.user');
-          console.log(res.data.user);
           localStorageWrapper.setItem("access_token", res.data.access_token);
           localStorageWrapper.setItem("user_data", JSON.stringify(res.data.user));
           setTimeout(() => {

@@ -141,7 +141,7 @@
                   <v-divider class="ml-4"></v-divider>
                 </div>
               </h6>
-              ---{{form}}
+              <!-- ---{{form}} -->
 
               <p class="mb-4" style="font-size: 14px">
                 Please select the medication in which you want to prescribe.
@@ -171,7 +171,7 @@
                 Please select at least one medication.
               </div>
 
-              <p class="mt-4" style="font-size: 13px">
+              <p class="note-box">
                 <strong>IMPORTANT:</strong> You will only be able to receive
                 PAEs for molecules in which you have checked and registered
                 with.
