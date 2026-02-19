@@ -22,6 +22,7 @@
           variant="outlined"
           class="register-btn"
           rounded="pill"
+          size="small"
           @click="$router.push({ name: 'register_user' })"
         >
           Register →
@@ -31,6 +32,7 @@
           variant="filled"
           class="btn-filled"
           rounded="pill"
+          size="small"
           @click="$router.push({ name: 'login' })"
         >
           Login →
@@ -121,7 +123,6 @@ export default {
 
 /* FILLED BUTTON (Login) */
 .btn-filled {
-  padding: 10px 22px;
   border-radius: 30px;
   border: none;
   background: linear-gradient(90deg, #6c63ff, #7c4dff);

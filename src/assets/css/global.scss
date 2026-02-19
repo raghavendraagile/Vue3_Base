@@ -776,7 +776,7 @@ input::placeholder {
   border: 2px solid var(--theme-color) !important;
   color: var(--theme-color) !important;
   font-weight: 600;
-  text-transform: none;
+  text-transform: none !important;
   letter-spacing: 0.3px;
   transition: all 0.25s ease;
 }
