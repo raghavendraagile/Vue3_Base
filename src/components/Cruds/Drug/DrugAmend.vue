@@ -3,11 +3,12 @@
     <div class="my-3 p-0">
       <page-title
         class="col-md-4 ml-2"
-        heading="Create Document"
+        heading="Create Drug"
         :google_icon="google_icon"
       ></page-title>
     </div>
     <content-loader v-if="loader"></content-loader>
+
     <div class="mb-3 mx-auto">
       <div class="card-body">
         <v-form ref="form" v-model="valid">
@@ -31,12 +32,38 @@
                 </template>
               </v-tooltip>
             </v-col>
+
+            <v-col cols="12" md="2">
+              <v-switch
+                v-model="drug.status"
+                :label="$t('status')"
+                :true-value="1"
+                :false-value="0"
+                color="success"
+                hide-details
+                inset
+                small
+              />
+            </v-col>
             <v-col cols="12" sm="6" md="6" class="pb-0">
-              <v-tooltip text="Capsule Strength" location="bottom">
+              <h3 class="theme-subheader">Strengths</h3>
+              <div class="d-flex">
+                <v-checkbox
+                  v-for="strength in strengths"
+                  :key="strength.shortname"
+                  v-model="drug.drug_strength"
+                  :value="strength.shortname"
+                  :label="strength.longname"
+                  color="success"
+                ></v-checkbox>
+              </div>
+
+              <!-- <v-tooltip text="Capsule Strength" location="bottom">
                 <template v-slot:activator="{ props }">
+                  strengths
                   <v-text-field
                     v-bind="props"
-                    v-model="drug.capsule_strength"
+                    v-model="drug.drug_strength"
                     :rules="fieldRules"
                     label="Capsule Strength"
                     variant="outlined"
@@ -48,63 +75,7 @@
                     maxlength="100"
                   ></v-text-field>
                 </template>
-              </v-tooltip>
-            </v-col>
-          </v-row>
-          <v-row class="px-6">
-            <v-col cols="12" sm="3" md="3" class="pb-0">
-              <v-tooltip text="Capsules Per Cyle" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-text-field
-                    v-bind="props"
-                    v-model="drug.capsules_per_cyle"
-                    :rules="numberRules"
-                    label="Capsules Per Cyle"
-                    variant="outlined"
-                    density="compact"
-                    required
-                    class="required_field"
-                    maxlength="20"
-                    @input="calculateTotal"
-                  ></v-text-field>
-                </template>
-              </v-tooltip>
-            </v-col>
-            <v-col cols="12" sm="3" md="3" class="pb-0">
-              <v-tooltip text="Number Of Cycles" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-text-field
-                    v-bind="props"
-                    v-model="drug.number_of_cycles"
-                    :rules="numberRules"
-                    label="Number Of Cycles"
-                    variant="outlined"
-                    density="compact"
-                    required
-                    class="required_field"
-                    maxlength="20"
-                    @input="calculateTotal"
-                  ></v-text-field>
-                </template>
-              </v-tooltip>
-            </v-col>
-            <v-col cols="12" sm="3" md="3" class="pb-0">
-              <v-tooltip text="Total Capsules" location="bottom">
-                <template v-slot:activator="{ props }">
-                  <v-text-field
-                    v-bind="props"
-                    v-model="drug.total_capsules"
-                    :rules="numberRules"
-                    label="Total Capsules"
-                    variant="outlined"
-                    density="compact"
-                    required
-                    class="required_field"
-                    maxlength="20"
-                    type="number"
-                  ></v-text-field>
-                </template>
-              </v-tooltip>
+              </v-tooltip> -->
             </v-col>
           </v-row>
         </v-form>
@@ -171,11 +142,13 @@ export default {
     drug: {
       id: 0,
       drug_name: "",
-      capsule_strength: "",
-      capsules_per_cyle: "",
-      number_of_cycles: "",
-      total_capsules: "",
+      status: "",
+
+      drug_strength: [],
     },
+    capsules: [],
+    strengthSelection: {}, // 👈 boolean map
+    strengths: [],
   }),
 
   computed: {
@@ -191,7 +164,9 @@ export default {
     },
   },
   mounted() {},
-  created() {},
+  created() {
+    this.fetchLookup();
+  },
   watch: {
     "$route.query.slug": {
       immediate: true,
@@ -222,6 +197,27 @@ export default {
         name: "drug",
       });
     },
+    fetchLookup() {
+      this.$axios
+        .get("fetchlookup", {
+          params: {
+            lookup_type: "DRUG_STRENGTH",
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          this.strengths = response.data.lookup_details;
+          // initialize checkbox states
+          // this.strengths.forEach((s) => {
+          //   this.strengthSelection[s.shortname] = false;
+          // });
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+        });
+    },
+
     submit() {
       if (this.$refs.form.validate() && this.valid) {
         this.isDisabled = true;
@@ -264,7 +260,7 @@ export default {
       } else {
         this.drug.total_capsules = "";
       }
-    }
+    },
   },
 };
 </script>

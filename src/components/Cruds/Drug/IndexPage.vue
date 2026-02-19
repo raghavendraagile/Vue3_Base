@@ -57,29 +57,10 @@
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
-            <span v-if="props.item.capsule_strength">{{
-              props.item.capsule_strength
-            }}</span>
+            <span v-if="props.item.status">{{ props.item.status }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
-          <td>
-            <span v-if="props.item.capsules_per_cyle">{{
-              props.item.capsules_per_cyle
-            }}</span>
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
-          <td>
-            <span v-if="props.item.number_of_cycles">{{
-              props.item.number_of_cycles
-            }}</span>
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
-          <td>
-            <span v-if="props.item.total_capsules">{{
-              props.item.total_capsules
-            }}</span>
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
+
           <td class="px-0 text-center">
             <router-link
               :to="{
@@ -157,21 +138,10 @@ export default {
           key: "title",
         },
         {
-          title: "Capsule Strength",
-          key: "capsule_strength",
+          title: "Status",
+          key: "status",
         },
-        {
-          title: "Capsules Per Cyle",
-          key: "capsules_per_cyle",
-        },
-        {
-          title: "Num of Cycles",
-          key: "number_of_cycles",
-        },
-        {
-          title: "Total Capsules",
-          key: "total_capsules",
-        },
+
         {
           title: this.$t("action"),
           key: "name",
