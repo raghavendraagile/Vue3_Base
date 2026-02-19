@@ -1,5 +1,6 @@
 <template>
   <div class="register-page pa-0">
+    <!-- --{{ wholesalers }} -->
     <content-loader v-if="loading"></content-loader>
     <!-- Progress Header -->
     <div class="progress-wrapper">
@@ -238,67 +239,17 @@
                   <v-divider class="ml-4"></v-divider>
                 </div>
               </h6>
-
               <v-row dense>
-                <v-col cols="12" md="6">
+                <v-col v-for="wh in wholesalers" :key="wh.id" cols="12" md="6">
                   <v-text-field
-                    v-model="form.aah"
-                    label="AAH Account Number"
+                    v-model="form.wholesaler_accounts[wh.id]"
+                    :label="wh.name + ' Account Number'"
                     variant="outlined"
                     density="compact"
-                    class="custom-field field-required"
-                    :rules="requiredRule"
+                    class="custom-field"  
                   />
-                </v-col>
-                <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="form.phoenix"
-                    label="Phoenix Account Number"
-                    variant="outlined"
-                    density="compact"
-                    class="custom-field field-required"
-                    :rules="requiredRule"
-                  />
-                </v-col>
-                <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="form.mawdsleys"
-                    label="Mawdsleys Account Number"
-                    variant="outlined"
-                    density="compact"
-                    class="custom-field field-required"
-                    :rules="requiredRule"
-                  />
-                </v-col>
-                <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="form.alliance"
-                    label="Alliance Account Number"
-                    variant="outlined"
-                    density="compact"
-                    class="custom-field field-required"
-                    :rules="requiredRule"
-                  />
-                </v-col>
-                <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="form.teva"
-                    label="Teva Account Number"
-                    variant="outlined"
-                    density="compact"
-                    class="custom-field field-required"
-                    :rules="requiredRule"
-                  />
-                </v-col>
-                <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="form.alloga"
-                    label="ALLOGA UK LIMITED Account Number"
-                    variant="outlined"
-                    density="compact"
-                    class="custom-field field-required"
-                    :rules="requiredRule"
-                  />
+                    <!-- field-required -->
+                    <!-- :rules="requiredRule" -->
                 </v-col>
               </v-row>
 
@@ -622,6 +573,8 @@ export default {
         email: "",
         password: "",
         confirmPassword: "",
+
+        wholesaler_accounts: {},
       },
       confirmationError: false,
       confirmationChecks: {},
@@ -631,6 +584,7 @@ export default {
       signature_date: "",
       showSuccessDialog: false,
       medicationTerms: [],
+      wholesalers: [],
     };
   },
 
@@ -763,6 +717,21 @@ export default {
           this.$toast.error(this.$t("something_went_wrong"));
           console.log(err);
         });
+
+      this.$axios
+        .get("fetch_active_wholesalers")
+        .then((res) => {
+          this.wholesalers = res.data.wholesalers;
+
+          // Initialize empty account numbers dynamically
+          this.wholesalers.forEach((wh) => {
+            this.form.wholesaler_accounts[wh.id] = "";
+          });
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+        });
     },
 
     getDefaultTerms(drugId) {
@@ -843,6 +812,7 @@ export default {
         signature: this.form.signature,
         signature_date: this.form.signature_date,
         role: this.form.role,
+        wholesaler_accounts: this.form.wholesaler_accounts,
       };
 
       this.$axios
