@@ -141,17 +141,23 @@
                   <v-divider class="ml-4"></v-divider>
                 </div>
               </h6>
+              ---{{form}}
 
               <p class="mb-4" style="font-size: 14px">
                 Please select the medication in which you want to prescribe.
               </p>
 
               <v-row dense>
-                <v-col v-for="med in medications" :key="med" cols="12" md="3">
+                <v-col
+                  v-for="med in medications"
+                  :key="med.id"
+                  cols="12"
+                  md="3"
+                >
                   <v-checkbox
                     v-model="form.medications"
-                    :label="med"
-                    :value="med"
+                    :label="med.drug_name"
+                    :value="med.id"
                     density="compact"
                     hide-details
                   />
@@ -256,22 +262,25 @@
               </h6>
 
               <div>
-                <div v-for="med in form.medications" :key="med" class="mb-8">
+                <div
+                  v-for="drugId in form.medications"
+                  :key="drugId"
+                  class="mb-3"
+                >
                   <h6 class="theme-subheader mb-3">
-                    Prescriber {{ med }} Confirmation
+                    {{ getDrug(drugId)?.name }} Confirmation
                   </h6>
 
                   <v-checkbox
-                    v-for="(term, index) in medicationTerms[med]"
+                    v-for="(term, index) in getDrug(drugId)?.terms"
                     :key="index"
-                    v-model="confirmationChecks[med][index]"
+                    v-model="confirmationChecks[drugId][index]"
                     :label="term"
                     density="compact"
                     hide-details
                     class="mb-2"
                   />
                 </div>
-
                 <div
                   v-if="confirmationError"
                   style="color: red; font-size: 12px; margin-top: 8px"
@@ -425,12 +434,7 @@ export default {
 
       hospitals: [],
 
-      medications: [
-        "Lenalidomide",
-        "50mg - Thalidomide",
-        "Pomalidomide",
-        "100mg - Thalidomide Tablet",
-      ],
+      medications: [],
 
       form: {
         name: "",
@@ -450,31 +454,7 @@ export default {
       showSuccessDialog: false,
       btndisable: false,
 
-      medicationTerms: {
-        Lenalidomide: [
-          "I have read and understand the Lenalidomide Healthcare Professional Information Guide.",
-          "I comply with all Pregnancy Prevention Programme requirements.",
-          "I confirm that lenalidomide treatment will be initiated and monitored under the supervision of a physician experienced in managing immunomodulatory agents.",
-          "I understand the maximum prescription lengths: 4 weeks for women of childbearing potential and 12 weeks for all other patients.",
-          "I acknowledge the need for a negative pregnancy test (sensitivity ≥25 mIU/mL) before starting treatment for women of childbearing potential.",
-        ],
-        "50mg - Thalidomide": [
-          "I have read and understand the Thalidomide Healthcare Professional Information Guide.",
-          "I commit to counseling patients on contraception requirements, including at least one highly effective method during and after therapy.",
-          "I will register with the Pregnancy Prevention Programme platform if dispensing lenalidomide as a pharmacist.",
-          "I confirm that patients are capable of complying with the Pregnancy Prevention Programme requirements.",
-        ],
-        Pomalidomide: [
-          "I have read and understand the Pomalidomide Healthcare Professional Information Guide.",
-          "I have reviewed the risks of second primary malignancies and other key safety information for lenalidomide use.",
-        ],
-        "100mg - Thalidomide Tablet": [
-          "I have read and understand the Thalidomide Healthcare Professional Information Guide.",
-          "I will ensure a Prescription Authorisation Form is completed for each initial prescription and provided to the pharmacy.",
-          "I will provide patients with the Patient Brochure, Risk Awareness Form, and Patient Pocket Information Card.",
-          "I acknowledge the controlled distribution system and prescription limits for lenalidomide.",
-        ],
-      },
+      medicationTerms: [],
 
       confirmationChecks: {},
       showConfirmationDialog: false,
@@ -482,6 +462,7 @@ export default {
   },
   mounted() {
     this.fetchInstitutions();
+    this.fetchLov();
   },
 
   watch: {
@@ -502,8 +483,8 @@ export default {
 
   computed: {
     allConfirmationsChecked() {
-      return this.form.medications.every((med) =>
-        this.confirmationChecks[med]?.every((val) => val === true)
+      return this.form.medications.every((drugId) =>
+        this.confirmationChecks[drugId]?.every((val) => val === true)
       );
     },
     progress() {
@@ -544,10 +525,62 @@ export default {
   },
 
   methods: {
+    getDrug(drugId) {
+      return this.medicationTerms.find((d) => d.id === drugId);
+    },
+    fetchLov() {
+      this.$axios
+        .get("fetch_active_drugs")
+        .then((res) => {
+          this.medications = res.data.drugs;
+
+          // Build terms structure dynamically (temporary hardcoded example)
+          this.medicationTerms = this.medications.map((drug) => ({
+            id: drug.id,
+            name: drug.drug_name,
+            terms: this.getDefaultTerms(drug.id),
+          }));
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+        });
+    },
+    getDefaultTerms(drugId) {
+      const termsMap = {
+        4: [
+          "I confirm that I have read and understood the Thalidomide Healthcare Professional Information Guide.",
+          "I agree to comply fully with the Thalidomide Pregnancy Prevention Programme (PPP) requirements.",
+          "I will ensure that all patients receiving Thalidomide are appropriately counselled on teratogenic risks.",
+          "I confirm that prescriptions will adhere strictly to the maximum supply duration as per regulatory guidance.",
+          "I acknowledge my responsibility to maintain accurate records of dispensing and patient counselling.",
+        ],
+        3: [
+          "I confirm that I have reviewed and understood the Lenalidomide Risk Management Plan.",
+          "I will ensure compliance with all Pregnancy Prevention Programme requirements for Lenalidomide.",
+          "I will verify that a valid Prescription Authorisation Form accompanies each prescription where required.",
+        ],
+        2: [
+          "I confirm that I will dispense Ibuprofen in accordance with approved dosing guidelines.",
+          "I will ensure patients are advised on potential gastrointestinal and renal risks.",
+          "I acknowledge the importance of assessing contraindications prior to dispensing.",
+          "I will provide counselling regarding safe duration of use and maximum daily dosage.",
+        ],
+        1: [
+          "I confirm that Paracetamol will be dispensed within recommended dosage limits.",
+          "I will ensure patients are counselled regarding maximum daily dose and overdose risks.",
+          "I acknowledge the need to assess concurrent use of other paracetamol-containing products.",
+          "I will provide appropriate guidance for use in vulnerable populations such as children and elderly patients.",
+          "I confirm compliance with all relevant pharmacy dispensing regulations.",
+        ],
+      };
+
+      return termsMap[drugId] || [];
+    },
     async fetchInstitutions() {
       try {
         const res = await this.$axios.get("fetchactiveinstitutions");
-  
+
         if (res.data.status === "S") {
           this.hospitals = res.data.institutions;
         }
@@ -556,11 +589,11 @@ export default {
       }
     },
     initializeConfirmations() {
-      this.form.medications.forEach((med) => {
-        if (!this.confirmationChecks[med]) {
-          this.confirmationChecks[med] = this.medicationTerms[med].map(
-            () => false
-          );
+      this.form.medications.forEach((drugId) => {
+        const drug = this.getDrug(drugId);
+
+        if (drug && !this.confirmationChecks[drugId]) {
+          this.confirmationChecks[drugId] = drug.terms.map(() => false);
         }
       });
     },
