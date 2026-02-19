@@ -144,6 +144,7 @@
                     variant="outlined"
                     label="Institution Name"
                     class="custom-field field-required"
+                    @update:modelValue="populateAddress"
                   />
                 </v-col>
               </v-row>
@@ -192,14 +193,23 @@
               </v-row>
 
               <!-- Addresses -->
-              <v-text-field
+
+              <!-- <v-col cols="12" md="6" v-if="form.institution_id"> -->
+              <div class="custom-field plain-wrapper mb-4">
+                <label class="plain-label">Dispensing Pharmacy Address</label>
+                <div class="plain-value">
+                  {{ form.dispensing_address }}
+                </div>
+              </div>
+              <!-- </v-col> -->
+              <!-- <v-text-field
                 v-model="form.dispensing_address"
                 :rules="requiredRule"
                 density="compact"
                 variant="outlined"
                 label="Dispensing Pharmacy Address"
                 class="custom-field field-required mt-6"
-              />
+              /> -->
 
               <v-text-field
                 v-model="form.delivery_address"
@@ -705,20 +715,24 @@ export default {
       return [
         (v) => !!v || "Phone number is required",
         (v) => /^[0-9+\s()-]*$/.test(v) || "Only numbers and + - allowed",
-        (v) =>
-          v.replace(/\D/g, "").length >= 8 || "Enter a valid phone number",
+        (v) => v.replace(/\D/g, "").length >= 8 || "Enter a valid phone number",
       ];
     },
   },
 
   methods: {
+    populateAddress(id) {
+      const hospital = this.institutions.find((h) => h.id === id);
+      this.form.dispensing_address = hospital ? hospital.address : "";
+    },
+
     formatPhone() {
       if (!this.form.phone_no) return;
 
       // Remove non-numeric except +
       this.form.phone_no = this.form.phone_no
         .replace(/[^0-9+]/g, "")
-        .substring(0, 15);
+        .substring(0, 22);
     },
 
     fetchInstitutionList(type) {
