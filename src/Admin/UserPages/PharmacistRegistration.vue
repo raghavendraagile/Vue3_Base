@@ -179,7 +179,7 @@
                 </v-col>
 
                 <v-col cols="12" md="6">
-                  <div class="institution-note">
+                  <div>
                     <strong>Note:</strong>
                     If the institution you require does not appear in the drop
                     down menu, please contact
