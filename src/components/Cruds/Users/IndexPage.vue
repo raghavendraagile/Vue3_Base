@@ -95,6 +95,12 @@
             </v-btn>
           </td>
           <td>
+            <span v-if="props.item.reg_status">
+              {{ props.item.role.reg_status }}</span
+            >
+            <span v-else>{{ $t("not_appllicable") }}</span>
+          </td>
+          <td class="d-flex align-center">
             <router-link
               :to="{
                 name: 'user_creation',
@@ -113,16 +119,19 @@
                 </template>
               </v-tooltip>
             </router-link>
-          </td>
-          <td>
-            <v-btn
-              size="small"
-              @click="redirectView(props.item.slug)"
-              :disabled="loading"
-              class="ma-1"
-              color="blue"
-              >{{ $t("view") }}</v-btn
-            >
+            <div @click="redirectView(props.item.slug)">
+              <v-tooltip :text="this.$t('view')" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                    plain
+                    v-bind="props"
+                    dense
+                    class="mr-2 edit_btn icon_size"
+                    >mdi-eye</v-icon
+                  >
+                </template>
+              </v-tooltip>
+            </div>
           </td>
         </tr>
       </template>
@@ -159,9 +168,7 @@ export default {
   mounted() {
     this.fetchUsers();
   },
-  watch: {
-   
-  },
+  watch: {},
   computed: {
     headers() {
       return [
@@ -202,14 +209,16 @@ export default {
           key: "status",
         },
         {
-          title: this.$t("actions"),
-          align: "center",
+          title: this.$t("reg_status"),
+          align: "left",
           sortable: false,
-          key: "actions",
+          key: "reg_status",
         },
         {
-          title: " ",
-          align: "center",
+          title: this.$t("actions"),
+          align: "left",
+          sortable: false,
+          key: "actions",
         },
       ];
     },
