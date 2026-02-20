@@ -32,6 +32,27 @@
                 </template>
               </v-tooltip>
             </v-col>
+            <v-col cols="12" sm="4" md="4" class="pb-0">
+              <v-tooltip text="Validity" location="bottom">
+                <template v-slot:activator="{ props }">
+                  <v-text-field
+                    v-bind="props"
+                    v-model="drug.validity"
+                    :rules="fieldRules"
+                    label="Validity (in months)"
+                    variant="outlined"
+                    density="compact"
+                    required
+                    counter="5"
+                    class="required_field"
+                    type="text"
+                    inputmode="numeric"
+                    pattern="[0-9]*"
+                    @input="handleValidityInput(drug)"
+                  ></v-text-field>
+                </template>
+              </v-tooltip>
+            </v-col>
 
             <v-col cols="12" md="2">
               <v-switch
@@ -143,7 +164,7 @@ export default {
       id: 0,
       drug_name: "",
       status: "",
-
+      validity: null,
       drug_strength: [],
     },
     capsules: [],
@@ -192,6 +213,10 @@ export default {
     },
   },
   methods: {
+    handleValidityInput(drug) {
+      // Remove non-numeric characters
+      drug.validity = drug.validity.replace(/\D/g, "").slice(0, 5);
+    },
     cancel() {
       this.$router.push({
         name: "drug",

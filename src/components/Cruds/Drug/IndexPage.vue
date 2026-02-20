@@ -57,6 +57,9 @@
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
+            <span>{{ props.item.validity }}</span>
+          </td>
+          <td>
             <v-btn
               v-if="props.item.status"
               class="hover_shine btn mr-2"
@@ -150,6 +153,10 @@ export default {
           align: "left",
           sortable: true,
           key: "title",
+        },
+        {
+          title: "Validity (in months)",
+          key: "validity",
         },
         {
           title: "Status",
