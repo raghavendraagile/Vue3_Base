@@ -262,7 +262,7 @@
 
               <!-- Description -->
               <p class="success-description">
-                Thank you for registering for the Pathfinder.<br />
+                Thank you for registering for the PAF.<br />
                 A representative will validate your account and you will receive
                 an email confirmation within one working day.
               </p>
