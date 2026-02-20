@@ -66,6 +66,12 @@
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
           <td>
+            <span v-if="props.item.ref_number">{{
+              props.item.ref_number
+            }}</span>
+            <span v-else>{{ $t("not_appllicable") }}</span>
+          </td>
+          <td>
             <span v-if="props.item.type">{{ props.item.type }}</span>
             <span v-else>{{ $t("not_appllicable") }}</span>
           </td>
@@ -169,6 +175,12 @@ export default {
           align: "left",
           sortable: true,
           key: "name",
+        },
+        {
+          title: "Ref Number",
+          align: "left",
+          sortable: true,
+          key: "ref_number",
         },
 
         {
