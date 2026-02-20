@@ -83,9 +83,9 @@
                 </v-col>
 
                 <v-col cols="12" md="6">
-                  <v-autocomplete
-                    v-model="form.institution_id" :loading="institutionsLoading" :items="institutions" item-title="name"
-                    item-value="id" :rules="requiredRule" density="compact" variant="outlined" label="Institution Name"
+                  <v-autocomplete :disabled="!form.institution_type" v-model="form.institution_id"
+                    :loading="institutionsLoading" :items="institutions" item-title="name" item-value="id"
+                    :rules="requiredRule" density="compact" variant="outlined" label="Institution Name"
                     class="custom-field field-required" @update:modelValue="populateAddress" />
                 </v-col>
               </v-row>
