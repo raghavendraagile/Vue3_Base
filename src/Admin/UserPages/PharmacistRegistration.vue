@@ -83,8 +83,9 @@
                 </v-col>
 
                 <v-col cols="12" md="6">
-                  <v-autocomplete v-model="form.institution_id" :items="institutions" item-title="name" item-value="id"
-                    :rules="requiredRule" density="compact" variant="outlined" label="Institution Name"
+                  <v-autocomplete
+                    v-model="form.institution_id" :loading="institutionsLoading" :items="institutions" item-title="name"
+                    item-value="id" :rules="requiredRule" density="compact" variant="outlined" label="Institution Name"
                     class="custom-field field-required" @update:modelValue="populateAddress" />
                 </v-col>
               </v-row>
@@ -416,6 +417,7 @@ export default {
       showSuccessDialog: false,
       medicationTerms: [],
       wholesalers: [],
+      institutionsLoading: false
     };
   },
 
@@ -500,6 +502,7 @@ export default {
     },
 
     fetchInstitutionList(type) {
+      this.institutionsLoading = true;
       this.institutions = [];
       this.form.institution_id = null;
       this.$axios
@@ -514,7 +517,12 @@ export default {
         .catch((err) => {
           this.$toast.error(this.$t("something_went_wrong"));
           console.log(err);
-        });
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.institutionsLoading = false;
+          }, 1000);
+        })
     },
 
     fetchLov() {

@@ -62,7 +62,8 @@
                 <v-col cols="12" md="6">
                   <v-combobox v-model="form.job_title" :items="jobtitles" item-title="longname" item-value="shortname"
                     :rules="requiredRule" label="Job Title" variant="outlined" density="compact"
-                    class="custom-field field-required" maxlength="30" counter clearable :return-object="false" />
+                    class="custom-field field-required" maxlength="30" counter clearable :return-object="false"
+                    hint="Select or enter job title" />
 
                 </v-col>
                 <v-col cols="12" md="6">
