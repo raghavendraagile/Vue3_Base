@@ -454,6 +454,8 @@ export default {
       this.$axios
         .post("updateRegStatus", {
           slug: regObj.slug,
+          name: regObj.name,
+          email: regObj.email,
           reg_status: reg_status,
         })
         .then((res) => {
@@ -558,6 +560,8 @@ export default {
         .post("updateRegStatus", {
           slug: this.rejectObj.slug,
           reg_status: "Rejected",
+          name: this.rejectObj.name,
+          email: this.rejectObj.email,
           reject_reason: this.rejectReason,
         })
         .then((res) => {
