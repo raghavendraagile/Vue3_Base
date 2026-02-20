@@ -668,7 +668,7 @@ input::placeholder {
   margin: 0px auto;
   background: #ffffff91;
   padding: 21px 39px;
-  border-radius: 20px;
+  border-radius: 3px;
 }
 
 .v-data-table-header__content {
@@ -691,7 +691,7 @@ input::placeholder {
   transform: translateX(-50%);
   background: linear-gradient(90deg, #7b78ff, #8f8cff);
   color: white;
-  padding: 4px 18px;
+  padding: 4px 11px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
@@ -791,6 +791,16 @@ input::placeholder {
 
 .status-rejected {
   background: var(--theme-reject) !important
+}
+.status-text-approved {
+  color: green !important
+}
+.status-text-warning {
+  color: rgb(208, 138, 7) !important
+}
+
+.status-text-rejected {
+  color: red !important
 }
 
 .heading {

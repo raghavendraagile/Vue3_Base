@@ -80,9 +80,9 @@
           </td>
           <td>
             <v-btn
+              size="small"
               class="hover_shine btn mr-2"
               :disabled="isDisabled"
-              size="small"
               @click="changeStatus(props.item.id)"
               v-bind:color="[props.item.status == 1 ? 'success' : 'warning']"
             >
@@ -94,12 +94,7 @@
               }}</span>
             </v-btn>
           </td>
-          <td>
-            <span v-if="props.item.reg_status">
-              {{ props.item.role.reg_status }}</span
-            >
-            <span v-else>{{ $t("not_appllicable") }}</span>
-          </td>
+
           <td class="d-flex align-center">
             <router-link
               :to="{
@@ -208,12 +203,7 @@ export default {
           sortable: false,
           key: "status",
         },
-        {
-          title: this.$t("reg_status"),
-          align: "left",
-          sortable: false,
-          key: "reg_status",
-        },
+
         {
           title: this.$t("actions"),
           align: "left",

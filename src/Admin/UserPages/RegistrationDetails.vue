@@ -8,7 +8,7 @@
       :title="dialogTitle"
       :message="dialogMessage"
     />
-
+    <!-- {{ reg_deatils }} -->
     <!-- Rejection Reason Dialog -->
     <v-dialog v-model="rejectDialog" max-width="500">
       <v-card>
@@ -69,83 +69,207 @@
             {{ formatStatus(reg_deatils.reg_status) }}
           </v-chip>
         </div>
-
-        <v-divider class="mb-4"></v-divider>
+        <v-divider class="ml-4"></v-divider>
+        <!-- Registration Details -->
 
         <v-row dense>
           <v-col cols="12" md="6">
-            <div class="detail-item">
-              <span class="detail-label">ID</span>
-              <span class="detail-value">{{ reg_deatils.id }}</span>
-            </div>
+            <!-- <div class="custom-field plain-wrapper mb-4">
+              <label class="plain-label">Dispensing Pharmacy Address</label>
+              <div class="plain-value">
+                {{ form.dispensing_address }}
+              </div>
+            </div> -->
+            <v-text-field
+              v-model="reg_deatils.name"
+              :rules="requiredRule"
+              density="compact"
+              readonly
+              variant="outlined"
+              label="Pharmacist (or appointed deputy) First Name"
+              class="custom-field field-required"
+              maxlength="30"
+              counter
+            />
           </v-col>
 
           <v-col cols="12" md="6">
-            <div class="detail-item">
-              <span class="detail-label">Prescriber</span>
-              <span class="detail-value">
-                {{ reg_deatils.salutation }}. {{ reg_deatils.name }}
-              </span>
-            </div>
+            <v-text-field
+              v-model="reg_deatils.lastname"
+              :rules="requiredRule"
+              density="compact"
+              aria-readonly="readonly"
+              variant="outlined"
+              label="Pharmacist (or appointed deputy) Last Name"
+              class="custom-field field-required"
+              maxlength="30"
+              counter
+              readonly
+            />
+          </v-col>
+
+          <v-col cols="12" md="6" v-if="reg_deatils.pharmacist">
+            <v-text-field
+              v-model="reg_deatils.pharmacist.reg_no"
+              :rules="requiredRule"
+              density="compact"
+              variant="outlined"
+              label="GPhC / PSNI Registration Number"
+              class="custom-field field-required"
+              maxlength="30"
+              counter
+              readonly
+            />
+          </v-col>
+          <v-col cols="12" md="6" v-if="reg_deatils.pharmacist">
+            <v-select
+              v-model="reg_deatils.pharmacist.institution_type"
+              :items="institutionTypes"
+              item-title="longname"
+              item-value="shortname"
+              :rules="requiredRule"
+              density="compact"
+              variant="outlined"
+              label="Institution Type"
+              class="custom-field field-required"
+              readonly
+            />
+          </v-col>
+
+          <v-col cols="12" md="6" v-show="reg_deatils.pharmacist">
+            <v-text-field
+              v-model="reg_deatils.pharmacist.phone_no"
+              density="compact"
+              variant="outlined"
+              label="Phone Number"
+              class="custom-field field-required"
+              type="tel"
+              inputmode="numeric"
+              maxlength="22"
+              counter
+              readonly
+            />
           </v-col>
 
           <v-col cols="12" md="6">
-            <div class="detail-item">
-              <span class="detail-label">Gender</span>
-              <span class="detail-value">{{ reg_deatils.gender }}</span>
-            </div>
+            <v-autocomplete
+              v-model="reg_deatils.pharmacist.institution_id"
+              :items="institutions"
+              item-title="name"
+              item-value="id"
+              :rules="requiredRule"
+              density="compact"
+              variant="outlined"
+              label="Institution Name"
+              class="custom-field field-required"
+              readonly
+            />
+          </v-col>
+        </v-row>
+
+        <!-- Role -->
+        <v-row dense>
+          <v-col cols="12" md="6">
+            <p class="mb-2">
+              Please select the role that matches your level of responsibility
+            </p>
+
+            <v-row dense>
+              <v-checkbox
+                v-model="reg_deatils.pharmacist.role"
+                label="Chief Pharmacist"
+                value="Chief Pharmacist"
+                hide-details
+                class="pr-3"
+                readonly
+              />
+              <v-checkbox
+                v-model="reg_deatils.pharmacist.role"
+                label="Pharmacist"
+                value="Pharmacist"
+                hide-details
+                readonly
+              />
+            </v-row>
+
+            <!-- <div v-if="roleError" class="required-text">
+                At least one role type is required
+              </div> -->
           </v-col>
 
           <v-col cols="12" md="6">
-            <div class="detail-item">
-              <span class="detail-label">Date of Birth</span>
-              <span class="detail-value">{{ reg_deatils.dob }}</span>
-            </div>
-          </v-col>
-
-          <v-col cols="12" md="6">
-            <div class="detail-item">
-              <span class="detail-label">Indication</span>
-              <span class="detail-value">{{ reg_deatils.rolename }}</span>
-            </div>
-          </v-col>
-
-          <v-col cols="12" md="6">
-            <div class="detail-item">
-              <span class="detail-label">Molecule</span>
-              <span class="detail-value">{{ reg_deatils.rolename }}</span>
-            </div>
-          </v-col>
-          <v-col cols="12" md="6">
-            <div class="detail-item">
-              <span class="detail-label">Status</span>
-              <span class="detail-value">
-                <v-chip
-                  size="small"
-                  variant="flat"
-                  :class="
-                    reg_deatils.status === 1
-                      ? 'status-approved'
-                      : 'status-warning'
-                  "
-                  class="text-white"
-                >
-                  {{ reg_deatils.status == 1 ? "Active" : "Inactive" }}
-                </v-chip></span
-              >
-            </div>
-          </v-col>
-          <v-col cols="12" md="6" v-if="reg_deatils.reg_status == 'Rejected'">
-            <div class="detail-item">
-              <span class="detail-label">Rejection Reason</span>
-              <span class="detail-value">{{
-                reg_deatils.rejection_reason
-              }}</span>
+            <div>
+              <strong>Note:</strong>
+              If the institution you require does not appear in the drop down
+              menu, please contact
+              <a href="mailto:support@pharmacaregroup.co.uk">
+                support@pharmacaregroup.co.uk
+              </a>
             </div>
           </v-col>
         </v-row>
 
-        <v-divider class="my-6"></v-divider>
+        <!-- Addresses -->
+
+        <!-- <v-col cols="12" md="6" v-if="form.institution_id"> -->
+        <div class="custom-field plain-wrapper mb-4">
+          <label class="plain-label">Dispensing Pharmacy Address</label>
+          <div class="plain-value">
+            {{ reg_deatils.pharmacist.dispensing_address }}
+          </div>
+        </div>
+        <!-- </v-col> -->
+        <!-- <v-text-field
+          v-model="reg_deatils.pharmacist.dispensing_address"
+          :rules="requiredRule"
+          density="compact"
+          variant="outlined"
+          label="Dispensing Pharmacy Address"
+          class="custom-field field-required mt-6"
+        /> -->
+
+        <v-text-field
+          v-model="reg_deatils.pharmacist.delivery_address"
+          density="compact"
+          variant="outlined"
+          label="Delivery Address (if different)"
+          class="custom-field"
+          maxlength="80"
+          counter
+        />
+
+        <v-text-field
+          v-model="reg_deatils.pharmacist.ordering_address"
+          density="compact"
+          variant="outlined"
+          label="Ordering Address (if different to delivery address)"
+          class="custom-field"
+          maxlength="80"
+          counter
+        />
+
+        <!-- Wholesaler -->
+        <!-- <h6 class="section-title mt-4 mb-6">
+          <div class="d-flex align-center">
+            <span class="section-text theme-subheader">
+              Wholesaler Details
+            </span>
+            <v-divider class="ml-4"></v-divider>
+          </div>
+        </h6> -->
+        <!-- <v-row dense>
+          <v-col v-for="wh in wholesalers" :key="wh.id" cols="12" md="6">
+            <v-text-field
+              v-model="reg_deatils.wholesaler_accounts[wh.id]"
+              :label="wh.name + ' Account Number'"
+              variant="outlined"
+              density="compact"
+              class="custom-field"
+            />
+          </v-col>
+        </v-row> -->
+
+        <v-divider class="mb-4"></v-divider>
 
         <!-- Action Buttons -->
         <div class="d-flex justify-end">
@@ -179,17 +303,84 @@
 export default {
   data() {
     return {
-      reg_deatils: {},
+      reg_deatils: {
+        id: 0,
+        name: "",
+        lastname: " ",
+        email: "",
+        email_verified_at: null,
+        token_id: null,
+        role_id: 3,
+        salutation: null,
+        gender: null,
+        dob: null,
+        address: null,
+        postcode: null,
+        description: null,
+        image_url: null,
+        country: null,
+        state: null,
+        city: null,
+        mobile: null,
+        mobile_code: null,
+        otp: null,
+        otp_valid_until: null,
+        is_otp_validated: 1,
+        status: 0,
+        reg_status: "Awaiting Approval",
+        rejection_reason: null,
+        slug: "",
+        expired: 0,
+        signature_date: "2026-02-20 00:00:00",
+        signature: "",
+        created_by: null,
+        updated_by: null,
+        created_at: "",
+        updated_at: "",
+        rolename: "",
+        full_name: "",
+        role: {
+          id: 0,
+          rolename: "",
+          role_display_name: "",
+          roledescription: "",
+          status: 1,
+          slug: "",
+          created_by: null,
+          updated_by: null,
+          created_at: null,
+          updated_at: null,
+        },
+        pharmacist: {
+          id: 0,
+          user_id: 0,
+          reg_no: "",
+          phone_no: "",
+          dispensing_address: "",
+          delivery_address: "",
+          ordering_address: "",
+          institution_type: "",
+          institution_id: 1,
+          slug: "",
+          role: "",
+          created_by: 5,
+          updated_by: null,
+          created_at: "2026-02-20T09:29:26.000000Z",
+          updated_at: "2026-02-20T09:29:26.000000Z",
+        },
+      },
+
       dialogTitle: "",
       dialogMessage: "",
       loader: false,
-
+      institutionTypes: [],
+      institutions: [],
       rejectDialog: false,
       rejectReason: "",
       rejectObj: null,
     };
   },
-
+  created() {},
   watch: {
     "$route.query.slug": {
       immediate: true,
@@ -198,6 +389,19 @@ export default {
           this.getRegDetails();
         }
       },
+    },
+  },
+  computed: {
+    requiredRule() {
+      return [(v) => !!v || "This field is required"];
+    },
+
+    phoneRules() {
+      return [
+        (v) => !!v || "Phone number is required",
+        (v) => /^[0-9+\s()-]*$/.test(v) || "Only numbers and + - allowed",
+        (v) => v.replace(/\D/g, "").length >= 8 || "Enter a valid phone number",
+      ];
     },
   },
 
@@ -226,6 +430,9 @@ export default {
         .get("fetch_regdetails_by_slug/" + this.$route.query.slug)
         .then((res) => {
           this.reg_deatils = res.data.reg_deatils;
+          this.fetchInstitutionList(
+            this.reg_deatils.pharmacist.institution_type
+          );
         })
         .finally(() => {
           this.loader = false;
@@ -271,6 +478,70 @@ export default {
     closeRejectDialog() {
       this.rejectDialog = false;
       this.rejectReason = "";
+    },
+    fetchInstitutionList(type) {
+      this.institutions = [];
+      // this.reg_deatils.pharmacist.institution_id = null;
+      this.$axios
+        .get("fetch_institution_by_type", {
+          params: {
+            type: type,
+          },
+        })
+        .then((response) => {
+          this.institutions = response.data.institutions;
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+        });
+    },
+    fetchLov() {
+      this.$axios
+        .get("fetchlookup", {
+          params: {
+            lookup_type: "INSTITUTION_TYPE",
+          },
+        })
+        .then((res) => {
+          this.institutionTypes = res.data.lookup_details;
+        })
+        .catch((err) => {
+          this.$toast.error(this.$t("something_went_wrong"));
+          console.log(err);
+        });
+
+      // this.$axios
+      //   .get("fetch_active_drugs")
+      //   .then((res) => {
+      //     this.medications = res.data.drugs;
+
+      //     // Build terms structure dynamically (temporary hardcoded example)
+      //     this.medicationTerms = this.medications.map((drug) => ({
+      //       id: drug.id,
+      //       name: drug.drug_name,
+      //       terms: this.getDefaultTerms(drug.id),
+      //     }));
+      //   })
+      //   .catch((err) => {
+      //     this.$toast.error(this.$t("something_went_wrong"));
+      //     console.log(err);
+      //   });
+
+      // this.$axios
+      //   .get("fetch_active_wholesalers")
+      //   .then((res) => {
+      //     this.wholesalers = res.data.wholesalers;
+
+      //     // Initialize empty account numbers dynamically
+      //     this.wholesalers.forEach((wh) => {
+      //       this.form.wholesaler_accounts[wh.id] = "";
+      //     });
+      //   })
+      //   .catch((err) => {
+      //     this.$toast.error(this.$t("something_went_wrong"));
+      //     console.log(err);
+      //   });
     },
 
     async confirmReject() {
@@ -391,7 +662,7 @@ export default {
   background: #e9edf7 !important;
 }
 .details-card {
-  border-radius: 20px;
+  border-radius: 5px;
   background: #e9edf7;
 }
 

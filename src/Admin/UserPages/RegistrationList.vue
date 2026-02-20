@@ -24,7 +24,6 @@
             class="search-field"
           />
         </div>
-
         <!-- Data Table Card -->
         <v-card class="table-card pa-4">
           <v-data-table
@@ -43,11 +42,16 @@
                 </td>
                 <td>
                   <a href="#" @click.prevent="goToDetailsPage(item)"
-                    >{{ item.salutation }}.{{ item.name }}</a
+                    ><span v-if="item.salutation">{{ item.salutation }}.</span
+                    ><b>{{ item.name }}</b></a
                   >
                 </td>
 
-                <td>{{ item.gender }}</td>
+                <td>{{ item.pharmacist.reg_no }}</td>
+                <td>
+                  <span v-if="item.gender">{{ item.gender }}</span
+                  ><span v-else>-</span>
+                </td>
                 <td>{{ formatDate(item.dob) }}</td>
                 <td>{{ item.rolename }}</td>
                 <!-- <td>{{ item.description }}</td> -->
@@ -65,14 +69,9 @@
                   </v-chip>
                 </td>
                 <td>
-                  <v-chip
-                    size="small"
-                    variant="flat"
-                    class="text-white"
-                    :class="getStatusClass(item.reg_status)"
-                  >
+                  <b :class="getStatusClass(item.reg_status)">
                     {{ item.reg_status }}
-                  </v-chip>
+                  </b>
                 </td>
                 <!-- <td>
                   <v-btn icon size="x-small" class="pdf-btn">
@@ -146,11 +145,11 @@ export default {
       initval: false,
       headers: [
         { title: "Patient ID", key: "id" },
-        { title: "Prescriber", key: "prescriber" },
-        // { title: "Initials", key: "initials" },
+        { title: "Name", key: "name" },
+        { title: "Reg no", key: "reg_no" },
         { title: "Gender", key: "gender" },
         { title: "DOB", key: "dob" },
-        { title: "Indication", key: "indication" },
+        { title: "Role", key: "role" },
         // { title: "Molecule", key: "molecule" },
         { title: "Status", key: "status" },
         { title: "Reg Status", key: "reg_status" },
@@ -177,11 +176,11 @@ export default {
   methods: {
     getStatusClass(status) {
       if (status === "Awaiting Approval") {
-        return "status-warning";
+        return "status-text-warning";
       } else if (status === "Approved") {
-        return "status-approved";
+        return "status-text-approved";
       } else if (status === "Rejected") {
-        return "status-rejected";
+        return "status-text-rejected";
       }
       return "";
     },
