@@ -668,6 +668,9 @@ export default {
           this.$toast.error(
             err?.response?.data?.message || "Something went wrong"
           );
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
 

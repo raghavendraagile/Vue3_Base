@@ -6,12 +6,7 @@
     <div class="progress-wrapper">
       <div class="progress-content">
         <span>Progress</span>
-        <v-progress-linear
-          :model-value="progress"
-          height="6"
-          stream
-          color="white"
-        ></v-progress-linear>
+        <v-progress-linear :model-value="progress" height="6" stream color="white"></v-progress-linear>
         <span>Complete</span>
       </div>
     </div>
@@ -24,13 +19,7 @@
               <span class="theme-header">Pharmacist registration form</span>
 
               <div class="header-actions">
-                <v-btn
-                  size="small"
-                  variant="outlined"
-                  class="btn-outline"
-                  rounded="pill"
-                  @click="returnToSelection()"
-                >
+                <v-btn size="small" variant="outlined" class="btn-outline" rounded="pill" @click="returnToSelection()">
                   ← Return to selection
                 </v-btn>
 
@@ -54,56 +43,27 @@
 
               <v-row dense>
                 <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="form.name"
-                    :rules="requiredRule"
-                    density="compact"
-                    variant="outlined"
-                    label="Pharmacist (or appointed deputy) First Name"
-                    class="custom-field field-required"
-                    maxlength="30"
-                    counter
-                  />
+                  <v-text-field v-model="form.name" :rules="requiredRule" density="compact" variant="outlined"
+                    label="Pharmacist (or appointed deputy) First Name" class="custom-field field-required"
+                    maxlength="30" counter />
                 </v-col>
 
                 <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="form.lastname"
-                    :rules="requiredRule"
-                    density="compact"
-                    variant="outlined"
-                    label="Pharmacist (or appointed deputy) Last Name"
-                    class="custom-field field-required"
-                    maxlength="30"
-                    counter
-                  />
+                  <v-text-field v-model="form.lastname" :rules="requiredRule" density="compact" variant="outlined"
+                    label="Pharmacist (or appointed deputy) Last Name" class="custom-field field-required"
+                    maxlength="30" counter />
                 </v-col>
 
                 <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="form.reg_no"
-                    :rules="requiredRule"
-                    density="compact"
-                    variant="outlined"
-                    label="GPhC / PSNI Registration Number"
-                    class="custom-field field-required"
-                    maxlength="30"
-                    counter
-                  />
+                  <v-text-field v-model="form.reg_no" :rules="requiredRule" density="compact" variant="outlined"
+                    label="GPhC / PSNI Registration Number" class="custom-field field-required" maxlength="30"
+                    counter />
                 </v-col>
                 <v-col cols="12" md="6">
-                  <v-select
-                    v-model="form.institution_type"
-                    :items="institutionTypes"
-                    item-title="longname"
-                    item-value="shortname"
-                    :rules="requiredRule"
-                    density="compact"
-                    variant="outlined"
-                    label="Institution Type"
-                    class="custom-field field-required"
-                    @update:modelValue="fetchInstitutionList"
-                  />
+                  <v-select v-model="form.institution_type" :items="institutionTypes" item-title="longname"
+                    item-value="shortname" :rules="requiredRule" density="compact" variant="outlined"
+                    label="Institution Type" class="custom-field field-required"
+                    @update:modelValue="fetchInstitutionList" />
                 </v-col>
 
                 <v-col cols="12" md="6">
@@ -117,34 +77,15 @@
                     maxlength="22"
                     counter
                   /> -->
-                  <v-text-field
-                    v-model="form.phone_no"
-                    :rules="[...requiredRule, ...phoneRules]"
-                    density="compact"
-                    variant="outlined"
-                    label="Phone Number"
-                    class="custom-field field-required"
-                    type="tel"
-                    inputmode="numeric"
-                    maxlength="22"
-                    counter
-                    @input="formatPhone"
-                  />
+                  <v-text-field v-model="form.phone_no" :rules="[...requiredRule, ...phoneRules]" density="compact"
+                    variant="outlined" label="Phone Number" class="custom-field field-required" type="tel"
+                    inputmode="numeric" maxlength="22" counter @input="formatPhone" />
                 </v-col>
 
                 <v-col cols="12" md="6">
-                  <v-autocomplete
-                    v-model="form.institution_id"
-                    :items="institutions"
-                    item-title="name"
-                    item-value="id"
-                    :rules="requiredRule"
-                    density="compact"
-                    variant="outlined"
-                    label="Institution Name"
-                    class="custom-field field-required"
-                    @update:modelValue="populateAddress"
-                  />
+                  <v-autocomplete v-model="form.institution_id" :items="institutions" item-title="name" item-value="id"
+                    :rules="requiredRule" density="compact" variant="outlined" label="Institution Name"
+                    class="custom-field field-required" @update:modelValue="populateAddress" />
                 </v-col>
               </v-row>
 
@@ -157,21 +98,10 @@
                   </p>
 
                   <v-row dense>
-                    <v-checkbox
-                      v-model="form.role"
-                      label="Chief Pharmacist"
-                      value="Chief Pharmacist"
-                      hide-details
-                      class="pr-3"
-                      @update:model-value="roleError = false"
-                    />
-                    <v-checkbox
-                      v-model="form.role"
-                      label="Pharmacist"
-                      value="Pharmacist"
-                      hide-details
-                      @update:model-value="roleError = false"
-                    />
+                    <v-checkbox v-model="form.role" label="Chief Pharmacist" value="Chief Pharmacist" hide-details
+                      class="pr-3" @update:model-value="roleError = false" />
+                    <v-checkbox v-model="form.role" label="Pharmacist" value="Pharmacist" hide-details
+                      @update:model-value="roleError = false" />
                   </v-row>
 
                   <div v-if="roleError" class="required-text">
@@ -210,25 +140,12 @@
                 class="custom-field field-required mt-6"
               /> -->
 
-              <v-text-field
-                v-model="form.delivery_address"
-                density="compact"
-                variant="outlined"
-                label="Delivery Address (if different)"
-                class="custom-field"
-                maxlength="80"
-                counter
-              />
+              <v-text-field v-model="form.delivery_address" density="compact" variant="outlined"
+                label="Delivery Address (if different)" class="custom-field" maxlength="80" counter />
 
-              <v-text-field
-                v-model="form.ordering_address"
-                density="compact"
-                variant="outlined"
-                label="Ordering Address (if different to delivery address)"
-                class="custom-field"
-                maxlength="80"
-                counter
-              />
+              <v-text-field v-model="form.ordering_address" density="compact" variant="outlined"
+                label="Ordering Address (if different to delivery address)" class="custom-field" maxlength="80"
+                counter />
 
               <!-- Wholesaler -->
               <h6 class="section-title mt-4 mb-6">
@@ -241,15 +158,10 @@
               </h6>
               <v-row dense>
                 <v-col v-for="wh in wholesalers" :key="wh.id" cols="12" md="6">
-                  <v-text-field
-                    v-model="form.wholesaler_accounts[wh.id]"
-                    :label="wh.name + ' Account Number'"
-                    variant="outlined"
-                    density="compact"
-                    class="custom-field"  
-                  />
-                    <!-- field-required -->
-                    <!-- :rules="requiredRule" -->
+                  <v-text-field v-model="form.wholesaler_accounts[wh.id]" :label="wh.name + ' Account Number'"
+                    variant="outlined" density="compact" class="custom-field" />
+                  <!-- field-required -->
+                  <!-- :rules="requiredRule" -->
                 </v-col>
               </v-row>
 
@@ -266,19 +178,9 @@
                 Please select the medication in which you want to prescribe.
               </p>
               <v-row dense>
-                <v-col
-                  v-for="med in medications"
-                  :key="med.id"
-                  cols="12"
-                  md="3"
-                >
-                  <v-checkbox
-                    v-model="form.medications"
-                    :label="med.drug_name"
-                    :value="med.id"
-                    density="compact"
-                    hide-details
-                  />
+                <v-col v-for="med in medications" :key="med.id" cols="12" md="3">
+                  <v-checkbox v-model="form.medications" :label="med.drug_name" :value="med.id" density="compact"
+                    hide-details />
                 </v-col>
               </v-row>
 
@@ -298,38 +200,20 @@
 
               <v-row dense>
                 <v-col cols="12">
-                  <v-text-field
-                    v-model="form.email"
-                    :rules="[...requiredRule, ...emailRules]"
-                    density="compact"
-                    variant="outlined"
-                    label="Email Address (A link will be sent to verify your email address)"
-                    class="custom-field field-required"
-                  />
+                  <v-text-field v-model="form.email" :rules="[...requiredRule, ...emailRules]" density="compact"
+                    variant="outlined" label="Email Address (A link will be sent to verify your email address)"
+                    class="custom-field field-required" />
                 </v-col>
 
                 <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="form.password"
-                    type="password"
-                    :rules="[...requiredRule, ...passwordRules]"
-                    density="compact"
-                    variant="outlined"
-                    label="Create Password"
-                    class="custom-field field-required"
-                  />
+                  <v-text-field v-model="form.password" type="password" :rules="[...requiredRule, ...passwordRules]"
+                    density="compact" variant="outlined" label="Create Password" class="custom-field field-required" />
                 </v-col>
 
                 <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="form.confirmPassword"
-                    type="password"
-                    :rules="[...requiredRule, ...confirmPasswordRules]"
-                    density="compact"
-                    variant="outlined"
-                    label="Confirm Password"
-                    class="custom-field field-required"
-                  />
+                  <v-text-field v-model="form.confirmPassword" type="password"
+                    :rules="[...requiredRule, ...confirmPasswordRules]" density="compact" variant="outlined"
+                    label="Confirm Password" class="custom-field field-required" />
                 </v-col>
               </v-row>
 
@@ -341,12 +225,7 @@
                   </span>
                 </div>
 
-                <v-btn
-                  size="small"
-                  class="btn-filled theme-bg"
-                  rounded="pill"
-                  @click="goToNextStep"
-                >
+                <v-btn size="small" class="btn-filled theme-bg" rounded="pill" @click="goToNextStep">
                   Next
                 </v-btn>
               </div>
@@ -372,30 +251,17 @@
               </div>
 
               <div>
-                <div
-                  v-for="drugId in form.medications"
-                  :key="drugId"
-                  class="mb-3"
-                >
+                <div v-for="drugId in form.medications" :key="drugId" class="mb-3">
                   <h6 class="theme-subheader mb-3">
                     {{ getDrug(drugId)?.name }} Confirmation
                   </h6>
 
-                  <v-checkbox
-                    v-for="(term, index) in getDrug(drugId)?.terms"
-                    :key="index"
-                    v-model="confirmationChecks[drugId][index]"
-                    :label="term"
-                    density="compact"
-                    hide-details
-                    class="mb-2"
-                  />
+                  <v-checkbox v-for="(term, index) in getDrug(drugId)?.terms" :key="index"
+                    v-model="confirmationChecks[drugId][index]" :label="term" density="compact" hide-details
+                    class="mb-2" />
                 </div>
 
-                <div
-                  v-if="confirmationError"
-                  style="color: red; font-size: 12px; margin-top: 8px"
-                >
+                <div v-if="confirmationError" style="color: red; font-size: 12px; margin-top: 8px">
                   Please accept all terms and conditions before submitting.
                 </div>
 
@@ -436,42 +302,22 @@
               </div>
 
               <div class="form-actions d-flex justify-space-between">
-                <v-btn
-                  size="small"
-                  variant="outlined"
-                  class="btn-outline"
-                  rounded="pill"
-                  @click="goToPreviousStep"
-                  :disabled="btndisable"
-                >
+                <v-btn size="small" variant="outlined" class="btn-outline" rounded="pill" @click="goToPreviousStep"
+                  :disabled="btndisable">
                   ← Previous
                 </v-btn>
-                <v-btn
-                  size="small"
-                  class="btn-filled theme-bg"
-                  rounded="pill"
-                  @click="submitForm"
-                  :disabled="btndisable"
-                >
+                <v-btn size="small" class="btn-filled theme-bg" rounded="pill" @click="submitForm"
+                  :disabled="btndisable">
                   Register
                 </v-btn>
               </div>
             </div>
           </v-form>
-          <v-dialog
-            v-model="showConfirmationDialog"
-            width="520"
-            persistent
-            transition="dialog-transition"
-            scrim="rgba(0,0,0,0.6)"
-          >
+          <v-dialog v-model="showConfirmationDialog" width="520" persistent transition="dialog-transition"
+            scrim="rgba(0,0,0,0.6)">
             <v-card class="animated-card pa-10 text-center">
               <div class="icon-wrapper mb-6">
-                <v-icon
-                  icon="mdi-alert-circle"
-                  size="70"
-                  class="warning-icon"
-                ></v-icon>
+                <v-icon icon="mdi-alert-circle" size="70" class="warning-icon"></v-icon>
               </div>
 
               <h2 class="mb-4 dialog-title">Action Required</h2>
@@ -481,24 +327,14 @@
                 form. Please review the checkboxes and confirm your agreement.
               </p>
 
-              <v-btn
-                class="continue-btn"
-                rounded="pill"
-                size="large"
-                @click="showConfirmationDialog = false"
-              >
+              <v-btn class="continue-btn" rounded="pill" size="large" @click="showConfirmationDialog = false">
                 Continue
               </v-btn>
             </v-card>
           </v-dialog>
           <!-- SUCCESS DIALOG -->
-          <v-dialog
-            v-model="showSuccessDialog"
-            width="680"
-            persistent
-            scrim="rgba(0,0,0,0.65)"
-            transition="dialog-transition"
-          >
+          <v-dialog v-model="showSuccessDialog" width="680" persistent scrim="rgba(0,0,0,0.65)"
+            transition="dialog-transition">
             <v-card class="success-dialog-card text-center" elevation="6">
               <!-- Icon Section -->
               <div class="success-icon-wrapper">
@@ -521,12 +357,7 @@
               <v-divider class="my-6"></v-divider>
 
               <!-- Action Button -->
-              <v-btn
-                class="success-login-btn"
-                rounded="pill"
-                size="large"
-                @click="goToLogin()"
-              >
+              <v-btn class="success-login-btn" rounded="pill" size="large" @click="goToLogin()">
                 Go to Login
               </v-btn>
             </v-card>
@@ -827,10 +658,13 @@ export default {
           }
         })
         .catch((err) => {
-          this.loading = false;
+
           this.$toast.error(
             err?.response?.data?.message || "Something went wrong"
           );
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
 
@@ -992,6 +826,7 @@ export default {
   font-size: 14px;
   color: rgba(0, 0, 0, 0.87);
 }
+
 /* Dialog Card Animation */
 .animated-card {
   border-radius: 24px;
@@ -1006,6 +841,7 @@ export default {
     transform: scale(0.7) translateY(40px);
     opacity: 0;
   }
+
   100% {
     transform: scale(1) translateY(0);
     opacity: 1;
@@ -1036,9 +872,11 @@ export default {
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.08);
   }
+
   100% {
     transform: scale(1);
   }
@@ -1050,6 +888,7 @@ export default {
     transform: translateY(-20px);
     opacity: 0;
   }
+
   100% {
     transform: translateY(0);
     opacity: 1;
@@ -1108,6 +947,7 @@ export default {
     opacity: 0;
     transform: translateY(6px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1116,10 +956,12 @@ export default {
 
 /* Soft pulse animation */
 @keyframes pulseStar {
+
   0%,
   100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.2);
   }
@@ -1176,6 +1018,7 @@ export default {
     transform: scale(0.85) translateY(40px);
     opacity: 0;
   }
+
   100% {
     transform: scale(1) translateY(0);
     opacity: 1;
@@ -1209,9 +1052,11 @@ export default {
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.05);
   }
+
   100% {
     transform: scale(1);
   }
