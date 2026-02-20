@@ -1,160 +1,257 @@
 <template>
   <v-container fluid class="page-wrapper background">
     <content-loader v-if="loader"></content-loader>
-    <!-- Back section -->
+
+    <!-- Confirmation Dialog -->
     <confirmation-dialog
       ref="confirmationDialog"
       :title="dialogTitle"
       :message="dialogMessage"
-    ></confirmation-dialog>
+    />
+
+    <!-- Rejection Reason Dialog -->
+    <v-dialog v-model="rejectDialog" max-width="500">
+      <v-card>
+        <v-card-title class="text-h6">Rejection Reason</v-card-title>
+
+        <v-card-text>
+          <v-textarea
+            v-model="rejectReason"
+            label="Enter rejection reason"
+            rows="3"
+            auto-grow
+            outlined
+            required
+          />
+        </v-card-text>
+
+        <v-card-actions class="justify-end">
+          <v-btn
+            variant="outlined"
+            class="register-btn"
+            rounded="pill"
+            @click="closeRejectDialog"
+            >Cancel</v-btn
+          >
+          <v-btn
+            variant="outlined"
+            rounded="pill"
+            class="btn-approved ml-2"
+            :disabled="!rejectReason"
+            @click="confirmReject"
+          >
+            Submit
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <div class="main-section">
       <v-btn
         variant="outlined"
         class="register-btn"
         rounded="pill"
-        @click="goBackToDetails()"
-        >Back</v-btn
+        @click="goBackToDetails"
       >
-      <div>
-        <!-- Search Bar -->
-        <!-- {{ reg_deatils }} -->
-        <v-card class="table-card pa-4 mt-4">
+        Back
+      </v-btn>
+
+      <v-card class="details-card pa-6 mt-4" elevation="0">
+        <div class="d-flex justify-space-between align-center mb-4">
           <h2 class="heading">Registration Details</h2>
-          <div class="d-flex">
-            <div class="label">Id :</div>
-            <div class="label">&nbsp;{{ reg_deatils.id }}</div>
-          </div>
-          <div class="d-flex">
-            <div class="label">Prescriber :</div>
-            <div class="label">
-              &nbsp;{{ reg_deatils.salutation }}.{{ reg_deatils.name }}
+
+          <v-chip
+            size="small"
+            variant="flat"
+            class="text-white"
+            :class="getStatusClass(reg_deatils.reg_status)"
+          >
+            {{ formatStatus(reg_deatils.reg_status) }}
+          </v-chip>
+        </div>
+
+        <v-divider class="mb-4"></v-divider>
+
+        <v-row dense>
+          <v-col cols="12" md="6">
+            <div class="detail-item">
+              <span class="detail-label">ID</span>
+              <span class="detail-value">{{ reg_deatils.id }}</span>
             </div>
-          </div>
-          <div class="d-flex">
-            <div class="label">Gender :</div>
-            <div class="label">&nbsp;{{ reg_deatils.gender }}</div>
-          </div>
-          <div class="d-flex">
-            <div class="label">Dob :</div>
-            <div class="label">&nbsp;{{ formatDateTime(reg_deatils.dob) }}</div>
-          </div>
-          <div class="d-flex">
-            <div class="label">Idendication :</div>
-            <div class="label">&nbsp;{{ reg_deatils.rolename }}</div>
-          </div>
-          <div class="d-flex">
-            <div class="label">Molecule :</div>
-            <div class="label">&nbsp;{{ reg_deatils.rolename }}</div>
-          </div>
-          <div class="d-flex">
-            <div class="label">Status :</div>
-            <div class="label">&nbsp;{{ reg_deatils.status }}</div>
-          </div>
-          <div class="auth-buttons text-right">
-            <v-btn
-              small
-              rounded
-              :class="reg_deatils.status == 1 ? 'btn-disabled' : 'btn-approved'"
-              :disabled="reg_deatils.status == 1"
-              @click="updateStatus(reg_deatils)"
-            >
-              Approved
-            </v-btn>
+          </v-col>
 
-            <v-btn
-              rounded
-              small
-              :class="reg_deatils.status == 0 ? 'btn-disabled' : 'btn-reject'"
-              :disabled="reg_deatils.status == 0"
-              class="ml-2"
-              @click="updateStatus(reg_deatils)"
-            >
-              Reject
-            </v-btn>
-          </div>
-        </v-card>
-      </div>
+          <v-col cols="12" md="6">
+            <div class="detail-item">
+              <span class="detail-label">Prescriber</span>
+              <span class="detail-value">
+                {{ reg_deatils.salutation }}. {{ reg_deatils.name }}
+              </span>
+            </div>
+          </v-col>
 
-      <!-- <div v-else>
-        <RegistrationDetails :selectedId="selectedId" @back="handleBackClick" />
-      </div> -->
+          <v-col cols="12" md="6">
+            <div class="detail-item">
+              <span class="detail-label">Gender</span>
+              <span class="detail-value">{{ reg_deatils.gender }}</span>
+            </div>
+          </v-col>
+
+          <v-col cols="12" md="6">
+            <div class="detail-item">
+              <span class="detail-label">Date of Birth</span>
+              <span class="detail-value">{{ reg_deatils.dob }}</span>
+            </div>
+          </v-col>
+
+          <v-col cols="12" md="6">
+            <div class="detail-item">
+              <span class="detail-label">Indication</span>
+              <span class="detail-value">{{ reg_deatils.rolename }}</span>
+            </div>
+          </v-col>
+
+          <v-col cols="12" md="6">
+            <div class="detail-item">
+              <span class="detail-label">Molecule</span>
+              <span class="detail-value">{{ reg_deatils.rolename }}</span>
+            </div>
+          </v-col>
+          <v-col cols="12" md="6">
+            <div class="detail-item">
+              <span class="detail-label">Status</span>
+              <span class="detail-value">
+                <v-chip
+                  size="small"
+                  variant="flat"
+                  :class="
+                    reg_deatils.status === 1
+                      ? 'status-approved'
+                      : 'status-warning'
+                  "
+                  class="text-white"
+                >
+                  {{ reg_deatils.status == 1 ? "Active" : "Inactive" }}
+                </v-chip></span
+              >
+            </div>
+          </v-col>
+          <v-col cols="12" md="6" v-if="reg_deatils.reg_status == 'Rejected'">
+            <div class="detail-item">
+              <span class="detail-label">Rejection Reason</span>
+              <span class="detail-value">{{
+                reg_deatils.rejection_reason
+              }}</span>
+            </div>
+          </v-col>
+        </v-row>
+
+        <v-divider class="my-6"></v-divider>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-end">
+          <v-btn
+            v-if="reg_deatils.reg_status != 'Rejected'"
+            size="small"
+            rounded="pill"
+            class="status-approved mr-3 text-white"
+            :disabled="reg_deatils.reg_status === 'Approved'"
+            @click="updateStatus(reg_deatils, 'Approved')"
+          >
+            Approve
+          </v-btn>
+
+          <v-btn
+            v-if="reg_deatils.reg_status != 'Approved'"
+            size="small"
+            rounded="pill"
+            color="red"
+            :disabled="reg_deatils.reg_status === 'Rejected'"
+            @click="openRejectDialog(reg_deatils)"
+          >
+            Reject
+          </v-btn>
+        </div>
+      </v-card>
     </div>
-    <!-- Search Bar -->
-
-    <!-- Data Table Card -->
   </v-container>
 </template>
 <script>
 export default {
   data() {
     return {
-      reg_deatils: [],
-      dialogMessage: "",
+      reg_deatils: {},
       dialogTitle: "",
+      dialogMessage: "",
       loader: false,
-      // accepted: false,
+
+      rejectDialog: false,
+      rejectReason: "",
+      rejectObj: null,
     };
   },
+
   watch: {
     "$route.query.slug": {
       immediate: true,
       handler() {
         if (this.$route.query.slug) {
-          this.loader = true;
           this.getRegDetails();
         }
       },
     },
   },
-  computed: {},
 
-  mounted() {
-    console.log("Registration ID:", this.$route.query.slug);
-  },
-
-  created() {
-    // Initialization logic here
-  },
   methods: {
+    formatStatus(status) {
+      if (status === "Approved" || status === 1) return "Approved";
+      if (status === "Rejected" || status === 0) return "Rejected";
+      return "Awaiting Approval";
+    },
+
+    getStatusClass(status) {
+      if (status === "Approved" || status === 1) return "status-approved";
+      if (status === "Rejected" || status === 0) return "status-rejected";
+      return "status-warning";
+    },
+
     showConfirmation(title, message) {
       this.dialogTitle = title;
       this.dialogMessage = message;
       return this.$refs.confirmationDialog.open();
     },
+
     getRegDetails() {
       this.loader = true;
       this.$axios
         .get("fetch_regdetails_by_slug/" + this.$route.query.slug)
         .then((res) => {
           this.reg_deatils = res.data.reg_deatils;
-          this.loader = false;
         })
-        .catch(() => {
+        .finally(() => {
           this.loader = false;
         });
     },
+
     goBackToDetails() {
-      // this.$emit("back", false);
       this.$router.push({ name: "registration_list" });
     },
-    async updateStatus(regObj) {
+
+    async updateStatus(regObj, reg_status) {
       const result = await this.showConfirmation(
         "Confirm",
-        "Are you sure you want to update the status ?"
+        "Are you sure you want to update the status?"
       );
       if (!result) return;
+
       this.loader = true;
       this.$axios
         .post("updateRegStatus", {
           slug: regObj.slug,
+          reg_status: reg_status,
         })
-        .then(async (res) => {
-          console.log("res.data.status");
-          console.log(res.data.status);
+        .then((res) => {
           if (res.data.status === "S") {
             this.$toast.success(res.data.message);
-            // this.$router.push({ name: "registration_list" });
             this.getRegDetails();
           } else {
             this.$toast.error(res.data.message);
@@ -162,11 +259,46 @@ export default {
         })
         .finally(() => {
           this.loader = false;
-          this.isBtnLoading = false;
+        });
+    },
+
+    openRejectDialog(regObj) {
+      this.rejectObj = regObj;
+      this.rejectReason = "";
+      this.rejectDialog = true;
+    },
+
+    closeRejectDialog() {
+      this.rejectDialog = false;
+      this.rejectReason = "";
+    },
+
+    async confirmReject() {
+      const result = await this.showConfirmation(
+        "Confirm",
+        "Are you sure you want to reject this registration?"
+      );
+      if (!result) return;
+
+      this.rejectDialog = false;
+      this.loader = true;
+
+      this.$axios
+        .post("updateRegStatus", {
+          slug: this.rejectObj.slug,
+          reg_status: "Rejected",
+          reject_reason: this.rejectReason,
         })
-        .catch((err) => {
-          this.$toast.error(res.data.message);
-          console.log("this error" + err);
+        .then((res) => {
+          if (res.data.status === "S") {
+            this.$toast.success(res.data.message);
+            this.getRegDetails();
+          } else {
+            this.$toast.error(res.data.message);
+          }
+        })
+        .finally(() => {
+          this.loader = false;
         });
     },
   },
@@ -257,5 +389,27 @@ export default {
 }
 .v-table {
   background: #e9edf7 !important;
+}
+.details-card {
+  border-radius: 20px;
+  background: #e9edf7;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.detail-label {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.detail-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
 }
 </style>

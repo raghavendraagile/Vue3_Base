@@ -4,6 +4,7 @@
 :root {
   --theme-color: #6c63ff;
   --theme-green: linear-gradient(90deg, #17b434, #077e15);
+  --theme-warning: linear-gradient(90deg, #f28f05, #d57500);
   --theme-reject: linear-gradient(90deg, #d83535, #a30606);
   --theme-gradient: linear-gradient(90deg, #6c63ff, #7c4dff);
   --theme-gradient-orange: linear-gradient(90deg, #efc850, #af8403);
@@ -783,6 +784,9 @@ input::placeholder {
 
 .status-approved {
   background: var(--theme-green) !important
+}
+.status-warning {
+  background: var(--theme-warning) !important
 }
 
 .status-rejected {
